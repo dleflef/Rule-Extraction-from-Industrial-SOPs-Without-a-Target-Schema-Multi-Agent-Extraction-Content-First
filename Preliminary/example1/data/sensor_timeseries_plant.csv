@@ -1,0 +1,11 @@
+timestamp,workstation_id,sensor_name,sensor_value
+2026-03-05T08:00:00,CNC_01,spindle_speed,1500
+2026-03-05T08:00:00,CNC_01,spindle_speed,1505
+2026-03-05T08:00:00,CNC_01,spindle_speed,1498
+2026-03-05T08:00:00,CNC_01,spindle_speed,4500
+2026-03-05T08:00:00,CNC_01,spindle_speed,1500
+2026-03-05T08:00:00,CNC_01,spindle_speed,1502
+2026-03-05T08:00:00,CNC_01,spindle_speed,1499
+2026-03-05T08:00:00,CNC_01,spindle_speed,1501
+2026-03-05T08:00:00,CNC_01,spindle_speed,1500
+2026-03-05T08:00:00,CNC_01,spindle_speed,1500
