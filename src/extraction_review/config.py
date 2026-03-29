@@ -1,8 +1,8 @@
 """
-Configuration for the extraction review application.
+Configuration for the knowledge graph extraction pipeline.
 
 Configuration is loaded from configs/config.json via ResourceConfig.
-The unified config contains both extraction settings and the JSON schema.
+The unified config contains ontology definitions, extraction settings, and validation rules.
 """
 
 import logging
@@ -17,15 +17,61 @@ logger = logging.getLogger(__name__)
 
 
 # The name of the collection to use for storing extracted data.
-# When developing locally, this will use the _public collection (shared within the project),
-# otherwise agent data is isolated to each agent.
-EXTRACTED_DATA_COLLECTION: str = "extraction-review"
+EXTRACTED_DATA_COLLECTION: str = "kg-extraction"
+
+
+class EntityType(BaseModel):
+    """Definition of an entity type in the domain ontology."""
+
+    name: str
+    description: str
+
+
+class RelationType(BaseModel):
+    """Definition of a relation type in the domain ontology."""
+
+    name: str
+    description: str
+
+
+class OntologyConfig(BaseModel):
+    """Domain ontology configuration defining entity and relation types."""
+
+    entity_types: list[EntityType] = []
+    relation_types: list[RelationType] = []
+
+    def get_entity_type_names(self) -> list[str]:
+        """Return list of valid entity type names."""
+        return [et.name for et in self.entity_types]
+
+    def get_relation_type_names(self) -> list[str]:
+        """Return list of valid relation type names."""
+        return [rt.name for rt in self.relation_types]
+
+    def build_extraction_prompt(self) -> str:
+        """Build a system prompt that includes ontology definitions."""
+        entity_list = "\n".join(
+            f"- {et.name}: {et.description}" for et in self.entity_types
+        )
+        relation_list = "\n".join(
+            f"- {rt.name}: {rt.description}" for rt in self.relation_types
+        )
+        return f"""Extract knowledge graph triples using the following ontology:
+
+ENTITY TYPES:
+{entity_list}
+
+RELATION TYPES:
+{relation_list}
+
+For each entity, identify its type from the list above. For each relationship, use one of the defined relation types.
+Include source context to support traceability."""
 
 
 class ExtractSettings(BaseModel):
     """Extraction settings loaded from configs/config.json extract.settings."""
 
-    extraction_mode: Literal["FAST", "PREMIUM", "MULTIMODAL"]
+    extraction_mode: Literal["FAST", "BALANCED", "MULTIMODAL", "PREMIUM"]
     system_prompt: str | None = None
     citation_bbox: bool = False
     use_reasoning: bool = False
@@ -40,41 +86,15 @@ class ExtractConfig(BaseModel):
     settings: ExtractSettings
 
 
-class SplitCategory(BaseModel):
-    """A category for document splitting."""
-
-    name: str
-    description: str
-
-
-class SplittingStrategy(BaseModel):
-    """Strategy for document splitting"""
-
-    allow_uncategorized: bool = False
-
-
-class SplitSettings(BaseModel):
-    """Settings for document splitting."""
-
-    splitting_strategy: SplittingStrategy = SplittingStrategy()
-
-
-class SplitConfig(BaseModel):
-    """Split configuration with categories and settings."""
-
-    categories: list[SplitCategory] = []
-    settings: SplitSettings = SplitSettings()
-
-
 class ClassifyRule(BaseModel):
-    """Classify rule, with type (rule target) and description (rule description)"""
+    """Classification rule with type and description."""
 
     type: str
     description: str
 
 
 class ClassifyParsingConfig(BaseModel):
-    """Parsing config for Classify"""
+    """Parsing config for Classify."""
 
     lang: str = Field(description="two-letter ISO 639 language code", default="en")
     max_pages: int | None = None
@@ -82,25 +102,35 @@ class ClassifyParsingConfig(BaseModel):
 
 
 class ClassifySettings(BaseModel):
-    """Extra settings for Classify"""
+    """Settings for document classification."""
 
     mode: Literal["FAST", "MULTIMODAL"] = "FAST"
     parsing_config: ClassifyParsingConfig = ClassifyParsingConfig()
 
 
 class ClassifyConfig(BaseModel):
-    """Classify configuration, with rules and settings"""
+    """Classification configuration with rules and settings."""
 
     rules: list[ClassifyRule] = []
     settings: ClassifySettings = ClassifySettings()
 
 
-class ParseSettings(BaseModel):
-    """Parsing settings for LlamaParse.
+class ValidationConfig(BaseModel):
+    """Validation settings for extracted knowledge."""
 
-    See LlamaParse documentation for full options:
-    /python/cloud/llamaparse/api-v2-guide/
-    """
+    confidence_threshold: float = Field(
+        default=0.7, description="Minimum confidence score for automatic acceptance"
+    )
+    require_source_context: bool = Field(
+        default=True, description="Require source context for all extractions"
+    )
+    flag_low_confidence_for_review: bool = Field(
+        default=True, description="Flag low-confidence extractions for human review"
+    )
+
+
+class ParseSettings(BaseModel):
+    """Parsing settings for LlamaParse."""
 
     tier: Literal["fast", "agentic"] = "agentic"
     version: str = "latest"
@@ -128,10 +158,38 @@ class JsonSchema(BaseModel):
         return self.model_dump(exclude_none=True)
 
 
+class SplitCategory(BaseModel):
+    """A category for document splitting."""
+
+    name: str
+    description: str
+
+
+class SplittingStrategy(BaseModel):
+    """Strategy for document splitting."""
+
+    allow_uncategorized: bool = False
+
+
+class SplitSettings(BaseModel):
+    """Settings for document splitting."""
+
+    splitting_strategy: SplittingStrategy = SplittingStrategy()
+
+
+class SplitConfig(BaseModel):
+    """Split configuration with categories and settings."""
+
+    categories: list[SplitCategory] = []
+    settings: SplitSettings = SplitSettings()
+
+
 class Config(BaseModel):
     """Root configuration model for configs/config.json."""
 
+    ontology: OntologyConfig = OntologyConfig()
     extract: ExtractConfig
-    split: SplitConfig = SplitConfig()
     classify: ClassifyConfig = ClassifyConfig()
+    validation: ValidationConfig = ValidationConfig()
     parse: ParseConfig = ParseConfig()
+    split: SplitConfig = SplitConfig()

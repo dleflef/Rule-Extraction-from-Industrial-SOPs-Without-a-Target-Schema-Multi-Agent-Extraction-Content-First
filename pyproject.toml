@@ -1,7 +1,7 @@
 [project]
 name = "extraction-review"
 version = "0.1.0"
-description = "Extracts data"
+description = "Domain-agnostic Knowledge Graph extraction for Digital Twins"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

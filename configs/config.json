@@ -1,45 +1,190 @@
 {
+  "ontology": {
+    "entity_types": [
+      {
+        "name": "Component",
+        "description": "Physical or logical component of a system (e.g., motor, sensor, valve, controller)"
+      },
+      {
+        "name": "Process",
+        "description": "An operational process or procedure (e.g., milling, assembly, calibration)"
+      },
+      {
+        "name": "Parameter",
+        "description": "A measurable or configurable parameter (e.g., temperature, pressure, speed)"
+      },
+      {
+        "name": "Material",
+        "description": "Physical material or substance used in processes (e.g., coolant, steel, lubricant)"
+      },
+      {
+        "name": "System",
+        "description": "A larger system or subsystem containing multiple components"
+      },
+      {
+        "name": "Sensor",
+        "description": "A device that measures physical quantities"
+      },
+      {
+        "name": "Event",
+        "description": "An occurrence or incident (e.g., alarm, failure, maintenance event)"
+      }
+    ],
+    "relation_types": [
+      {
+        "name": "part_of",
+        "description": "Entity A is a part of entity B (compositional relationship)"
+      },
+      {
+        "name": "controls",
+        "description": "Entity A controls or regulates entity B"
+      },
+      {
+        "name": "monitors",
+        "description": "Entity A monitors or observes entity B"
+      },
+      {
+        "name": "triggers",
+        "description": "Entity A triggers or causes entity B"
+      },
+      {
+        "name": "depends_on",
+        "description": "Entity A depends on or requires entity B"
+      },
+      {
+        "name": "produces",
+        "description": "Entity A produces or outputs entity B"
+      },
+      {
+        "name": "uses",
+        "description": "Entity A uses or consumes entity B"
+      },
+      {
+        "name": "located_in",
+        "description": "Entity A is located in or at entity B"
+      }
+    ]
+  },
+  "classify": {
+    "rules": [
+      {
+        "type": "technical_manual",
+        "description": "Technical documentation describing system components, specifications, operating procedures, and maintenance instructions"
+      },
+      {
+        "type": "maintenance_report",
+        "description": "Reports documenting maintenance activities, repairs, inspections, and equipment status"
+      },
+      {
+        "type": "process_specification",
+        "description": "Documents defining operational processes, procedures, parameters, and quality requirements"
+      },
+      {
+        "type": "safety_document",
+        "description": "Safety-related documents including risk assessments, safety procedures, and compliance documentation"
+      }
+    ],
+    "settings": {
+      "mode": "FAST",
+      "parsing_config": {
+        "lang": "en",
+        "max_pages": 10
+      }
+    }
+  },
   "extract": {
     "json_schema": {
       "type": "object",
       "properties": {
         "document_type": {
-          "type": "string",
-          "description": "An overarching category for the type of document (e.g. invoice, purchase order, etc.)"
+          "type": ["string", "null"],
+          "description": "The type of document being processed"
         },
-        "summary": {
-          "type": "string",
-          "description": "A 2-3 sentence summary describing the content of the document"
-        },
-        "key_points": {
+        "entities": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "A list of key points or insights from the document"
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The canonical name of the entity"
+              },
+              "entity_type": {
+                "type": "string",
+                "description": "The ontological type of this entity (Component, Process, Parameter, Material, System, Sensor, Event)"
+              },
+              "description": {
+                "type": ["string", "null"],
+                "description": "A brief description of the entity extracted from context"
+              },
+              "properties": {
+                "type": ["object", "null"],
+                "description": "Key-value pairs of properties/attributes of this entity"
+              },
+              "source_context": {
+                "type": ["string", "null"],
+                "description": "The text passage where this entity was mentioned"
+              }
+            },
+            "required": ["name", "entity_type"]
+          },
+          "description": "List of domain entities extracted from the document"
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_entity": {
+                "type": "string",
+                "description": "The name of the source entity in this relationship"
+              },
+              "relation_type": {
+                "type": "string",
+                "description": "The type of relationship (part_of, controls, monitors, triggers, depends_on, produces, uses, located_in)"
+              },
+              "target_entity": {
+                "type": "string",
+                "description": "The name of the target entity in this relationship"
+              },
+              "properties": {
+                "type": ["object", "null"],
+                "description": "Optional properties of this relationship (e.g., temporal validity, conditions)"
+              },
+              "source_context": {
+                "type": ["string", "null"],
+                "description": "The text passage supporting this relationship"
+              }
+            },
+            "required": ["source_entity", "relation_type", "target_entity"]
+          },
+          "description": "List of relationships between entities forming knowledge graph triples"
+        },
+        "document_summary": {
+          "type": ["string", "null"],
+          "description": "A brief summary of the document's main content and purpose"
         }
       },
-      "required": ["document_type", "summary", "key_points"]
+      "required": ["entities", "relations"]
     },
     "settings": {
       "extraction_mode": "PREMIUM",
-      "system_prompt": null,
+      "system_prompt": "You are extracting knowledge graph triples from technical documentation. Focus on identifying domain entities (components, processes, parameters, materials, systems, sensors, events) and their relationships. Be precise about entity types and relationship types. Extract properties and contextual information when available.",
       "citation_bbox": true,
-      "use_reasoning": false,
+      "use_reasoning": true,
       "cite_sources": true,
       "confidence_scores": true
     }
-  },
-  "split": {
-    "categories": [],
-    "settings": {}
-  },
-  "classify": {
-    "rules": [],
-    "settings": {}
   },
   "parse": {
     "settings": {
       "tier": "agentic",
       "version": "latest"
     }
+  },
+  "validation": {
+    "confidence_threshold": 0.7,
+    "require_source_context": true,
+    "flag_low_confidence_for_review": true
   }
 }
