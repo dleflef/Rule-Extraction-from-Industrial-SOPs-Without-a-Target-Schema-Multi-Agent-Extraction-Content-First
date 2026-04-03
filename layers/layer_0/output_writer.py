@@ -62,7 +62,8 @@ def export_construction_log(
     with open(csv_path, 'w', encoding='utf-8', newline='') as f:
         headers = [
             "action", "result_status",
-            "extractor_confidence", "ontological_coherence", "kg_consistency", "composite_score",
+            "parse_success_confidence", "output_completeness", "format_validity",
+            "downstream_readiness", "overall_quality_score",
             "eval_reason", "arguments", "raw_result"
         ]
         writer = csv.DictWriter(f, fieldnames=headers)
@@ -73,10 +74,11 @@ def export_construction_log(
                 writer.writerow({
                     "action": entry.get("action", "UNKNOWN"),
                     "result_status": entry.get("result_status", "UNKNOWN"),
-                    "extractor_confidence": entry.get("extractor_confidence", ""),
-                    "ontological_coherence": entry.get("ontological_coherence", ""),
-                    "kg_consistency": entry.get("kg_consistency", ""),
-                    "composite_score": entry.get("composite_score", ""),
+                    "parse_success_confidence": entry.get("parse_success_confidence", ""),
+                    "output_completeness": entry.get("output_completeness", ""),
+                    "format_validity": entry.get("format_validity", ""),
+                    "downstream_readiness": entry.get("downstream_readiness", ""),
+                    "overall_quality_score": entry.get("overall_quality_score", ""),
                     "eval_reason": entry.get("eval_reason", ""),
                     "arguments": json.dumps(entry.get("arguments", {})),
                     "raw_result": str(entry.get("raw_result", "")).replace("\n", " | ")

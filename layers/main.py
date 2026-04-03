@@ -11,7 +11,8 @@ from layer_0.metrics import calculate_accuracy_metrics
 from layer_0.agent import orchestrator_app
 from layer_0.output_writer import export_construction_log
 
-OUTPUT_DIR = os.path.join("outputs", "layer_0")
+_HERE      = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = os.path.join(_HERE, "outputs", "layer_0")
 
 # Data Preparation
 def extract_source_archive(zip_path: str = "data/examples.zip", extract_to: str = "data/examples"):
@@ -139,10 +140,10 @@ def run_multi_experiment(n_runs: int, source_dir: str = "data/examples"):
 
 
 if __name__ == "__main__":
-    # NSet N_RUNS = 10 for the final 
-    N_RUNS         = 2   
-    ZIP_FILE_PATH  = os.path.join("data", "examples.zip")
-    EXTRACTION_DIR = os.path.join("data", "examples")
+    # Set N_RUNS = 10 for the final experiment
+    N_RUNS         = 2
+    ZIP_FILE_PATH  = os.path.join(_HERE, "data", "examples.zip")
+    EXTRACTION_DIR = os.path.join(_HERE, "data", "examples")
 
     try:
         extract_source_archive(zip_path=ZIP_FILE_PATH, extract_to=EXTRACTION_DIR)

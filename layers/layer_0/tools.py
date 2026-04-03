@@ -195,69 +195,75 @@ def route_to_layer_1(source_id: str, file_path: str, agent_type: str, priority: 
 @tool
 def evaluate_subordinate_output(source_id: str) -> str:
     """
-    Agentic Evaluation: Uses a Validation Agent to check the ingestion output from a Layer 1 agent.
-    Layer 1 is responsible for parsing and structuring raw source files — not entity extraction.
+    Layer 0 supervisory QA: checks ingestion-readiness of a Layer 1 agent's output.
+    Evaluates only parse quality and downstream completeness for Layer 2 — not ontology
+    or KG semantics (those are deferred to Layer 2 / Layer 3).
     Call this after routing a source to verify that ingestion completed correctly.
     """
-    # TODO: replace with a real call to Layer 3 once implemented
-
     layer_1_output = _layer1_results.get(
         source_id, "No ingestion report available for this source."
     )
 
     evaluation_prompt = f"""
-    You are a Validation Agent in a Knowledge Graph construction pipeline.
+    You are the Layer 0 Ingestion Quality Evaluator in a Knowledge Graph construction pipeline.
     Review the following ingestion report produced by a Layer 1 Ingestion Agent for source {source_id}.
-    Layer 1 is responsible for parsing raw files and producing structured, clean output ready for
-    downstream entity extraction (Layer 2). It does NOT extract entities itself.
+    Layer 1 is responsible ONLY for parsing raw files and producing structured output — it does NOT
+    perform entity extraction, ontology alignment, or KG validation.
+
+    Your task is to assess whether this Layer 1 output is ready for downstream processing (Layer 2).
+    Do NOT evaluate ontology, semantic coherence, or KG consistency — those are handled later.
 
     Ingestion report to evaluate:
     {layer_1_output}
 
-    Evaluate the report across three independent dimensions:
-    - extractor_confidence: How confident are you that the raw file was parsed without data loss or corruption? (0.0-1.0)
-    - ontological_coherence: How well does the detected schema map to a coherent, consistent data model suitable for KG construction? (0.0-1.0)
-    - kg_consistency: How consistent and reliable is the output for downstream knowledge graph ingestion (no ambiguity, no missing keys)? (0.0-1.0)
+    Evaluate across four ingestion-quality dimensions:
+    - parse_success_confidence: Was the raw file parsed completely without data loss or corruption? (0.0-1.0)
+    - output_completeness: Are all expected output fields present and non-empty? (0.0-1.0)
+    - format_validity: Is the output format consistent and well-structured for downstream use? (0.0-1.0)
+    - downstream_readiness: Is this output ready to be passed to Layer 2 without pre-processing? (0.0-1.0)
 
-    Then compute a composite_score as the weighted average of the three dimensions (you choose appropriate weights).
+    Then compute overall_quality_score as the simple average of the four dimensions.
 
     Return a valid JSON object EXACTLY matching this schema — no extra fields, no markdown:
     {{
-      "extractor_confidence": <float 0.0-1.0>,
-      "ontological_coherence": <float 0.0-1.0>,
-      "kg_consistency": <float 0.0-1.0>,
-      "composite_score": <float 0.0-1.0>,
+      "parse_success_confidence": <float 0.0-1.0>,
+      "output_completeness": <float 0.0-1.0>,
+      "format_validity": <float 0.0-1.0>,
+      "downstream_readiness": <float 0.0-1.0>,
+      "overall_quality_score": <float 0.0-1.0>,
       "status": "success" or "failed",
-      "reason": "brief explanation covering all three dimensions"
+      "reason": "brief explanation covering parse quality and downstream readiness"
     }}
 
-    Set status to "failed" if composite_score < 0.5, otherwise "success".
+    Set status to "failed" if overall_quality_score < 0.5, otherwise "success".
     """
 
     try:
         response = _validation_llm.invoke(evaluation_prompt)
         raw = response.content.replace("```json", "").replace("```", "").strip()
         parsed = json.loads(raw)
-        # Fallback: compute composite ourselves if the LLM omitted it or it is not a number
-        if not isinstance(parsed.get("composite_score"), (int, float)):
+        # Fallback: compute overall_quality_score ourselves if the LLM omitted it
+        if not isinstance(parsed.get("overall_quality_score"), (int, float)):
             scores = [
-                parsed.get("extractor_confidence", 0.0),
-                parsed.get("ontological_coherence", 0.0),
-                parsed.get("kg_consistency", 0.0),
+                parsed.get("parse_success_confidence", 0.0),
+                parsed.get("output_completeness", 0.0),
+                parsed.get("format_validity", 0.0),
+                parsed.get("downstream_readiness", 0.0),
             ]
-            parsed["composite_score"] = round(sum(scores) / len(scores), 4)
-        # Ensure status aligns with composite_score if the LLM omitted it
+            parsed["overall_quality_score"] = round(sum(scores) / len(scores), 4)
+        # Ensure status aligns with overall_quality_score if the LLM omitted it
         if "status" not in parsed:
-            parsed["status"] = "success" if parsed["composite_score"] >= 0.5 else "failed"
+            parsed["status"] = "success" if parsed["overall_quality_score"] >= 0.5 else "failed"
         return json.dumps(parsed)
     except Exception as e:
         return json.dumps({
-            "extractor_confidence": 0.0,
-            "ontological_coherence": 0.0,
-            "kg_consistency": 0.0,
-            "composite_score": 0.0,
+            "parse_success_confidence": 0.0,
+            "output_completeness": 0.0,
+            "format_validity": 0.0,
+            "downstream_readiness": 0.0,
+            "overall_quality_score": 0.0,
             "status": "failed",
-            "reason": f"Validation Agent stalled. Error: {str(e)}"
+            "reason": f"Layer 0 QA evaluator stalled. Error: {str(e)}"
         })
 
 @tool

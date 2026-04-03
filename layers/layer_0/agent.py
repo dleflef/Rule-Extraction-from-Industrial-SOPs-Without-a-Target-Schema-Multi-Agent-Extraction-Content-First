@@ -57,9 +57,11 @@ Once all items are resolved, write a final text summary and you MUST NOT invoke 
 # 3. Node: Tool Execution & Logging
 def tool_node(state: OrchestratorState):
     """
-    Executes the tools chosen by the Reasoner and rigorously logs the results.
+    Executes the tools chosen by the Reasoner and logs the results.
     This node intercepts all tool outputs to update the global inventory status
     and builds an immutable CSV/JSON trace for scientific evaluation metrics.
+    Evaluation fields captured here reflect Layer 0 ingestion-QA only — ontology
+    alignment and KG consistency checks are deferred to Layer 2 / Layer 3.
     """
     last_message = state["messages"][-1]
     outputs = []
@@ -92,23 +94,26 @@ def tool_node(state: OrchestratorState):
             source_id = tool_args.get("source_id") if isinstance(tool_args, dict) else None
 
             # Data Extraction for Scientific Logging
-            extractor_confidence = None
-            ontological_coherence = None
-            kg_consistency = None
-            composite_score = None
+            # Fields below are Layer 0 ingestion-QA metrics only.
+            parse_success_confidence = None
+            output_completeness = None
+            format_validity = None
+            downstream_readiness = None
+            overall_quality_score = None
             eval_reason = None
 
-            # The evaluation tool returns a JSON string containing the metrics.
-            # Parse it here to extract all six fields and update the graph state.
+            # The evaluation tool returns a JSON string containing the ingestion-QA metrics.
+            # Parse it here to extract all fields and update the graph state.
             if tool_name == "evaluate_subordinate_output":
                 try:
                     clean = str(result).replace("```json", "").replace("```", "").strip()
                     parsed = json.loads(clean)
                     result_status = parsed.get("status", "unknown")
-                    extractor_confidence = parsed.get("extractor_confidence")
-                    ontological_coherence = parsed.get("ontological_coherence")
-                    kg_consistency = parsed.get("kg_consistency")
-                    composite_score = parsed.get("composite_score")
+                    parse_success_confidence = parsed.get("parse_success_confidence")
+                    output_completeness = parsed.get("output_completeness")
+                    format_validity = parsed.get("format_validity")
+                    downstream_readiness = parsed.get("downstream_readiness")
+                    overall_quality_score = parsed.get("overall_quality_score")
                     eval_reason = parsed.get("reason")
                 except (json.JSONDecodeError, AttributeError):
                     result_status = "failed"
@@ -145,10 +150,11 @@ def tool_node(state: OrchestratorState):
                 "action": tool_name,
                 "arguments": tool_args,
                 "result_status": result_status,
-                "extractor_confidence": extractor_confidence,
-                "ontological_coherence": ontological_coherence,
-                "kg_consistency": kg_consistency,
-                "composite_score": composite_score,
+                "parse_success_confidence": parse_success_confidence,
+                "output_completeness": output_completeness,
+                "format_validity": format_validity,
+                "downstream_readiness": downstream_readiness,
+                "overall_quality_score": overall_quality_score,
                 "eval_reason": eval_reason,
                 "raw_result": str(result)
             })
