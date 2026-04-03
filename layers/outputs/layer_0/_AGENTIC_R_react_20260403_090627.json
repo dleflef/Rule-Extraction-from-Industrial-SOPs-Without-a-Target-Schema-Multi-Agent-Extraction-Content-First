@@ -1,23 +1,23 @@
 {
   "run_metadata": {
-    "run_id": "_AGENTIC_R01",
+    "run_id": "_AGENTIC_R",
     "architecture": "react",
-    "timestamp": "20260403_084805",
+    "timestamp": "20260403_090627",
     "execution_success": true,
-    "latency_seconds": 137.1
+    "latency_seconds": 100.64
   },
   "token_usage": {
     "invocations": 14,
-    "prompt_tokens": 18673,
-    "completion_tokens": 1064,
-    "total_tokens": 19737
+    "prompt_tokens": 18676,
+    "completion_tokens": 1010,
+    "total_tokens": 19686
   },
   "metrics": {
     "routing_precision": 100.0,
     "inventory_recall": 100.0,
     "trajectory_alignment": 100.0
   },
-  "final_summary": "All sources in the inventory have been successfully processed and evaluated. No escalations were required. The orchestration is complete.\n\nFinal Summary:\n- Structured sources (JSON, CSV) processed with 100% success: \n  - `SRC_000` (JSON): 1200 rows parsed.\n  - `SRC_003` (CSV): 19200 rows parsed.\n- Unstructured and signal sources (PDF, log) processed with 100% success:\n  - `SRC_001` (PDF): 3 pages parsed, 20 semantic chunks.\n  - `SRC_002` (log): 240 records parsed.\n\nAll outputs are ready for downstream Layer 2 processing. No further actions required.",
+  "final_summary": "All sources in the inventory have been successfully processed and evaluated. No escalations were required. The orchestration is complete.\n\nFinal summary:\n- Structured sources (JSON, CSV) processed with 100% success: SRC_000 and SRC_003.\n- Unstructured and signal sources (PDF, log) processed with 100% success: SRC_001 and SRC_002.\n- All outputs are ready for downstream Layer 2 processing.\n\nNo further actions required.",
   "inventory": [
     {
       "source_id": "SRC_000",
@@ -139,8 +139,8 @@
       "format_validity": 1.0,
       "downstream_readiness": 1.0,
       "overall_quality_score": 1.0,
-      "eval_reason": "The ingestion report indicates complete parsing with no errors, full field presence, consistent structure, and no preprocessing required for downstream Layer 2 processing.",
-      "raw_result": "{\"parse_success_confidence\": 1.0, \"output_completeness\": 1.0, \"format_validity\": 1.0, \"downstream_readiness\": 1.0, \"overall_quality_score\": 1.0, \"status\": \"success\", \"reason\": \"The ingestion report indicates complete parsing with no errors, full field presence, consistent structure, and no preprocessing required for downstream Layer 2 processing.\"}"
+      "eval_reason": "The ingestion report indicates complete parsing with no errors, full field presence, consistent structure, and no preprocessing required for downstream Layer 2.",
+      "raw_result": "{\"parse_success_confidence\": 1.0, \"output_completeness\": 1.0, \"format_validity\": 1.0, \"downstream_readiness\": 1.0, \"overall_quality_score\": 1.0, \"status\": \"success\", \"reason\": \"The ingestion report indicates complete parsing with no errors, full field presence, consistent structure, and no preprocessing required for downstream Layer 2.\"}"
     },
     {
       "action": "route_to_layer_1",
@@ -170,8 +170,8 @@
       "format_validity": 1.0,
       "downstream_readiness": 1.0,
       "overall_quality_score": 1.0,
-      "eval_reason": "The ingestion report indicates complete parsing with no errors, full record count, and structured output. No missing fields or format inconsistencies detected. Ready for downstream processing.",
-      "raw_result": "{\"parse_success_confidence\": 1.0, \"output_completeness\": 1.0, \"format_validity\": 1.0, \"downstream_readiness\": 1.0, \"overall_quality_score\": 1.0, \"status\": \"success\", \"reason\": \"The ingestion report indicates complete parsing with no errors, full record count, and structured output. No missing fields or format inconsistencies detected. Ready for downstream processing.\"}"
+      "eval_reason": "The ingestion report indicates complete parsing with no errors, full record count, and structured output. All fields are present and the format is consistent, making it ready for downstream processing without modification.",
+      "raw_result": "{\"parse_success_confidence\": 1.0, \"output_completeness\": 1.0, \"format_validity\": 1.0, \"downstream_readiness\": 1.0, \"overall_quality_score\": 1.0, \"status\": \"success\", \"reason\": \"The ingestion report indicates complete parsing with no errors, full record count, and structured output. All fields are present and the format is consistent, making it ready for downstream processing without modification.\"}"
     }
   ]
 }

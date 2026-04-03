@@ -91,7 +91,7 @@ def export_construction_log(
         f.write("## Metadata\n")
         f.write(f"- **Architecture**: `{architecture}`\n")
         f.write(f"- **Timestamp**: {timestamp}\n")
-        f.write(f"- **Status**: {'Success' if execution_success else '❌ Failed'}\n")
+        f.write(f"- **Status**: {'Success' if execution_success else 'Failed'}\n")
         f.write(f"- **Latency**: {latency_seconds:.2f} seconds\n\n")
         
         f.write("## Cost & Token Usage\n")

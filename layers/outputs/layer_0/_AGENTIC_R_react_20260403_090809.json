@@ -1,10 +1,10 @@
 {
   "run_metadata": {
-    "run_id": "_AGENTIC_R02",
+    "run_id": "_AGENTIC_R",
     "architecture": "react",
-    "timestamp": "20260403_084957",
+    "timestamp": "20260403_090809",
     "execution_success": true,
-    "latency_seconds": 112.27
+    "latency_seconds": 101.64
   },
   "token_usage": {
     "invocations": 14,
