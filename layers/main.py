@@ -118,7 +118,7 @@ def run_multi_experiment(n_runs: int, source_dir: str = "data/examples"):
 
     # Execute N independent iterations
     for i in range(1, n_runs + 1):
-        metrics = run_layer0_experiment(run_id=f"_AGENTIC_R{i:02d}", source_dir=source_dir)
+        metrics = run_layer0_experiment(run_id=f"_AGENTIC_R", source_dir=source_dir)
         if metrics:
             all_metrics.append(metrics)
 
