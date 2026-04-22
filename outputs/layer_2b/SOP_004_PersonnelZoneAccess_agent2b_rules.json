@@ -1,8 +1,9 @@
 {
     "source_file": "SOP_004_PersonnelZoneAccess.pdf",
     "model_used": "qwen2.5-coder-7b-instruct",
-    "strategy": "Programmatic Ontology Alignment + KG Triple Conversion",
-    "aligned_rule_chunks": [
+    "temperature": 0.0,
+    "strategy": "Graph-Informed Structured Rule Extraction",
+    "results": [
         {
             "chunk_id": 0,
             "metadata": {
@@ -13,7 +14,8 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [],
+            "extracted_rules": [
                 {
                     "ruleId": null,
                     "rule_class": "AccessRule",
@@ -27,10 +29,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -45,10 +44,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -63,10 +59,7 @@
                     "warnHi": 75,
                     "critLo": 60,
                     "warnLo": 50,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -81,10 +74,7 @@
                     "warnHi": 130,
                     "critLo": 100,
                     "warnLo": 80,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -99,10 +89,7 @@
                     "warnHi": 75,
                     "critLo": 60,
                     "warnLo": 50,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -117,10 +104,7 @@
                     "warnHi": 130,
                     "critLo": 100,
                     "warnLo": 80,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -135,10 +119,7 @@
                     "warnHi": 32,
                     "critLo": 28,
                     "warnLo": 25,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -153,10 +134,7 @@
                     "warnHi": 75,
                     "critLo": 60,
                     "warnLo": 50,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -171,10 +149,7 @@
                     "warnHi": 20,
                     "critLo": 15,
                     "warnLo": 10,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -189,10 +164,7 @@
                     "warnHi": 32,
                     "critLo": 28,
                     "warnLo": 25,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -207,10 +179,7 @@
                     "warnHi": 75,
                     "critLo": 60,
                     "warnLo": 50,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -224,7 +193,61 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "operator",
+                    "category": "Role"
+                },
+                {
+                    "span": "Prod. Area",
+                    "category": "Zone"
+                },
+                {
+                    "span": "Server Room",
+                    "category": "Zone"
+                },
+                {
+                    "span": "Gen. Warehouse",
+                    "category": "Zone"
+                },
+                {
+                    "span": "Main Entrance",
+                    "category": "Zone"
+                },
+                {
+                    "span": "Chem. Storage",
+                    "category": "Zone"
+                },
+                {
+                    "span": "R&D Lab",
+                    "category": "Zone"
+                },
+                {
+                    "span": "Cafeteria",
+                    "category": "Zone"
+                },
+                {
+                    "span": "technician",
+                    "category": "Role"
+                },
+                {
+                    "span": "supervisor",
+                    "category": "Role"
+                },
+                {
+                    "span": "manager",
+                    "category": "Role"
+                },
+                {
+                    "span": "security",
+                    "category": "Role"
+                },
+                {
+                    "span": "visitor",
+                    "category": "Role"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": null,
                     "rule_class": "AccessRule",
@@ -238,10 +261,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -256,10 +276,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -274,10 +291,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -292,10 +306,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -310,10 +321,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -328,10 +336,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -346,10 +351,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -364,10 +366,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -382,10 +381,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -400,10 +396,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -418,10 +411,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -436,10 +426,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -454,10 +441,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -472,10 +456,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -490,10 +471,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -508,10 +486,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -526,10 +501,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -544,10 +516,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -562,10 +531,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -580,10 +546,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -598,10 +561,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -616,10 +576,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -634,10 +591,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -652,10 +606,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -670,10 +621,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -688,10 +636,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -706,10 +651,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -724,10 +666,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -742,10 +681,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -760,10 +696,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -778,10 +711,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -796,10 +726,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -814,10 +741,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -832,10 +756,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -850,10 +771,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -868,10 +786,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -886,10 +801,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -904,10 +816,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -922,10 +831,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -940,10 +846,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -958,10 +861,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -976,10 +876,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -993,7 +890,37 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "Production Area",
+                    "category": "Zone"
+                },
+                {
+                    "span": "Server Room",
+                    "category": "Zone"
+                },
+                {
+                    "span": "General Warehouse",
+                    "category": "Zone"
+                },
+                {
+                    "span": "Main Entrance",
+                    "category": "Zone"
+                },
+                {
+                    "span": "Chemical Storage",
+                    "category": "Zone"
+                },
+                {
+                    "span": "R&D Lab",
+                    "category": "Zone"
+                },
+                {
+                    "span": "Cafeteria",
+                    "category": "Zone"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": null,
                     "rule_class": "AccessRule",
@@ -1007,10 +934,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1025,10 +949,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1043,10 +964,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1061,10 +979,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1079,10 +994,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1097,10 +1009,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -1114,7 +1023,109 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "operator",
+                    "category": "Role"
+                },
+                {
+                    "span": "Max Ack -WARNING (min)",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "15",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Max Ack -CRITICAL (min)",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "3",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "technician",
+                    "category": "Role"
+                },
+                {
+                    "span": "Max Ack -WARNING (min)",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "10",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Max Ack -CRITICAL (min)",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "2",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "supervisor",
+                    "category": "Role"
+                },
+                {
+                    "span": "Max Ack -WARNING (min)",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "5",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Max Ack -CRITICAL (min)",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "1",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "manager",
+                    "category": "Role"
+                },
+                {
+                    "span": "Max Ack -WARNING (min)",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "15",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Max Ack -CRITICAL (min)",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "5",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "security",
+                    "category": "Role"
+                },
+                {
+                    "span": "Max Ack -WARNING (min)",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "20",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Max Ack -CRITICAL (min)",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "5",
+                    "category": "AnomalyEvent"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": null,
                     "rule_class": "AccessRule",
@@ -1128,10 +1139,7 @@
                     "warnHi": 20,
                     "critLo": null,
                     "warnLo": 5,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1146,10 +1154,7 @@
                     "warnHi": 5,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1164,10 +1169,7 @@
                     "warnHi": 15,
                     "critLo": null,
                     "warnLo": 5,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1182,10 +1184,7 @@
                     "warnHi": 5,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1200,10 +1199,7 @@
                     "warnHi": 15,
                     "critLo": null,
                     "warnLo": 5,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1218,10 +1214,7 @@
                     "warnHi": 5,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1236,10 +1229,7 @@
                     "warnHi": 10,
                     "critLo": null,
                     "warnLo": 2,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1254,10 +1244,7 @@
                     "warnHi": 2,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1272,10 +1259,7 @@
                     "warnHi": 5,
                     "critLo": null,
                     "warnLo": 1,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -1290,10 +1274,7 @@
                     "warnHi": 1,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -1307,7 +1288,17 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "Unauthorised Access Rules",
+                    "category": "Role"
+                },
+                {
+                    "span": "OccupancyEvent::UnauthorisedAccess",
+                    "category": "AnomalyEvent"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": null,
                     "rule_class": "AccessRule",
@@ -1321,10 +1312,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -1338,7 +1326,13 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "Security personnel",
+                    "category": "Role"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": null,
                     "rule_class": "AccessRule",
@@ -1352,10 +1346,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -1369,7 +1360,21 @@
                     2
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "Chemical Storage",
+                    "category": "Zone"
+                },
+                {
+                    "span": "UNAUTHORIZED_ACCESS",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Safety Officer",
+                    "category": "Role"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ACCESS-03",
                     "rule_class": "AccessRule",
@@ -1383,10 +1388,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": "RULE-ACCESS-04",
@@ -1401,167 +1403,9 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
-        }
-    ],
-    "kg_triples": [
-        {
-            "subject": "ST01_FILLING",
-            "predicate": "monitors",
-            "object": "ST01_FILLING_TMP",
-            "properties": {}
-        },
-        {
-            "subject": "ST01_FILLING_TMP",
-            "predicate": "has_threshold",
-            "object": "ST01_FILLING_TMP_threshold",
-            "properties": {
-                "critHi": 85,
-                "warnHi": 75,
-                "critLo": 60,
-                "warnLo": 50
-            }
-        },
-        {
-            "subject": "ST02_SEALING",
-            "predicate": "monitors",
-            "object": "ST02_SEALING_FLW",
-            "properties": {}
-        },
-        {
-            "subject": "ST02_SEALING_FLW",
-            "predicate": "has_threshold",
-            "object": "ST02_SEALING_FLW_threshold",
-            "properties": {
-                "critHi": 150,
-                "warnHi": 130,
-                "critLo": 100,
-                "warnLo": 80
-            }
-        },
-        {
-            "subject": "ST03_LABELLING",
-            "predicate": "monitors",
-            "object": "ST03_LABELLING_HUM",
-            "properties": {}
-        },
-        {
-            "subject": "ST03_LABELLING_HUM",
-            "predicate": "has_threshold",
-            "object": "ST03_LABELLING_HUM_threshold",
-            "properties": {
-                "critHi": 85,
-                "warnHi": 75,
-                "critLo": 60,
-                "warnLo": 50
-            }
-        },
-        {
-            "subject": "ST04_PACKAGING",
-            "predicate": "monitors",
-            "object": "ST04_PACKAGING_PRS",
-            "properties": {}
-        },
-        {
-            "subject": "ST04_PACKAGING_PRS",
-            "predicate": "has_threshold",
-            "object": "ST04_PACKAGING_PRS_threshold",
-            "properties": {
-                "critHi": 150,
-                "warnHi": 130,
-                "critLo": 100,
-                "warnLo": 80
-            }
-        },
-        {
-            "subject": "SRV01_SERVERROOM",
-            "predicate": "monitors",
-            "object": "SRV01_SERVERROOM_TEMP",
-            "properties": {}
-        },
-        {
-            "subject": "SRV01_SERVERROOM_TEMP",
-            "predicate": "has_threshold",
-            "object": "SRV01_SERVERROOM_TEMP_threshold",
-            "properties": {
-                "critHi": 35,
-                "warnHi": 32,
-                "critLo": 28,
-                "warnLo": 25
-            }
-        },
-        {
-            "subject": "WRH01_WAREHOUSE",
-            "predicate": "monitors",
-            "object": "WRH01_WAREHOUSE_HUM",
-            "properties": {}
-        },
-        {
-            "subject": "WRH01_WAREHOUSE_HUM",
-            "predicate": "has_threshold",
-            "object": "WRH01_WAREHOUSE_HUM_threshold",
-            "properties": {
-                "critHi": 85,
-                "warnHi": 75,
-                "critLo": 60,
-                "warnLo": 50
-            }
-        },
-        {
-            "subject": "CHM01_CHEMICALSTORAGE",
-            "predicate": "monitors",
-            "object": "CHM01_CHEMICALSTORAGE_PRESSURE",
-            "properties": {}
-        },
-        {
-            "subject": "CHM01_CHEMICALSTORAGE_PRESSURE",
-            "predicate": "has_threshold",
-            "object": "CHM01_CHEMICALSTORAGE_PRESSURE_threshold",
-            "properties": {
-                "critHi": 25,
-                "warnHi": 20,
-                "critLo": 15,
-                "warnLo": 10
-            }
-        },
-        {
-            "subject": "RND01_RDLAB",
-            "predicate": "monitors",
-            "object": "RND01_RDLAB_TEMP",
-            "properties": {}
-        },
-        {
-            "subject": "RND01_RDLAB_TEMP",
-            "predicate": "has_threshold",
-            "object": "RND01_RDLAB_TEMP_threshold",
-            "properties": {
-                "critHi": 35,
-                "warnHi": 32,
-                "critLo": 28,
-                "warnLo": 25
-            }
-        },
-        {
-            "subject": "CAF01_CAFETERIA",
-            "predicate": "monitors",
-            "object": "CAF01_CAFETERIA_HUM",
-            "properties": {}
-        },
-        {
-            "subject": "CAF01_CAFETERIA_HUM",
-            "predicate": "has_threshold",
-            "object": "CAF01_CAFETERIA_HUM_threshold",
-            "properties": {
-                "critHi": 85,
-                "warnHi": 75,
-                "critLo": 60,
-                "warnLo": 50
-            }
         }
     ]
 }

@@ -1,8 +1,8 @@
 {
     "source_file": "SOP_003_MaintenanceRules.pdf",
     "model_used": "qwen2.5-coder-7b-instruct",
-    "strategy": "Schema & Node Alignment",
-    "results": [
+    "strategy": "Programmatic Ontology Alignment + KG Triple Conversion",
+    "aligned_rule_chunks": [
         {
             "chunk_id": 0,
             "metadata": {
@@ -13,7 +13,7 @@
                     1
                 ]
             },
-            "aligned_relations": []
+            "aligned_rules": []
         },
         {
             "chunk_id": 1,
@@ -25,7 +25,7 @@
                     1
                 ]
             },
-            "aligned_relations": []
+            "aligned_rules": []
         },
         {
             "chunk_id": 2,
@@ -37,62 +37,150 @@
                     1
                 ]
             },
-            "aligned_relations": [
+            "aligned_rules": [
                 {
-                    "subject": "MAINT-01",
-                    "subject_type": "Action",
-                    "predicate": "triggers",
-                    "object": "VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH",
-                    "object_type": "AnomalyEvent"
+                    "ruleId": "MAINT-01",
+                    "rule_class": "MaintenanceRule",
+                    "station": "ST04_PACKAGING",
+                    "sensor": "ST04_PACKAGING_VIB",
+                    "sensorType": "VIB",
+                    "condition": "VIB DRIFT >0.05 mm/s over 60 min",
+                    "action": "Inspect and lubricate bearing",
+                    "severity": "HIGH",
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": null,
+                    "warnLo": null,
+                    "unit": null,
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 },
                 {
-                    "subject": "MAINT-02",
-                    "subject_type": "Action",
-                    "predicate": "triggers",
-                    "object": "CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw",
-                    "object_type": "AnomalyEvent"
+                    "ruleId": "MAINT-02",
+                    "rule_class": "MaintenanceRule",
+                    "station": "ST02_SEALING",
+                    "sensor": "ST02_SEALING_CUR",
+                    "sensorType": "CUR",
+                    "condition": "CUR DRIFT >1.0 A for 30+ min",
+                    "action": "Inspect sealing jaw",
+                    "severity": "HIGH",
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": null,
+                    "warnLo": null,
+                    "unit": null,
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 },
                 {
-                    "subject": "MAINT-03",
-                    "subject_type": "Action",
-                    "predicate": "triggers",
-                    "object": "TEN STUCK >10 samples",
-                    "object_type": "AnomalyEvent"
+                    "ruleId": "MAINT-03",
+                    "rule_class": "MaintenanceRule",
+                    "station": "ST03_LABELLING",
+                    "sensor": "ST03_LABELLING_TEN",
+                    "sensorType": "TEN",
+                    "condition": "TEN STUCK >10 samples",
+                    "action": "Replace sensor",
+                    "severity": "MEDIUM",
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": null,
+                    "warnLo": null,
+                    "unit": null,
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 },
                 {
-                    "subject": "MAINT-04",
-                    "subject_type": "Action",
-                    "predicate": "triggers",
-                    "object": "PRS <3.3 bar for >15 min",
-                    "object_type": "AnomalyEvent"
+                    "ruleId": "MAINT-04",
+                    "rule_class": "MaintenanceRule",
+                    "station": "ST01_FILLING",
+                    "sensor": "ST01_FILLING_PRS",
+                    "sensorType": "PRS",
+                    "condition": "PRS <3.3 bar for >15 min",
+                    "action": "Inspect filter and pump",
+                    "severity": "MEDIUM",
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": null,
+                    "warnLo": null,
+                    "unit": null,
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 },
                 {
-                    "subject": "MAINT-05",
-                    "subject_type": "Action",
-                    "predicate": "triggers",
-                    "object": "TMP >25°C for >5 min",
-                    "object_type": "AnomalyEvent"
+                    "ruleId": "MAINT-05",
+                    "rule_class": "MaintenanceRule",
+                    "station": "SRV01_SERVERROOM",
+                    "sensor": "SRV01_SERVERROOM_TMP",
+                    "sensorType": "TMP",
+                    "condition": "TMP >25°C for >5 min",
+                    "action": "Activate secondary cooling",
+                    "severity": "CRITICAL",
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": null,
+                    "warnLo": null,
+                    "unit": null,
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 },
                 {
-                    "subject": "MAINT-06",
-                    "subject_type": "Action",
-                    "predicate": "triggers",
-                    "object": "TMP DRIFT >2°C over 2 h",
-                    "object_type": "AnomalyEvent"
+                    "ruleId": "MAINT-06",
+                    "rule_class": "MaintenanceRule",
+                    "station": "WRH01_WAREHOUSE",
+                    "sensor": "WRH01_WAREHOUSE_TMP",
+                    "sensorType": "TMP",
+                    "condition": "TMP DRIFT >2°C over 2 h",
+                    "action": "Inspect compressor; notify",
+                    "severity": "QC CRITICAL",
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": null,
+                    "warnLo": null,
+                    "unit": null,
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 },
                 {
-                    "subject": "MAINT-07",
-                    "subject_type": "Action",
-                    "predicate": "triggers",
-                    "object": "TMP >20°C for >10 min",
-                    "object_type": "AnomalyEvent"
+                    "ruleId": "MAINT-07",
+                    "rule_class": "MaintenanceRule",
+                    "station": "CHM01_CHEMICALSTORAGE",
+                    "sensor": "CHM01_CHEMICALSTORAGE_TMP",
+                    "sensorType": "TMP",
+                    "condition": "TMP >20°C for >10 min",
+                    "action": "Emergency ventilation; notify",
+                    "severity": "safety officer CRITICAL",
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": null,
+                    "warnLo": null,
+                    "unit": null,
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 },
                 {
-                    "subject": "MAINT-08",
-                    "subject_type": "Action",
-                    "predicate": "triggers",
-                    "object": "HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH",
-                    "object_type": "AnomalyEvent"
+                    "ruleId": "MAINT-08",
+                    "rule_class": "MaintenanceRule",
+                    "station": "RND01_RDLAB",
+                    "sensor": "RND01_RDLAB_HUM",
+                    "sensorType": "HUM",
+                    "condition": "HUM DRIFT >10%RH over 60 min",
+                    "action": "Activate dehumidifier; check HVAC drain",
+                    "severity": "HIGH",
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": null,
+                    "warnLo": null,
+                    "unit": null,
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 }
             ]
         },
@@ -106,57 +194,245 @@
                     1
                 ]
             },
-            "aligned_relations": [
+            "aligned_rules": [
                 {
-                    "subject": "ST02_SEALING-CUR",
-                    "subject_type": "Component",
-                    "predicate": "depends_on",
-                    "object": "Sealing motor overload",
-                    "object_type": "AnomalyEvent"
+                    "ruleId": null,
+                    "rule_class": "OperationalRule",
+                    "station": "ST02_SEALING",
+                    "sensor": "ST02_SEALING-CUR",
+                    "sensorType": null,
+                    "condition": "Sealing motor overload",
+                    "action": "Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee",
+                    "severity": null,
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": null,
+                    "warnLo": null,
+                    "unit": null,
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 },
                 {
-                    "subject": "ST04_PACKAGING-SPD",
-                    "subject_type": "Component",
-                    "predicate": "feeds_into",
-                    "object": "Conveyor speed drop",
-                    "object_type": "AnomalyEvent"
+                    "ruleId": null,
+                    "rule_class": "OperationalRule",
+                    "station": "ST04_PACKAGING",
+                    "sensor": "ST04_PACKAGING-SPD",
+                    "sensorType": null,
+                    "condition": "Conveyor speed drop via electrical coupling",
+                    "action": "1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee",
+                    "severity": null,
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": null,
+                    "warnLo": null,
+                    "unit": null,
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 },
                 {
-                    "subject": "ST02-CUR",
-                    "subject_type": "Component",
-                    "predicate": "depends_on",
-                    "object": "Sealing motor overload",
-                    "object_type": "AnomalyEvent"
+                    "ruleId": null,
+                    "rule_class": "ThresholdRule",
+                    "station": "WRH01_WAREHOUSE",
+                    "sensor": "WRH01-TMP",
+                    "sensorType": "TMP",
+                    "condition": null,
+                    "action": null,
+                    "severity": null,
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": 8,
+                    "warnLo": null,
+                    "unit": "°C",
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 },
                 {
-                    "subject": "sealing jaw",
-                    "subject_type": "Component",
-                    "predicate": "depends_on",
-                    "object": "ST02_SEALING-CUR",
-                    "object_type": "Component"
-                },
-                {
-                    "subject": "ST04 spee",
-                    "subject_type": "Component",
-                    "predicate": "feeds_into",
-                    "object": "Conveyor speed drop",
-                    "object_type": "AnomalyEvent"
-                },
-                {
-                    "subject": "WRH01-TMP",
-                    "subject_type": "Sensor",
-                    "predicate": "depends_on",
-                    "object": "drift",
-                    "object_type": "AnomalyEvent"
-                },
-                {
-                    "subject": "WRH01-TMP",
-                    "subject_type": "Sensor",
-                    "predicate": "part_of",
-                    "object": "Cold warehouse",
-                    "object_type": "Zone"
+                    "ruleId": null,
+                    "rule_class": "OperationalRule",
+                    "station": "WRH01_WAREHOUSE",
+                    "sensor": null,
+                    "sensorType": null,
+                    "condition": "drift",
+                    "action": "Restore WRH01-TMP <8°C. 2.Notify QC. 3.Place batch on HOLD",
+                    "severity": null,
+                    "critHi": null,
+                    "warnHi": null,
+                    "critLo": null,
+                    "warnLo": null,
+                    "unit": null,
+                    "_station_alignment": "unaligned",
+                    "_sensor_alignment": "unaligned",
+                    "_overall_alignment": "unaligned"
                 }
             ]
+        }
+    ],
+    "kg_triples": [
+        {
+            "subject": "ST04_PACKAGING",
+            "predicate": "monitors",
+            "object": "ST04_PACKAGING_VIB",
+            "properties": {}
+        },
+        {
+            "subject": "ST04_PACKAGING_VIB",
+            "predicate": "triggers",
+            "object": "Inspect and lubricate bearing",
+            "properties": {
+                "condition": "VIB DRIFT >0.05 mm/s over 60 min",
+                "severity": "HIGH"
+            }
+        },
+        {
+            "subject": "ST02_SEALING",
+            "predicate": "monitors",
+            "object": "ST02_SEALING_CUR",
+            "properties": {}
+        },
+        {
+            "subject": "ST02_SEALING_CUR",
+            "predicate": "triggers",
+            "object": "Inspect sealing jaw",
+            "properties": {
+                "condition": "CUR DRIFT >1.0 A for 30+ min",
+                "severity": "HIGH"
+            }
+        },
+        {
+            "subject": "ST03_LABELLING",
+            "predicate": "monitors",
+            "object": "ST03_LABELLING_TEN",
+            "properties": {}
+        },
+        {
+            "subject": "ST03_LABELLING_TEN",
+            "predicate": "triggers",
+            "object": "Replace sensor",
+            "properties": {
+                "condition": "TEN STUCK >10 samples",
+                "severity": "MEDIUM"
+            }
+        },
+        {
+            "subject": "ST01_FILLING",
+            "predicate": "monitors",
+            "object": "ST01_FILLING_PRS",
+            "properties": {}
+        },
+        {
+            "subject": "ST01_FILLING_PRS",
+            "predicate": "triggers",
+            "object": "Inspect filter and pump",
+            "properties": {
+                "condition": "PRS <3.3 bar for >15 min",
+                "severity": "MEDIUM"
+            }
+        },
+        {
+            "subject": "SRV01_SERVERROOM",
+            "predicate": "monitors",
+            "object": "SRV01_SERVERROOM_TMP",
+            "properties": {}
+        },
+        {
+            "subject": "SRV01_SERVERROOM_TMP",
+            "predicate": "triggers",
+            "object": "Activate secondary cooling",
+            "properties": {
+                "condition": "TMP >25°C for >5 min",
+                "severity": "CRITICAL"
+            }
+        },
+        {
+            "subject": "WRH01_WAREHOUSE",
+            "predicate": "monitors",
+            "object": "WRH01_WAREHOUSE_TMP",
+            "properties": {}
+        },
+        {
+            "subject": "WRH01_WAREHOUSE_TMP",
+            "predicate": "triggers",
+            "object": "Inspect compressor; notify",
+            "properties": {
+                "condition": "TMP DRIFT >2°C over 2 h",
+                "severity": "QC CRITICAL"
+            }
+        },
+        {
+            "subject": "CHM01_CHEMICALSTORAGE",
+            "predicate": "monitors",
+            "object": "CHM01_CHEMICALSTORAGE_TMP",
+            "properties": {}
+        },
+        {
+            "subject": "CHM01_CHEMICALSTORAGE_TMP",
+            "predicate": "triggers",
+            "object": "Emergency ventilation; notify",
+            "properties": {
+                "condition": "TMP >20°C for >10 min",
+                "severity": "safety officer CRITICAL"
+            }
+        },
+        {
+            "subject": "RND01_RDLAB",
+            "predicate": "monitors",
+            "object": "RND01_RDLAB_HUM",
+            "properties": {}
+        },
+        {
+            "subject": "RND01_RDLAB_HUM",
+            "predicate": "triggers",
+            "object": "Activate dehumidifier; check HVAC drain",
+            "properties": {
+                "condition": "HUM DRIFT >10%RH over 60 min",
+                "severity": "HIGH"
+            }
+        },
+        {
+            "subject": "ST02_SEALING",
+            "predicate": "monitors",
+            "object": "ST02_SEALING-CUR",
+            "properties": {}
+        },
+        {
+            "subject": "ST02_SEALING-CUR",
+            "predicate": "triggers",
+            "object": "Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee",
+            "properties": {
+                "condition": "Sealing motor overload"
+            }
+        },
+        {
+            "subject": "ST04_PACKAGING",
+            "predicate": "monitors",
+            "object": "ST04_PACKAGING-SPD",
+            "properties": {}
+        },
+        {
+            "subject": "ST04_PACKAGING-SPD",
+            "predicate": "triggers",
+            "object": "1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee",
+            "properties": {
+                "condition": "Conveyor speed drop via electrical coupling"
+            }
+        },
+        {
+            "subject": "WRH01_WAREHOUSE",
+            "predicate": "monitors",
+            "object": "WRH01-TMP",
+            "properties": {}
+        },
+        {
+            "subject": "WRH01-TMP",
+            "predicate": "has_threshold",
+            "object": "WRH01-TMP_threshold",
+            "properties": {
+                "critLo": 8,
+                "unit": "°C"
+            }
         }
     ]
 }

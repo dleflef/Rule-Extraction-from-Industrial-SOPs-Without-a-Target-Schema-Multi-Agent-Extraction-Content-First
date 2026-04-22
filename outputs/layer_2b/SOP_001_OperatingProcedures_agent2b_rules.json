@@ -1,8 +1,9 @@
 {
     "source_file": "SOP_001_OperatingProcedures.pdf",
     "model_used": "qwen2.5-coder-7b-instruct",
-    "strategy": "Programmatic Ontology Alignment + KG Triple Conversion",
-    "aligned_rule_chunks": [
+    "temperature": 0.0,
+    "strategy": "Graph-Informed Structured Rule Extraction",
+    "results": [
         {
             "chunk_id": 0,
             "metadata": {
@@ -13,7 +14,8 @@
                     1
                 ]
             },
-            "aligned_rules": []
+            "entities": [],
+            "extracted_rules": []
         },
         {
             "chunk_id": 1,
@@ -25,7 +27,17 @@
                     1
                 ]
             },
-            "aligned_rules": []
+            "entities": [
+                {
+                    "span": "Ing. M. Bianchi",
+                    "category": "Role"
+                },
+                {
+                    "span": "Process Engineering",
+                    "category": "Role"
+                }
+            ],
+            "extracted_rules": []
         },
         {
             "chunk_id": 2,
@@ -37,7 +49,25 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST01_FILLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "ST03_LABELLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": null,
                     "rule_class": "OperationalRule",
@@ -51,10 +81,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -69,10 +96,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -87,10 +111,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -105,10 +126,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -122,7 +140,69 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST01_FILLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "Production Area",
+                    "category": "Zone"
+                },
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "ST03_LABELLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "SRV01_SERVERROOM",
+                    "category": "Component"
+                },
+                {
+                    "span": "Server Room",
+                    "category": "Zone"
+                },
+                {
+                    "span": "WRH01_WAREHOUSE",
+                    "category": "Component"
+                },
+                {
+                    "span": "General Warehouse",
+                    "category": "Zone"
+                },
+                {
+                    "span": "CHM01_CHEMICALSTORAGE",
+                    "category": "Component"
+                },
+                {
+                    "span": "Storage",
+                    "category": "Zone"
+                },
+                {
+                    "span": "RND01_RDLAB",
+                    "category": "Component"
+                },
+                {
+                    "span": "R&D Lab",
+                    "category": "Zone"
+                },
+                {
+                    "span": "CAF01_CAFETERIA",
+                    "category": "Component"
+                },
+                {
+                    "span": "Cafeteria",
+                    "category": "Zone"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": null,
                     "rule_class": "OperationalRule",
@@ -136,10 +216,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -154,10 +231,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -172,10 +246,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -190,10 +261,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -208,10 +276,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -226,10 +291,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -244,10 +306,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -262,10 +321,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -280,10 +336,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -298,10 +351,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -315,7 +365,21 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST01_FILLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "FLW",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "L/min",
+                    "category": "Parameter"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST01-01",
                     "rule_class": "ThresholdRule",
@@ -329,10 +393,7 @@
                     "warnHi": null,
                     "critLo": 112,
                     "warnLo": null,
-                    "unit": "L/min",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "L/min"
                 }
             ]
         },
@@ -346,7 +407,21 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST01_FILLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "26°C",
+                    "category": "Parameter"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST01-02",
                     "rule_class": "OperationalRule",
@@ -360,10 +435,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -377,7 +449,21 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST01_FILLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "PRS",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "inlet valve",
+                    "category": "Component"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST01-03",
                     "rule_class": "OperationalRule",
@@ -391,10 +477,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -408,7 +491,17 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST02-01",
                     "rule_class": "ThresholdRule",
@@ -422,10 +515,7 @@
                     "warnHi": null,
                     "critLo": 175,
                     "warnLo": null,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "°C"
                 }
             ]
         },
@@ -439,7 +529,25 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "210°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "emergency stop ST02, ST03, ST04",
+                    "category": "AnomalyEvent"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST02-02",
                     "rule_class": "OperationalRule",
@@ -453,10 +561,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -470,7 +575,25 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "CUR",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "A",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "5 min",
+                    "category": "Parameter"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST02-03",
                     "rule_class": "MaintenanceRule",
@@ -484,10 +607,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -501,7 +621,33 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "CUR drift",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "speed reduction",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "SPD",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "WARNING",
+                    "category": "AnomalyEvent"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST02-04",
                     "rule_class": "OperationalRule",
@@ -515,10 +661,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -532,7 +675,17 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST03_LABELLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TEN",
+                    "category": "Parameter"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST03-01",
                     "rule_class": "ThresholdRule",
@@ -546,10 +699,7 @@
                     "warnHi": null,
                     "critLo": 1.8,
                     "warnLo": null,
-                    "unit": "N",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "N"
                 }
             ]
         },
@@ -563,7 +713,17 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST03_LABELLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "CNT",
+                    "category": "Parameter"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST03-02",
                     "rule_class": "ThresholdRule",
@@ -577,10 +737,7 @@
                     "warnHi": null,
                     "critLo": 100,
                     "warnLo": null,
-                    "unit": "pcs/min",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "pcs/min"
                 }
             ]
         },
@@ -594,7 +751,17 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST03_LABELLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "sensor failure",
+                    "category": "AnomalyEvent"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST03-03",
                     "rule_class": "OperationalRule",
@@ -608,10 +775,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -625,7 +789,21 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "VIB",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "WARNING",
+                    "category": "AnomalyEvent"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST04-01",
                     "rule_class": "MaintenanceRule",
@@ -639,10 +817,7 @@
                     "warnHi": 0.2,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": "mm/s",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "mm/s"
                 }
             ]
         },
@@ -656,7 +831,25 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "VIB",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "mm/s",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "CRITICAL",
+                    "category": "AnomalyEvent"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST04-02",
                     "rule_class": "OperationalRule",
@@ -670,10 +863,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": "mm/s",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "mm/s"
                 }
             ]
         },
@@ -687,7 +877,17 @@
                     1
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "SPD",
+                    "category": "Parameter"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-ST04-03",
                     "rule_class": "OperationalRule",
@@ -701,10 +901,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -718,7 +915,17 @@
                     2
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "SRV01_SERVERROOM",
+                    "category": "Zone"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": null,
                     "rule_class": "OperationalRule",
@@ -732,10 +939,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": null,
@@ -750,10 +954,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -767,7 +968,17 @@
                     2
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-SRV01-01",
                     "rule_class": "ThresholdRule",
@@ -781,10 +992,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "°C"
                 },
                 {
                     "ruleId": "RULE-SRV01-02",
@@ -799,10 +1007,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "°C"
                 }
             ]
         },
@@ -816,7 +1021,17 @@
                     2
                 ]
             },
-            "aligned_rules": []
+            "entities": [
+                {
+                    "span": "2.4 ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "WRH01_WAREHOUSE",
+                    "category": "Zone"
+                }
+            ],
+            "extracted_rules": []
         },
         {
             "chunk_id": 20,
@@ -828,7 +1043,25 @@
                     2
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "CRITICAL",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-WRH01-01",
                     "rule_class": "ThresholdRule",
@@ -842,10 +1075,7 @@
                     "warnHi": null,
                     "critLo": 0.5,
                     "warnLo": 8,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "°C"
                 },
                 {
                     "ruleId": "RULE-WRH01-02",
@@ -860,10 +1090,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": 85,
-                    "unit": "%RH",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "%RH"
                 }
             ]
         },
@@ -877,7 +1104,17 @@
                     2
                 ]
             },
-            "aligned_rules": []
+            "entities": [
+                {
+                    "span": "2.4 ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "CHM01_CHEMICALSTORAGE",
+                    "category": "Zone"
+                }
+            ],
+            "extracted_rules": []
         },
         {
             "chunk_id": 22,
@@ -889,7 +1126,69 @@
                     2
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "10°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "20°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "CRITICAL",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "emergency ventilation",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "safety officer",
+                    "category": "Role"
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "50%RH",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "Elevated humidity",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "desiccant system",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "hazmat training",
+                    "category": "Role"
+                },
+                {
+                    "span": "technician/supervisor/manager role",
+                    "category": "Role"
+                },
+                {
+                    "span": "Chemical Storage",
+                    "category": "Zone"
+                },
+                {
+                    "span": "UNAUTHORIZED_ACCESS",
+                    "category": "AnomalyEvent"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-CHM01-01",
                     "rule_class": "ThresholdRule",
@@ -903,10 +1202,7 @@
                     "warnHi": null,
                     "critLo": 10,
                     "warnLo": null,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "°C"
                 },
                 {
                     "ruleId": "RULE-CHM01-02",
@@ -921,10 +1217,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": 45,
-                    "unit": "%RH",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "%RH"
                 },
                 {
                     "ruleId": "RULE-CHM01-03",
@@ -939,10 +1232,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -956,7 +1246,17 @@
                     2
                 ]
             },
-            "aligned_rules": []
+            "entities": [
+                {
+                    "span": "2.4 ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "RND01_RDLAB",
+                    "category": "Zone"
+                }
+            ],
+            "extracted_rules": []
         },
         {
             "chunk_id": 24,
@@ -968,7 +1268,37 @@
                     2
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "18°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "26°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "65%RH",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "75%RH",
+                    "category": "Parameter"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-RND01-01",
                     "rule_class": "ThresholdRule",
@@ -982,10 +1312,7 @@
                     "warnHi": null,
                     "critLo": 18,
                     "warnLo": null,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "°C"
                 },
                 {
                     "ruleId": "RULE-RND01-02",
@@ -1000,10 +1327,7 @@
                     "warnHi": null,
                     "critLo": 65,
                     "warnLo": null,
-                    "unit": "%RH",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": "%RH"
                 }
             ]
         },
@@ -1017,7 +1341,17 @@
                     2
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "CAF01_CAFETERIA",
+                    "category": "Zone"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": null,
                     "rule_class": "AccessRule",
@@ -1031,10 +1365,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
         },
@@ -1048,7 +1379,29 @@
                     2
                 ]
             },
-            "aligned_rules": [
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "26°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "70%RH",
+                    "category": "Parameter"
+                }
+            ],
+            "extracted_rules": [
                 {
                     "ruleId": "RULE-CAF01-01",
                     "rule_class": "OperationalRule",
@@ -1062,10 +1415,7 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 },
                 {
                     "ruleId": "RULE-CAF01-02",
@@ -1080,22 +1430,9 @@
                     "warnHi": null,
                     "critLo": null,
                     "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "unit": null
                 }
             ]
-        }
-    ],
-    "kg_triples": [
-        {
-            "subject": "CHM01_CHEMICALSTORAGE",
-            "predicate": "has_access_rule",
-            "object": "UNAUTHORIZED_ACCESS must be escalated within 2 minutes.",
-            "properties": {
-                "condition": "Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage."
-            }
         }
     ]
 }
