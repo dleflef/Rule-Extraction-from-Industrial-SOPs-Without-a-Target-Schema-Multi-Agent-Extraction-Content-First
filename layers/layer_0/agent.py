@@ -8,7 +8,7 @@ from .tools import tools, tools_by_name
 
 # 1. LLM Configuration
 llm = ChatOpenAI(
-    model="qwen/qwen3-vl-4b",
+    model="meta-llama-3.1-8b-instruct",
     temperature=0.0,  
     api_key="lm-studio-local",
     base_url="http://127.0.0.1:1234/v1",

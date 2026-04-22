@@ -1,0 +1,233 @@
+{
+  "run_metadata": {
+    "run_id": "_AGENTIC_R",
+    "architecture": "react",
+    "timestamp": "20260418_170936",
+    "execution_success": true,
+    "latency_seconds": 192.12
+  },
+  "token_usage": {
+    "invocations": 17,
+    "prompt_tokens": 27146,
+    "completion_tokens": 1223,
+    "total_tokens": 28369
+  },
+  "metrics": {
+    "routing_precision": 100.0,
+    "inventory_recall": 100.0,
+    "trajectory_alignment": 100.0
+  },
+  "final_summary": "All sources in the inventory have been successfully processed and evaluated. No escalations were required. The orchestration is complete.\n\nFinal Summary:\n- SRC_000 (OperatingProcedures.pdf): Successfully parsed with 100% confidence and completeness.\n- SRC_001 (AlarmThresholds.pdf): Successfully parsed with 80% confidence and completeness (minor data loss noted).\n- SRC_002 (MaintenanceRules.pdf): Successfully parsed with 100% confidence and completeness.\n- SRC_003 (PersonnelZoneAccess.pdf): Successfully parsed with 100% confidence and completeness.\n\nAll sources are ready for downstream Layer 2 processing.",
+  "inventory": [
+    {
+      "source_id": "SRC_000",
+      "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_001_OperatingProcedures.pdf",
+      "file_type": ".pdf",
+      "is_structured": false,
+      "status": "evaluation_passed"
+    },
+    {
+      "source_id": "SRC_001",
+      "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_002_AlarmThresholds.pdf",
+      "file_type": ".pdf",
+      "is_structured": false,
+      "status": "evaluation_passed"
+    },
+    {
+      "source_id": "SRC_002",
+      "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_003_MaintenanceRules.pdf",
+      "file_type": ".pdf",
+      "is_structured": false,
+      "status": "evaluation_passed"
+    },
+    {
+      "source_id": "SRC_003",
+      "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_004_PersonnelZoneAccess.pdf",
+      "file_type": ".pdf",
+      "is_structured": false,
+      "status": "evaluation_passed"
+    }
+  ],
+  "construction_log": [
+    {
+      "action": "inspect_source",
+      "arguments": {
+        "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_001_OperatingProcedures.pdf"
+      },
+      "result_status": "flagged",
+      "parse_success_confidence": null,
+      "output_completeness": null,
+      "format_validity": null,
+      "downstream_readiness": null,
+      "overall_quality_score": null,
+      "eval_reason": null,
+      "raw_result": "[Binary PDF Document] Size: 5472 bytes. Requires Vision/PDF parsing in Layer 1."
+    },
+    {
+      "action": "route_to_layer_1",
+      "arguments": {
+        "source_id": "SRC_000",
+        "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_001_OperatingProcedures.pdf",
+        "agent_type": "unstructured_parser",
+        "priority": 2
+      },
+      "result_status": "success",
+      "parse_success_confidence": null,
+      "output_completeness": null,
+      "format_validity": null,
+      "downstream_readiness": null,
+      "overall_quality_score": null,
+      "eval_reason": null,
+      "raw_result": "SUCCESS: SRC_000 processed by Agent 1B (unstructured_parser). Priority 2. Pages parsed: 2. Semantic chunks produced: 27. First section: 'N/A'."
+    },
+    {
+      "action": "evaluate_subordinate_output",
+      "arguments": {
+        "source_id": "SRC_000"
+      },
+      "result_status": "success",
+      "parse_success_confidence": 1.0,
+      "output_completeness": 1.0,
+      "format_validity": 1.0,
+      "downstream_readiness": 1.0,
+      "overall_quality_score": 1.0,
+      "eval_reason": "The ingestion report indicates complete parsing with no errors, full field presence, consistent structure, and no preprocessing required for downstream Layer 2 processing.",
+      "raw_result": "{\"parse_success_confidence\": 1.0, \"output_completeness\": 1.0, \"format_validity\": 1.0, \"downstream_readiness\": 1.0, \"overall_quality_score\": 1.0, \"status\": \"success\", \"reason\": \"The ingestion report indicates complete parsing with no errors, full field presence, consistent structure, and no preprocessing required for downstream Layer 2 processing.\"}"
+    },
+    {
+      "action": "inspect_source",
+      "arguments": {
+        "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_002_AlarmThresholds.pdf"
+      },
+      "result_status": "flagged",
+      "parse_success_confidence": null,
+      "output_completeness": null,
+      "format_validity": null,
+      "downstream_readiness": null,
+      "overall_quality_score": null,
+      "eval_reason": null,
+      "raw_result": "[Binary PDF Document] Size: 5879 bytes. Requires Vision/PDF parsing in Layer 1."
+    },
+    {
+      "action": "route_to_layer_1",
+      "arguments": {
+        "source_id": "SRC_001",
+        "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_002_AlarmThresholds.pdf",
+        "agent_type": "unstructured_parser",
+        "priority": 2
+      },
+      "result_status": "success",
+      "parse_success_confidence": null,
+      "output_completeness": null,
+      "format_validity": null,
+      "downstream_readiness": null,
+      "overall_quality_score": null,
+      "eval_reason": null,
+      "raw_result": "SUCCESS: SRC_001 processed by Agent 1B (unstructured_parser). Priority 2. Pages parsed: 2. Semantic chunks produced: 12. First section: 'N/A'."
+    },
+    {
+      "action": "evaluate_subordinate_output",
+      "arguments": {
+        "source_id": "SRC_001"
+      },
+      "result_status": "success",
+      "parse_success_confidence": 0.8,
+      "output_completeness": 0.7,
+      "format_validity": 0.9,
+      "downstream_readiness": 0.8,
+      "overall_quality_score": 0.8,
+      "eval_reason": "Parsing was mostly successful with minor data loss indicated by incomplete preview. Output fields are mostly present but not fully complete. Format is well-structured and ready for downstream processing.",
+      "raw_result": "{\"parse_success_confidence\": 0.8, \"output_completeness\": 0.7, \"format_validity\": 0.9, \"downstream_readiness\": 0.8, \"overall_quality_score\": 0.8, \"status\": \"success\", \"reason\": \"Parsing was mostly successful with minor data loss indicated by incomplete preview. Output fields are mostly present but not fully complete. Format is well-structured and ready for downstream processing.\"}"
+    },
+    {
+      "action": "inspect_source",
+      "arguments": {
+        "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_003_MaintenanceRules.pdf"
+      },
+      "result_status": "flagged",
+      "parse_success_confidence": null,
+      "output_completeness": null,
+      "format_validity": null,
+      "downstream_readiness": null,
+      "overall_quality_score": null,
+      "eval_reason": null,
+      "raw_result": "[Binary PDF Document] Size: 3732 bytes. Requires Vision/PDF parsing in Layer 1."
+    },
+    {
+      "action": "route_to_layer_1",
+      "arguments": {
+        "source_id": "SRC_002",
+        "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_003_MaintenanceRules.pdf",
+        "agent_type": "unstructured_parser",
+        "priority": 2
+      },
+      "result_status": "success",
+      "parse_success_confidence": null,
+      "output_completeness": null,
+      "format_validity": null,
+      "downstream_readiness": null,
+      "overall_quality_score": null,
+      "eval_reason": null,
+      "raw_result": "SUCCESS: SRC_002 processed by Agent 1B (unstructured_parser). Priority 2. Pages parsed: 1. Semantic chunks produced: 4. First section: 'N/A'."
+    },
+    {
+      "action": "evaluate_subordinate_output",
+      "arguments": {
+        "source_id": "SRC_002"
+      },
+      "result_status": "success",
+      "parse_success_confidence": 1.0,
+      "output_completeness": 1.0,
+      "format_validity": 1.0,
+      "downstream_readiness": 1.0,
+      "overall_quality_score": 1.0,
+      "eval_reason": "The ingestion report indicates complete parsing with no errors, full expected fields, consistent structure, and no preprocessing required for downstream Layer 2 processing.",
+      "raw_result": "{\"parse_success_confidence\": 1.0, \"output_completeness\": 1.0, \"format_validity\": 1.0, \"downstream_readiness\": 1.0, \"overall_quality_score\": 1.0, \"status\": \"success\", \"reason\": \"The ingestion report indicates complete parsing with no errors, full expected fields, consistent structure, and no preprocessing required for downstream Layer 2 processing.\"}"
+    },
+    {
+      "action": "inspect_source",
+      "arguments": {
+        "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_004_PersonnelZoneAccess.pdf"
+      },
+      "result_status": "flagged",
+      "parse_success_confidence": null,
+      "output_completeness": null,
+      "format_validity": null,
+      "downstream_readiness": null,
+      "overall_quality_score": null,
+      "eval_reason": null,
+      "raw_result": "[Binary PDF Document] Size: 4461 bytes. Requires Vision/PDF parsing in Layer 1."
+    },
+    {
+      "action": "route_to_layer_1",
+      "arguments": {
+        "source_id": "SRC_003",
+        "file_path": "c:\\Users\\dagha\\Desktop\\Agentic_KnowledgeGraph_DigitalTwins\\layers\\data\\examples\\SOP_004_PersonnelZoneAccess.pdf",
+        "agent_type": "unstructured_parser",
+        "priority": 2
+      },
+      "result_status": "success",
+      "parse_success_confidence": null,
+      "output_completeness": null,
+      "format_validity": null,
+      "downstream_readiness": null,
+      "overall_quality_score": null,
+      "eval_reason": null,
+      "raw_result": "SUCCESS: SRC_003 processed by Agent 1B (unstructured_parser). Priority 2. Pages parsed: 2. Semantic chunks produced: 7. First section: 'N/A'."
+    },
+    {
+      "action": "evaluate_subordinate_output",
+      "arguments": {
+        "source_id": "SRC_003"
+      },
+      "result_status": "success",
+      "parse_success_confidence": 1.0,
+      "output_completeness": 1.0,
+      "format_validity": 1.0,
+      "downstream_readiness": 1.0,
+      "overall_quality_score": 1.0,
+      "eval_reason": "The ingestion report indicates complete parsing with no errors, full expected fields, consistent structure, and no preprocessing required for downstream Layer 2 processing.",
+      "raw_result": "{\"parse_success_confidence\": 1.0, \"output_completeness\": 1.0, \"format_validity\": 1.0, \"downstream_readiness\": 1.0, \"overall_quality_score\": 1.0, \"status\": \"success\", \"reason\": \"The ingestion report indicates complete parsing with no errors, full expected fields, consistent structure, and no preprocessing required for downstream Layer 2 processing.\"}"
+    }
+  ]
+}

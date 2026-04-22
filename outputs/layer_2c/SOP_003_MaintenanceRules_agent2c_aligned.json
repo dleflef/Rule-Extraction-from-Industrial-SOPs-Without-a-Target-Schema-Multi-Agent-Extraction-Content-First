@@ -1,0 +1,162 @@
+{
+    "source_file": "SOP_003_MaintenanceRules.pdf",
+    "model_used": "qwen2.5-coder-7b-instruct",
+    "strategy": "Schema & Node Alignment",
+    "results": [
+        {
+            "chunk_id": 0,
+            "metadata": {
+                "headings": [
+                    "Predictive & Corrective Maintenance Rules - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": []
+        },
+        {
+            "chunk_id": 1,
+            "metadata": {
+                "headings": [
+                    "Predictive & Corrective Maintenance Rules - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": []
+        },
+        {
+            "chunk_id": 2,
+            "metadata": {
+                "headings": [
+                    "1. Predictive Maintenance Rules"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "MAINT-01",
+                    "subject_type": "Action",
+                    "predicate": "triggers",
+                    "object": "VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "MAINT-02",
+                    "subject_type": "Action",
+                    "predicate": "triggers",
+                    "object": "CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "MAINT-03",
+                    "subject_type": "Action",
+                    "predicate": "triggers",
+                    "object": "TEN STUCK >10 samples",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "MAINT-04",
+                    "subject_type": "Action",
+                    "predicate": "triggers",
+                    "object": "PRS <3.3 bar for >15 min",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "MAINT-05",
+                    "subject_type": "Action",
+                    "predicate": "triggers",
+                    "object": "TMP >25°C for >5 min",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "MAINT-06",
+                    "subject_type": "Action",
+                    "predicate": "triggers",
+                    "object": "TMP DRIFT >2°C over 2 h",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "MAINT-07",
+                    "subject_type": "Action",
+                    "predicate": "triggers",
+                    "object": "TMP >20°C for >10 min",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "MAINT-08",
+                    "subject_type": "Action",
+                    "predicate": "triggers",
+                    "object": "HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH",
+                    "object_type": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 3,
+            "metadata": {
+                "headings": [
+                    "2. Correlated Fault Resolution"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST02_SEALING-CUR",
+                    "subject_type": "Component",
+                    "predicate": "depends_on",
+                    "object": "Sealing motor overload",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "ST04_PACKAGING-SPD",
+                    "subject_type": "Component",
+                    "predicate": "feeds_into",
+                    "object": "Conveyor speed drop",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "ST02-CUR",
+                    "subject_type": "Component",
+                    "predicate": "depends_on",
+                    "object": "Sealing motor overload",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "sealing jaw",
+                    "subject_type": "Component",
+                    "predicate": "depends_on",
+                    "object": "ST02_SEALING-CUR",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "ST04 spee",
+                    "subject_type": "Component",
+                    "predicate": "feeds_into",
+                    "object": "Conveyor speed drop",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "WRH01-TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "depends_on",
+                    "object": "drift",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "WRH01-TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "part_of",
+                    "object": "Cold warehouse",
+                    "object_type": "Zone"
+                }
+            ]
+        }
+    ]
+}

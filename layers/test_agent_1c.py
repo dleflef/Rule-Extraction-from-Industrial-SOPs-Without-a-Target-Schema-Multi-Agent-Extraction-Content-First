@@ -146,14 +146,14 @@ def test_zip_or_file(target_path: str) -> None:
 
 if __name__ == "__main__":
     # You can point this to a zip file or a direct .log file
-    TARGET_DATA = os.path.join("data", "examples.zip") 
+    TARGET_DATA = os.path.join("layers", "data", "examples.zip") 
     
     # Check if we should fall back to an unzipped directory structure 
     # (useful if the user unzipped it manually like in test_agent_1a)
-    if not os.path.exists(TARGET_DATA) and os.path.isdir(os.path.join("data", "examples")):
-        print(f"Zip not found, scanning directory: data/examples/")
-        for filename in os.listdir(os.path.join("data", "examples")):
-            file_path = os.path.join("data", "examples", filename)
+    if not os.path.exists(TARGET_DATA) and os.path.isdir(os.path.join("layers", "data", "examples")):
+        print(f"Zip not found, scanning directory: layers/data/examples/")
+        for filename in os.listdir(os.path.join("layers", "data", "examples")):
+            file_path = os.path.join("layers", "data", "examples", filename)
             ext = os.path.splitext(filename)[1].lower()
             if ext in AGENT_1C_FORMATS:
                 run_agent_1c(file_path)

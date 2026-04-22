@@ -12,6 +12,7 @@ Usage:
 import json
 import os
 import sys
+import zipfile
 
 # ── Path setup ───────────────────────────────────────────────────────────────
 # Ensure the project root is on sys.path so layer_1 imports resolve correctly
@@ -50,12 +51,15 @@ def run_test_on_real_data() -> None:
     data_dir = os.path.join(os.path.dirname(__file__), "data", "examples")
 
     if not os.path.exists(data_dir):
-        print(
-            f"[ERROR] Directory '{data_dir}' not found.\n"
-            "Please unzip 'data/examples.zip' first:\n"
-            "  cd data && unzip examples.zip"
-        )
-        return
+        zip_path = os.path.join(os.path.dirname(__file__), "data", "examples.zip")
+        if not os.path.exists(zip_path):
+            print(f"[ERROR] Neither '{data_dir}' nor '{zip_path}' found.")
+            return
+        print(f"[INFO] Unzipping '{zip_path}' into '{data_dir}'...")
+        os.makedirs(data_dir, exist_ok=True)
+        with zipfile.ZipFile(zip_path, "r") as zf:
+            zf.extractall(data_dir)
+        print("[INFO] Unzip complete.\n")
 
     # Agent 1A handles only .csv and .json — skip .pdf, .log, etc.
     test_files = sorted(

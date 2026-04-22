@@ -1,0 +1,475 @@
+{
+    "source_file": "SOP_004_PersonnelZoneAccess.pdf",
+    "model_used": "qwen2.5-coder-7b-instruct",
+    "strategy": "Schema & Node Alignment",
+    "results": [
+        {
+            "chunk_id": 0,
+            "metadata": {
+                "headings": [
+                    "Personnel Zone Access and Alarm Response Procedures"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": []
+        },
+        {
+            "chunk_id": 1,
+            "metadata": {
+                "headings": [
+                    "1. Role-Zone Authorisation Matrix"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "operator",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Prod. Area",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "operator",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "operator",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Gen. Warehouse",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "operator",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "technician",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Prod. Area",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "technician",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Server Room",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "technician",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Gen. Warehouse",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "technician",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "technician",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Chem. Storage",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "technician",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "R&D Lab",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "technician",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "supervisor",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Prod. Area",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "supervisor",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Server Room",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "supervisor",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Gen. Warehouse",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "supervisor",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "supervisor",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Chem. Storage",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "supervisor",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "R&D Lab",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "supervisor",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "manager",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Prod. Area",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "manager",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Server Room",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "manager",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Gen. Warehouse",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "manager",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "manager",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Chem. Storage",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "manager",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "R&D Lab",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "manager",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "security",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Prod. Area",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "security",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Server Room",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "security",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Gen. Warehouse",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "security",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "security",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Chem. Storage",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "security",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "R&D Lab",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "security",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "visitor",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Prod. Area",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "visitor",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "visitor",
+                    "subject_type": "Role",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria",
+                    "object_type": "Zone"
+                }
+            ]
+        },
+        {
+            "chunk_id": 2,
+            "metadata": {
+                "headings": [
+                    "2. Maximum Occupancy per Zone"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "Production Area",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "Main Entrance",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "Server Room",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "Main Entrance",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "General Warehouse",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "Main Entrance",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "Chemical Storage",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "Main Entrance",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "R&D Lab",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "Main Entrance",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "Cafeteria",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "Main Entrance",
+                    "object_type": "Component"
+                }
+            ]
+        },
+        {
+            "chunk_id": 3,
+            "metadata": {
+                "headings": [
+                    "3. Maximum Acknowledgment Times by Role and Severity"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "operator",
+                    "subject_type": "Role",
+                    "predicate": "Max Ack -WARNING (min)",
+                    "object": "15",
+                    "object_type": "Integer"
+                },
+                {
+                    "subject": "operator",
+                    "subject_type": "Role",
+                    "predicate": "Max Ack -CRITICAL (min)",
+                    "object": "3",
+                    "object_type": "Integer"
+                },
+                {
+                    "subject": "technician",
+                    "subject_type": "Role",
+                    "predicate": "Max Ack -WARNING (min)",
+                    "object": "10",
+                    "object_type": "Integer"
+                },
+                {
+                    "subject": "technician",
+                    "subject_type": "Role",
+                    "predicate": "Max Ack -CRITICAL (min)",
+                    "object": "2",
+                    "object_type": "Integer"
+                },
+                {
+                    "subject": "supervisor",
+                    "subject_type": "Role",
+                    "predicate": "Max Ack -WARNING (min)",
+                    "object": "5",
+                    "object_type": "Integer"
+                },
+                {
+                    "subject": "supervisor",
+                    "subject_type": "Role",
+                    "predicate": "Max Ack -CRITICAL (min)",
+                    "object": "1",
+                    "object_type": "Integer"
+                },
+                {
+                    "subject": "manager",
+                    "subject_type": "Role",
+                    "predicate": "Max Ack -WARNING (min)",
+                    "object": "15",
+                    "object_type": "Integer"
+                },
+                {
+                    "subject": "manager",
+                    "subject_type": "Role",
+                    "predicate": "Max Ack -CRITICAL (min)",
+                    "object": "5",
+                    "object_type": "Integer"
+                },
+                {
+                    "subject": "security",
+                    "subject_type": "Role",
+                    "predicate": "Max Ack -WARNING (min)",
+                    "object": "20",
+                    "object_type": "Integer"
+                },
+                {
+                    "subject": "security",
+                    "subject_type": "Role",
+                    "predicate": "Max Ack -CRITICAL (min)",
+                    "object": "5",
+                    "object_type": "Integer"
+                }
+            ]
+        },
+        {
+            "chunk_id": 4,
+            "metadata": {
+                "headings": [
+                    "4. Unauthorised Access Rules"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "Unauthorised Access Rules",
+                    "subject_type": "Role",
+                    "predicate": "triggers",
+                    "object": "OccupancyEvent::UnauthorisedAccess",
+                    "object_type": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 5,
+            "metadata": {
+                "headings": [
+                    "4. Unauthorised Access Rules"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "Security personnel",
+                    "subject_type": "Role",
+                    "predicate": "triggers",
+                    "object": "Notify",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 6,
+            "metadata": {
+                "headings": [
+                    "4. Unauthorised Access Rules"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "UNAUTHORIZED_ACCESS",
+                    "subject_type": "AnomalyEvent",
+                    "predicate": "triggers",
+                    "object": "escalation to the Safety Officer",
+                    "object_type": "Action"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,360 @@
+{
+    "source_file": "SOP_001_OperatingProcedures.pdf",
+    "status": "complete",
+    "page_count": 2,
+    "chunk_count": 27,
+    "error_message": null,
+    "chunks": [
+        {
+            "chunk_id": 0,
+            "content": "[Context: Standard Operating Procedures - Production Line A]\nDocument: SOP-001 | Rev: 2.3 | Date: 2025-11-15 | Author:",
+            "metadata": {
+                "headings": [
+                    "Standard Operating Procedures - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 118
+        },
+        {
+            "chunk_id": 1,
+            "content": "[Context: Standard Operating Procedures - Production Line A]\nIng. M. Bianchi - Process Engineering",
+            "metadata": {
+                "headings": [
+                    "Standard Operating Procedures - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 98
+        },
+        {
+            "chunk_id": 2,
+            "content": "[Context: 1. Station Dependencies]\nST01_FILLING -> ST02_SEALING -> ST03_LABELLING -> ST04_PACKAGING. A fault at any station propagates downstream unless the line is halted.",
+            "metadata": {
+                "headings": [
+                    "1. Station Dependencies"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 172
+        },
+        {
+            "chunk_id": 3,
+            "content": "[Context: 1. Station Dependencies]\nST01_FILLING, Zone = Production Area. ST01_FILLING, Depends On = -. ST01_FILLING, Downstream Effect = Feeds ST02_SEALING. ST02_SEALING, Zone = Production Area. ST02_SEALING, Depends On = ST01. ST02_SEALING, Downstream Effect = Feeds ST03; thermal fault -> ST04 speed reduction. ST03_LABELLING, Zone = Production Area. ST03_LABELLING, Depends On = ST02. ST03_LABELLING, Downstream Effect = Feeds ST04_PACKAGING. ST04_PACKAGING, Zone = Production Area. ST04_PACKAGING, Depends On = ST03. ST04_PACKAGING, Downstream Effect = Final output. SRV01_SERVERROOM, Zone = Server Room. SRV01_SERVERROOM, Depends On = HVAC. SRV01_SERVERROOM, Downstream Effect = SCADA control; failure -> line halt. WRH01_WAREHOUSE, Zone = General Warehouse. WRH01_WAREHOUSE, Depends On = COMPRESSOR. WRH01_WAREHOUSE, Downstream Effect = Cold storage -product quality. CHM01_CHEMICALSTORAGE Chemical, Zone = Storage. CHM01_CHEMICALSTORAGE Chemical, Depends On = HVAC. CHM01_CHEMICALSTORAGE Chemical, Downstream Effect = Hazardous materials -safety critical. RND01_RDLAB, Zone = R&D Lab. RND01_RDLAB, Depends On = HVAC. RND01_RDLAB, Downstream Effect = Precision experiments -climate sensitive. CAF01_CAFETERIA, Zone = Cafeteria. CAF01_CAFETERIA, Depends On = HVAC. CAF01_CAFETERIA, Downstream Effect = Occupant comfort -food safety",
+            "metadata": {
+                "headings": [
+                    "1. Station Dependencies"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 1336
+        },
+        {
+            "chunk_id": 4,
+            "content": "[Context: 2.1 ST01_FILLING]\nRULE-ST01-01: FLW MUST be maintained between 112 and 128 L/min.",
+            "metadata": {
+                "headings": [
+                    "2.1 ST01_FILLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 91
+        },
+        {
+            "chunk_id": 5,
+            "content": "[Context: 2.1 ST01_FILLING]\nRULE-ST01-02: If TMP exceeds 26°C, reduce speed by 10% and notify QC.",
+            "metadata": {
+                "headings": [
+                    "2.1 ST01_FILLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 97
+        },
+        {
+            "chunk_id": 6,
+            "content": "[Context: 2.1 ST01_FILLING]\nRULE-ST01-03: PRS drop below 3.3 bar - inspect inlet valve within 5 min.",
+            "metadata": {
+                "headings": [
+                    "2.1 ST01_FILLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 100
+        },
+        {
+            "chunk_id": 7,
+            "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-01: TMP MUST remain between 175°C and 195°C.",
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 82
+        },
+        {
+            "chunk_id": 8,
+            "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-02: TMP > 210°C (CRITICAL) - emergency stop ST02, ST03, ST04.",
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 99
+        },
+        {
+            "chunk_id": 9,
+            "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-03: CUR increase >1.5 A above nominal sustained >5 min - schedule maintenance.",
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 116
+        },
+        {
+            "chunk_id": 10,
+            "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-04: CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling. Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING.",
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 225
+        },
+        {
+            "chunk_id": 11,
+            "content": "[Context: 2.3 ST03_LABELLING]\nRULE-ST03-01: TEN MUST be between 1.8 and 2.6 N.",
+            "metadata": {
+                "headings": [
+                    "2.3 ST03_LABELLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 78
+        },
+        {
+            "chunk_id": 12,
+            "content": "[Context: 2.3 ST03_LABELLING]\nRULE-ST03-02: CNT below 110 pcs/min - check for label jam. Below 100 (CRITICAL): halt.",
+            "metadata": {
+                "headings": [
+                    "2.3 ST03_LABELLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 116
+        },
+        {
+            "chunk_id": 13,
+            "content": "[Context: 2.3 ST03_LABELLING]\nRULE-ST03-03: TEN STUCK >10 consecutive samples - sensor failure.",
+            "metadata": {
+                "headings": [
+                    "2.3 ST03_LABELLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 95
+        },
+        {
+            "chunk_id": 14,
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-ST04-01: VIB > 0.20 mm/s (WARNING) - schedule maintenance within 24 h.",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 105
+        },
+        {
+            "chunk_id": 15,
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-ST04-02: VIB > 0.35 mm/s (CRITICAL) - emergency stop; inspect bearings.",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 106
+        },
+        {
+            "chunk_id": 16,
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-ST04-03: SPD drops below 1.00 m/s without operator command - verify RULE-ST02-04.",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 116
+        },
+        {
+            "chunk_id": 17,
+            "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.5 SRV01_SERVERROOM",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 52
+        },
+        {
+            "chunk_id": 18,
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-SRV01-01: TMP MUST NOT exceed 25°C. RULE-SRV01-02: TMP > 28°C (CRITICAL) - automatic controlled shutdown of all PLC nodes.",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 157
+        },
+        {
+            "chunk_id": 19,
+            "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.6 WRH01_WAREHOUSE (General Warehouse)",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 71
+        },
+        {
+            "chunk_id": 20,
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-WRH01-01: TMP MUST remain between 0.5°C and 8°C. CRITICAL above 12°C - notify QC and quarantine batch. RULE-WRH01-02: HUM above 85%RH - inspect door seals and activate dehumidifier.",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 216
+        },
+        {
+            "chunk_id": 21,
+            "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.7 CHM01_CHEMICALSTORAGE (Chemical Storage)",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 76
+        },
+        {
+            "chunk_id": 22,
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-CHM01-01: TMP MUST remain between 10°C and 20°C. CRITICAL above 25°C - activate emergency ventilation and notify safety officer immediately. RULE-CHM01-02: HUM MUST NOT exceed 50%RH. Elevated humidity accelerates degradation of hygroscopic reagents. Activate desiccant system if HUM >45%RH. RULE-CHM01-03: Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage. UNAUTHORIZED_ACCESS must be escalated within 2 minutes.",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 511
+        },
+        {
+            "chunk_id": 23,
+            "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.8 RND01_RDLAB (R&D; Lab)",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 58
+        },
+        {
+            "chunk_id": 24,
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-RND01-01: TMP MUST remain between 18°C and 26°C for experimental validity. RULE-RND01-02: HUM drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system.",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 251
+        },
+        {
+            "chunk_id": 25,
+            "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.9 CAF01_CAFETERIA",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 51
+        },
+        {
+            "chunk_id": 26,
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-CAF01-01: TMP above 26°C - check ventilation system. Occupant comfort is the primary criterion. RULE-CAF01-02: HUM above 70%RH - inspect drainage and activate ventilation.",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 206
+        }
+    ]
+}

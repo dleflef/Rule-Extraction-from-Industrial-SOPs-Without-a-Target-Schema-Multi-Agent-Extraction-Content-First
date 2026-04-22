@@ -1,0 +1,100 @@
+{
+    "source_file": "SOP_004_PersonnelZoneAccess.pdf",
+    "status": "complete",
+    "page_count": 2,
+    "chunk_count": 7,
+    "error_message": null,
+    "chunks": [
+        {
+            "chunk_id": 0,
+            "content": "[Context: Personnel Zone Access and Alarm Response Procedures]\nDocument: SOP-004 | Rev: 1.0 | Date: 2025-12-01 | Author: Ing. F. Ferrari - Safety & Compliance",
+            "metadata": {
+                "headings": [
+                    "Personnel Zone Access and Alarm Response Procedures"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 158
+        },
+        {
+            "chunk_id": 1,
+            "content": "[Context: 1. Role-Zone Authorisation Matrix]\noperator, Prod. Area = YES. operator, Server Room = NO. operator, Gen. Warehouse = YES. operator, Main Entrance = YES. operator, Chem. Storage = NO. operator, R&D Lab = NO. operator, Cafeteria = YES. technician, Prod. Area = YES. technician, Server Room = YES. technician, Gen. Warehouse = YES. technician, Main Entrance = YES. technician, Chem. Storage = YES. technician, R&D Lab = YES. technician, Cafeteria = YES. supervisor, Prod. Area = YES. supervisor, Server Room = YES. supervisor, Gen. Warehouse = YES. supervisor, Main Entrance = YES. supervisor, Chem. Storage = YES. supervisor, R&D Lab = YES. supervisor, Cafeteria = YES. manager, Prod. Area = YES. manager, Server Room = YES. manager, Gen. Warehouse = YES. manager, Main Entrance = YES. manager, Chem. Storage = YES. manager, R&D Lab = YES. manager, Cafeteria = YES. security, Prod. Area = YES. security, Server Room = YES. security, Gen. Warehouse = YES. security, Main Entrance = YES. security, Chem. Storage = YES. security, R&D Lab = YES. security, Cafeteria = YES. visitor, Prod. Area = YES. visitor, Server Room = NO. visitor, Gen. Warehouse = NO. visitor, Main Entrance = YES. visitor, Chem. Storage = NO. visitor, R&D Lab = NO. visitor, Cafeteria = YES",
+            "metadata": {
+                "headings": [
+                    "1. Role-Zone Authorisation Matrix"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 1268
+        },
+        {
+            "chunk_id": 2,
+            "content": "[Context: 2. Maximum Occupancy per Zone]\nProduction Area, Max Persons = 12. Production Area, Enforcement = WARNING above 10; CRITICAL above 12. Server Room, Max Persons = 2. Server Room, Enforcement = CRITICAL above 2; access badge required. General Warehouse, Max Persons = 4. General Warehouse, Enforcement = WARNING above 3. Main Entrance, Max Persons = 8. Main Entrance, Enforcement = Monitoring only. Chemical Storage, Max Persons = 4. Chemical Storage, Enforcement = CRITICAL above 4; hazmat training required -see RULE-CHM01-03. R&D Lab, Max Persons = 6. R&D Lab, Enforcement = WARNING above 5; precision experiments may be disturbed. Cafeteria, Max Persons = 20. Cafeteria, Enforcement = Monitoring only -occupant comfort",
+            "metadata": {
+                "headings": [
+                    "2. Maximum Occupancy per Zone"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 729
+        },
+        {
+            "chunk_id": 3,
+            "content": "[Context: 3. Maximum Acknowledgment Times by Role and Severity]\noperator, Max Ack -WARNING (min) = 15. operator, Max Ack -CRITICAL (min) = 3. technician, Max Ack -WARNING (min) = 10. technician, Max Ack -CRITICAL (min) = 2. supervisor, Max Ack -WARNING (min) = 5. supervisor, Max Ack -CRITICAL (min) = 1. manager, Max Ack -WARNING (min) = 15. manager, Max Ack -CRITICAL (min) = 5. security, Max Ack -WARNING (min) = 20. security, Max Ack -CRITICAL (min) = 5",
+            "metadata": {
+                "headings": [
+                    "3. Maximum Acknowledgment Times by Role and Severity"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 457
+        },
+        {
+            "chunk_id": 4,
+            "content": "[Context: 4. Unauthorised Access Rules]\nRULE-ACCESS-01: Any entry by an unauthorised role MUST be logged as OccupancyEvent::UnauthorisedAccess with person_id, zone, and timestamp.",
+            "metadata": {
+                "headings": [
+                    "4. Unauthorised Access Rules"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 179
+        },
+        {
+            "chunk_id": 5,
+            "content": "[Context: 4. Unauthorised Access Rules]\nRULE-ACCESS-02: Security personnel MUST be notified within 2 minutes of detection.",
+            "metadata": {
+                "headings": [
+                    "4. Unauthorised Access Rules"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "char_count": 122
+        },
+        {
+            "chunk_id": 6,
+            "content": "[Context: 4. Unauthorised Access Rules]\nRULE-ACCESS-03: The KG node MUST include authorized=NO and a reference to this rule. RULE-ACCESS-04: Chemical Storage has zero-tolerance policy. Any UNAUTHORIZED_ACCESS triggers immediate escalation to the Safety Officer regardless of role.",
+            "metadata": {
+                "headings": [
+                    "4. Unauthorised Access Rules"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 280
+        }
+    ]
+}

@@ -24,7 +24,7 @@ from .agent_1c_tools import extract_log_sample, standardize_logs_with_regex
 # ─────────────────────────────────────────────────────────────────────────────
 
 _llm = ChatOpenAI(
-    model="qwen/qwen3-vl-4b",
+    model="meta-llama-3.1-8b-instruct",
     temperature=0.0,
     api_key="lm-studio-local",
     base_url="http://127.0.0.1:1234/v1",
@@ -152,16 +152,16 @@ def standardization_node(state: Agent1CState) -> dict:
     Stage 4: Applies the structural regex to the entire log file to create
     a normalized list of dictionaries.
     """
-    print(f"[Agent 1C | Stage 3] Executing bulk log standardization.")
-    
+    print(f"[Agent 1C | Stage 4] Executing bulk log standardization.")
+
     result = standardize_logs_with_regex(state["file_path"], state["structural_regex"])
-    
+
     if "error" in result:
-        print(f"[Agent 1C | Stage 3] ERROR: {result['error']}")
+        print(f"[Agent 1C | Stage 4] ERROR: {result['error']}")
         return {"status": "error", "error_message": result["error"]}
-        
+
     print(
-        f"[Agent 1C | Stage 3] Standardization complete — "
+        f"[Agent 1C | Stage 4] Standardization complete — "
         f"Parsed {result['parsed_records_count']} records out of "
         f"{result['total_lines_processed']} total lines. "
         f"Failed to parse: {result['unparsed_count']} lines."
@@ -172,6 +172,12 @@ def standardization_node(state: Agent1CState) -> dict:
 # ─────────────────────────────────────────────────────────────────────────────
 # Conditional Edge & Graph Compilation
 # ─────────────────────────────────────────────────────────────────────────────
+
+def _route_after_sampler(state: Agent1CState) -> str:
+    return "end" if state.get("status") == "error" else "regex_generator"
+
+def _route_after_regex_generator(state: Agent1CState) -> str:
+    return "end" if state.get("status") == "error" else "regex_validator"
 
 def _route_after_validator(state: Agent1CState) -> str:
     return "end" if state.get("status") == "error" else "standardize"
@@ -185,8 +191,16 @@ _workflow.add_node("standardize", standardization_node)
 
 _workflow.set_entry_point("sampler")
 
-_workflow.add_edge("sampler", "regex_generator")
-_workflow.add_edge("regex_generator", "regex_validator")
+_workflow.add_conditional_edges(
+    "sampler",
+    _route_after_sampler,
+    {"regex_generator": "regex_generator", "end": END},
+)
+_workflow.add_conditional_edges(
+    "regex_generator",
+    _route_after_regex_generator,
+    {"regex_validator": "regex_validator", "end": END},
+)
 _workflow.add_conditional_edges(
     "regex_validator",
     _route_after_validator,

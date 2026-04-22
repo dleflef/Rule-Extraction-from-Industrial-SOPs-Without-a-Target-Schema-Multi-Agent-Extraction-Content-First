@@ -1,0 +1,25 @@
+nodeId,label,name,type,zone
+N0001,System,iMAKS,LineaA,-
+N0002,Zone,Production Area,-,Production Area
+N0003,Zone,Server Room,-,Server Room
+N0004,Zone,General Warehouse,-,General Warehouse
+N0005,Zone,Main Entrance,-,Main Entrance
+N0006,Zone,Chemical Storage,-,Chemical Storage
+N0007,Zone,R&D Lab,-,R&D Lab
+N0008,Zone,Cafeteria,-,Cafeteria
+N0009,Component,ST01_FILLING,FILLING,Production Area
+N0010,Sensor,ST01_FILLING_TMP,TMP,Production Area
+N0011,Sensor,ST01_FILLING_PRS,PRS,Production Area
+N0012,Sensor,ST01_FILLING_FLW,FLW,Production Area
+N0013,Component,ST02_SEALING,SEALING,Production Area
+N0014,Sensor,ST02_SEALING_TMP,TMP,Production Area
+N0015,Sensor,ST02_SEALING_PRS,PRS,Production Area
+N0016,Sensor,ST02_SEALING_CUR,CUR,Production Area
+N0017,Component,ST03_LABELLING,LABELLING,Production Area
+N0018,Sensor,ST03_LABELLING_TMP,TMP,Production Area
+N0019,Sensor,ST03_LABELLING_SPD,SPD,Production Area
+N0020,Sensor,ST03_LABELLING_POS,POS,Production Area
+N0021,Component,ST04_PACKAGING,PACKAGING,Production Area
+N0022,Sensor,ST04_PACKAGING_TMP,TMP,Production Area
+N0023,Sensor,ST04_PACKAGING_SPD,SPD,Production Area
+N0024,Sensor,ST04_PACKAGING_CNT,CNT,Production Area

@@ -111,5 +111,7 @@ def test_zip_or_file(target_path: str):
             run_agent_1b(target_path)
 
 if __name__ == "__main__":
-    TARGET_DATA = r"data\examples.zip" 
+    TARGET_DATA = os.path.join("layers", "data", "examples.zip")
     test_zip_or_file(TARGET_DATA)
+
+    

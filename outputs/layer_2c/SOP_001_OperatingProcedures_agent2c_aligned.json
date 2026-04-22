@@ -1,0 +1,751 @@
+{
+    "source_file": "SOP_001_OperatingProcedures.pdf",
+    "model_used": "qwen2.5-coder-7b-instruct",
+    "strategy": "Schema & Node Alignment",
+    "results": [
+        {
+            "chunk_id": 0,
+            "metadata": {
+                "headings": [
+                    "Standard Operating Procedures - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": []
+        },
+        {
+            "chunk_id": 1,
+            "metadata": {
+                "headings": [
+                    "Standard Operating Procedures - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": []
+        },
+        {
+            "chunk_id": 2,
+            "metadata": {
+                "headings": [
+                    "1. Station Dependencies"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING",
+                    "subject_type": "Component",
+                    "predicate": "feeds_into",
+                    "object": "ST02_SEALING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "ST02_SEALING",
+                    "subject_type": "Component",
+                    "predicate": "feeds_into",
+                    "object": "ST03_LABELLING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "ST03_LABELLING",
+                    "subject_type": "Component",
+                    "predicate": "feeds_into",
+                    "object": "ST04_PACKAGING",
+                    "object_type": "Component"
+                }
+            ]
+        },
+        {
+            "chunk_id": 3,
+            "metadata": {
+                "headings": [
+                    "1. Station Dependencies"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING",
+                    "subject_type": "Component",
+                    "predicate": "depends_on",
+                    "object": "ST02_SEALING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "ST02_SEALING",
+                    "subject_type": "Component",
+                    "predicate": "feeds_into",
+                    "object": "ST03_LABELLING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "ST03_LABELLING",
+                    "subject_type": "Component",
+                    "predicate": "depends_on",
+                    "object": "ST04_PACKAGING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "ST04_PACKAGING",
+                    "subject_type": "Component",
+                    "predicate": "feeds_into",
+                    "object": "Final output",
+                    "object_type": "Zone"
+                },
+                {
+                    "subject": "SRV01_SERVERROOM",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "HVAC",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "WRH01_WAREHOUSE",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "COMPRESSOR",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "CHM01_CHEMICALSTORAGE",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "HVAC",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "RND01_RDLAB",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "HVAC",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "CAF01_CAFETERIA",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "HVAC",
+                    "object_type": "Component"
+                }
+            ]
+        },
+        {
+            "chunk_id": 4,
+            "metadata": {
+                "headings": [
+                    "2.1 ST01_FILLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": []
+        },
+        {
+            "chunk_id": 5,
+            "metadata": {
+                "headings": [
+                    "2.1 ST01_FILLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "triggers",
+                    "object": "reduce speed by 10%",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "triggers",
+                    "object": "notify QC",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 6,
+            "metadata": {
+                "headings": [
+                    "2.1 ST01_FILLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "PRS",
+                    "subject_type": "Component",
+                    "predicate": "triggers",
+                    "object": "inspect inlet valve",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 7,
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "depends_on",
+                    "object": "ST02_SEALING",
+                    "object_type": "Component"
+                }
+            ]
+        },
+        {
+            "chunk_id": 8,
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "triggers",
+                    "object": "emergency stop ST02, ST03, ST04",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 9,
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST02_SEALING",
+                    "subject_type": "Component",
+                    "predicate": "depends_on",
+                    "object": "CUR",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "CUR",
+                    "subject_type": "Component",
+                    "predicate": "triggers",
+                    "object": "schedule maintenance",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 10,
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST02_SEALING-CUR",
+                    "subject_type": "Component",
+                    "predicate": "triggers",
+                    "object": "WARNING",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "WARNING",
+                    "subject_type": "AnomalyEvent",
+                    "predicate": "triggers",
+                    "object": "speed reduction at ST04_PACKAGING",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "ST02_SEALING-CUR drift",
+                    "subject_type": "Parameter",
+                    "predicate": "correlates_with",
+                    "object": "speed reduction at ST04_PACKAGING",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "ST04_PACKAGING-SPD",
+                    "subject_type": "Component",
+                    "predicate": "feeds_into",
+                    "object": "speed reduction at ST04_PACKAGING",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 11,
+            "metadata": {
+                "headings": [
+                    "2.3 ST03_LABELLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST03_LABELLING",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "TEN",
+                    "object_type": "Zone"
+                }
+            ]
+        },
+        {
+            "chunk_id": 12,
+            "metadata": {
+                "headings": [
+                    "2.3 ST03_LABELLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST03_LABELLING",
+                    "subject_type": "Component",
+                    "predicate": "triggers",
+                    "object": "halt",
+                    "object_type": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 13,
+            "metadata": {
+                "headings": [
+                    "2.3 ST03_LABELLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST03_LABELLING",
+                    "subject_type": "Component",
+                    "predicate": "triggers",
+                    "object": "sensor failure",
+                    "object_type": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 14,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "VIB",
+                    "subject_type": "Component",
+                    "predicate": "triggers",
+                    "object": "schedule maintenance within 24 h",
+                    "object_type": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 15,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "VIB",
+                    "subject_type": "Component",
+                    "predicate": "triggers",
+                    "object": "emergency stop",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "VIB",
+                    "subject_type": "Component",
+                    "predicate": "triggers",
+                    "object": "inspect bearings",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 16,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST04_PACKAGING",
+                    "subject_type": "Component",
+                    "predicate": "depends_on",
+                    "object": "SPD",
+                    "object_type": "Component"
+                }
+            ]
+        },
+        {
+            "chunk_id": 17,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": []
+        },
+        {
+            "chunk_id": 18,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "depends_on",
+                    "object": "ST04_PACKAGING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "TMP",
+                    "subject_type": "Parameter",
+                    "predicate": "triggers",
+                    "object": "automatic controlled shutdown of all PLC nodes",
+                    "object_type": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 19,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "WRH01_WAREHOUSE",
+                    "subject_type": "Zone",
+                    "predicate": "contains",
+                    "object": "2.4 ST04_PACKAGING",
+                    "object_type": "Component"
+                }
+            ]
+        },
+        {
+            "chunk_id": 20,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "controls",
+                    "object": "ST04_PACKAGING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "CRITICAL",
+                    "subject_type": "AnomalyEvent",
+                    "predicate": "triggers",
+                    "object": "notify QC and quarantine batch",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "ST02_FILLING_HUM",
+                    "subject_type": "Sensor",
+                    "predicate": "controls",
+                    "object": "ST04_PACKAGING",
+                    "object_type": "Component"
+                }
+            ]
+        },
+        {
+            "chunk_id": 21,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "CHM01_CHEMICALSTORAGE",
+                    "subject_type": "Zone",
+                    "predicate": "part_of",
+                    "object": "2.4 ST04_PACKAGING",
+                    "object_type": "Component"
+                }
+            ]
+        },
+        {
+            "chunk_id": 22,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "TMP",
+                    "subject_type": "Parameter",
+                    "predicate": "depends_on",
+                    "object": "ST04_PACKAGING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "TMP",
+                    "subject_type": "Parameter",
+                    "predicate": "monitors",
+                    "object": "ST01_FILLING_TMP_10C",
+                    "object_type": "Sensor"
+                },
+                {
+                    "subject": "TMP",
+                    "subject_type": "Parameter",
+                    "predicate": "monitors",
+                    "object": "ST01_FILLING_TMP_20C",
+                    "object_type": "Sensor"
+                },
+                {
+                    "subject": "TMP",
+                    "subject_type": "Parameter",
+                    "predicate": "triggers",
+                    "object": "emergency ventilation",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "TMP",
+                    "subject_type": "Parameter",
+                    "predicate": "triggers",
+                    "object": "notify safety officer immediately",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "HUM",
+                    "subject_type": "Parameter",
+                    "predicate": "depends_on",
+                    "object": "ST04_PACKAGING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "HUM",
+                    "subject_type": "Parameter",
+                    "predicate": "monitors",
+                    "object": "ST01_FILLING_HUM_50RH",
+                    "object_type": "Sensor"
+                },
+                {
+                    "subject": "HUM",
+                    "subject_type": "Parameter",
+                    "predicate": "triggers",
+                    "object": "desiccant system",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "Chemical Storage",
+                    "subject_type": "Zone",
+                    "predicate": "authorized_for",
+                    "object": "hazmat training",
+                    "object_type": "Role"
+                },
+                {
+                    "subject": "Chemical Storage",
+                    "subject_type": "Zone",
+                    "predicate": "authorized_for",
+                    "object": "technician/supervisor/manager role",
+                    "object_type": "Role"
+                },
+                {
+                    "subject": "UNAUTHORIZED_ACCESS",
+                    "subject_type": "AnomalyEvent",
+                    "predicate": "triggers",
+                    "object": "escalate within 2 minutes",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 23,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": []
+        },
+        {
+            "chunk_id": 24,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "depends_on",
+                    "object": "ST04_PACKAGING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "ST02_FILLING_HUM",
+                    "subject_type": "Sensor",
+                    "predicate": "depends_on",
+                    "object": "ST04_PACKAGING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "experimental validity",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "HUM drift above 65%RH",
+                    "subject_type": "AnomalyEvent",
+                    "predicate": "triggers",
+                    "object": "dehumidifier activation",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "HUM drift above 75%RH (CRITICAL)",
+                    "subject_type": "AnomalyEvent",
+                    "predicate": "triggers",
+                    "object": "sensitive experiments suspension and HVAC system inspection",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 25,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": []
+        },
+        {
+            "chunk_id": 26,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "depends_on",
+                    "object": "ST04_PACKAGING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "ST02_FILLING_HUM",
+                    "subject_type": "Sensor",
+                    "predicate": "depends_on",
+                    "object": "ST04_PACKAGING",
+                    "object_type": "Component"
+                },
+                {
+                    "subject": "check ventilation system",
+                    "subject_type": "AnomalyEvent",
+                    "predicate": "triggers",
+                    "object": "check ventilation system",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "inspect drainage and activate ventilation",
+                    "subject_type": "AnomalyEvent",
+                    "predicate": "triggers",
+                    "object": "inspect drainage and activate ventilation",
+                    "object_type": "Action"
+                }
+            ]
+        }
+    ]
+}

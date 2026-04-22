@@ -1,0 +1,284 @@
+{
+    "source_file": "SOP_003_MaintenanceRules.pdf",
+    "model_used": "qwen2.5-coder-7b-instruct",
+    "temperature": 0.0,
+    "strategy": "Zero-Shot Notebook Pattern",
+    "results": [
+        {
+            "chunk_id": 0,
+            "metadata": {
+                "headings": [
+                    "Predictive & Corrective Maintenance Rules - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "Production Line A",
+                    "category": "Zone"
+                }
+            ]
+        },
+        {
+            "chunk_id": 1,
+            "metadata": {
+                "headings": [
+                    "Predictive & Corrective Maintenance Rules - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "Predictive & Corrective Maintenance Rules",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Production Line A",
+                    "category": "Zone"
+                },
+                {
+                    "span": "Ing. A. Conti",
+                    "category": "Role"
+                }
+            ]
+        },
+        {
+            "chunk_id": 2,
+            "metadata": {
+                "headings": [
+                    "1. Predictive Maintenance Rules"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "MAINT-01",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "VIB",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "MAINT-02",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "CUR",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "HIGH",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "MAINT-03",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "TEN",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "ST03_LABELLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TEN STUCK >10 samples",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Replace sensor",
+                    "category": "Action"
+                },
+                {
+                    "span": "MEDIUM",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "MAINT-04",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "PRS",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "ST01_FILLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "PRS <3.3 bar for >15 min",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Inspect filter and pump",
+                    "category": "Action"
+                },
+                {
+                    "span": "MEDIUM",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "MAINT-05",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "SRV01_SERVERROOM",
+                    "category": "Zone"
+                },
+                {
+                    "span": "TMP >25°C for >5 min",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Activate secondary cooling",
+                    "category": "Action"
+                },
+                {
+                    "span": "CRITICAL",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "MAINT-06",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "WRH01_WAREHOUSE",
+                    "category": "Zone"
+                },
+                {
+                    "span": "TMP DRIFT >2°C over 2 h",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Inspect compressor; notify",
+                    "category": "Action"
+                },
+                {
+                    "span": "QC CRITICAL",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "MAINT-07",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "CHM01_CHEMICALSTORAGE",
+                    "category": "Zone"
+                },
+                {
+                    "span": "TMP >20°C for >10 min",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Emergency ventilation; notify",
+                    "category": "Action"
+                },
+                {
+                    "span": "safety officer CRITICAL",
+                    "category": "Role"
+                },
+                {
+                    "span": "MAINT-08",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "RND01_RDLAB",
+                    "category": "Zone"
+                },
+                {
+                    "span": "HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Activate dehumidifier; check HVAC drain HIGH",
+                    "category": "Action"
+                },
+                {
+                    "span": "HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH",
+                    "category": "Parameter"
+                }
+            ]
+        },
+        {
+            "chunk_id": 3,
+            "metadata": {
+                "headings": [
+                    "2. Correlated Fault Resolution"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST02_SEALING-CUR",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "ST04_PACKAGING-SPD",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "Sealing motor overload",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Conveyor speed drop",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "ST02-CUR",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "sealing jaw",
+                    "category": "Component"
+                },
+                {
+                    "span": "ST04 spee",
+                    "category": "Component"
+                },
+                {
+                    "span": "WRH01-TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "Cold warehouse",
+                    "category": "Zone"
+                },
+                {
+                    "span": "drift",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "Product quality risk",
+                    "category": "AnomalyEvent"
+                }
+            ]
+        }
+    ]
+}

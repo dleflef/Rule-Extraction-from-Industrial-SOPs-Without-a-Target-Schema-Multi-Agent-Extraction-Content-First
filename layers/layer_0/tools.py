@@ -6,7 +6,7 @@ from .utils import safe_preview_file
 # Module-level LLM for the validation tool — instantiated once so that
 # get_openai_callback() in main.py can track its invocations correctly.
 _validation_llm = ChatOpenAI(
-    model="qwen/qwen3-vl-4b",
+    model="meta-llama-3.1-8b-instruct",
     temperature=0.0,
     api_key="lm-studio-local",
     base_url="http://127.0.0.1:1234/v1",

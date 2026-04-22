@@ -1,0 +1,874 @@
+{
+    "source_file": "SOP_002_AlarmThresholds.pdf",
+    "model_used": "qwen2.5-coder-7b-instruct",
+    "strategy": "Schema & Node Alignment",
+    "results": [
+        {
+            "chunk_id": 0,
+            "metadata": {
+                "headings": [
+                    "Alarm Thresholds and Response Matrix - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": []
+        },
+        {
+            "chunk_id": 1,
+            "metadata": {
+                "headings": [
+                    "Alarm Thresholds and Response Matrix - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": []
+        },
+        {
+            "chunk_id": 2,
+            "metadata": {
+                "headings": [
+                    "ST01_FILLING Thresholds"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "Unit = °C.",
+                    "object_type": "Unit"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_LO",
+                    "object": "15.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "WARN_LO Nominal",
+                    "object": "22.0 ± 0.4",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_HI",
+                    "object": "30.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "CRITICAL Response",
+                    "object": "Inspect and notify maintenance.",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "ST02_PRESSURE_PRS",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "Unit = bar.",
+                    "object_type": "Unit"
+                },
+                {
+                    "subject": "ST02_PRESSURE_PRS",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_LO",
+                    "object": "3.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST02_PRESSURE_PRS",
+                    "subject_type": "Sensor",
+                    "predicate": "WARN_LO Nominal",
+                    "object": "3.8 ± 0.05",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST02_PRESSURE_PRS",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_HI",
+                    "object": "4.8",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST02_PRESSURE_PRS",
+                    "subject_type": "Sensor",
+                    "predicate": "CRITICAL Response",
+                    "object": "Inspect and notify maintenance.",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "ST03_FLOW_FLW",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "Unit = L/min.",
+                    "object_type": "Unit"
+                },
+                {
+                    "subject": "ST03_FLOW_FLW",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_LO",
+                    "object": "105.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST03_FLOW_FLW",
+                    "subject_type": "Sensor",
+                    "predicate": "WARN_LO Nominal",
+                    "object": "120.0 ± 1.5",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST03_FLOW_FLW",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_HI",
+                    "object": "135.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST03_FLOW_FLW",
+                    "subject_type": "Sensor",
+                    "predicate": "CRITICAL Response",
+                    "object": "Inspect and notify maintenance.",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 3,
+            "metadata": {
+                "headings": [
+                    "ST02_SEALING Thresholds"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "Unit = °C.",
+                    "object_type": "Unit"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_LO",
+                    "object": "165.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "WARN_LO Nominal",
+                    "object": "185.0 ± 1.2",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "WARN_HI",
+                    "object": "195.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_HI",
+                    "object": "210.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "CRITICAL Response",
+                    "object": "E-STOP ST02/ST03/ST04; inspect element.",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "ST01_FILLING_PRS",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "Unit = bar.",
+                    "object_type": "Unit"
+                },
+                {
+                    "subject": "ST01_FILLING_PRS",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_LO",
+                    "object": "4.2",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_PRS",
+                    "subject_type": "Sensor",
+                    "predicate": "WARN_LO Nominal",
+                    "object": "5.2 ± 0.08",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_PRS",
+                    "subject_type": "Sensor",
+                    "predicate": "WARN_HI",
+                    "object": "5.7",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_PRS",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_HI",
+                    "object": "6.2",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_PRS",
+                    "subject_type": "Sensor",
+                    "predicate": "CRITICAL Response",
+                    "object": "Inspect and notify maintenance.",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "ST01_FILLING_CUR",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "Unit = A.",
+                    "object_type": "Unit"
+                },
+                {
+                    "subject": "ST01_FILLING_CUR",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_LO",
+                    "object": "9.5",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_CUR",
+                    "subject_type": "Sensor",
+                    "predicate": "WARN_LO Nominal",
+                    "object": "12.4 ± 0.3",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_CUR",
+                    "subject_type": "Sensor",
+                    "predicate": "WARN_HI",
+                    "object": "13.5",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_CUR",
+                    "subject_type": "Sensor",
+                    "predicate": "CRIT_HI",
+                    "object": "15.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_CUR",
+                    "subject_type": "Sensor",
+                    "predicate": "CRITICAL Response",
+                    "object": "E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04)",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 4,
+            "metadata": {
+                "headings": [
+                    "ST03_LABELLING Thresholds"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "depends_on",
+                    "object": "Unit = m/s.",
+                    "object_type": "Parameter"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "depends_on",
+                    "object": "Unit = N.",
+                    "object_type": "Parameter"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "depends_on",
+                    "object": "Unit = pcs/min.",
+                    "object_type": "Parameter"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "CRIT_LO",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "0.65",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "0.75",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "WARN_LO Nominal",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "0.85 ± 0.01",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "WARN_HI",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "0.95",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "CRIT_HI",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "1.05",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "CRITICAL Response",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "triggers",
+                    "object": "Inspect and notify maintenance.",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "CRIT_LO",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "1.5",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "1.8",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "WARN_LO Nominal",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "2.2 ± 0.05",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "WARN_HI",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "2.6",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "CRIT_HI",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "3.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "CRITICAL Response",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "TEN",
+                    "subject_type": "Component",
+                    "predicate": "triggers",
+                    "object": "Inspect and notify maintenance.",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "CRIT_LO",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "100",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "110",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "WARN_LO Nominal",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "120 ± 2.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "WARN_HI",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "130",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "CRIT_HI",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "140",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "produces",
+                    "object": "CRITICAL Response",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "CNT",
+                    "subject_type": "Component",
+                    "predicate": "triggers",
+                    "object": "E-STOP labelling; inspect label path",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 5,
+            "metadata": {
+                "headings": [
+                    "ST04_PACKAGING Thresholds"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "VIB",
+                    "subject_type": "Component",
+                    "predicate": "Unit = mm/s",
+                    "object": "mm/s",
+                    "object_type": "Unit"
+                },
+                {
+                    "subject": "CUR",
+                    "subject_type": "Component",
+                    "predicate": "Unit = A",
+                    "object": "A",
+                    "object_type": "Unit"
+                },
+                {
+                    "subject": "SPD",
+                    "subject_type": "Component",
+                    "predicate": "Unit = m/s",
+                    "object": "m/s",
+                    "object_type": "Unit"
+                }
+            ]
+        },
+        {
+            "chunk_id": 6,
+            "metadata": {
+                "headings": [
+                    "SRV01_SERVERROOM Thresholds"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "SRV01_SERVERROOM",
+                    "subject_type": "Zone",
+                    "predicate": "part_of",
+                    "object": "TMP",
+                    "object_type": "Sensor"
+                },
+                {
+                    "subject": "SRV01_SERVERROOM",
+                    "subject_type": "Zone",
+                    "predicate": "part_of",
+                    "object": "HUM",
+                    "object_type": "Sensor"
+                },
+                {
+                    "subject": "TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "°C",
+                    "object_type": "UnitOfMeasure"
+                },
+                {
+                    "subject": "TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "triggers",
+                    "object": "Activate backup cooling; prepare controlled PLC shutdown.",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "HUM",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "%RH",
+                    "object_type": "UnitOfMeasure"
+                },
+                {
+                    "subject": "HUM",
+                    "subject_type": "Sensor",
+                    "predicate": "triggers",
+                    "object": "Inspect and notify maintenance",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 7,
+            "metadata": {
+                "headings": [
+                    "WRH01_WAREHOUSE Thresholds"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "WRH01_WAREHOUSE",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "ST01_FILLING_TMP",
+                    "object_type": "Sensor"
+                },
+                {
+                    "subject": "WRH01_WAREHOUSE",
+                    "subject_type": "Zone",
+                    "predicate": "depends_on",
+                    "object": "ST02_FILLING_HUM",
+                    "object_type": "Sensor"
+                }
+            ]
+        },
+        {
+            "chunk_id": 8,
+            "metadata": {
+                "headings": [
+                    "CHM01_CHEMICALSTORAGE Thresholds"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "Temperature",
+                    "object_type": "Property"
+                },
+                {
+                    "subject": "ST02_FILLING_HUM",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "Humidity",
+                    "object_type": "Property"
+                },
+                {
+                    "subject": "TMP",
+                    "subject_type": "Parameter",
+                    "predicate": "CRITICAL Response",
+                    "object": "Activate emergency ventilation; notify safety officer immediately",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "HUM",
+                    "subject_type": "Parameter",
+                    "predicate": "CRITICAL Response",
+                    "object": "Activate desiccant system; inspect storage containers for leak",
+                    "object_type": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 9,
+            "metadata": {
+                "headings": [
+                    "RND01_RDLAB Thresholds"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "CRIT_LO",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "18.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "WARN_LO Nominal",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "26.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "CRIT_HI",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "ST01_FILLING_TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "triggers",
+                    "object": "Inspect and notify maintenance",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "ST02_HUMIDITY_SENSOR",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "CRIT_LO",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "ST02_HUMIDITY_SENSOR",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "35.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST02_HUMIDITY_SENSOR",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "WARN_LO Nominal",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST02_HUMIDITY_SENSOR",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "65.0",
+                    "object_type": "Value"
+                },
+                {
+                    "subject": "ST02_HUMIDITY_SENSOR",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "CRIT_HI",
+                    "object_type": "AnomalyEvent"
+                },
+                {
+                    "subject": "ST02_HUMIDITY_SENSOR",
+                    "subject_type": "Sensor",
+                    "predicate": "triggers",
+                    "object": "Suspend experiments; inspect HVAC system",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 10,
+            "metadata": {
+                "headings": [
+                    "CAF01_CAFETERIA Thresholds"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "CAF01_CAFETERIA",
+                    "subject_type": "Zone",
+                    "predicate": "part_of",
+                    "object": "TMP",
+                    "object_type": "Sensor"
+                },
+                {
+                    "subject": "CAF01_CAFETERIA",
+                    "subject_type": "Zone",
+                    "predicate": "part_of",
+                    "object": "HUM",
+                    "object_type": "Sensor"
+                },
+                {
+                    "subject": "TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "°C",
+                    "object_type": "UnitOfMeasure"
+                },
+                {
+                    "subject": "TMP",
+                    "subject_type": "Sensor",
+                    "predicate": "triggers",
+                    "object": "Inspect and notify maintenance",
+                    "object_type": "Action"
+                },
+                {
+                    "subject": "HUM",
+                    "subject_type": "Sensor",
+                    "predicate": "produces",
+                    "object": "%RH",
+                    "object_type": "UnitOfMeasure"
+                },
+                {
+                    "subject": "HUM",
+                    "subject_type": "Sensor",
+                    "predicate": "triggers",
+                    "object": "Inspect and notify maintenance",
+                    "object_type": "Action"
+                }
+            ]
+        },
+        {
+            "chunk_id": 11,
+            "metadata": {
+                "headings": [
+                    "Anomaly Type Definitions for KG Mapping"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": []
+        }
+    ]
+}

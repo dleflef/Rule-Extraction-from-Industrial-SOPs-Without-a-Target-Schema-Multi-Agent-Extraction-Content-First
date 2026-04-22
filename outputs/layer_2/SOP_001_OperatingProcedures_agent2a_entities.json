@@ -1,0 +1,774 @@
+{
+    "source_file": "SOP_001_OperatingProcedures.pdf",
+    "model_used": "qwen2.5-coder-7b-instruct",
+    "temperature": 0.0,
+    "strategy": "Zero-Shot Notebook Pattern",
+    "results": [
+        {
+            "chunk_id": 0,
+            "metadata": {
+                "headings": [
+                    "Standard Operating Procedures - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": []
+        },
+        {
+            "chunk_id": 1,
+            "metadata": {
+                "headings": [
+                    "Standard Operating Procedures - Production Line A"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "Ing. M. Bianchi",
+                    "category": "Role"
+                },
+                {
+                    "span": "Process Engineering",
+                    "category": "Role"
+                }
+            ]
+        },
+        {
+            "chunk_id": 2,
+            "metadata": {
+                "headings": [
+                    "1. Station Dependencies"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST01_FILLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "ST03_LABELLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                }
+            ]
+        },
+        {
+            "chunk_id": 3,
+            "metadata": {
+                "headings": [
+                    "1. Station Dependencies"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST01_FILLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "Production Area",
+                    "category": "Zone"
+                },
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "ST03_LABELLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "SRV01_SERVERROOM",
+                    "category": "Component"
+                },
+                {
+                    "span": "Server Room",
+                    "category": "Zone"
+                },
+                {
+                    "span": "WRH01_WAREHOUSE",
+                    "category": "Component"
+                },
+                {
+                    "span": "General Warehouse",
+                    "category": "Zone"
+                },
+                {
+                    "span": "CHM01_CHEMICALSTORAGE",
+                    "category": "Component"
+                },
+                {
+                    "span": "Storage",
+                    "category": "Zone"
+                },
+                {
+                    "span": "RND01_RDLAB",
+                    "category": "Component"
+                },
+                {
+                    "span": "R&D Lab",
+                    "category": "Zone"
+                },
+                {
+                    "span": "CAF01_CAFETERIA",
+                    "category": "Component"
+                },
+                {
+                    "span": "Cafeteria",
+                    "category": "Zone"
+                }
+            ]
+        },
+        {
+            "chunk_id": 4,
+            "metadata": {
+                "headings": [
+                    "2.1 ST01_FILLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST01_FILLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "FLW",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "L/min",
+                    "category": "Parameter"
+                }
+            ]
+        },
+        {
+            "chunk_id": 5,
+            "metadata": {
+                "headings": [
+                    "2.1 ST01_FILLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST01_FILLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "26°C",
+                    "category": "Parameter"
+                }
+            ]
+        },
+        {
+            "chunk_id": 6,
+            "metadata": {
+                "headings": [
+                    "2.1 ST01_FILLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST01_FILLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "PRS",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "inlet valve",
+                    "category": "Component"
+                }
+            ]
+        },
+        {
+            "chunk_id": 7,
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                }
+            ]
+        },
+        {
+            "chunk_id": 8,
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "210°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "emergency stop ST02, ST03, ST04",
+                    "category": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 9,
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "CUR",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "A",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "5 min",
+                    "category": "Parameter"
+                }
+            ]
+        },
+        {
+            "chunk_id": 10,
+            "metadata": {
+                "headings": [
+                    "2.2 ST02_SEALING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST02_SEALING",
+                    "category": "Component"
+                },
+                {
+                    "span": "CUR drift",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "speed reduction",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "SPD",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "WARNING",
+                    "category": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 11,
+            "metadata": {
+                "headings": [
+                    "2.3 ST03_LABELLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST03_LABELLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TEN",
+                    "category": "Parameter"
+                }
+            ]
+        },
+        {
+            "chunk_id": 12,
+            "metadata": {
+                "headings": [
+                    "2.3 ST03_LABELLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST03_LABELLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "CNT",
+                    "category": "Parameter"
+                }
+            ]
+        },
+        {
+            "chunk_id": 13,
+            "metadata": {
+                "headings": [
+                    "2.3 ST03_LABELLING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST03_LABELLING",
+                    "category": "Component"
+                },
+                {
+                    "span": "sensor failure",
+                    "category": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 14,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "VIB",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "WARNING",
+                    "category": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 15,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "VIB",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "mm/s",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "CRITICAL",
+                    "category": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 16,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    1
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "SPD",
+                    "category": "Parameter"
+                }
+            ]
+        },
+        {
+            "chunk_id": 17,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "SRV01_SERVERROOM",
+                    "category": "Zone"
+                }
+            ]
+        },
+        {
+            "chunk_id": 18,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                }
+            ]
+        },
+        {
+            "chunk_id": 19,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "2.4 ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "WRH01_WAREHOUSE",
+                    "category": "Zone"
+                }
+            ]
+        },
+        {
+            "chunk_id": 20,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "CRITICAL",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor"
+                }
+            ]
+        },
+        {
+            "chunk_id": 21,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "2.4 ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "CHM01_CHEMICALSTORAGE",
+                    "category": "Zone"
+                }
+            ]
+        },
+        {
+            "chunk_id": 22,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "10°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "20°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "CRITICAL",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "emergency ventilation",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "safety officer",
+                    "category": "Role"
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "50%RH",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "Elevated humidity",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "desiccant system",
+                    "category": "AnomalyEvent"
+                },
+                {
+                    "span": "hazmat training",
+                    "category": "Role"
+                },
+                {
+                    "span": "technician/supervisor/manager role",
+                    "category": "Role"
+                },
+                {
+                    "span": "Chemical Storage",
+                    "category": "Zone"
+                },
+                {
+                    "span": "UNAUTHORIZED_ACCESS",
+                    "category": "AnomalyEvent"
+                }
+            ]
+        },
+        {
+            "chunk_id": 23,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "2.4 ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "RND01_RDLAB",
+                    "category": "Zone"
+                }
+            ]
+        },
+        {
+            "chunk_id": 24,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "18°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "26°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "65%RH",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "75%RH",
+                    "category": "Parameter"
+                }
+            ]
+        },
+        {
+            "chunk_id": 25,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "CAF01_CAFETERIA",
+                    "category": "Zone"
+                }
+            ]
+        },
+        {
+            "chunk_id": 26,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component"
+                },
+                {
+                    "span": "TMP",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "26°C",
+                    "category": "Parameter"
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor"
+                },
+                {
+                    "span": "70%RH",
+                    "category": "Parameter"
+                }
+            ]
+        }
+    ]
+}

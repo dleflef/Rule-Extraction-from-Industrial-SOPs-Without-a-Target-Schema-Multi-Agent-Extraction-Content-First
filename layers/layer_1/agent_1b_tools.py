@@ -6,7 +6,53 @@ pipeline, leveraging Docling's native structure and chunking capabilities.
 """
 
 import os
+import re
 from typing import Any, Dict, List
+
+
+_MAX_CHUNK_CHARS: int = 2_500
+
+
+def _sanitize_text(text: str) -> str:
+    # Fix table concatenation artifact
+    text = text.replace("WARN_LONominal", "WARN_LO Nominal")
+    # Restore workflow arrows from ligature corruption variants
+    text = re.sub(r"\s›\s*fi\s", " -> ", text)
+    text = re.sub(r"fl\s", "-> ", text)
+    text = re.sub(r"(?<!\S)fi(?!\S)", "->", text)
+    return text
+
+
+_CHUNK_OVERLAP:   int = 100      # character overlap between sub-chunks
+
+
+def _split_oversized_chunk(chunk: Dict[str, Any], base_idx: int) -> List[Dict[str, Any]]:
+    """
+    Split a single chunk whose content exceeds _MAX_CHUNK_CHARS into smaller
+    sub-chunks using a sliding window.  Metadata (headings, page_numbers) is
+    inherited by all sub-chunks so provenance is preserved.
+    """
+    text     = chunk["content"]
+    metadata = chunk["metadata"]
+    results  = []
+    start    = 0
+    sub_idx  = 0
+
+    while start < len(text):
+        end  = min(start + _MAX_CHUNK_CHARS, len(text))
+        part = text[start:end]
+        results.append({
+            "chunk_id":   int(f"{base_idx}{sub_idx:02d}"),  # e.g. 201, 202 …
+            "content":    part,
+            "metadata":   metadata,
+            "char_count": len(part),
+        })
+        sub_idx += 1
+        start    = end - _CHUNK_OVERLAP   # overlap keeps sentence context intact
+        if start >= len(text):
+            break
+
+    return results
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -103,16 +149,21 @@ def chunk_docling_document(docling_dict: Dict[str, Any]) -> List[Dict[str, Any]]
         chunker = HierarchicalChunker()
         doc_chunks = list(chunker.chunk(doc))
 
-        chunks = []
+        raw_chunks = []
         for idx, chunk in enumerate(doc_chunks):
             # Extract clean text and metadata safely
-            text = chunk.text.strip() if hasattr(chunk, "text") else ""
+            text = _sanitize_text(chunk.text.strip()) if hasattr(chunk, "text") else ""
             if not text:
                 continue
-                
+
             # Grab heading paths (e.g., ["Chapter 1", "Section 1.2"])
             headings = chunk.meta.headings if hasattr(chunk.meta, "headings") else []
-            
+
+            # Prepend breadcrumb context so downstream LLMs can resolve isolated rules
+            if headings:
+                breadcrumb = "[Context: " + " > ".join(headings) + "]"
+                text = breadcrumb + "\n" + text
+
             # Grab provenance (page numbers where this chunk appears)
             pages = []
             if hasattr(chunk.meta, "doc_items"):
@@ -120,7 +171,7 @@ def chunk_docling_document(docling_dict: Dict[str, Any]) -> List[Dict[str, Any]]
                     if hasattr(item, "prov") and item.prov:
                         pages.extend([p.page_no for p in item.prov if hasattr(p, "page_no")])
 
-            chunks.append({
+            raw_chunks.append({
                 "chunk_id":   idx,
                 "content":    text,
                 "metadata":   {
@@ -130,6 +181,21 @@ def chunk_docling_document(docling_dict: Dict[str, Any]) -> List[Dict[str, Any]]
                 "char_count": len(text),
             })
 
+        # Re-split any chunk that would overflow the LM Studio context window.
+        chunks: List[Dict[str, Any]] = []
+        n_oversized = 0
+        for c in raw_chunks:
+            if c["char_count"] > _MAX_CHUNK_CHARS:
+                n_oversized += 1
+                chunks.extend(_split_oversized_chunk(c, c["chunk_id"]))
+            else:
+                chunks.append(c)
+
+        if n_oversized:
+            print(
+                f"[Agent 1B | Stage 2] {n_oversized} oversized chunk(s) re-split "
+                f"(>{_MAX_CHUNK_CHARS} chars) to prevent LM Studio context overflow."
+            )
         print(f"[Agent 1B | Stage 2] Produced {len(chunks)} native hierarchical chunks.")
         return chunks
 
