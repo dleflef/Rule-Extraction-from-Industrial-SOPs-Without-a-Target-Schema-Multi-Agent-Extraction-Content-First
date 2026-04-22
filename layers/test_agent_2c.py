@@ -2,7 +2,7 @@ import os
 import csv
 import json
 import sys
-# Add the project root to the Python path
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import glob
 from layers.layer_2.agent_2c import agent_2c_app
@@ -13,7 +13,6 @@ OUTPUT_DIR = "outputs/layer_2c"
 NODES_CSV_PATH = os.path.join("layers", "extracted_seed", "kg_seed", "nodes_factory.csv")
 
 def load_official_nodes() -> dict:
-    """Loads the official nodes from the CSV into a dictionary for the LLM."""
     nodes = {}
     if not os.path.exists(NODES_CSV_PATH):
         print(f"WARNING: Could not find official nodes CSV at {NODES_CSV_PATH}.")
