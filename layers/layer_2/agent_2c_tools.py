@@ -1,218 +1,287 @@
 """
-Agent 2C Tools — Ontology Alignment and KG Triple Conversion
+Agent 2C Tools — Ontology Alignment for Reified Rule Triples
 
-Two responsibilities:
-1. Align station/sensor names in each extracted rule to official node IDs from the
-   KG seed (4-pass fuzzy matching: exact → normalised exact → substring → Jaccard).
-2. Convert each aligned structured rule into KG triples that carry ALL rule fields
-   as edge properties, so no information is lost before Neo4j ingestion.
+Responsibility:
+  Map the entity objects in each triple to their official KG seed node IDs.
+  Rule node subjects (identifiable by the RULE- prefix) are kept as-is —
+  they are NEW nodes that the extraction pipeline is creating.
+
+  Aligns only these predicates' objects:
+    applies_to_station, applies_to_sensor, applies_to_zone,
+    monitors (both subject and object),
+    feeds_into, authorized_for
+
+  Literal-value predicates (has_condition, triggers_action, has_crit_hi, etc.)
+  are passed through untouched.
+
+Alignment strategy — 4 passes:
+  1. Exact string match
+  2. Normalised exact (lowercase, collapse special chars)
+  3. Substring containment
+  4. Few-shot LLM alignment via qwen2.5-coder-7b-instruct (temperature=0.0)
 """
 
+import os
 import re
-from difflib import SequenceMatcher
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Any
+
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import PromptTemplate
 
 # ---------------------------------------------------------------------------
-# 1. Helpers
+# LLM Setup — mirrors Agent 2B
+# ---------------------------------------------------------------------------
+
+LOCAL_LLM_URL = os.getenv("LOCAL_LLM_URL", "http://127.0.0.1:1234/v1")
+
+_llm = ChatOpenAI(
+    base_url=LOCAL_LLM_URL,
+    api_key="local-ignore",
+    model="qwen2.5-coder-7b-instruct",
+    temperature=0.0,
+    max_retries=2,
+)
+
+_ALIGNMENT_PROMPT = PromptTemplate(
+    template="""You are an ontology alignment expert for an industrial Knowledge Graph.
+Your task is to map a raw term to the single best-matching official node identifier.
+
+━━━ OFFICIAL NODE LIST ━━━
+{node_list}
+
+━━━ FEW-SHOT EXAMPLES ━━━
+Raw term: "filling station"
+Answer: ST01_FILLING
+
+Raw term: "temperature sensor at sealing"
+Answer: ST02_SEALING_TMP
+
+Raw term: "packaging dept"
+Answer: ST04_PACKAGING
+
+Raw term: "warehouse storage zone"
+Answer: WRH01_WAREHOUSE
+
+Raw term: "chemical room"
+Answer: CHM01_CHEMICALSTORAGE
+
+Raw term: "xyz_unknown_widget_999"
+Answer: None
+
+━━━ SURROUNDING CONTEXT ━━━
+{context}
+
+━━━ TASK ━━━
+Raw term: "{raw_term}"
+
+Instructions:
+- Return ONLY the exact string from the official node list above that best semantically matches the raw term.
+- Use the surrounding context to disambiguate when the raw term is ambiguous.
+- If no reasonable semantic match exists, return exactly: None
+- Do NOT explain your reasoning.
+- Do NOT add quotes, punctuation, or any other text.
+
+Answer:""",
+    input_variables=["node_list", "raw_term", "context"],
+)
+
+_alignment_chain = _ALIGNMENT_PROMPT | _llm
+
+# ---------------------------------------------------------------------------
+# Predicate classification sets
+# ---------------------------------------------------------------------------
+
+# Predicates whose object is an entity that should be aligned to the seed
+_ENTITY_OBJECT_PREDICATES = {
+    "applies_to_station",
+    "applies_to_sensor",
+    "applies_to_zone",
+    "feeds_into",
+    "authorized_for",
+}
+
+# Predicates where the subject is also an entity (structural edges)
+_STRUCTURAL_PREDICATES = {"monitors", "feeds_into", "authorized_for"}
+
+# Predicates whose object is a raw literal — never align these
+_LITERAL_PREDICATES = {
+    "rdf:type",
+    "has_sensor_type",
+    "has_condition",
+    "triggers_action",
+    "has_severity",
+    "has_crit_hi",
+    "has_warn_hi",
+    "has_crit_lo",
+    "has_warn_lo",
+    "has_unit",
+}
+
+# Expected seed node type for each predicate's OBJECT side.
+# Used to filter candidate nodes so the LLM sees a focused list.
+_PREDICATE_OBJ_TYPE: Dict[str, str] = {
+    "applies_to_station": "Component",
+    "applies_to_sensor":  "Sensor",
+    "applies_to_zone":    "Zone",
+    "authorized_for":     "Zone",
+    "feeds_into":         "Component",
+    "monitors":           "Sensor",
+}
+
+# Expected seed node type for the SUBJECT side of structural predicates.
+_PREDICATE_SUBJ_TYPE: Dict[str, str] = {
+    "monitors":      "Component",
+    "feeds_into":    "Component",
+    "authorized_for": "Role",
+}
+
+
+# ---------------------------------------------------------------------------
+# Helpers
 # ---------------------------------------------------------------------------
 
 def _normalise(text: str) -> str:
-    """Lowercase, strip, collapse whitespace, remove special chars."""
     return re.sub(r"[^a-z0-9_]", "", text.lower().replace(" ", "_"))
 
 
-def _jaccard(a: str, b: str) -> float:
-    tokens_a = set(re.split(r"[^a-z0-9]+", a.lower()))
-    tokens_b = set(re.split(r"[^a-z0-9]+", b.lower()))
-    tokens_a.discard("")
-    tokens_b.discard("")
-    if not tokens_a or not tokens_b:
-        return 0.0
-    return len(tokens_a & tokens_b) / len(tokens_a | tokens_b)
-
-
-def _fuzzy_align(raw: Optional[str], official_nodes: Dict[str, str]) -> Tuple[Optional[str], str]:
-    """
-    Returns (aligned_name, status) where status is 'exact', 'fuzzy', or 'unaligned'.
-    official_nodes: {name: label}
-    """
-    if not raw:
-        return None, "unaligned"
-
-    # Pass 1 — exact
-    if raw in official_nodes:
-        return raw, "exact"
-
-    # Pass 2 — normalised exact
-    raw_norm = _normalise(raw)
-    for name in official_nodes:
-        if _normalise(name) == raw_norm:
-            return name, "exact"
-
-    # Pass 3 — substring (official name contained in raw or vice-versa)
-    raw_up = raw.upper()
-    for name in official_nodes:
-        name_up = name.upper()
-        if name_up in raw_up or raw_up in name_up:
-            return name, "fuzzy"
-
-    # Pass 4 — Jaccard ≥ 0.4
-    best_score = 0.0
-    best_name: Optional[str] = None
-    for name in official_nodes:
-        score = _jaccard(raw, name)
-        if score > best_score:
-            best_score = score
-            best_name = name
-    if best_score >= 0.4 and best_name is not None:
-        return best_name, "fuzzy"
-
+def _llm_align(
+    raw: str,
+    official_nodes: Dict[str, str],
+    context: Optional[str] = None,
+) -> Tuple[str, str]:
+    """Calls the LLM to find the best semantic match from official_nodes."""
+    node_list = "\n".join(sorted(official_nodes.keys()))
+    ctx_str = context[:200] if context else "(no surrounding context available)"
+    try:
+        response = _alignment_chain.invoke({
+            "node_list": node_list,
+            "raw_term":  raw,
+            "context":   ctx_str,
+        })
+        candidate = response.content.strip()
+        if candidate and candidate != "None" and candidate in official_nodes:
+            return candidate, "llm_aligned"
+    except Exception as e:
+        print(f"[Agent 2C Warning] LLM alignment failed for '{raw}': {e}")
     return raw, "unaligned"
 
 
-# ---------------------------------------------------------------------------
-# 2. Rule Alignment
-# ---------------------------------------------------------------------------
-
-def align_rule(rule: Dict[str, Any], official_nodes: Dict[str, str]) -> Dict[str, Any]:
+def _fuzzy_align(
+    raw: Optional[str],
+    official_nodes: Dict[str, str],
+    candidate_type: Optional[str] = None,
+    context: Optional[str] = None,
+) -> Tuple[str, str]:
     """
-    Aligns the station and sensor fields of a structured rule record to official
-    node IDs, then annotates with alignment metadata.
+    Returns (aligned_name, status).
+    status: 'exact' | 'fuzzy' | 'llm_aligned' | 'unaligned'
+
+    candidate_type: if provided, filters official_nodes to only nodes of that label
+                    before each pass (falls back to all nodes if the filtered set is empty).
+    context: surrounding sentence passed to the LLM on Pass 4 for disambiguation.
     """
-    aligned = dict(rule)  # shallow copy — all scalar fields are immutable
+    if not raw:
+        return raw or "", "unaligned"
 
-    station_aligned, station_status = _fuzzy_align(rule.get("station"), official_nodes)
-    sensor_aligned, sensor_status = _fuzzy_align(rule.get("sensor"), official_nodes)
-
-    aligned["station"] = station_aligned
-    aligned["sensor"] = sensor_aligned
-    aligned["_station_alignment"] = station_status
-    aligned["_sensor_alignment"] = sensor_status
-    aligned["_overall_alignment"] = (
-        "exact" if station_status == "exact" and sensor_status in ("exact", "unaligned")
-        else "fuzzy" if station_status in ("exact", "fuzzy") or sensor_status in ("exact", "fuzzy")
-        else "unaligned"
+    # Build the candidate set — type-filtered when possible
+    typed_nodes = (
+        {k: v for k, v in official_nodes.items() if v == candidate_type}
+        if candidate_type else {}
     )
+    candidates = typed_nodes if typed_nodes else official_nodes
+
+    # Pass 1 — exact
+    if raw in candidates:
+        return raw, "exact"
+    # Also check full set in case the typed subset missed it
+    if typed_nodes and raw in official_nodes:
+        return raw, "exact"
+
+    # Pass 2 — normalised exact
+    rn = _normalise(raw)
+    for name in candidates:
+        if _normalise(name) == rn:
+            return name, "exact"
+
+    # Pass 3 — substring containment; collect ALL matches and prefer shortest
+    raw_up = raw.upper()
+    matches = [
+        name for name in candidates
+        if name.upper() in raw_up or raw_up in name.upper()
+    ]
+    if matches:
+        return min(matches, key=len), "fuzzy"
+
+    # Pass 4 — few-shot LLM alignment (use typed candidates for shorter, focused prompt)
+    return _llm_align(raw, candidates, context=context)
+
+
+def _is_rule_node(subject: str) -> bool:
+    """Rule nodes start with RULE- — they are new nodes, not from the seed."""
+    return subject.upper().startswith("RULE-")
+
+
+# ---------------------------------------------------------------------------
+# Main Alignment Function
+# ---------------------------------------------------------------------------
+
+def align_triple(
+    triple: Dict[str, str],
+    official_nodes: Dict[str, str],
+    context: Optional[str] = None,
+) -> Dict[str, Any]:
+    """
+    Aligns entity references in a triple to official KG node IDs.
+    Returns the triple enriched with alignment metadata.
+
+    _raw_object is always preserved so alignment errors can be audited.
+    context: a short surrounding sentence used to disambiguate LLM alignment.
+    """
+    predicate = triple.get("predicate", "")
+    subject   = triple.get("subject", "")
+    obj       = triple.get("object", "")
+
+    aligned = dict(triple)
+    aligned["_subject_alignment"] = "rule_node" if _is_rule_node(subject) else "n/a"
+    aligned["_object_alignment"]  = "literal"
+
+    # Align entity-object predicates
+    if predicate in _ENTITY_OBJECT_PREDICATES:
+        obj_type = _PREDICATE_OBJ_TYPE.get(predicate)
+        aligned["_raw_object"] = obj  # preserve before any rewrite
+        obj_aligned, obj_status = _fuzzy_align(
+            obj, official_nodes, candidate_type=obj_type, context=context
+        )
+        aligned["object"] = obj_aligned
+        aligned["_object_alignment"] = obj_status
+
+    # Align both sides of structural predicates
+    if predicate in _STRUCTURAL_PREDICATES:
+        subj_type = _PREDICATE_SUBJ_TYPE.get(predicate)
+        obj_type  = _PREDICATE_OBJ_TYPE.get(predicate)
+        if not _is_rule_node(subject):
+            subj_aligned, subj_status = _fuzzy_align(
+                subject, official_nodes, candidate_type=subj_type, context=context
+            )
+            aligned["subject"] = subj_aligned
+            aligned["_subject_alignment"] = subj_status
+        aligned["_raw_object"] = obj
+        obj_aligned, obj_status = _fuzzy_align(
+            obj, official_nodes, candidate_type=obj_type, context=context
+        )
+        aligned["object"] = obj_aligned
+        aligned["_object_alignment"] = obj_status
+
     return aligned
 
 
-# ---------------------------------------------------------------------------
-# 3. Conversion from aligned rule → KG triples
-# ---------------------------------------------------------------------------
-
-def rule_to_kg_triples(rule: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """
-    Converts one aligned structured rule into KG triples.
-
-    Each triple has: subject, predicate, object, properties (dict).
-
-    Schema:
-      OperationalRule / MaintenanceRule:
-        (station, monitors, sensor)                           — structural
-        (sensor, triggers, action)  props: condition, severity, unit, thresholds
-
-      ThresholdRule:
-        (station, monitors, sensor)                           — structural
-        (sensor, has_threshold, <sensor>_threshold)  props: critHi, warnHi, critLo, warnLo, unit
-
-      AccessRule:
-        (zone, has_access_rule, action)  props: condition, severity
-    """
-    triples: List[Dict[str, Any]] = []
-    station  = rule.get("station")
-    sensor   = rule.get("sensor")
-    action   = rule.get("action")
-    condition = rule.get("condition")
-    severity  = rule.get("severity")
-    rule_class = rule.get("rule_class", "OperationalRule")
-
-    threshold_props = {k: rule.get(k) for k in ("critHi", "warnHi", "critLo", "warnLo", "unit")}
-    # Remove None values from props
-    threshold_props = {k: v for k, v in threshold_props.items() if v is not None}
-
-    if rule_class in ("OperationalRule", "MaintenanceRule"):
-        if station and sensor:
-            triples.append({
-                "subject": station, "predicate": "monitors", "object": sensor,
-                "properties": {}
-            })
-        if sensor and action:
-            props = {"condition": condition, "severity": severity}
-            props.update(threshold_props)
-            props = {k: v for k, v in props.items() if v is not None}
-            triples.append({
-                "subject": sensor, "predicate": "triggers", "object": action,
-                "properties": props
-            })
-
-    elif rule_class == "ThresholdRule":
-        if station and sensor:
-            triples.append({
-                "subject": station, "predicate": "monitors", "object": sensor,
-                "properties": {}
-            })
-        if sensor:
-            props = {"condition": condition, "severity": severity}
-            props.update(threshold_props)
-            props = {k: v for k, v in props.items() if v is not None}
-            triples.append({
-                "subject": sensor, "predicate": "has_threshold",
-                "object": f"{sensor}_threshold",
-                "properties": props
-            })
-
-    elif rule_class == "AccessRule":
-        zone = station  # for access rules the 'station' field holds the zone
-        if zone and action:
-            props = {"condition": condition, "severity": severity}
-            props = {k: v for k, v in props.items() if v is not None}
-            triples.append({
-                "subject": zone, "predicate": "has_access_rule", "object": action,
-                "properties": props
-            })
-
-    return triples
-
-
-# ---------------------------------------------------------------------------
-# 4. Batch processing entry point (called from agent_2c.py)
-# ---------------------------------------------------------------------------
-
-def align_and_convert(
-    chunks_with_rules: List[Dict[str, Any]],
+def align_relations_for_chunk(
+    chunk_text: str,
+    raw_relations: List[Dict[str, str]],
     official_nodes: Dict[str, str]
-) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-    """
-    Processes all chunks from Agent 2B.
-
-    Returns:
-        aligned_rule_chunks  — same structure as input but with aligned + annotated rules
-        kg_triples           — flat deduplicated list of KG triples
-    """
-    aligned_rule_chunks: List[Dict[str, Any]] = []
-    all_triples: List[Dict[str, Any]] = []
-    seen_structural: set = set()  # deduplicate (station, monitors, sensor)
-
-    for chunk in chunks_with_rules:
-        raw_rules = chunk.get("extracted_rules", [])
-        aligned_rules = []
-        for rule in raw_rules:
-            ar = align_rule(rule, official_nodes)
-            aligned_rules.append(ar)
-
-            for triple in rule_to_kg_triples(ar):
-                # Deduplicate structural monitors triples
-                if triple["predicate"] == "monitors":
-                    key = (triple["subject"], triple["object"])
-                    if key in seen_structural:
-                        continue
-                    seen_structural.add(key)
-                all_triples.append(triple)
-
-        aligned_rule_chunks.append({
-            "chunk_id": chunk.get("chunk_id"),
-            "metadata": chunk.get("metadata", {}),
-            "aligned_rules": aligned_rules
-        })
-
-    return aligned_rule_chunks, all_triples
+) -> List[Dict[str, Any]]:
+    """Aligns all triples in a single chunk, passing the chunk text as LLM context."""
+    if not raw_relations:
+        return []
+    context = chunk_text[:300] if chunk_text else None
+    return [align_triple(t, official_nodes, context=context) for t in raw_relations]

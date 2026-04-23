@@ -2,7 +2,7 @@
 layer_1/agent_1a_tools.py — Agent 1A Deterministic Tools
 
 Implements the purely programmatic tools for Layer 1 ingestion.
-No LLM calls are made here. The focus is exclusively on reading 
+No LLM calls are made here. The focus is exclusively on reading
 structured files, inferring schemas, and standardizing data formats.
 
 Tool summary
@@ -12,7 +12,7 @@ Tool summary
       Handles .csv and .json; guarded against encoding / parse errors.
 
   standardize_data(file_path)
-      Loads the file with Pandas, standardizes column headers 
+      Loads the file with Pandas, standardizes column headers
       (lowercase, underscore separated), and returns a clean dictionary
       payload ready for Layer 2.
 """
@@ -98,11 +98,13 @@ def standardize_data(file_path: str) -> Dict[str, Any]:
 
     Loads the full file and normalizes the structure so Layer 2 agents
     receive a consistent data format regardless of the source file type.
-    
+
     Operations:
     1. Standardize column names (lowercase, replace spaces with underscores).
     2. Convert data into a standardized list-of-dicts format.
-    3. Fill NaNs to prevent JSON serialization errors later in the pipeline.
+    3. Replace NaN with None (not empty string) so numeric columns keep their
+       dtype and downstream float() conversions don't crash on AccessRule rows
+       that legitimately have no threshold values.
 
     Returns a dict with keys:
         status           : 'success'
@@ -123,17 +125,27 @@ def standardize_data(file_path: str) -> Dict[str, Any]:
     try:
         if ext == ".csv":
             df = pd.read_csv(file_path)
-        else:  # .json
-            raw = pd.read_json(file_path)
-            df = raw if isinstance(raw, pd.DataFrame) else pd.DataFrame(raw)
+        else:
+            # pd.read_json is too narrow (crashes on non-tabular JSON).
+            # Mirror the same list/dict handling used in extract_schema.
+            with open(file_path, "r", encoding="utf-8", errors="ignore") as fh:
+                data = json.load(fh)
+
+            if isinstance(data, list):
+                df = pd.DataFrame(data)
+            elif isinstance(data, dict):
+                df = pd.DataFrame([data])
+            else:
+                return {"error": "Unsupported JSON structure: root must be a list or dict."}
 
         # Standardize column headers
         df.columns = df.columns.str.strip().str.lower().str.replace(r'\s+', '_', regex=True)
-        
-        # Handle NaN values to ensure safe JSON serialization for downstream agents
-        df = df.fillna("")
 
-        # Convert to a standard list of dictionaries
+        # Keep NaN as None so numeric columns stay numeric.
+        # fillna("") would silently coerce float columns to object dtype,
+        # breaking downstream float() calls on threshold fields.
+        df = df.where(df.notna(), None)
+
         normalized_records = df.to_dict(orient="records")
 
         return {

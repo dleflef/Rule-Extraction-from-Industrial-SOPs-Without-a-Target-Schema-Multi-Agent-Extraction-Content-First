@@ -18,7 +18,7 @@ def process_file(agent2a_file: str):
 
         source_file = layer_2a_data.get("source_file")
 
-        base_name = os.path.splitext(source_file)[0].replace("_agent1b", "")
+        base_name    = os.path.splitext(source_file)[0].replace("_agent1b", "")
         layer_1_path = os.path.join(LAYER_1_DIR, f"{base_name}_agent1b.json")
 
         with open(layer_1_path, "r", encoding="utf-8") as f:
@@ -31,7 +31,7 @@ def process_file(agent2a_file: str):
             chunk_id = item.get("chunk_id")
             chunks_with_entities.append({
                 "chunk_id": chunk_id,
-                "content": l1_chunks.get(chunk_id, ""),
+                "content":  l1_chunks.get(chunk_id, ""),
                 "metadata": item.get("metadata", {}),
                 "entities": item.get("entities", [])
             })
@@ -40,12 +40,14 @@ def process_file(agent2a_file: str):
         print(f"Testing Agent 2B on chunks from: {source_file}")
         print(f"{'='*60}")
 
+        prompt_mode = os.getenv("PROMPT_MODE", "graph_informed")
         initial_state = {
-            "source_file": source_file,
+            "source_file":          source_file,
+            "prompt_mode":          prompt_mode,
             "chunks_with_entities": chunks_with_entities,
-            "extracted_rules": None,
-            "status": "pending",
-            "error_message": None
+            "extracted_relations":  None,
+            "status":               "pending",
+            "error_message":        None,
         }
 
         final_state = agent_2b_app.invoke(initial_state)
@@ -54,22 +56,23 @@ def process_file(agent2a_file: str):
             print(f"Pipeline failed for {source_file}: {final_state.get('error_message')}")
             return
 
-        output_path = os.path.join(OUTPUT_DIR, f"{base_name}_agent2b_rules.json")
+        output_path = os.path.join(OUTPUT_DIR, f"{base_name}_agent2b_triples.json")
 
         output_data = {
             "source_file": final_state["source_file"],
-            "model_used": "qwen2.5-coder-7b-instruct",
+            "model_used":  "qwen2.5-coder-7b-instruct",
             "temperature": 0.0,
-            "strategy": "Graph-Informed Structured Rule Extraction",
-            "results": final_state["extracted_rules"]   # list of chunk dicts with 'extracted_rules'
+            "prompt_mode": prompt_mode,
+            "strategy":    "Rule Reification — (subject, predicate, object) triples",
+            "results":     final_state["extracted_relations"],
         }
 
         os.makedirs(OUTPUT_DIR, exist_ok=True)
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(output_data, f, indent=4, ensure_ascii=False)
 
-        total_rules = sum(len(c.get("extracted_rules", [])) for c in final_state["extracted_rules"])
-        print(f"Success! {total_rules} rules saved to: {output_path}")
+        total_triples = sum(len(c.get("relations", [])) for c in final_state["extracted_relations"])
+        print(f"Success! {total_triples} triples saved to: {output_path}")
 
     except Exception as e:
         print(f"Error processing {agent2a_file}: {e}")

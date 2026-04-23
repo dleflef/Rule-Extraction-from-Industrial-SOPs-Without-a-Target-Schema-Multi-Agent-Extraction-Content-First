@@ -1,30 +1,32 @@
 """
 Layer 3 — Field-by-Field Evaluation Against Ground Truth
 
-Each ground_truth.csv row is a structured rule record.
-Each extracted rule (from Agent 2C aligned_rule_chunks) is also a structured record
-with the same schema.
+Pipeline:
+  1. Load Agent 2C output (aligned reified triples).
+  2. Group triples by Rule node subject (subjects starting with RULE-).
+  3. Reconstruct a structured record per Rule node using the predicate→field mapping.
+  4. Compare each reconstructed record against ground_truth.csv field-by-field.
+  5. Report Precision / Recall / F1 plus per-rule-class and per-field breakdowns.
 
-Matching strategy (two-phase):
-  Phase 1 — Anchor match: station AND sensor both match exactly.
-  Phase 2 — Semantic fallback: condition word-overlap ≥ 0.5 AND same severity level.
+Predicate → GT field mapping:
+  applies_to_station  → station
+  applies_to_sensor   → sensor
+  applies_to_zone     → station   (AccessRules: zone plays the station role)
+  has_sensor_type     → sensorType
+  has_condition       → condition
+  triggers_action     → action
+  has_severity        → severity
+  has_crit_hi         → critHi  (converted to float)
+  has_warn_hi         → warnHi
+  has_crit_lo         → critLo
+  has_warn_lo         → warnLo
+  has_unit            → unit
+  rdf:type            → rule_class
 
-Scoring (per matched pair):
-  station    — exact match (weight 2)
-  sensor     — exact match (weight 2)
-  sensorType — exact match (weight 1)
-  condition  — word-overlap similarity (weight 2)
-  action     — word-overlap similarity (weight 1)
-  severity   — exact match (weight 1)
-  unit       — normalised exact match (weight 1)
-  critHi     — numeric within ±15% (weight 0.5)
-  warnHi     — numeric within ±15% (weight 0.5)
-  critLo     — numeric within ±15% (weight 0.5)
-  warnLo     — numeric within ±15% (weight 0.5)
-
-An extracted rule counts as a True Positive (TP) if its best match score ≥ 0.5.
-Unmatched GT rows → False Negatives (FN).
-Unmatched extracted rules → False Positives (FP).
+Matching strategy:
+  Phase 1 — Anchor: station AND sensor both match exactly.
+  Phase 2 — Semantic fallback: condition word-overlap ≥ 0.5 AND same severity.
+  A pair is a True Positive if composite score ≥ 0.5.
 """
 
 import os
@@ -37,6 +39,27 @@ from typing import Any, Dict, List, Optional, Tuple
 LAYER_2C_DIR = "outputs/layer_2c"
 GT_CSV_PATH  = os.path.join("layers", "extracted_seed", "dataset", "kg_seeds", "ground_truth.csv")
 
+# ---------------------------------------------------------------------------
+# Predicate → structured-record field
+# ---------------------------------------------------------------------------
+PREDICATE_TO_FIELD: Dict[str, str] = {
+    "rdf:type":           "rule_class",
+    "applies_to_station": "station",
+    "applies_to_sensor":  "sensor",
+    "applies_to_zone":    "station",   # AccessRule: zone maps to station field
+    "has_sensor_type":    "sensorType",
+    "has_condition":      "condition",
+    "triggers_action":    "action",
+    "has_severity":       "severity",
+    "has_crit_hi":        "critHi",
+    "has_warn_hi":        "warnHi",
+    "has_crit_lo":        "critLo",
+    "has_warn_lo":        "warnLo",
+    "has_unit":           "unit",
+}
+
+NUMERIC_FIELDS = {"critHi", "warnHi", "critLo", "warnLo"}
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -45,199 +68,189 @@ GT_CSV_PATH  = os.path.join("layers", "extracted_seed", "dataset", "kg_seeds", "
 def _norm_unit(u: Optional[str]) -> str:
     if not u:
         return ""
-    return u.strip().lower().replace("°", "").replace(" ", "")
+    return re.sub(r"[^a-z0-9]", "", u.lower())
 
 
 def _word_overlap(a: Optional[str], b: Optional[str]) -> float:
     if not a or not b:
         return 0.0
-    clean = lambda s: re.sub(r"[^a-z0-9]", " ", s.lower())
-    wa = set(clean(a).split())
-    wb = set(clean(b).split())
-    wa.discard("")
-    wb.discard("")
+    clean = lambda s: set(re.sub(r"[^a-z0-9]", " ", s.lower()).split())
+    wa, wb = clean(a), clean(b)
+    wa.discard(""); wb.discard("")
     if not wa or not wb:
         return 0.0
     return len(wa & wb) / min(len(wa), len(wb))
 
 
-def _numeric_match(ext_val: Any, gt_val: Any, tolerance: float = 0.15) -> bool:
+def _numeric_within(ext: Any, gt: Any, tol: float = 0.15) -> bool:
     try:
-        e = float(ext_val)
-        g = float(gt_val)
-        if g == 0:
-            return e == 0
-        return abs(e - g) / abs(g) <= tolerance
+        e, g = float(ext), float(gt)
+        return abs(e - g) / abs(g) <= tol if g != 0 else e == 0
     except (TypeError, ValueError):
         return False
 
 
+def _is_rule_subject(subject: str) -> bool:
+    return subject.upper().startswith("RULE-")
+
+
 # ---------------------------------------------------------------------------
-# Ground Truth Loading
+# 1. Reconstruct structured records from reified triples
 # ---------------------------------------------------------------------------
 
-def load_ground_truth(csv_path: str) -> List[Dict[str, Any]]:
+def reconstruct_rules_from_triples(all_triples: List[Dict]) -> List[Dict]:
+    """
+    Groups triples by Rule node subject and reconstructs one structured
+    record per Rule node.
+    """
+    groups: Dict[str, Dict] = {}
+
+    for t in all_triples:
+        subj = t.get("subject", "")
+        pred = t.get("predicate", "")
+        obj  = t.get("object", "")
+
+        if not _is_rule_subject(subj):
+            continue  # structural (monitors, etc.) — not a rule record
+
+        if subj not in groups:
+            groups[subj] = {"ruleId": subj}
+
+        field = PREDICATE_TO_FIELD.get(pred)
+        if field is None:
+            continue
+
+        if field in NUMERIC_FIELDS:
+            try:
+                groups[subj][field] = float(obj)
+            except (TypeError, ValueError):
+                groups[subj][field] = obj
+        else:
+            groups[subj][field] = obj
+
+    return list(groups.values())
+
+
+# ---------------------------------------------------------------------------
+# 2. Load data
+# ---------------------------------------------------------------------------
+
+def load_ground_truth(csv_path: str) -> List[Dict]:
     rows = []
     if not os.path.exists(csv_path):
         print(f"ERROR: Ground truth CSV not found at {csv_path}")
         return rows
-
     with open(csv_path, mode="r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             rows.append({
                 "ruleId":     row.get("ruleId", "").strip() or None,
-                "rule_class": row.get("class", "").strip() or None,
-                "station":    row.get("station", "").strip() or None,
+                "rule_class": row.get("class",  "").strip() or None,
+                "station":    row.get("station","").strip() or None,
                 "sensor":     row.get("sensor", "").strip() or None,
-                "sensorType": row.get("sensorType", "").strip() or None,
-                "condition":  row.get("condition", "").strip() or None,
-                "action":     row.get("action", "").strip() or None,
-                "severity":   row.get("severity", "").strip() or None,
-                "critHi":     row.get("critHi", "").strip() or None,
-                "warnHi":     row.get("warnHi", "").strip() or None,
-                "critLo":     row.get("critLo", "").strip() or None,
-                "warnLo":     row.get("warnLo", "").strip() or None,
-                "unit":       row.get("unit", "").strip() or None,
+                "sensorType": row.get("sensorType","").strip() or None,
+                "condition":  row.get("condition","").strip() or None,
+                "action":     row.get("action",  "").strip() or None,
+                "severity":   row.get("severity","").strip() or None,
+                "critHi":     row.get("critHi",  "").strip() or None,
+                "warnHi":     row.get("warnHi",  "").strip() or None,
+                "critLo":     row.get("critLo",  "").strip() or None,
+                "warnLo":     row.get("warnLo",  "").strip() or None,
+                "unit":       row.get("unit",    "").strip() or None,
             })
     return rows
 
 
-# ---------------------------------------------------------------------------
-# Extracted Rules Loading
-# ---------------------------------------------------------------------------
-
-def load_extracted_rules(layer_2c_dir: str) -> List[Dict[str, Any]]:
-    """Flattens all aligned_rules from all Agent 2C output files."""
-    rules = []
+def load_extracted_rules(layer_2c_dir: str) -> List[Dict]:
+    """
+    Reads all Agent 2C output files, collects aligned triples, and returns
+    the list of reconstructed structured rule records.
+    """
+    all_triples: List[Dict] = []
     json_files = glob.glob(os.path.join(layer_2c_dir, "*_agent2c_aligned.json"))
 
     for file_path in json_files:
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        for chunk in data.get("aligned_rule_chunks", []):
-            for rule in chunk.get("aligned_rules", []):
-                # Drop internal alignment metadata before comparison
-                clean = {k: v for k, v in rule.items() if not k.startswith("_")}
-                clean["_source_file"] = data.get("source_file", "")
-                clean["_chunk_id"]    = chunk.get("chunk_id", "")
-                rules.append(clean)
-    return rules
+        for chunk in data.get("results", []):
+            for t in chunk.get("aligned_relations", []):
+                all_triples.append(t)
+
+    return reconstruct_rules_from_triples(all_triples)
 
 
 # ---------------------------------------------------------------------------
-# Pairwise Scoring
+# 3. Pairwise scoring
 # ---------------------------------------------------------------------------
 
 def _score_pair(ext: Dict, gt: Dict) -> float:
-    """
-    Returns a composite similarity score in [0, 1].
-    Weighted sum of field matches, normalised by total possible weight.
-    """
-    score = 0.0
-    total = 0.0
+    score = total = 0.0
 
-    # Station (weight 2)
+    def add(weight: float, hit: bool):
+        nonlocal score, total
+        total += weight
+        if hit:
+            score += weight
+
     if gt.get("station") and ext.get("station"):
-        total += 2.0
-        if ext["station"].strip().upper() == gt["station"].strip().upper():
-            score += 2.0
-
-    # Sensor (weight 2)
+        add(2.0, ext["station"].strip().upper() == gt["station"].strip().upper())
     if gt.get("sensor") and ext.get("sensor"):
-        total += 2.0
-        if ext["sensor"].strip().upper() == gt["sensor"].strip().upper():
-            score += 2.0
-
-    # SensorType (weight 1)
+        add(2.0, ext["sensor"].strip().upper() == gt["sensor"].strip().upper())
     if gt.get("sensorType") and ext.get("sensorType"):
-        total += 1.0
-        if ext["sensorType"].strip().upper() == gt["sensorType"].strip().upper():
-            score += 1.0
-
-    # Condition (weight 2) — semantic word overlap
+        add(1.0, ext["sensorType"].strip().upper() == gt["sensorType"].strip().upper())
     if gt.get("condition") and ext.get("condition"):
-        total += 2.0
+        add(2.0, False)
         score += 2.0 * _word_overlap(ext["condition"], gt["condition"])
-
-    # Action (weight 1) — semantic word overlap
     if gt.get("action") and ext.get("action"):
-        total += 1.0
+        add(1.0, False)
         score += 1.0 * _word_overlap(ext["action"], gt["action"])
-
-    # Severity (weight 1)
     if gt.get("severity") and ext.get("severity"):
-        total += 1.0
-        if ext["severity"].strip().upper() == gt["severity"].strip().upper():
-            score += 1.0
-
-    # Unit (weight 1)
+        add(1.0, ext["severity"].strip().upper() == gt["severity"].strip().upper())
     if gt.get("unit") and ext.get("unit"):
-        total += 1.0
-        if _norm_unit(ext["unit"]) == _norm_unit(gt["unit"]):
-            score += 1.0
-
-    # Numeric thresholds (weight 0.5 each)
+        add(1.0, _norm_unit(ext["unit"]) == _norm_unit(gt["unit"]))
     for field in ("critHi", "warnHi", "critLo", "warnLo"):
         if gt.get(field) is not None and ext.get(field) is not None:
-            total += 0.5
-            if _numeric_match(ext[field], gt[field]):
-                score += 0.5
+            add(0.5, _numeric_within(ext[field], gt[field]))
 
-    if total == 0.0:
-        return 0.0
-    return score / total
+    return (score / total) if total > 0 else 0.0
 
 
-TP_THRESHOLD = 0.5   # minimum score to count as a True Positive
+TP_THRESHOLD = 0.5
 
 
-def _best_match(
-    ext: Dict,
-    gt_pool: List[Dict]
-) -> Tuple[Optional[int], float]:
-    """
-    Returns (index_in_pool, score) of the best GT match, or (None, 0) if below threshold.
-
-    Priority:
-      1. Anchor match — station AND sensor both match exactly → score that pair
-      2. Semantic fallback — condition overlap ≥ 0.5 AND same severity → score that pair
-    """
-    best_idx: Optional[int] = None
-    best_score = 0.0
-
+def _best_match(ext: Dict, gt_pool: List[Dict]) -> Tuple[Optional[int], float]:
     ext_station = (ext.get("station") or "").strip().upper()
     ext_sensor  = (ext.get("sensor")  or "").strip().upper()
     ext_sev     = (ext.get("severity") or "").strip().upper()
+
+    best_idx: Optional[int] = None
+    best_score = 0.0
 
     for i, gt in enumerate(gt_pool):
         gt_station = (gt.get("station") or "").strip().upper()
         gt_sensor  = (gt.get("sensor")  or "").strip().upper()
         gt_sev     = (gt.get("severity") or "").strip().upper()
 
-        # Phase 1 — anchor match
+        # Phase 1 — anchor (station + sensor both exact)
         anchor = (
             ext_station and gt_station and ext_station == gt_station and
             ext_sensor  and gt_sensor  and ext_sensor  == gt_sensor
         )
-
-        # Phase 2 — semantic fallback (no anchor)
-        cond_overlap = _word_overlap(ext.get("condition"), gt.get("condition"))
-        semantic = not anchor and cond_overlap >= 0.5 and ext_sev == gt_sev and ext_sev != ""
+        # Phase 2 — semantic fallback
+        cond_sim  = _word_overlap(ext.get("condition"), gt.get("condition"))
+        semantic  = not anchor and cond_sim >= 0.5 and ext_sev == gt_sev and ext_sev != ""
 
         if anchor or semantic:
             s = _score_pair(ext, gt)
             if s > best_score:
                 best_score = s
-                best_idx = i
+                best_idx   = i
 
-    if best_score >= TP_THRESHOLD:
-        return best_idx, best_score
-    return None, best_score
+    return (best_idx, best_score) if best_score >= TP_THRESHOLD else (None, best_score)
 
 
 # ---------------------------------------------------------------------------
-# Main Evaluation
+# 4. Main
 # ---------------------------------------------------------------------------
 
 def evaluate_pipeline():
@@ -248,25 +261,25 @@ def evaluate_pipeline():
     ground_truth = load_ground_truth(GT_CSV_PATH)
     extracted    = load_extracted_rules(LAYER_2C_DIR)
 
-    print(f"Ground truth rules : {len(ground_truth)}")
-    print(f"Extracted rules    : {len(extracted)}\n")
+    print(f"Ground truth rules  : {len(ground_truth)}")
+    print(f"Reconstructed rules : {len(extracted)}\n")
 
-    gt_remaining = list(range(len(ground_truth)))   # indices of unmatched GT rows
+    gt_remaining = list(range(len(ground_truth)))
     true_positives:  List[Dict] = []
     false_positives: List[Dict] = []
 
     for ext in extracted:
-        candidate_pool = [ground_truth[i] for i in gt_remaining]
-        match_local_idx, score = _best_match(ext, candidate_pool)
+        pool = [ground_truth[i] for i in gt_remaining]
+        local_idx, score = _best_match(ext, pool)
 
-        if match_local_idx is not None:
-            global_idx = gt_remaining[match_local_idx]
+        if local_idx is not None:
+            global_idx = gt_remaining[local_idx]
             true_positives.append({
-                "extracted":           ext,
+                "extracted":            ext,
                 "matched_ground_truth": ground_truth[global_idx],
                 "match_score":          round(score, 3),
             })
-            gt_remaining.pop(match_local_idx)
+            gt_remaining.pop(local_idx)
         else:
             false_positives.append(ext)
 
@@ -280,64 +293,48 @@ def evaluate_pipeline():
     recall    = TP / (TP + FN) if (TP + FN) > 0 else 0.0
     f1        = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
 
-    # --- Per rule-class breakdown ---
+    # Per rule-class breakdown
     class_stats: Dict[str, Dict[str, int]] = {}
-    for record in true_positives:
-        rc = record["matched_ground_truth"].get("rule_class") or "Unknown"
+    for r in true_positives:
+        rc = r["matched_ground_truth"].get("rule_class") or "Unknown"
         class_stats.setdefault(rc, {"TP": 0, "FP": 0, "FN": 0})["TP"] += 1
-    for record in false_positives:
-        rc = record.get("rule_class") or "Unknown"
+    for r in false_positives:
+        rc = r.get("rule_class") or "Unknown"
         class_stats.setdefault(rc, {"TP": 0, "FP": 0, "FN": 0})["FP"] += 1
-    for record in false_negatives:
-        rc = record.get("rule_class") or "Unknown"
+    for r in false_negatives:
+        rc = r.get("rule_class") or "Unknown"
         class_stats.setdefault(rc, {"TP": 0, "FP": 0, "FN": 0})["FN"] += 1
 
-    # --- Per-field hit rate among TPs ---
-    field_hits: Dict[str, int] = {
-        "station": 0, "sensor": 0, "sensorType": 0,
-        "condition": 0, "action": 0, "severity": 0, "unit": 0,
-        "critHi": 0, "warnHi": 0, "critLo": 0, "warnLo": 0
-    }
-    field_possible: Dict[str, int] = dict.fromkeys(field_hits, 0)
+    # Per-field hit rate (among TPs)
+    FIELDS = ("station", "sensor", "sensorType", "condition",
+              "action", "severity", "unit", "critHi", "warnHi", "critLo", "warnLo")
+    hits     = dict.fromkeys(FIELDS, 0)
+    possible = dict.fromkeys(FIELDS, 0)
 
     for record in true_positives:
         ext = record["extracted"]
         gt  = record["matched_ground_truth"]
-        if gt.get("station") and ext.get("station"):
-            field_possible["station"] += 1
-            if ext["station"].strip().upper() == gt["station"].strip().upper():
-                field_hits["station"] += 1
-        if gt.get("sensor") and ext.get("sensor"):
-            field_possible["sensor"] += 1
-            if ext["sensor"].strip().upper() == gt["sensor"].strip().upper():
-                field_hits["sensor"] += 1
-        if gt.get("sensorType") and ext.get("sensorType"):
-            field_possible["sensorType"] += 1
-            if ext["sensorType"].strip().upper() == gt["sensorType"].strip().upper():
-                field_hits["sensorType"] += 1
-        if gt.get("condition") and ext.get("condition"):
-            field_possible["condition"] += 1
-            if _word_overlap(ext["condition"], gt["condition"]) >= 0.6:
-                field_hits["condition"] += 1
-        if gt.get("action") and ext.get("action"):
-            field_possible["action"] += 1
-            if _word_overlap(ext["action"], gt["action"]) >= 0.5:
-                field_hits["action"] += 1
-        if gt.get("severity") and ext.get("severity"):
-            field_possible["severity"] += 1
-            if ext["severity"].strip().upper() == gt["severity"].strip().upper():
-                field_hits["severity"] += 1
+        for f in ("station", "sensor", "sensorType", "severity"):
+            if gt.get(f) and ext.get(f):
+                possible[f] += 1
+                if ext[f].strip().upper() == gt[f].strip().upper():
+                    hits[f] += 1
+        for f in ("condition", "action"):
+            if gt.get(f) and ext.get(f):
+                possible[f] += 1
+                if _word_overlap(ext[f], gt[f]) >= 0.5:
+                    hits[f] += 1
         if gt.get("unit") and ext.get("unit"):
-            field_possible["unit"] += 1
+            possible["unit"] += 1
             if _norm_unit(ext["unit"]) == _norm_unit(gt["unit"]):
-                field_hits["unit"] += 1
-        for field in ("critHi", "warnHi", "critLo", "warnLo"):
-            if gt.get(field) is not None and ext.get(field) is not None:
-                field_possible[field] += 1
-                if _numeric_match(ext[field], gt[field]):
-                    field_hits[field] += 1
+                hits["unit"] += 1
+        for f in ("critHi", "warnHi", "critLo", "warnLo"):
+            if gt.get(f) is not None and ext.get(f) is not None:
+                possible[f] += 1
+                if _numeric_within(ext[f], gt[f]):
+                    hits[f] += 1
 
-    # --- Console output ---
+    # --- Console ---
     print("--- OVERALL METRICS ---")
     print(f"  TP={TP}  FP={FP}  FN={FN}")
     print(f"  Precision : {precision:.3f}")
@@ -345,27 +342,25 @@ def evaluate_pipeline():
     print(f"  F1 Score  : {f1:.3f}")
     print()
     print("--- PER RULE-CLASS BREAKDOWN ---")
-    for rc, counts in sorted(class_stats.items()):
-        tp = counts['TP']; fp = counts['FP']; fn = counts['FN']
-        p = tp / (tp + fp) if (tp + fp) > 0 else 0.0
-        r = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-        f = 2*p*r/(p+r) if (p+r) > 0 else 0.0
-        print(f"  {rc:<22}  TP={tp}  FP={fp}  FN={fn}  P={p:.2f}  R={r:.2f}  F1={f:.2f}")
+    for rc, c in sorted(class_stats.items()):
+        p = c['TP'] / (c['TP'] + c['FP']) if (c['TP'] + c['FP']) > 0 else 0.0
+        r = c['TP'] / (c['TP'] + c['FN']) if (c['TP'] + c['FN']) > 0 else 0.0
+        fv = 2*p*r/(p+r) if (p+r) > 0 else 0.0
+        print(f"  {rc:<22}  TP={c['TP']}  FP={c['FP']}  FN={c['FN']}  "
+              f"P={p:.2f}  R={r:.2f}  F1={fv:.2f}")
     print()
     print("--- FIELD ACCURACY (among TPs) ---")
-    for field in ("station", "sensor", "sensorType", "condition", "action",
-                  "severity", "unit", "critHi", "warnHi", "critLo", "warnLo"):
-        possible = field_possible[field]
-        hits = field_hits[field]
-        acc = hits / possible if possible > 0 else 0.0
-        print(f"  {field:<12} {hits:3}/{possible:3}  ({acc*100:.0f}%)")
+    for f in FIELDS:
+        p_ = possible[f]
+        acc = hits[f] / p_ if p_ > 0 else 0.0
+        print(f"  {f:<12}  {hits[f]:3}/{p_:3}  ({acc*100:.0f}%)")
     print(f"{'='*60}")
 
     # --- JSON report ---
     report = {
         "summary": {
-            "ground_truth_rules": len(ground_truth),
-            "extracted_rules":    len(extracted),
+            "ground_truth_rules":  len(ground_truth),
+            "reconstructed_rules": len(extracted),
             "metrics": {
                 "precision": round(precision, 4),
                 "recall":    round(recall, 4),
@@ -381,13 +376,11 @@ def evaluate_pipeline():
                 for rc, v in class_stats.items()
             },
             "field_accuracy": {
-                field: {
-                    "hits": field_hits[field],
-                    "possible": field_possible[field],
-                    "accuracy": round(field_hits[field] / field_possible[field], 3)
-                    if field_possible[field] > 0 else 0.0
+                f: {
+                    "hits": hits[f], "possible": possible[f],
+                    "accuracy": round(hits[f] / possible[f], 3) if possible[f] > 0 else 0.0
                 }
-                for field in field_hits
+                for f in FIELDS
             },
         },
         "true_positives":  true_positives,

@@ -1,39 +1,57 @@
 from langgraph.graph import END, StateGraph
 from .agent_2c_state import Agent2CState
-from .agent_2c_tools import align_and_convert
+from .agent_2c_tools import align_relations_for_chunk
 
 
 def alignment_node(state: Agent2CState) -> dict:
     """
-    Aligns station/sensor names in structured rule records to official KG seed
-    node IDs, then converts each rule to KG triples with full properties.
+    Iterates over chunks and aligns entity references in each triple to
+    official KG seed node IDs.  Rule node subjects are kept intact.
     """
     print(f"\n[Agent 2C] Starting Ontology Alignment for: {state['source_file']}")
 
-    chunks = state.get("chunks_with_rules", [])
+    chunks         = state.get("chunks_with_relations", [])
     official_nodes = state.get("official_nodes", {})
 
     if not chunks:
-        return {"status": "error", "error_message": "No chunks_with_rules provided."}
+        return {"status": "error", "error_message": "No chunks_with_relations provided."}
 
-    aligned_rule_chunks, kg_triples = align_and_convert(chunks, official_nodes)
+    extracted_data = []
+    total_chunks   = len(chunks)
 
-    total_rules = sum(len(c["aligned_rules"]) for c in aligned_rule_chunks)
-    print(
-        f"[Agent 2C] Alignment complete. "
-        f"{total_rules} rules aligned, {len(kg_triples)} KG triples produced."
-    )
+    for i, chunk in enumerate(chunks):
+        chunk_text    = chunk.get("content", "")
+        raw_relations = chunk.get("relations", [])
+
+        if not raw_relations:
+            extracted_data.append({
+                "chunk_id":         chunk.get("chunk_id"),
+                "metadata":         chunk.get("metadata", {}),
+                "aligned_relations": []
+            })
+            continue
+
+        print(f"  -> Aligning chunk {i+1}/{total_chunks} (ID: {chunk.get('chunk_id')})...")
+        aligned = align_relations_for_chunk(chunk_text, raw_relations, official_nodes)
+
+        extracted_data.append({
+            "chunk_id":          chunk.get("chunk_id"),
+            "metadata":          chunk.get("metadata", {}),
+            "aligned_relations": aligned
+        })
+
+    total_triples = sum(len(c["aligned_relations"]) for c in extracted_data)
+    print(f"[Agent 2C] Alignment complete. {total_triples} triples aligned across {total_chunks} chunks.")
 
     return {
-        "aligned_rule_chunks": aligned_rule_chunks,
-        "kg_triples": kg_triples,
+        "aligned_relations": extracted_data,
         "status": "complete"
     }
 
 
 _workflow = StateGraph(Agent2CState)
-_workflow.add_node("align_rules", alignment_node)
-_workflow.set_entry_point("align_rules")
-_workflow.add_edge("align_rules", END)
+_workflow.add_node("align_relations", alignment_node)
+_workflow.set_entry_point("align_relations")
+_workflow.add_edge("align_relations", END)
 
 agent_2c_app = _workflow.compile()

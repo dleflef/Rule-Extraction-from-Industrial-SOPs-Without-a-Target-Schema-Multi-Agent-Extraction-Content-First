@@ -1,8 +1,8 @@
 {
     "source_file": "SOP_001_OperatingProcedures.pdf",
     "model_used": "qwen2.5-coder-7b-instruct",
-    "strategy": "Programmatic Ontology Alignment + KG Triple Conversion",
-    "aligned_rule_chunks": [
+    "strategy": "Programmatic Ontology Alignment (4-pass fuzzy matching)",
+    "results": [
         {
             "chunk_id": 0,
             "metadata": {
@@ -11,9 +11,10 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": []
+            "aligned_relations": []
         },
         {
             "chunk_id": 1,
@@ -23,9 +24,10 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": []
+            "aligned_relations": []
         },
         {
             "chunk_id": 2,
@@ -35,80 +37,33 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "ST01_FILLING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "A fault at ST01_FILLING",
-                    "action": "halt the line",
-                    "severity": "CRITICAL",
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "ST01_FILLING",
+                    "predicate": "feeds_into",
+                    "object": "ST02_SEALING",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST02_SEALING"
                 },
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "ST02_SEALING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "A fault at ST01_FILLING",
-                    "action": "halt the line",
-                    "severity": "CRITICAL",
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "ST02_SEALING",
+                    "predicate": "feeds_into",
+                    "object": "ST03_LABELLING",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST03_LABELLING"
                 },
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "ST03_LABELLING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "A fault at ST01_FILLING",
-                    "action": "halt the line",
-                    "severity": "CRITICAL",
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
-                },
-                {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "A fault at ST01_FILLING",
-                    "action": "halt the line",
-                    "severity": "CRITICAL",
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "ST03_LABELLING",
+                    "predicate": "feeds_into",
+                    "object": "ST04_PACKAGING",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST04_PACKAGING"
                 }
             ]
         },
@@ -120,188 +75,81 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "ST01_FILLING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "Downstream Effect = Feeds ST02_SEALING",
-                    "action": null,
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "ST01_FILLING",
+                    "predicate": "monitors",
+                    "object": "ST01_FILLING_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST01_FILLING_TMP"
                 },
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "ST02_SEALING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "Downstream Effect = Feeds ST03; thermal fault -> ST04 speed reduction",
-                    "action": "ST04 speed reduction",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "ST02_SEALING",
+                    "predicate": "monitors",
+                    "object": "ST02_SEALING_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST02_SEALING_TMP"
                 },
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "ST02_SEALING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "Downstream Effect = Feeds ST03; thermal fault -> ST04 speed reduction",
-                    "action": "ST04 speed reduction",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "ST03_LABELLING",
+                    "predicate": "monitors",
+                    "object": "ST03_LABELLING_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST03_LABELLING_TMP"
                 },
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "ST03_LABELLING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "Downstream Effect = Feeds ST04_PACKAGING",
-                    "action": null,
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "ST04_PACKAGING_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST04_PACKAGING_TMP"
                 },
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "Downstream Effect = Final output",
-                    "action": null,
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "SRV01_SERVERROOM",
+                    "predicate": "monitors",
+                    "object": "SRV01_SERVERROOM_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "SRV01_SERVERROOM_TMP"
                 },
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "SRV01_SERVERROOM",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "Downstream Effect = SCADA control; failure -> line halt",
-                    "action": "line halt",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "WRH01_WAREHOUSE",
+                    "predicate": "monitors",
+                    "object": "WRH01_WAREHOUSE_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "WRH01_WAREHOUSE_TMP"
                 },
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "WRH01_WAREHOUSE",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "Downstream Effect = Cold storage -product quality",
-                    "action": null,
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "CHM01_CHEMICALSTORAGE",
+                    "predicate": "monitors",
+                    "object": "CHM01_CHEMICALSTORAGE_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "CHM01_CHEMICALSTORAGE_TMP"
                 },
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "CHM01_CHEMICALSTORAGE Chemical",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "Downstream Effect = Hazardous materials -safety critical",
-                    "action": null,
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RND01_RDLAB",
+                    "predicate": "monitors",
+                    "object": "RND01_RDLAB_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "RND01_RDLAB_TMP"
                 },
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "RND01_RDLAB",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "Downstream Effect = Precision experiments -climate sensitive",
-                    "action": null,
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
-                },
-                {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "CAF01_CAFETERIA",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "Downstream Effect = Occupant comfort -food safety",
-                    "action": null,
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "CAF01_CAFETERIA",
+                    "predicate": "monitors",
+                    "object": "CAF01_CAFETERIA_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "CAF01_CAFETERIA_TMP"
                 }
             ]
         },
@@ -313,26 +161,32 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST01-01",
-                    "rule_class": "ThresholdRule",
-                    "station": "ST01_FILLING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": null,
-                    "action": null,
-                    "severity": null,
-                    "critHi": 128,
-                    "warnHi": null,
-                    "critLo": 112,
-                    "warnLo": null,
-                    "unit": "L/min",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST01-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST01-01",
+                    "predicate": "applies_to_sensor",
+                    "object": "FLW",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "FLW"
+                },
+                {
+                    "subject": "ST01_FILLING",
+                    "predicate": "monitors",
+                    "object": "FLW",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "FLW"
                 }
             ]
         },
@@ -344,26 +198,53 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST01-02",
-                    "rule_class": "OperationalRule",
-                    "station": "ST01_FILLING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "TMP exceeds 26°C",
-                    "action": "reduce speed by 10% and notify QC",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST01-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST01-02",
+                    "predicate": "applies_to_station",
+                    "object": "ST01_FILLING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST01_FILLING"
+                },
+                {
+                    "subject": "RULE-ST01-02",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST01-02",
+                    "predicate": "has_condition",
+                    "object": "If TMP exceeds 26°C",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST01-02",
+                    "predicate": "triggers_action",
+                    "object": "reduce speed by 10% and notify QC",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "ST01_FILLING",
+                    "predicate": "monitors",
+                    "object": "TMP_ST01_FILLING",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "TMP_ST01_FILLING"
                 }
             ]
         },
@@ -375,26 +256,53 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST01-03",
-                    "rule_class": "OperationalRule",
-                    "station": "ST01_FILLING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "PRS drop below 3.3 bar",
-                    "action": "inspect inlet valve within 5 min.",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST01-03",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST01-03",
+                    "predicate": "applies_to_station",
+                    "object": "ST01_FILLING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST01_FILLING"
+                },
+                {
+                    "subject": "RULE-ST01-03",
+                    "predicate": "has_sensor_type",
+                    "object": "PRS",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST01-03",
+                    "predicate": "has_condition",
+                    "object": "drop below 3.3 bar",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST01-03",
+                    "predicate": "triggers_action",
+                    "object": "inspect inlet valve within 5 min.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "ST01_FILLING",
+                    "predicate": "monitors",
+                    "object": "PRS",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "PRS"
                 }
             ]
         },
@@ -406,26 +314,46 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST02-01",
-                    "rule_class": "ThresholdRule",
-                    "station": "ST02_SEALING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": null,
-                    "action": null,
-                    "severity": null,
-                    "critHi": 195,
-                    "warnHi": null,
-                    "critLo": 175,
-                    "warnLo": null,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST02-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-01",
+                    "predicate": "applies_to_station",
+                    "object": "ST02_SEALING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST02_SEALING"
+                },
+                {
+                    "subject": "RULE-ST02-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-01",
+                    "predicate": "has_condition",
+                    "object": "TMP MUST remain between 175°C and 195°C.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "ST02_SEALING",
+                    "predicate": "monitors",
+                    "object": "TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "TMP"
                 }
             ]
         },
@@ -437,26 +365,60 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST02-02",
-                    "rule_class": "OperationalRule",
-                    "station": "ST02_SEALING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "TMP > 210°C",
-                    "action": "emergency stop ST02, ST03, ST04.",
-                    "severity": "CRITICAL",
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST02-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-02",
+                    "predicate": "applies_to_station",
+                    "object": "ST02_SEALING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST02_SEALING"
+                },
+                {
+                    "subject": "RULE-ST02-02",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-02",
+                    "predicate": "has_condition",
+                    "object": "TMP > 210°C",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-02",
+                    "predicate": "triggers_action",
+                    "object": "emergency stop ST02, ST03, ST04",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-02",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "ST02_SEALING",
+                    "predicate": "monitors",
+                    "object": "TMP_ST02_SEALING",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "TMP_ST02_SEALING"
                 }
             ]
         },
@@ -468,26 +430,45 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST02-03",
-                    "rule_class": "MaintenanceRule",
-                    "station": "ST02_SEALING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "CUR increase >1.5 A above nominal sustained >5 min",
-                    "action": "schedule maintenance",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST02-03",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-03",
+                    "predicate": "applies_to_station",
+                    "object": "ST02_SEALING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST02_SEALING"
+                },
+                {
+                    "subject": "RULE-ST02-03",
+                    "predicate": "has_sensor_type",
+                    "object": "CUR",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-03",
+                    "predicate": "has_condition",
+                    "object": "increase >1.5 A above nominal sustained >5 min",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-03",
+                    "predicate": "triggers_action",
+                    "object": "schedule maintenance",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -499,26 +480,55 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST02-04",
-                    "rule_class": "OperationalRule",
-                    "station": "ST02_SEALING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling.",
-                    "action": "Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING.",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST02-04",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-04",
+                    "predicate": "applies_to_station",
+                    "object": "ST02_SEALING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST02_SEALING"
+                },
+                {
+                    "subject": "RULE-ST02-04",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST02_SEALING-CUR",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST02_SEALING-CUR"
+                },
+                {
+                    "subject": "RULE-ST02-04",
+                    "predicate": "triggers_action",
+                    "object": "Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "ST02_SEALING",
+                    "predicate": "monitors",
+                    "object": "ST02_SEALING-CUR",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST02_SEALING-CUR"
+                },
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "feeds_into",
+                    "object": "ST04_PACKAGING-SPD",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST04_PACKAGING-SPD"
                 }
             ]
         },
@@ -530,26 +540,59 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST03-01",
-                    "rule_class": "ThresholdRule",
-                    "station": "ST03_LABELLING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": null,
-                    "action": null,
-                    "severity": null,
-                    "critHi": 2.6,
-                    "warnHi": null,
-                    "critLo": 1.8,
-                    "warnLo": null,
-                    "unit": "N",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST03-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-01",
+                    "predicate": "applies_to_sensor",
+                    "object": "TEN",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "TEN"
+                },
+                {
+                    "subject": "RULE-ST03-01",
+                    "predicate": "has_crit_hi",
+                    "object": "2.6",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-01",
+                    "predicate": "has_warn_hi",
+                    "object": "2.4",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-01",
+                    "predicate": "has_crit_lo",
+                    "object": "1.8",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-01",
+                    "predicate": "has_warn_lo",
+                    "object": "2.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-01",
+                    "predicate": "has_unit",
+                    "object": "N",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -561,26 +604,60 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST03-02",
-                    "rule_class": "ThresholdRule",
-                    "station": "ST03_LABELLING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "CNT below 110 pcs/min - check for label jam. Below 100 (CRITICAL): halt.",
-                    "action": null,
-                    "severity": "CRITICAL",
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": 100,
-                    "warnLo": null,
-                    "unit": "pcs/min",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST03-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-02",
+                    "predicate": "applies_to_station",
+                    "object": "ST03_LABELLING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST03_LABELLING"
+                },
+                {
+                    "subject": "RULE-ST03-02",
+                    "predicate": "has_sensor_type",
+                    "object": "CNT",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-02",
+                    "predicate": "has_condition",
+                    "object": "below 110 pcs/min - check for label jam. Below 100 (CRITICAL): halt.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-02",
+                    "predicate": "triggers_action",
+                    "object": "halt",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-02",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "ST03_LABELLING",
+                    "predicate": "monitors",
+                    "object": "CNT_ST03_LABELLING",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "CNT_ST03_LABELLING"
                 }
             ]
         },
@@ -592,26 +669,46 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST03-03",
-                    "rule_class": "OperationalRule",
-                    "station": "ST03_LABELLING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "TEN STUCK >10 consecutive samples - sensor failure.",
-                    "action": null,
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST03-03",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-03",
+                    "predicate": "applies_to_station",
+                    "object": "ST03_LABELLING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST03_LABELLING"
+                },
+                {
+                    "subject": "RULE-ST03-03",
+                    "predicate": "has_sensor_type",
+                    "object": "TEN",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-03",
+                    "predicate": "has_condition",
+                    "object": ">10 consecutive samples - sensor failure.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "ST03_LABELLING",
+                    "predicate": "monitors",
+                    "object": "TEN STUCK",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "TEN STUCK"
                 }
             ]
         },
@@ -623,26 +720,52 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST04-01",
-                    "rule_class": "MaintenanceRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "VIB > 0.20 mm/s",
-                    "action": "schedule maintenance within 24 h.",
-                    "severity": "WARNING",
-                    "critHi": null,
-                    "warnHi": 0.2,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": "mm/s",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST04-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-01",
+                    "predicate": "applies_to_station",
+                    "object": "ST04_PACKAGING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST04_PACKAGING"
+                },
+                {
+                    "subject": "RULE-ST04-01",
+                    "predicate": "has_sensor_type",
+                    "object": "VIB",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-01",
+                    "predicate": "has_condition",
+                    "object": "VIB > 0.20 mm/s",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-01",
+                    "predicate": "triggers_action",
+                    "object": "schedule maintenance within 24 h.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-01",
+                    "predicate": "has_severity",
+                    "object": "WARNING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -654,26 +777,60 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-ST04-02",
-                    "rule_class": "OperationalRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "VIB > 0.35 mm/s (CRITICAL)",
-                    "action": "emergency stop; inspect bearings.",
-                    "severity": "CRITICAL",
-                    "critHi": 0.35,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": "mm/s",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST04-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-02",
+                    "predicate": "applies_to_station",
+                    "object": "ST04_PACKAGING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST04_PACKAGING"
+                },
+                {
+                    "subject": "RULE-ST04-02",
+                    "predicate": "has_sensor_type",
+                    "object": "VIB",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-02",
+                    "predicate": "has_condition",
+                    "object": "VIB > 0.35 mm/s",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-02",
+                    "predicate": "triggers_action",
+                    "object": "emergency stop; inspect bearings.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-02",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "VIB_ST04_PACKAGING",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "VIB_ST04_PACKAGING"
                 }
             ]
         },
@@ -685,75 +842,53 @@
                 ],
                 "page_numbers": [
                     1
-                ]
-            },
-            "aligned_rules": [
-                {
-                    "ruleId": "RULE-ST04-03",
-                    "rule_class": "OperationalRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "SPD drops below 1.00 m/s without operator command",
-                    "action": "verify RULE-ST02-04",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
-                }
-            ]
-        },
-        {
-            "chunk_id": 17,
-            "metadata": {
-                "headings": [
-                    "2.4 ST04_PACKAGING"
                 ],
-                "page_numbers": [
-                    2
-                ]
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": null,
-                    "action": null,
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST04-03",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 },
                 {
-                    "ruleId": null,
-                    "rule_class": "OperationalRule",
-                    "station": "SRV01_SERVERROOM",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": null,
-                    "action": null,
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-ST04-03",
+                    "predicate": "applies_to_station",
+                    "object": "ST04_PACKAGING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST04_PACKAGING"
+                },
+                {
+                    "subject": "RULE-ST04-03",
+                    "predicate": "has_sensor_type",
+                    "object": "SPD",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-03",
+                    "predicate": "has_condition",
+                    "object": "drops below 1.00 m/s without operator command",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-03",
+                    "predicate": "triggers_action",
+                    "object": "verify RULE-ST02-04",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "SPD_ST04_PACKAGING",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "SPD_ST04_PACKAGING"
                 }
             ]
         },
@@ -761,280 +896,407 @@
             "chunk_id": 18,
             "metadata": {
                 "headings": [
-                    "2.4 ST04_PACKAGING"
+                    "2.5 SRV01_SERVERROOM"
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-SRV01-01",
-                    "rule_class": "ThresholdRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "TMP MUST NOT exceed 25°C",
-                    "action": null,
-                    "severity": null,
-                    "critHi": 25,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 },
                 {
-                    "ruleId": "RULE-SRV01-02",
-                    "rule_class": "ThresholdRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "TMP > 28°C (CRITICAL)",
-                    "action": "automatic controlled shutdown of all PLC nodes",
-                    "severity": "CRITICAL",
-                    "critHi": 28,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "applies_to_station",
+                    "object": "SRV01_SERVERROOM",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "SRV01_SERVERROOM"
+                },
+                {
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "has_condition",
+                    "object": "TMP MUST NOT exceed 25°C.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "triggers_action",
+                    "object": "",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "has_severity",
+                    "object": "WARNING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-02",
+                    "predicate": "applies_to_station",
+                    "object": "SRV01_SERVERROOM",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "SRV01_SERVERROOM"
+                },
+                {
+                    "subject": "RULE-SRV01-02",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-02",
+                    "predicate": "has_condition",
+                    "object": "TMP > 28°C (CRITICAL)",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-02",
+                    "predicate": "triggers_action",
+                    "object": "automatic controlled shutdown of all PLC nodes",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-02",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
-        },
-        {
-            "chunk_id": 19,
-            "metadata": {
-                "headings": [
-                    "2.4 ST04_PACKAGING"
-                ],
-                "page_numbers": [
-                    2
-                ]
-            },
-            "aligned_rules": []
         },
         {
             "chunk_id": 20,
             "metadata": {
                 "headings": [
-                    "2.4 ST04_PACKAGING"
+                    "2.6 WRH01_WAREHOUSE (General Warehouse)"
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-WRH01-01",
-                    "rule_class": "ThresholdRule",
-                    "station": "WRH01_WAREHOUSE",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "TMP MUST remain between 0.5°C and 8°C.",
-                    "action": null,
-                    "severity": "CRITICAL",
-                    "critHi": 12,
-                    "warnHi": null,
-                    "critLo": 0.5,
-                    "warnLo": 8,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-WRH01-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 },
                 {
-                    "ruleId": "RULE-WRH01-02",
-                    "rule_class": "ThresholdRule",
-                    "station": "WRH01_WAREHOUSE",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "HUM above 85%RH.",
-                    "action": "inspect door seals and activate dehumidifier.",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": 85,
-                    "unit": "%RH",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-WRH01-01",
+                    "predicate": "applies_to_station",
+                    "object": "WRH01_WAREHOUSE",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "WRH01_WAREHOUSE"
+                },
+                {
+                    "subject": "RULE-WRH01-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-WRH01-01",
+                    "predicate": "has_condition",
+                    "object": "between 0.5°C and 8°C",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-WRH01-01",
+                    "predicate": "triggers_action",
+                    "object": "notify QC and quarantine batch",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-WRH01-01",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-WRH01-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-WRH01-02",
+                    "predicate": "applies_to_station",
+                    "object": "WRH01_WAREHOUSE",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "WRH01_WAREHOUSE"
+                },
+                {
+                    "subject": "RULE-WRH01-02",
+                    "predicate": "has_sensor_type",
+                    "object": "HUM",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-WRH01-02",
+                    "predicate": "has_condition",
+                    "object": "above 85%RH",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-WRH01-02",
+                    "predicate": "triggers_action",
+                    "object": "inspect door seals and activate dehumidifier",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
-        },
-        {
-            "chunk_id": 21,
-            "metadata": {
-                "headings": [
-                    "2.4 ST04_PACKAGING"
-                ],
-                "page_numbers": [
-                    2
-                ]
-            },
-            "aligned_rules": []
         },
         {
             "chunk_id": 22,
             "metadata": {
                 "headings": [
-                    "2.4 ST04_PACKAGING"
+                    "2.7 CHM01_CHEMICALSTORAGE (Chemical Storage)"
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-CHM01-01",
-                    "rule_class": "ThresholdRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "TMP MUST remain between 10°C and 20°C.",
-                    "action": "CRITICAL above 25°C - activate emergency ventilation and notify safety officer immediately.",
-                    "severity": "CRITICAL",
-                    "critHi": 25,
-                    "warnHi": null,
-                    "critLo": 10,
-                    "warnLo": null,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-CHM01-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 },
                 {
-                    "ruleId": "RULE-CHM01-02",
-                    "rule_class": "ThresholdRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "HUM MUST NOT exceed 50%RH.",
-                    "action": "Activate desiccant system if HUM >45%RH.",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": 45,
-                    "unit": "%RH",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-CHM01-01",
+                    "predicate": "applies_to_station",
+                    "object": "Chemical Storage",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "Chemical Storage"
                 },
                 {
-                    "ruleId": "RULE-CHM01-03",
-                    "rule_class": "AccessRule",
-                    "station": "CHM01_CHEMICALSTORAGE",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage.",
-                    "action": "UNAUTHORIZED_ACCESS must be escalated within 2 minutes.",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-CHM01-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-01",
+                    "predicate": "has_condition",
+                    "object": "TMP MUST remain between 10°C and 20°C. CRITICAL above 25°C - activate emergency ventilation and notify safety officer immediately.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-01",
+                    "predicate": "triggers_action",
+                    "object": "activate emergency ventilation and notify safety officer immediately",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-02",
+                    "predicate": "applies_to_station",
+                    "object": "Chemical Storage",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "Chemical Storage"
+                },
+                {
+                    "subject": "RULE-CHM01-02",
+                    "predicate": "has_sensor_type",
+                    "object": "HUM",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-02",
+                    "predicate": "has_condition",
+                    "object": "HUM MUST NOT exceed 50%RH. Elevated humidity accelerates degradation of hygroscopic reagents.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-02",
+                    "predicate": "triggers_action",
+                    "object": "Activate desiccant system if HUM >45%RH",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-03",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-03",
+                    "predicate": "applies_to_station",
+                    "object": "Chemical Storage",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "Chemical Storage"
+                },
+                {
+                    "subject": "RULE-CHM01-03",
+                    "predicate": "has_condition",
+                    "object": "Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-03",
+                    "predicate": "triggers_action",
+                    "object": "UNAUTHORIZED_ACCESS must be escalated within 2 minutes",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
-        },
-        {
-            "chunk_id": 23,
-            "metadata": {
-                "headings": [
-                    "2.4 ST04_PACKAGING"
-                ],
-                "page_numbers": [
-                    2
-                ]
-            },
-            "aligned_rules": []
         },
         {
             "chunk_id": 24,
             "metadata": {
                 "headings": [
-                    "2.4 ST04_PACKAGING"
+                    "2.8 RND01_RDLAB (R&D; Lab)"
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-RND01-01",
-                    "rule_class": "ThresholdRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "TMP MUST remain between 18°C and 26°C for experimental validity.",
-                    "action": null,
-                    "severity": null,
-                    "critHi": 26,
-                    "warnHi": null,
-                    "critLo": 18,
-                    "warnLo": null,
-                    "unit": "°C",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-RND01-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 },
                 {
-                    "ruleId": "RULE-RND01-02",
-                    "rule_class": "ThresholdRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "HUM drift above 65%RH - activate dehumidifier.",
-                    "action": "suspend sensitive experiments and inspect HVAC system.",
-                    "severity": "CRITICAL",
-                    "critHi": 75,
-                    "warnHi": null,
-                    "critLo": 65,
-                    "warnLo": null,
-                    "unit": "%RH",
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
-                }
-            ]
-        },
-        {
-            "chunk_id": 25,
-            "metadata": {
-                "headings": [
-                    "2.4 ST04_PACKAGING"
-                ],
-                "page_numbers": [
-                    2
-                ]
-            },
-            "aligned_rules": [
+                    "subject": "RULE-RND01-01",
+                    "predicate": "applies_to_station",
+                    "object": "RND01_RDLAB",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "RND01_RDLAB"
+                },
                 {
-                    "ruleId": null,
-                    "rule_class": "AccessRule",
-                    "station": null,
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": null,
-                    "action": null,
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-RND01-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-01",
+                    "predicate": "has_condition",
+                    "object": "must remain between 18°C and 26°C for experimental validity",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-01",
+                    "predicate": "triggers_action",
+                    "object": "",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-01",
+                    "predicate": "has_severity",
+                    "object": "WARNING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-02",
+                    "predicate": "applies_to_station",
+                    "object": "RND01_RDLAB",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "RND01_RDLAB"
+                },
+                {
+                    "subject": "RULE-RND01-02",
+                    "predicate": "has_sensor_type",
+                    "object": "HUM",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-02",
+                    "predicate": "has_condition",
+                    "object": "drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-02",
+                    "predicate": "triggers_action",
+                    "object": "",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-02",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -1042,60 +1304,117 @@
             "chunk_id": 26,
             "metadata": {
                 "headings": [
-                    "2.4 ST04_PACKAGING"
+                    "2.9 CAF01_CAFETERIA"
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
-            "aligned_rules": [
+            "aligned_relations": [
                 {
-                    "ruleId": "RULE-CAF01-01",
-                    "rule_class": "OperationalRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "TMP above 26°C",
-                    "action": "check ventilation system. Occupant comfort is the primary criterion.",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-CAF01-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 },
                 {
-                    "ruleId": "RULE-CAF01-02",
-                    "rule_class": "OperationalRule",
-                    "station": "ST04_PACKAGING",
-                    "sensor": null,
-                    "sensorType": null,
-                    "condition": "HUM above 70%RH",
-                    "action": "inspect drainage and activate ventilation.",
-                    "severity": null,
-                    "critHi": null,
-                    "warnHi": null,
-                    "critLo": null,
-                    "warnLo": null,
-                    "unit": null,
-                    "_station_alignment": "unaligned",
-                    "_sensor_alignment": "unaligned",
-                    "_overall_alignment": "unaligned"
+                    "subject": "RULE-CAF01-01",
+                    "predicate": "applies_to_station",
+                    "object": "CAF01_CAFETERIA",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "CAF01_CAFETERIA"
+                },
+                {
+                    "subject": "RULE-CAF01-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CAF01-01",
+                    "predicate": "has_condition",
+                    "object": "TMP above 26°C",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CAF01-01",
+                    "predicate": "triggers_action",
+                    "object": "check ventilation system",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CAF01-01",
+                    "predicate": "has_severity",
+                    "object": "WARNING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "CAF01_CAFETERIA",
+                    "predicate": "monitors",
+                    "object": "CAF01_CAFETERIA_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "CAF01_CAFETERIA_TMP"
+                },
+                {
+                    "subject": "RULE-CAF01-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CAF01-02",
+                    "predicate": "applies_to_station",
+                    "object": "CAF01_CAFETERIA",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "CAF01_CAFETERIA"
+                },
+                {
+                    "subject": "RULE-CAF01-02",
+                    "predicate": "has_sensor_type",
+                    "object": "HUM",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CAF01-02",
+                    "predicate": "has_condition",
+                    "object": "HUM above 70%RH",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CAF01-02",
+                    "predicate": "triggers_action",
+                    "object": "inspect drainage and activate ventilation",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CAF01-02",
+                    "predicate": "has_severity",
+                    "object": "WARNING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "CAF01_CAFETERIA",
+                    "predicate": "monitors",
+                    "object": "CAF01_CAFETERIA_HUM",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "CAF01_CAFETERIA_HUM"
                 }
             ]
-        }
-    ],
-    "kg_triples": [
-        {
-            "subject": "CHM01_CHEMICALSTORAGE",
-            "predicate": "has_access_rule",
-            "object": "UNAUTHORIZED_ACCESS must be escalated within 2 minutes.",
-            "properties": {
-                "condition": "Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage."
-            }
         }
     ]
 }

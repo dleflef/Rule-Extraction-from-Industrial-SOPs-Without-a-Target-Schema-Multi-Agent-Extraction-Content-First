@@ -2,7 +2,7 @@
     "source_file": "SOP_004_PersonnelZoneAccess.pdf",
     "model_used": "qwen2.5-coder-7b-instruct",
     "temperature": 0.0,
-    "strategy": "Zero-Shot Notebook Pattern",
+    "prompt_mode": "graph_informed",
     "results": [
         {
             "chunk_id": 0,
@@ -12,10 +12,42 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: Personnel Zone Access and Alarm Response Procedures]\nDocument: SOP-004 | Rev: 1.0 | Date: 2025-12-01 | Author: Ing. F. Ferrari - Safety & Compliance",
-            "entities": []
+            "entities": [
+                {
+                    "span": "Personnel Zone Access and Alarm Response Procedures",
+                    "category": "Zone",
+                    "source_chunk_id": 0,
+                    "source_page": 1
+                },
+                {
+                    "span": "SOP-004",
+                    "category": "Component",
+                    "source_chunk_id": 0,
+                    "source_page": 1
+                },
+                {
+                    "span": "Rev: 1.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 0,
+                    "source_page": 1
+                },
+                {
+                    "span": "2025-12-01",
+                    "category": "Parameter",
+                    "source_chunk_id": 0,
+                    "source_page": 1
+                },
+                {
+                    "span": "Ing. F. Ferrari - Safety & Compliance",
+                    "category": "Role",
+                    "source_chunk_id": 0,
+                    "source_page": 1
+                }
+            ]
         },
         {
             "chunk_id": 1,
@@ -25,61 +57,88 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 1. Role-Zone Authorisation Matrix]\noperator, Prod. Area = YES. operator, Server Room = NO. operator, Gen. Warehouse = YES. operator, Main Entrance = YES. operator, Chem. Storage = NO. operator, R&D Lab = NO. operator, Cafeteria = YES. technician, Prod. Area = YES. technician, Server Room = YES. technician, Gen. Warehouse = YES. technician, Main Entrance = YES. technician, Chem. Storage = YES. technician, R&D Lab = YES. technician, Cafeteria = YES. supervisor, Prod. Area = YES. supervisor, Server Room = YES. supervisor, Gen. Warehouse = YES. supervisor, Main Entrance = YES. supervisor, Chem. Storage = YES. supervisor, R&D Lab = YES. supervisor, Cafeteria = YES. manager, Prod. Area = YES. manager, Server Room = YES. manager, Gen. Warehouse = YES. manager, Main Entrance = YES. manager, Chem. Storage = YES. manager, R&D Lab = YES. manager, Cafeteria = YES. security, Prod. Area = YES. security, Server Room = YES. security, Gen. Warehouse = YES. security, Main Entrance = YES. security, Chem. Storage = YES. security, R&D Lab = YES. security, Cafeteria = YES. visitor, Prod. Area = YES. visitor, Server Room = NO. visitor, Gen. Warehouse = NO. visitor, Main Entrance = YES. visitor, Chem. Storage = NO. visitor, R&D Lab = NO. visitor, Cafeteria = YES",
             "entities": [
                 {
                     "span": "operator",
-                    "category": "Role"
+                    "category": "Role",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "Prod. Area",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "Server Room",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "Gen. Warehouse",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "Main Entrance",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "Chem. Storage",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "R&D Lab",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "Cafeteria",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "technician",
-                    "category": "Role"
+                    "category": "Role",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "supervisor",
-                    "category": "Role"
+                    "category": "Role",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "manager",
-                    "category": "Role"
+                    "category": "Role",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "security",
-                    "category": "Role"
+                    "category": "Role",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 },
                 {
                     "span": "visitor",
-                    "category": "Role"
+                    "category": "Role",
+                    "source_chunk_id": 1,
+                    "source_page": 1
                 }
             ]
         },
@@ -91,37 +150,52 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2. Maximum Occupancy per Zone]\nProduction Area, Max Persons = 12. Production Area, Enforcement = WARNING above 10; CRITICAL above 12. Server Room, Max Persons = 2. Server Room, Enforcement = CRITICAL above 2; access badge required. General Warehouse, Max Persons = 4. General Warehouse, Enforcement = WARNING above 3. Main Entrance, Max Persons = 8. Main Entrance, Enforcement = Monitoring only. Chemical Storage, Max Persons = 4. Chemical Storage, Enforcement = CRITICAL above 4; hazmat training required -see RULE-CHM01-03. R&D Lab, Max Persons = 6. R&D Lab, Enforcement = WARNING above 5; precision experiments may be disturbed. Cafeteria, Max Persons = 20. Cafeteria, Enforcement = Monitoring only -occupant comfort",
             "entities": [
                 {
                     "span": "Production Area",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 2,
+                    "source_page": 1
                 },
                 {
                     "span": "Server Room",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 2,
+                    "source_page": 1
                 },
                 {
                     "span": "General Warehouse",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 2,
+                    "source_page": 1
                 },
                 {
                     "span": "Main Entrance",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 2,
+                    "source_page": 1
                 },
                 {
                     "span": "Chemical Storage",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 2,
+                    "source_page": 1
                 },
                 {
                     "span": "R&D Lab",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 2,
+                    "source_page": 1
                 },
                 {
                     "span": "Cafeteria",
-                    "category": "Zone"
+                    "category": "Zone",
+                    "source_chunk_id": 2,
+                    "source_page": 1
                 }
             ]
         },
@@ -133,109 +207,52 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 3. Maximum Acknowledgment Times by Role and Severity]\noperator, Max Ack -WARNING (min) = 15. operator, Max Ack -CRITICAL (min) = 3. technician, Max Ack -WARNING (min) = 10. technician, Max Ack -CRITICAL (min) = 2. supervisor, Max Ack -WARNING (min) = 5. supervisor, Max Ack -CRITICAL (min) = 1. manager, Max Ack -WARNING (min) = 15. manager, Max Ack -CRITICAL (min) = 5. security, Max Ack -WARNING (min) = 20. security, Max Ack -CRITICAL (min) = 5",
             "entities": [
                 {
                     "span": "operator",
-                    "category": "Role"
+                    "category": "Role",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 },
                 {
                     "span": "Max Ack -WARNING (min)",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "15",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 },
                 {
                     "span": "Max Ack -CRITICAL (min)",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "3",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 },
                 {
                     "span": "technician",
-                    "category": "Role"
-                },
-                {
-                    "span": "Max Ack -WARNING (min)",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "10",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "Max Ack -CRITICAL (min)",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "2",
-                    "category": "AnomalyEvent"
+                    "category": "Role",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 },
                 {
                     "span": "supervisor",
-                    "category": "Role"
-                },
-                {
-                    "span": "Max Ack -WARNING (min)",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "5",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "Max Ack -CRITICAL (min)",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "1",
-                    "category": "AnomalyEvent"
+                    "category": "Role",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 },
                 {
                     "span": "manager",
-                    "category": "Role"
-                },
-                {
-                    "span": "Max Ack -WARNING (min)",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "15",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "Max Ack -CRITICAL (min)",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "5",
-                    "category": "AnomalyEvent"
+                    "category": "Role",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 },
                 {
                     "span": "security",
-                    "category": "Role"
-                },
-                {
-                    "span": "Max Ack -WARNING (min)",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "20",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "Max Ack -CRITICAL (min)",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "5",
-                    "category": "AnomalyEvent"
+                    "category": "Role",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 }
             ]
         },
@@ -247,17 +264,22 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 4. Unauthorised Access Rules]\nRULE-ACCESS-01: Any entry by an unauthorised role MUST be logged as OccupancyEvent::UnauthorisedAccess with person_id, zone, and timestamp.",
             "entities": [
                 {
                     "span": "Unauthorised Access Rules",
-                    "category": "Role"
+                    "category": "Zone",
+                    "source_chunk_id": 4,
+                    "source_page": 1
                 },
                 {
                     "span": "OccupancyEvent::UnauthorisedAccess",
-                    "category": "AnomalyEvent"
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 4,
+                    "source_page": 1
                 }
             ]
         },
@@ -269,13 +291,16 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 4. Unauthorised Access Rules]\nRULE-ACCESS-02: Security personnel MUST be notified within 2 minutes of detection.",
             "entities": [
                 {
                     "span": "Security personnel",
-                    "category": "Role"
+                    "category": "Role",
+                    "source_chunk_id": 5,
+                    "source_page": 1
                 }
             ]
         },
@@ -287,21 +312,22 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 4. Unauthorised Access Rules]\nRULE-ACCESS-03: The KG node MUST include authorized=NO and a reference to this rule. RULE-ACCESS-04: Chemical Storage has zero-tolerance policy. Any UNAUTHORIZED_ACCESS triggers immediate escalation to the Safety Officer regardless of role.",
             "entities": [
                 {
                     "span": "Chemical Storage",
-                    "category": "Zone"
-                },
-                {
-                    "span": "UNAUTHORIZED_ACCESS",
-                    "category": "AnomalyEvent"
+                    "category": "Zone",
+                    "source_chunk_id": 6,
+                    "source_page": 2
                 },
                 {
                     "span": "Safety Officer",
-                    "category": "Role"
+                    "category": "Role",
+                    "source_chunk_id": 6,
+                    "source_page": 2
                 }
             ]
         }

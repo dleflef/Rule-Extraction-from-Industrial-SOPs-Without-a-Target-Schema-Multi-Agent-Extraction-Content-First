@@ -2,7 +2,7 @@
     "source_file": "SOP_002_AlarmThresholds.pdf",
     "model_used": "qwen2.5-coder-7b-instruct",
     "temperature": 0.0,
-    "strategy": "Zero-Shot Notebook Pattern",
+    "prompt_mode": "graph_informed",
     "results": [
         {
             "chunk_id": 0,
@@ -12,7 +12,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: Alarm Thresholds and Response Matrix - Production Line A]\nDocument: SOP-002 | Rev: 1.8 | Date: 2025-10-20 | Author: Ing. L. Greco - Automation & Control",
             "entities": []
@@ -25,10 +26,42 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: Alarm Thresholds and Response Matrix - Production Line A]\nThreshold hierarchy: CRIT_LO < WARN_LO < NOMINAL < WARN_HI < CRIT_HI.",
-            "entities": []
+            "entities": [
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 1,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 1,
+                    "source_page": 1
+                },
+                {
+                    "span": "NOMINAL",
+                    "category": "Parameter",
+                    "source_chunk_id": 1,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 1,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 1,
+                    "source_page": 1
+                }
+            ]
         },
         {
             "chunk_id": 2,
@@ -38,129 +71,28 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: ST01_FILLING Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 15.0. TMP,  = 18.0. TMP, WARN_LO Nominal = 22.0 ± 0.4. TMP, WARN_HI = 26.0. TMP, CRIT_HI = 30.0. TMP, CRITICAL Response = Inspect and notify maintenance. PRS, Unit = bar. PRS, CRIT_LO = 3.0. PRS,  = 3.3. PRS, WARN_LO Nominal = 3.8 ± 0.05. PRS, WARN_HI = 4.2. PRS, CRIT_HI = 4.8. PRS, CRITICAL Response = Inspect and notify maintenance. FLW, Unit = L/min. FLW, CRIT_LO = 105.0. FLW,  = 112.0. FLW, WARN_LO Nominal = 120.0 ± 1.5. FLW, WARN_HI = 128.0. FLW, CRIT_HI = 135.0. FLW, CRITICAL Response = Inspect and notify maintenance",
             "entities": [
                 {
                     "span": "TMP",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = °C.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "15.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "18.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal = 22.0 ± 0.4",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "TMP, WARN_HI = 26.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI = 30.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "TMP, CRITICAL Response = Inspect and notify maintenance.",
-                    "category": "AnomalyEvent"
+                    "category": "Sensor",
+                    "source_chunk_id": 2,
+                    "source_page": 1
                 },
                 {
                     "span": "PRS",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = bar.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "3.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "3.3",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal = 3.8 ± 0.05",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "PRS, WARN_HI = 4.2",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI = 4.8",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "PRS, CRITICAL Response = Inspect and notify maintenance.",
-                    "category": "AnomalyEvent"
+                    "category": "Sensor",
+                    "source_chunk_id": 2,
+                    "source_page": 1
                 },
                 {
                     "span": "FLW",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = L/min.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "105.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "112.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal = 120.0 ± 1.5",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "FLW, WARN_HI = 128.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI = 135.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "FLW, CRITICAL Response = Inspect and notify maintenance.",
-                    "category": "AnomalyEvent"
+                    "category": "Sensor",
+                    "source_chunk_id": 2,
+                    "source_page": 1
                 }
             ]
         },
@@ -172,165 +104,28 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: ST02_SEALING Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 165.0. TMP,  = 175.0. TMP, WARN_LO Nominal = 185.0 ± 1.2. TMP, WARN_HI = 195.0. TMP, CRIT_HI = 210.0. TMP, CRITICAL Response = E-STOP ST02/ST03/ST04; inspect element. PRS, Unit = bar. PRS, CRIT_LO = 4.2. PRS,  = 4.6. PRS, WARN_LO Nominal = 5.2 ± 0.08. PRS, WARN_HI = 5.7. PRS, CRIT_HI = 6.2. PRS, CRITICAL Response = Inspect and notify maintenance. CUR, Unit = A. CUR, CRIT_LO = 9.5. CUR,  = 11.0. CUR, WARN_LO Nominal = 12.4 ± 0.3. CUR, WARN_HI = 13.5. CUR, CRIT_HI = 15.0. CUR, CRITICAL Response = E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04)",
             "entities": [
                 {
                     "span": "TMP",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = °C.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "165.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "175.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "185.0 ± 1.2",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "195.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "210.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRITICAL Response = E-STOP ST02/ST03/ST04; inspect element.",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 },
                 {
                     "span": "PRS",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = bar.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "4.2",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "4.6",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "5.2 ± 0.08",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "5.7",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "6.2",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRITICAL Response = Inspect and notify maintenance.",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 },
                 {
                     "span": "CUR",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = A.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "9.5",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "11.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "12.4 ± 0.3",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "13.5",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "15.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRITICAL Response = E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04)",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 }
             ]
         },
@@ -342,177 +137,28 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: ST03_LABELLING Thresholds]\nSPD, Unit = m/s. SPD, CRIT_LO = 0.65. SPD,  = 0.75. SPD, WARN_LO Nominal = 0.85 ± 0.01. SPD, WARN_HI = 0.95. SPD, CRIT_HI = 1.05. SPD, CRITICAL Response = Inspect and notify maintenance. TEN, Unit = N. TEN, CRIT_LO = 1.5. TEN,  = 1.8. TEN, WARN_LO Nominal = 2.2 ± 0.05. TEN, WARN_HI = 2.6. TEN, CRIT_HI = 3.0. TEN, CRITICAL Response = Inspect and notify maintenance. CNT, Unit = pcs/min. CNT, CRIT_LO = 100. CNT,  = 110. CNT, WARN_LO Nominal = 120 ± 2.0. CNT, WARN_HI = 130. CNT, CRIT_HI = 140. CNT, CRITICAL Response = E-STOP labelling; inspect label path",
             "entities": [
                 {
                     "span": "SPD",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = m/s.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "0.65",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "0.75",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "0.85 ± 0.01",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "0.95",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "1.05",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "Inspect and notify maintenance.",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
                 },
                 {
                     "span": "TEN",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = N.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "1.5",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "1.8",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "2.2 ± 0.05",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "2.6",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "3.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "Inspect and notify maintenance.",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
                 },
                 {
                     "span": "CNT",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = pcs/min.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "100",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "110",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "120 ± 2.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "130",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "140",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "E-STOP labelling; inspect label path",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
                 }
             ]
         },
@@ -524,117 +170,88 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: ST04_PACKAGING Thresholds]\nVIB, Unit = mm/s. VIB, CRIT_LO = 0.01. VIB,  = 0.02. VIB, WARN_LO Nominal = 0.12 ± 0.005. VIB, WARN_HI = 0.2. VIB, CRIT_HI = 0.35. VIB, CRITICAL Response = E-STOP; inspect main bearing. CUR, Unit = A. CUR, CRIT_LO = 6.5. CUR,  = 7.5. CUR, WARN_LO Nominal = 8.7 ± 0.2. CUR, WARN_HI = 9.8. CUR, CRIT_HI = 11.0. CUR, CRITICAL Response = Inspect and notify maintenance. SPD, Unit = m/s. SPD, CRIT_LO = 0.85. SPD,  = 1.0. SPD, WARN_LO Nominal = 1.2 ± 0.02. SPD, WARN_HI = 1.4. SPD, CRIT_HI = 1.6. SPD, CRITICAL Response = Inspect and notify maintenance",
             "entities": [
                 {
                     "span": "VIB",
-                    "category": "Sensor"
-                },
-                {
-                    "span": "Unit = mm/s",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "0.12 ± 0.005",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "E-STOP; inspect main bearing",
-                    "category": "AnomalyEvent"
+                    "category": "Sensor",
+                    "source_chunk_id": 5,
+                    "source_page": 1
                 },
                 {
                     "span": "CUR",
-                    "category": "Sensor"
-                },
-                {
-                    "span": "Unit = A",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "8.7 ± 0.2",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Inspect and notify maintenance",
-                    "category": "AnomalyEvent"
+                    "category": "Sensor",
+                    "source_chunk_id": 5,
+                    "source_page": 1
                 },
                 {
                     "span": "SPD",
-                    "category": "Sensor"
+                    "category": "Sensor",
+                    "source_chunk_id": 5,
+                    "source_page": 1
                 },
                 {
-                    "span": "Unit = m/s",
-                    "category": "Parameter"
+                    "span": "mm/s",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "A",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "m/s",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
                 },
                 {
                     "span": "CRIT_LO",
-                    "category": "Parameter"
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
                 },
                 {
                     "span": "",
-                    "category": "Parameter"
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
                 },
                 {
                     "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "1.2 ± 0.02",
-                    "category": "Parameter"
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
                 },
                 {
                     "span": "WARN_HI",
-                    "category": "Parameter"
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
                 },
                 {
                     "span": "CRIT_HI",
-                    "category": "Parameter"
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "E-STOP; inspect main bearing",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 5,
+                    "source_page": 1
                 },
                 {
                     "span": "Inspect and notify maintenance",
-                    "category": "AnomalyEvent"
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 5,
+                    "source_page": 1
                 }
             ]
         },
@@ -646,125 +263,22 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: SRV01_SERVERROOM Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 16.0. TMP,  = 18.0. TMP, WARN_LO Nominal = 21.0 ± 0.3. TMP, WARN_HI = 25.0. TMP, CRIT_HI = 28.0. TMP, CRITICAL Response = Activate backup cooling; prepare controlled PLC shutdown. HUM, Unit = %RH. HUM, CRIT_LO = 25.0. HUM,  = 30.0. HUM, WARN_LO Nominal = 45.0 ± 1.0. HUM, WARN_HI = 60.0. HUM, CRIT_HI = 70.0. HUM, CRITICAL Response = Inspect and notify maintenance",
             "entities": [
                 {
-                    "span": "SRV01_SERVERROOM",
-                    "category": "Zone"
-                },
-                {
                     "span": "TMP",
-                    "category": "Sensor"
-                },
-                {
-                    "span": "°C",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "16.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "18.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "21.0 ± 0.3",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "25.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "28.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "Activate backup cooling; prepare controlled PLC shutdown.",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
                 },
                 {
                     "span": "HUM",
-                    "category": "Sensor"
-                },
-                {
-                    "span": "%RH",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "25.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "30.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "45.0 ± 1.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "60.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "70.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "Inspect and notify maintenance",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
                 }
             ]
         },
@@ -776,77 +290,22 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: WRH01_WAREHOUSE Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = -1.0. TMP,  = 0.5. TMP, WARN_LO Nominal = 4.0 ± 0.5. TMP, WARN_HI = 8.0. TMP, CRIT_HI = 12.0. TMP, CRITICAL Response = Activate backup refrigeration; notify QC. HUM, Unit = %RH. HUM, CRIT_LO = 55.0. HUM,  = 60.0. HUM, WARN_LO Nominal = 75.0 ± 1.5. HUM, WARN_HI = 85.0. HUM, CRIT_HI = 90.0. HUM, CRITICAL Response = Inspect and notify maintenance",
             "entities": [
                 {
-                    "span": "WRH01_WAREHOUSE",
-                    "category": "Zone"
-                },
-                {
                     "span": "TMP",
-                    "category": "Sensor"
-                },
-                {
-                    "span": "Unit = °C.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO = -1.0",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal = 4.0 ± 0.5",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "WARN_HI = 8.0",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "CRIT_HI = 12.0",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "CRITICAL Response = Activate backup refrigeration; notify QC.",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
                 },
                 {
                     "span": "HUM",
-                    "category": "Sensor"
-                },
-                {
-                    "span": "Unit = %RH.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO = 55.0",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal = 75.0 ± 1.5",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "WARN_HI = 85.0",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "CRIT_HI = 90.0",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "CRITICAL Response = Inspect and notify maintenance",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
                 }
             ]
         },
@@ -858,81 +317,22 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: CHM01_CHEMICALSTORAGE Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 5.0. TMP,  = 10.0. TMP, WARN_LO Nominal = 15.0 ± 0.3. TMP, WARN_HI = 20.0. TMP, CRIT_HI = 25.0. TMP, CRITICAL Response = Activate emergency ventilation; notify safety officer immediatel. HUM, Unit = %RH. HUM, CRIT_LO = 15.0. HUM,  = 20.0. HUM, WARN_LO Nominal = 35.0 ± 1.0. HUM, WARN_HI = 50.0. HUM, CRIT_HI = 60.0. HUM, CRITICAL Response = Activate desiccant system; inspect storage containers for leak",
             "entities": [
                 {
                     "span": "TMP",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = °C.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "10.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal = 15.0 ± 0.3",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "20.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "25.0",
-                    "category": "Parameter"
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
                 },
                 {
                     "span": "HUM",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = %RH.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "20.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal = 35.0 ± 1.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "50.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "60.0",
-                    "category": "Parameter"
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
                 }
             ]
         },
@@ -944,113 +344,22 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: RND01_RDLAB Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 15.0. TMP,  = 18.0. TMP, WARN_LO Nominal = 22.0 ± 0.2. TMP, WARN_HI = 26.0. TMP, CRIT_HI = 30.0. TMP, CRITICAL Response = Inspect and notify maintenance. HUM, Unit = %RH. HUM, CRIT_LO = 25.0. HUM,  = 35.0. HUM, WARN_LO Nominal = 50.0 ± 1.0. HUM, WARN_HI = 65.0. HUM, CRIT_HI = 75.0. HUM, CRITICAL Response = Suspend experiments; inspect HVAC system",
             "entities": [
                 {
                     "span": "TMP",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = °C.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "15.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "18.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "22.0 ± 0.2",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "26.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "30.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRITICAL Response = Inspect and notify maintenance.",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
                 },
                 {
                     "span": "HUM",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "Unit = %RH.",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "25.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "35.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "50.0 ± 1.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "65.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "75.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRITICAL Response = Suspend experiments; inspect HVAC system",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
                 }
             ]
         },
@@ -1062,117 +371,22 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: CAF01_CAFETERIA Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 14.0. TMP,  = 17.0. TMP, WARN_LO Nominal = 21.0 ± 0.4. TMP, WARN_HI = 26.0. TMP, CRIT_HI = 30.0. TMP, CRITICAL Response = Inspect and notify maintenance. HUM, Unit = %RH. HUM, CRIT_LO = 25.0. HUM,  = 35.0. HUM, WARN_LO Nominal = 55.0 ± 1.5. HUM, WARN_HI = 70.0. HUM, CRIT_HI = 80.0. HUM, CRITICAL Response = Inspect and notify maintenance",
             "entities": [
                 {
-                    "span": "CAF01_CAFETERIA",
-                    "category": "Zone"
-                },
-                {
                     "span": "TMP",
-                    "category": "Sensor"
-                },
-                {
-                    "span": "°C",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "14.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "17.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "21.0 ± 0.4",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "26.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "30.0",
-                    "category": "Parameter"
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
                 },
                 {
                     "span": "HUM",
-                    "category": "Sensor"
-                },
-                {
-                    "span": "%RH",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "25.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "35.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_LO Nominal",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "55.0 ± 1.5",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "70.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "80.0",
-                    "category": "Parameter"
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent"
-                },
-                {
-                    "span": "Inspect and notify maintenance",
-                    "category": "AnomalyEvent"
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
                 }
             ]
         },
@@ -1184,29 +398,40 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: Anomaly Type Definitions for KG Mapping]\nSPIKE, Definition = Transient deviation >3 s , <5 minSingle. SPIKE, Detection Criterion = reading >CRIT. SPIKE, Ontology Class = AnomalyEvent::Spike. DRIFT, Definition = Monotonic deviation >15 min. DRIFT, Detection Criterion = Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift. DRIFT, Ontology Class = Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift. STUCK, Definition = Unchanged >10 consecutive. STUCK, Detection Criterion = readings std(last 10)<0.001×nominal. STUCK, Ontology Class = AnomalyEvent::StuckSensor. OUT_OF_RANGE, Definition = Sustained WARN violation >10 min >WARN for 20+. OUT_OF_RANGE, Detection Criterion = readings. OUT_OF_RANGE, Ontology Class = AnomalyEvent::OutOfRange. CORRELATED, Definition = Causally linked to another station Onset within. CORRELATED, Detection Criterion = 90 min of cause. CORRELATED, Ontology Class = AnomalyEvent::Correlated",
             "entities": [
                 {
                     "span": "SPIKE",
-                    "category": "AnomalyEvent"
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 11,
+                    "source_page": 2
                 },
                 {
                     "span": "DRIFT",
-                    "category": "AnomalyEvent"
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 11,
+                    "source_page": 2
                 },
                 {
                     "span": "STUCK",
-                    "category": "AnomalyEvent"
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 11,
+                    "source_page": 2
                 },
                 {
                     "span": "OUT_OF_RANGE",
-                    "category": "AnomalyEvent"
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 11,
+                    "source_page": 2
                 },
                 {
                     "span": "CORRELATED",
-                    "category": "AnomalyEvent"
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 11,
+                    "source_page": 2
                 }
             ]
         }

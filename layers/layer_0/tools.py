@@ -58,7 +58,7 @@ def route_to_layer_1(source_id: str, file_path: str, agent_type: str, priority: 
             # Compose a rich result string for the Layer 0 evaluation tool.
             status = final_state.get("status", "unknown")
 
-            if status in {"complete", "standardized"}:
+            if status == "complete":
                 std = final_state.get("standardized_data", {}) or {}
                 total_rows = std.get("total_rows", "N/A")
                 file_type  = (final_state.get("raw_schema") or {}).get("file_type", "unknown")
@@ -155,7 +155,7 @@ def route_to_layer_1(source_id: str, file_path: str, agent_type: str, priority: 
             final_state = agent_1c_app.invoke(initial_state)
             status = final_state.get("status", "unknown")
 
-            if status in {"complete", "standardized"}:
+            if status == "complete":
                 logs          = final_state.get("standardized_logs", {}) or {}
                 parsed_count  = logs.get("parsed_records_count", 0)
                 total_lines   = logs.get("total_lines_processed", "N/A")

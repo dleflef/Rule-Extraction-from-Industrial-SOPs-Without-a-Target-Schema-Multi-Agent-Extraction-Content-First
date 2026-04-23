@@ -22,12 +22,14 @@ def process_file(file_path: str):
         print(f"Testing Agent 2A on chunks from: {source_file}")
         print(f"{'='*60}")
 
+        prompt_mode = os.getenv("PROMPT_MODE", "graph_informed")
         initial_state = {
-            "source_file": source_file,
-            "chunks": layer_1_data.get("chunks", []),
+            "source_file":  source_file,
+            "chunks":       layer_1_data.get("chunks", []),
+            "prompt_mode":  prompt_mode,
             "extracted_entities": None,
-            "status": "pending",
-            "error_message": None
+            "status":       "pending",
+            "error_message": None,
         }
 
         # Synchronous invocation
@@ -42,10 +44,10 @@ def process_file(file_path: str):
         
         output_data = {
             "source_file": final_state["source_file"],
-            "model_used": "qwen2.5-coder-7b-instruct",
+            "model_used":  "qwen2.5-coder-7b-instruct",
             "temperature": 0.0,
-            "strategy": "Zero-Shot Notebook Pattern",
-            "results": final_state["extracted_entities"]
+            "prompt_mode": prompt_mode,
+            "results":     final_state["extracted_entities"],
         }
         
         os.makedirs(OUTPUT_DIR, exist_ok=True)

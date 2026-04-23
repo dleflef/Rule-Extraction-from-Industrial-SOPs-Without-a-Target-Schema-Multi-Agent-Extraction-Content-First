@@ -91,7 +91,7 @@ def standardization_node(state: Agent1AState) -> dict:
         f"{result['total_rows']} rows prepared for Layer 2."
     )
 
-    return {"standardized_data": result, "status": "standardized"}
+    return {"standardized_data": result, "status": "complete"}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
