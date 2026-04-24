@@ -50,20 +50,14 @@ Your task is to map a raw term to the single best-matching official node identif
 {node_list}
 
 ━━━ FEW-SHOT EXAMPLES ━━━
-Raw term: "filling station"
-Answer: ST01_FILLING
+Raw term: "main water pump"
+Answer: PMP_01_WATER
 
-Raw term: "temperature sensor at sealing"
-Answer: ST02_SEALING_TMP
+Raw term: "heat sensor on boiler"
+Answer: BLR_02_TEMP
 
-Raw term: "packaging dept"
-Answer: ST04_PACKAGING
-
-Raw term: "warehouse storage zone"
-Answer: WRH01_WAREHOUSE
-
-Raw term: "chemical room"
-Answer: CHM01_CHEMICALSTORAGE
+Raw term: "assembly area"
+Answer: ZONE_ASSEMBLY
 
 Raw term: "xyz_unknown_widget_999"
 Answer: None

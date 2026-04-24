@@ -11,6 +11,7 @@ import json
 import zipfile
 import tempfile
 from layer_1.agent_1b import agent_1b_app
+from layer_1.protocol import normalize_layer1_output
 
 AGENT_1A_FORMATS = {".json", ".csv", ".xml", ".parquet", ".log"}
 OUTPUT_DIR = "outputs/layer_1"
@@ -23,14 +24,25 @@ def save_results(file_path: str, final_state: dict):
     output_filename = f"{base_name}_agent1b.json"
     output_path = os.path.join(OUTPUT_DIR, output_filename)
     
-    # Prepare a clean dictionary to save
+    chunks = final_state.get("markdown_chunks") or []
+    status = final_state.get("status")
+
+    summary = normalize_layer1_output(
+        agent_name="Agent 1B",
+        status=status,
+        total_records=len(chunks),
+        data_preview=f"{len(chunks)} hierarchical chunks from {os.path.basename(file_path)}",
+        error_message=final_state.get("error_message"),
+    )
+
     output_data = {
-        "source_file": os.path.basename(file_path),
-        "status": final_state.get("status"),
-        "page_count": final_state.get("page_count"),
-        "chunk_count": final_state.get("chunk_count"),
+        "source_file":   os.path.basename(file_path),
+        "status":        status,
+        "page_count":    final_state.get("page_count"),
+        "chunk_count":   final_state.get("chunk_count"),
         "error_message": final_state.get("error_message"),
-        "chunks": final_state.get("markdown_chunks") or []
+        "summary":       summary,
+        "chunks":        chunks,
     }
     
     with open(output_path, "w", encoding="utf-8") as f:

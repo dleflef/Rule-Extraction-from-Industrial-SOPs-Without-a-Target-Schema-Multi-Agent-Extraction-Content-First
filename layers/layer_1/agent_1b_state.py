@@ -39,7 +39,7 @@ class Agent1BState(TypedDict):
     List of semantic chunk dicts produced by Docling's native HierarchicalChunker.
     Each dict has the form:
         {
-            "chunk_id"  : int,              
+            "chunk_id"  : Union[int, str],  # int for original chunks, str for sub-chunks (e.g. "2_sub00")
             "content"   : str,              # Markdown text of the specific chunk
             "metadata"  : {                 # Native hierarchical path
                 "headings": ["Chapter 3", "Experimental Results"],

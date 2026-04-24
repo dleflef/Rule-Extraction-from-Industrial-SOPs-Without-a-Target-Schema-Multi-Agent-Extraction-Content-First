@@ -13,8 +13,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [],
             "relations": []
@@ -27,8 +26,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -93,8 +91,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -139,8 +136,8 @@
                 },
                 {
                     "subject": "RULE-2-01",
-                    "predicate": "has_warn_hi",
-                    "object": "26.0"
+                    "predicate": "has_warn_lo",
+                    "object": "18.0"
                 },
                 {
                     "subject": "RULE-2-01",
@@ -149,13 +146,13 @@
                 },
                 {
                     "subject": "RULE-2-01",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
+                    "predicate": "has_warn_hi",
+                    "object": "26.0"
                 },
                 {
-                    "subject": "ST01_FILLING",
-                    "predicate": "monitors",
-                    "object": "TMP"
+                    "subject": "RULE-2-01",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance."
                 },
                 {
                     "subject": "RULE-2-02",
@@ -179,8 +176,8 @@
                 },
                 {
                     "subject": "RULE-2-02",
-                    "predicate": "has_warn_hi",
-                    "object": "4.2"
+                    "predicate": "has_warn_lo",
+                    "object": "3.3"
                 },
                 {
                     "subject": "RULE-2-02",
@@ -189,13 +186,13 @@
                 },
                 {
                     "subject": "RULE-2-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
+                    "predicate": "has_warn_hi",
+                    "object": "4.2"
                 },
                 {
-                    "subject": "ST01_FILLING",
-                    "predicate": "monitors",
-                    "object": "PRS"
+                    "subject": "RULE-2-02",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance."
                 },
                 {
                     "subject": "RULE-2-03",
@@ -219,8 +216,8 @@
                 },
                 {
                     "subject": "RULE-2-03",
-                    "predicate": "has_warn_hi",
-                    "object": "128.0"
+                    "predicate": "has_warn_lo",
+                    "object": "112.0"
                 },
                 {
                     "subject": "RULE-2-03",
@@ -229,13 +226,13 @@
                 },
                 {
                     "subject": "RULE-2-03",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
+                    "predicate": "has_warn_hi",
+                    "object": "128.0"
                 },
                 {
-                    "subject": "ST01_FILLING",
-                    "predicate": "monitors",
-                    "object": "FLW"
+                    "subject": "RULE-2-03",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance."
                 }
             ]
         },
@@ -247,8 +244,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -293,8 +289,8 @@
                 },
                 {
                     "subject": "RULE-3-01",
-                    "predicate": "has_warn_hi",
-                    "object": "195.0"
+                    "predicate": "has_warn_lo",
+                    "object": "185.0"
                 },
                 {
                     "subject": "RULE-3-01",
@@ -328,8 +324,8 @@
                 },
                 {
                     "subject": "RULE-3-02",
-                    "predicate": "has_warn_hi",
-                    "object": "5.7"
+                    "predicate": "has_warn_lo",
+                    "object": "5.2"
                 },
                 {
                     "subject": "RULE-3-02",
@@ -363,8 +359,8 @@
                 },
                 {
                     "subject": "RULE-3-03",
-                    "predicate": "has_warn_hi",
-                    "object": "13.5"
+                    "predicate": "has_warn_lo",
+                    "object": "12.4"
                 },
                 {
                     "subject": "RULE-3-03",
@@ -386,8 +382,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -432,13 +427,18 @@
                 },
                 {
                     "subject": "RULE-4-01",
-                    "predicate": "has_warn_hi",
-                    "object": "0.95"
+                    "predicate": "has_warn_lo",
+                    "object": "0.75"
                 },
                 {
                     "subject": "RULE-4-01",
                     "predicate": "has_crit_hi",
                     "object": "1.05"
+                },
+                {
+                    "subject": "RULE-4-01",
+                    "predicate": "has_warn_hi",
+                    "object": "0.95"
                 },
                 {
                     "subject": "RULE-4-01",
@@ -467,13 +467,18 @@
                 },
                 {
                     "subject": "RULE-4-02",
-                    "predicate": "has_warn_hi",
-                    "object": "2.6"
+                    "predicate": "has_warn_lo",
+                    "object": "1.8"
                 },
                 {
                     "subject": "RULE-4-02",
                     "predicate": "has_crit_hi",
                     "object": "3.0"
+                },
+                {
+                    "subject": "RULE-4-02",
+                    "predicate": "has_warn_hi",
+                    "object": "2.6"
                 },
                 {
                     "subject": "RULE-4-02",
@@ -502,13 +507,18 @@
                 },
                 {
                     "subject": "RULE-4-03",
-                    "predicate": "has_warn_hi",
-                    "object": "130"
+                    "predicate": "has_warn_lo",
+                    "object": "110"
                 },
                 {
                     "subject": "RULE-4-03",
                     "predicate": "has_crit_hi",
                     "object": "140"
+                },
+                {
+                    "subject": "RULE-4-03",
+                    "predicate": "has_warn_hi",
+                    "object": "130"
                 },
                 {
                     "subject": "RULE-4-03",
@@ -525,8 +535,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -578,7 +587,7 @@
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_LO Nominal",
+                    "span": "WARN_LONominal",
                     "category": "Parameter",
                     "source_chunk_id": 5,
                     "source_page": 1
@@ -645,6 +654,11 @@
                     "object": "E-STOP; inspect main bearing"
                 },
                 {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "VIB_ST04_PACKAGING"
+                },
+                {
                     "subject": "RULE-5-02",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
@@ -680,6 +694,11 @@
                     "object": "Inspect and notify maintenance"
                 },
                 {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "CUR_ST04_PACKAGING"
+                },
+                {
                     "subject": "RULE-5-03",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
@@ -713,6 +732,11 @@
                     "subject": "RULE-5-03",
                     "predicate": "triggers_action",
                     "object": "Inspect and notify maintenance"
+                },
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "SPD_ST04_PACKAGING"
                 }
             ]
         },
@@ -724,19 +748,180 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
+                    "span": "SRV01_SERVERROOM",
+                    "category": "Zone",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
                     "span": "TMP",
+                    "category": "Sensor",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "°C",
                     "category": "Parameter",
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "HUM",
+                    "span": "CRIT_LO",
                     "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "16.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "18.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "21.0 ± 0.3",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "25.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "28.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "Activate backup cooling; prepare controlled PLC shutdown.",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "%RH",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "25.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "30.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "45.0 ± 1.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "60.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "70.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "Inspect and notify maintenance",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 6,
                     "source_page": 1
                 }
@@ -750,7 +935,7 @@
                 {
                     "subject": "RULE-6-01",
                     "predicate": "applies_to_sensor",
-                    "object": "TMP"
+                    "object": "SRV01_SERVERROOM_TMP"
                 },
                 {
                     "subject": "RULE-6-01",
@@ -769,33 +954,18 @@
                 },
                 {
                     "subject": "RULE-6-01",
+                    "predicate": "has_crit_hi",
+                    "object": "28.0"
+                },
+                {
+                    "subject": "RULE-6-01",
                     "predicate": "triggers_action",
                     "object": "Activate backup cooling; prepare controlled PLC shutdown."
                 },
                 {
-                    "subject": "RULE-6-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-6-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "HUM"
-                },
-                {
-                    "subject": "RULE-6-02",
-                    "predicate": "has_unit",
-                    "object": "%RH"
-                },
-                {
-                    "subject": "RULE-6-02",
-                    "predicate": "has_crit_lo",
-                    "object": "25.0"
-                },
-                {
-                    "subject": "RULE-6-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance"
+                    "subject": "SRV01_SERVERROOM",
+                    "predicate": "monitors",
+                    "object": "SRV01_SERVERROOM_TMP"
                 }
             ]
         },
@@ -807,8 +977,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -848,12 +1017,17 @@
                 {
                     "subject": "RULE-7-01",
                     "predicate": "has_warn_lo",
-                    "object": "4.0"
+                    "object": "0.5"
                 },
                 {
                     "subject": "RULE-7-01",
                     "predicate": "has_crit_hi",
                     "object": "12.0"
+                },
+                {
+                    "subject": "RULE-7-01",
+                    "predicate": "has_warn_hi",
+                    "object": "8.0"
                 },
                 {
                     "subject": "RULE-7-01",
@@ -883,12 +1057,17 @@
                 {
                     "subject": "RULE-7-02",
                     "predicate": "has_warn_lo",
-                    "object": "75.0"
+                    "object": "60.0"
                 },
                 {
                     "subject": "RULE-7-02",
                     "predicate": "has_crit_hi",
                     "object": "90.0"
+                },
+                {
+                    "subject": "RULE-7-02",
+                    "predicate": "has_warn_hi",
+                    "object": "85.0"
                 },
                 {
                     "subject": "RULE-7-02",
@@ -905,8 +1084,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -1003,8 +1181,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -1044,7 +1221,7 @@
                 {
                     "subject": "RULE-9-01",
                     "predicate": "has_warn_lo",
-                    "object": "22.0"
+                    "object": "18.0"
                 },
                 {
                     "subject": "RULE-9-01",
@@ -1053,43 +1230,18 @@
                 },
                 {
                     "subject": "RULE-9-01",
+                    "predicate": "has_warn_hi",
+                    "object": "26.0"
+                },
+                {
+                    "subject": "RULE-9-01",
                     "predicate": "triggers_action",
                     "object": "Inspect and notify maintenance."
                 },
                 {
-                    "subject": "RULE-9-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_sensor_type",
-                    "object": "HUM"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_unit",
-                    "object": "%RH"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_crit_lo",
-                    "object": "25.0"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_warn_lo",
-                    "object": "50.0"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_crit_hi",
-                    "object": "75.0"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "triggers_action",
-                    "object": "Suspend experiments; inspect HVAC system."
+                    "subject": "ST01_RDLAB",
+                    "predicate": "monitors",
+                    "object": "TMP"
                 }
             ]
         },
@@ -1101,8 +1253,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -1141,8 +1292,8 @@
                 },
                 {
                     "subject": "RULE-10-01",
-                    "predicate": "has_warn_hi",
-                    "object": "26.0"
+                    "predicate": "has_warn_lo",
+                    "object": "21.0"
                 },
                 {
                     "subject": "RULE-10-01",
@@ -1152,42 +1303,12 @@
                 {
                     "subject": "RULE-10-01",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
+                    "object": "Inspect and notify maintenance"
                 },
                 {
-                    "subject": "RULE-10-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "HUM"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "has_unit",
-                    "object": "%RH"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "has_crit_lo",
-                    "object": "25.0"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "has_warn_hi",
-                    "object": "70.0"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "has_crit_hi",
-                    "object": "80.0"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
+                    "subject": "CAF01_CAFETERIA",
+                    "predicate": "monitors",
+                    "object": "TMP"
                 }
             ]
         },
@@ -1199,8 +1320,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {

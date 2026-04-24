@@ -9,7 +9,7 @@ from layers.layer_2.agent_2c import agent_2c_app
 
 LAYER_2B_DIR   = "outputs/layer_2b"
 OUTPUT_DIR     = "outputs/layer_2c"
-NODES_CSV_PATH = os.path.join("layers", "extracted_seed", "kg_seed", "nodes_factory.csv")
+NODES_CSV_PATH = os.path.join("layers", "extracted_seed", "dataset", "kg_seeds", "nodes_factory.csv")
 
 
 def load_official_nodes() -> dict:

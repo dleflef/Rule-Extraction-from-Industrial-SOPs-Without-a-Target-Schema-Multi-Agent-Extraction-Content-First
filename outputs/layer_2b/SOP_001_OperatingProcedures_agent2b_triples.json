@@ -13,8 +13,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [],
             "relations": []
@@ -27,8 +26,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -54,8 +52,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -109,8 +106,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -260,8 +256,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -303,8 +298,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -361,8 +355,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -425,8 +418,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -478,8 +470,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -553,8 +544,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -606,8 +596,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -682,8 +671,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -757,8 +745,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -826,8 +813,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -879,8 +865,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -943,8 +928,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -1018,8 +1002,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -1069,26 +1052,57 @@
             ]
         },
         {
-            "chunk_id": 18,
+            "chunk_id": 17,
             "metadata": {
                 "headings": [
-                    "2.5 SRV01_SERVERROOM"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component",
+                    "source_chunk_id": 17,
+                    "source_page": 2
+                },
+                {
                     "span": "SRV01_SERVERROOM",
                     "category": "Zone",
+                    "source_chunk_id": 17,
+                    "source_page": 2
+                }
+            ],
+            "relations": [
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "SRV01_SERVERROOM"
+                }
+            ]
+        },
+        {
+            "chunk_id": 18,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "TMP",
+                    "category": "Parameter",
                     "source_chunk_id": 18,
                     "source_page": 2
                 },
                 {
-                    "span": "TMP",
-                    "category": "Parameter",
+                    "span": "ST04_PACKAGING",
+                    "category": "Component",
                     "source_chunk_id": 18,
                     "source_page": 2
                 }
@@ -1101,28 +1115,13 @@
                 },
                 {
                     "subject": "RULE-SRV01-01",
-                    "predicate": "applies_to_station",
-                    "object": "SRV01_SERVERROOM"
-                },
-                {
-                    "subject": "RULE-SRV01-01",
-                    "predicate": "has_sensor_type",
+                    "predicate": "applies_to_sensor",
                     "object": "TMP"
                 },
                 {
                     "subject": "RULE-SRV01-01",
-                    "predicate": "has_condition",
-                    "object": "TMP MUST NOT exceed 25°C."
-                },
-                {
-                    "subject": "RULE-SRV01-01",
-                    "predicate": "triggers_action",
-                    "object": ""
-                },
-                {
-                    "subject": "RULE-SRV01-01",
-                    "predicate": "has_severity",
-                    "object": "WARNING"
+                    "predicate": "has_threshold",
+                    "object": "25.0"
                 },
                 {
                     "subject": "RULE-SRV01-02",
@@ -1131,28 +1130,55 @@
                 },
                 {
                     "subject": "RULE-SRV01-02",
-                    "predicate": "applies_to_station",
-                    "object": "SRV01_SERVERROOM"
-                },
-                {
-                    "subject": "RULE-SRV01-02",
-                    "predicate": "has_sensor_type",
+                    "predicate": "applies_to_sensor",
                     "object": "TMP"
                 },
                 {
                     "subject": "RULE-SRV01-02",
-                    "predicate": "has_condition",
-                    "object": "TMP > 28°C (CRITICAL)"
-                },
-                {
-                    "subject": "RULE-SRV01-02",
-                    "predicate": "triggers_action",
-                    "object": "automatic controlled shutdown of all PLC nodes"
+                    "predicate": "has_threshold",
+                    "object": "28.0"
                 },
                 {
                     "subject": "RULE-SRV01-02",
                     "predicate": "has_severity",
                     "object": "CRITICAL"
+                },
+                {
+                    "subject": "RULE-SRV01-02",
+                    "predicate": "triggers_action",
+                    "object": "automatic controlled shutdown of all PLC nodes"
+                }
+            ]
+        },
+        {
+            "chunk_id": 19,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component",
+                    "source_chunk_id": 19,
+                    "source_page": 2
+                },
+                {
+                    "span": "WRH01_WAREHOUSE",
+                    "category": "Zone",
+                    "source_chunk_id": 19,
+                    "source_page": 2
+                }
+            ],
+            "relations": [
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "WRH01_WAREHOUSE"
                 }
             ]
         },
@@ -1160,35 +1186,16 @@
             "chunk_id": 20,
             "metadata": {
                 "headings": [
-                    "2.6 WRH01_WAREHOUSE (General Warehouse)"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
-                    "span": "WRH01_WAREHOUSE",
-                    "category": "Zone",
-                    "source_chunk_id": 20,
-                    "source_page": 2
-                },
-                {
                     "span": "TMP",
                     "category": "Parameter",
-                    "source_chunk_id": 20,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRITICAL",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 20,
-                    "source_page": 2
-                },
-                {
-                    "span": "QC",
-                    "category": "Role",
                     "source_chunk_id": 20,
                     "source_page": 2
                 },
@@ -1208,7 +1215,7 @@
                 {
                     "subject": "RULE-WRH01-01",
                     "predicate": "applies_to_station",
-                    "object": "WRH01_WAREHOUSE"
+                    "object": "ST04_PACKAGING"
                 },
                 {
                     "subject": "RULE-WRH01-01",
@@ -1218,7 +1225,7 @@
                 {
                     "subject": "RULE-WRH01-01",
                     "predicate": "has_condition",
-                    "object": "between 0.5°C and 8°C"
+                    "object": "above 12°C"
                 },
                 {
                     "subject": "RULE-WRH01-01",
@@ -1238,7 +1245,7 @@
                 {
                     "subject": "RULE-WRH01-02",
                     "predicate": "applies_to_station",
-                    "object": "WRH01_WAREHOUSE"
+                    "object": "ST04_PACKAGING"
                 },
                 {
                     "subject": "RULE-WRH01-02",
@@ -1258,15 +1265,46 @@
             ]
         },
         {
-            "chunk_id": 22,
+            "chunk_id": 21,
             "metadata": {
                 "headings": [
-                    "2.7 CHM01_CHEMICALSTORAGE (Chemical Storage)"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component",
+                    "source_chunk_id": 21,
+                    "source_page": 2
+                },
+                {
+                    "span": "CHM01_CHEMICALSTORAGE",
+                    "category": "Sensor",
+                    "source_chunk_id": 21,
+                    "source_page": 2
+                }
+            ],
+            "relations": [
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "CHM01_CHEMICALSTORAGE"
+                }
+            ]
+        },
+        {
+            "chunk_id": 22,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
                 ],
-                "is_table": false
+                "page_numbers": [
+                    2
+                ]
             },
             "entities": [
                 {
@@ -1368,15 +1406,46 @@
             ]
         },
         {
-            "chunk_id": 24,
+            "chunk_id": 23,
             "metadata": {
                 "headings": [
-                    "2.8 RND01_RDLAB (R&D; Lab)"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component",
+                    "source_chunk_id": 23,
+                    "source_page": 2
+                },
+                {
+                    "span": "RND01_RDLAB",
+                    "category": "Sensor",
+                    "source_chunk_id": 23,
+                    "source_page": 2
+                }
+            ],
+            "relations": [
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "RND01_RDLAB"
+                }
+            ]
+        },
+        {
+            "chunk_id": 24,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
                 ],
-                "is_table": false
+                "page_numbers": [
+                    2
+                ]
             },
             "entities": [
                 {
@@ -1400,28 +1469,33 @@
                 },
                 {
                     "subject": "RULE-RND01-01",
-                    "predicate": "applies_to_station",
-                    "object": "RND01_RDLAB"
+                    "predicate": "applies_to_sensor",
+                    "object": "ST04_PACKAGING_TMP"
                 },
                 {
                     "subject": "RULE-RND01-01",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP"
+                    "predicate": "has_crit_hi",
+                    "object": "26.0"
                 },
                 {
                     "subject": "RULE-RND01-01",
-                    "predicate": "has_condition",
-                    "object": "must remain between 18°C and 26°C for experimental validity"
+                    "predicate": "has_warn_hi",
+                    "object": "24.0"
+                },
+                {
+                    "subject": "RULE-RND01-01",
+                    "predicate": "has_crit_lo",
+                    "object": "18.0"
+                },
+                {
+                    "subject": "RULE-RND01-01",
+                    "predicate": "has_warn_lo",
+                    "object": "20.0"
                 },
                 {
                     "subject": "RULE-RND01-01",
                     "predicate": "triggers_action",
-                    "object": ""
-                },
-                {
-                    "subject": "RULE-RND01-01",
-                    "predicate": "has_severity",
-                    "object": "WARNING"
+                    "object": "No action specified"
                 },
                 {
                     "subject": "RULE-RND01-02",
@@ -1430,28 +1504,65 @@
                 },
                 {
                     "subject": "RULE-RND01-02",
-                    "predicate": "applies_to_station",
-                    "object": "RND01_RDLAB"
+                    "predicate": "applies_to_sensor",
+                    "object": "ST04_PACKAGING_HUM"
                 },
                 {
                     "subject": "RULE-RND01-02",
-                    "predicate": "has_sensor_type",
-                    "object": "HUM"
+                    "predicate": "has_crit_hi",
+                    "object": "75.0"
                 },
                 {
                     "subject": "RULE-RND01-02",
-                    "predicate": "has_condition",
-                    "object": "drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system"
+                    "predicate": "has_warn_hi",
+                    "object": "65.0"
                 },
                 {
                     "subject": "RULE-RND01-02",
                     "predicate": "triggers_action",
-                    "object": ""
+                    "object": "Activate dehumidifier"
                 },
                 {
-                    "subject": "RULE-RND01-02",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL"
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "ST04_PACKAGING_TMP"
+                },
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "ST04_PACKAGING_HUM"
+                }
+            ]
+        },
+        {
+            "chunk_id": 25,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "entities": [
+                {
+                    "span": "ST04_PACKAGING",
+                    "category": "Component",
+                    "source_chunk_id": 25,
+                    "source_page": 2
+                },
+                {
+                    "span": "CAF01_CAFETERIA",
+                    "category": "Zone",
+                    "source_chunk_id": 25,
+                    "source_page": 2
+                }
+            ],
+            "relations": [
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "CAF01_CAFETERIA_TMP"
                 }
             ]
         },
@@ -1459,20 +1570,13 @@
             "chunk_id": 26,
             "metadata": {
                 "headings": [
-                    "2.9 CAF01_CAFETERIA"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
-                {
-                    "span": "CAF01_CAFETERIA",
-                    "category": "Zone",
-                    "source_chunk_id": 26,
-                    "source_page": 2
-                },
                 {
                     "span": "TMP",
                     "category": "Parameter",
@@ -1480,13 +1584,7 @@
                     "source_page": 2
                 },
                 {
-                    "span": "26°C",
-                    "category": "Parameter",
-                    "source_chunk_id": 26,
-                    "source_page": 2
-                },
-                {
-                    "span": "ventilation system",
+                    "span": "ST04_PACKAGING",
                     "category": "Component",
                     "source_chunk_id": 26,
                     "source_page": 2
@@ -1494,18 +1592,6 @@
                 {
                     "span": "HUM",
                     "category": "Parameter",
-                    "source_chunk_id": 26,
-                    "source_page": 2
-                },
-                {
-                    "span": "70%RH",
-                    "category": "Parameter",
-                    "source_chunk_id": 26,
-                    "source_page": 2
-                },
-                {
-                    "span": "drainage",
-                    "category": "Component",
                     "source_chunk_id": 26,
                     "source_page": 2
                 }
@@ -1519,7 +1605,7 @@
                 {
                     "subject": "RULE-CAF01-01",
                     "predicate": "applies_to_station",
-                    "object": "CAF01_CAFETERIA"
+                    "object": "ST04_PACKAGING"
                 },
                 {
                     "subject": "RULE-CAF01-01",
@@ -1542,11 +1628,6 @@
                     "object": "WARNING"
                 },
                 {
-                    "subject": "CAF01_CAFETERIA",
-                    "predicate": "monitors",
-                    "object": "CAF01_CAFETERIA_TMP"
-                },
-                {
                     "subject": "RULE-CAF01-02",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
@@ -1554,7 +1635,7 @@
                 {
                     "subject": "RULE-CAF01-02",
                     "predicate": "applies_to_station",
-                    "object": "CAF01_CAFETERIA"
+                    "object": "ST04_PACKAGING"
                 },
                 {
                     "subject": "RULE-CAF01-02",
@@ -1575,11 +1656,6 @@
                     "subject": "RULE-CAF01-02",
                     "predicate": "has_severity",
                     "object": "WARNING"
-                },
-                {
-                    "subject": "CAF01_CAFETERIA",
-                    "predicate": "monitors",
-                    "object": "CAF01_CAFETERIA_HUM"
                 }
             ]
         }

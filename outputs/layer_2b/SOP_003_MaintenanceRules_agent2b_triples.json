@@ -13,8 +13,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -82,8 +81,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -115,8 +113,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -591,8 +588,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -602,26 +598,26 @@
                     "source_page": 1
                 },
                 {
-                    "span": "ST04_PACKAGING-SPD",
-                    "category": "Component",
+                    "span": "ST04_PACKAGING-SPDfl",
+                    "category": "Sensor",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "Sealing motor overload",
-                    "category": "AnomalyEvent",
+                    "category": "Parameter",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "Conveyor speed drop",
-                    "category": "AnomalyEvent",
+                    "category": "Parameter",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "ST02-CUR",
-                    "category": "Component",
+                    "span": "ST02-CUR trend",
+                    "category": "Parameter",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
@@ -633,7 +629,7 @@
                 },
                 {
                     "span": "ST04 spee",
-                    "category": "Component",
+                    "category": "Sensor",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
@@ -644,14 +640,14 @@
                     "source_page": 1
                 },
                 {
-                    "span": "QC HOLD",
+                    "span": "Cold warehouse",
                     "category": "Zone",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "drift",
-                    "category": "AnomalyEvent",
+                    "category": "Parameter",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
@@ -669,19 +665,49 @@
                     "object": "Sealing motor overload"
                 },
                 {
-                    "subject": "ST04_PACKAGING-SPD",
+                    "subject": "ST04_PACKAGING-SPDfl",
                     "predicate": "monitors",
                     "object": "Conveyor speed drop"
                 },
                 {
-                    "subject": "ST02-CUR",
-                    "predicate": "monitors",
-                    "object": "sealing jaw"
+                    "subject": "RULE-3-01",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule"
                 },
                 {
-                    "subject": "ST04 spee",
-                    "predicate": "monitors",
+                    "subject": "RULE-3-01",
+                    "predicate": "applies_to_station",
+                    "object": "ST02_SEALING-CUR"
+                },
+                {
+                    "subject": "RULE-3-01",
+                    "predicate": "applies_to_sensor",
+                    "object": "Sealing motor overload"
+                },
+                {
+                    "subject": "RULE-3-01",
+                    "predicate": "triggers_action",
+                    "object": "Inspect sealing jaw"
+                },
+                {
+                    "subject": "RULE-3-02",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule"
+                },
+                {
+                    "subject": "RULE-3-02",
+                    "predicate": "applies_to_station",
+                    "object": "ST04_PACKAGING-SPDfl"
+                },
+                {
+                    "subject": "RULE-3-02",
+                    "predicate": "applies_to_sensor",
                     "object": "Conveyor speed drop"
+                },
+                {
+                    "subject": "RULE-3-02",
+                    "predicate": "triggers_action",
+                    "object": "Reset ST04 spee"
                 },
                 {
                     "subject": "WRH01-TMP",
@@ -689,9 +715,24 @@
                     "object": "drift"
                 },
                 {
-                    "subject": "QC HOLD",
-                    "predicate": "monitors",
-                    "object": "Product quality risk"
+                    "subject": "RULE-3-03",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule"
+                },
+                {
+                    "subject": "RULE-3-03",
+                    "predicate": "applies_to_station",
+                    "object": "WRH01-TMP"
+                },
+                {
+                    "subject": "RULE-3-03",
+                    "predicate": "applies_to_sensor",
+                    "object": "drift"
+                },
+                {
+                    "subject": "RULE-3-03",
+                    "predicate": "triggers_action",
+                    "object": "Restore WRH01-TMP <8°C"
                 }
             ]
         }

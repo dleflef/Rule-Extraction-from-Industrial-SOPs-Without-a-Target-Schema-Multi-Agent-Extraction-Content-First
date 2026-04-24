@@ -23,7 +23,6 @@ class KnowledgeGraphWriter:
 
         try:
             self.driver = GraphDatabase.driver(uri, auth=(user, password))
-            # Verify connectivity
             self.driver.verify_connectivity()
             print("[Neo4j Writer] Successfully connected to the database.")
         except (ServiceUnavailable, AuthError) as e:
@@ -33,26 +32,40 @@ class KnowledgeGraphWriter:
     def close(self):
         self.driver.close()
 
-    def insert_triple(self, tx, subject: str, subject_type: str, predicate: str, obj: str, obj_type: str):
+    def insert_triple(self, tx, subject: str, predicate: str, obj: str, obj_alignment: str):
         """
-        Dynamically generates and runs a Cypher MERGE statement.
-        MERGE ensures we don't create duplicate nodes or relationships.
+        Dynamically translates RDF-style semantic triples into Neo4j Property Graph format.
         """
-        # Clean labels to ensure they are valid Cypher syntax (no spaces)
-        subj_label = subject_type.replace(" ", "") if subject_type else "Entity"
-        obj_label = obj_type.replace(" ", "") if obj_type else "Entity"
-        
-        # Cypher relationships are conventionally UPPERCASE_WITH_UNDERSCORES
-        rel_type = predicate.replace(" ", "_").upper()
+        # 1. Handle Node Classification (rdf:type)
+        if predicate == "rdf:type":
+            # Example: MERGE (s:ThresholdRule {name: "RULE-ST01-01"})
+            label = obj.replace(" ", "")
+            query = f"MERGE (s:`{label}` {{name: $subject}})"
+            tx.run(query, subject=subject)
+            return
 
-        # Cypher does not allow parameterizing Node Labels or Relationship Types natively.
-        # We must use string formatting for the labels, but we PARAMETERIZE the data (name) to prevent injection.
+        # 2. Handle Literal Properties (Numbers, Action Text, Conditions)
+        if obj_alignment == "literal":
+            # Clean predicate to be a valid property name (e.g., has_warn_hi)
+            prop_name = predicate.replace(":", "_")
+            
+            # Example: MATCH (s {name: "RULE-ST01-01"}) SET s.has_warn_hi = "26.0"
+            query = f"""
+            MERGE (s {{name: $subject}})
+            SET s.{prop_name} = $obj
+            """
+            tx.run(query, subject=subject, obj=obj)
+            return
+
+        # 3. Handle Structural Relationships (Node to Node edges)
+        rel_type = predicate.replace(" ", "_").upper()
+        
+        # Example: MERGE (s {name: "ST01_FILLING"})-[r:FEEDS_INTO]->(o {name: "ST02_SEALING"})
         query = f"""
-        MERGE (s:`{subj_label}` {{name: $subject}})
-        MERGE (o:`{obj_label}` {{name: $obj}})
+        MERGE (s {{name: $subject}})
+        MERGE (o {{name: $obj}})
         MERGE (s)-[r:`{rel_type}`]->(o)
         """
-        
         tx.run(query, subject=subject, obj=obj)
 
     def process_aligned_files(self):
@@ -65,7 +78,6 @@ class KnowledgeGraphWriter:
 
         total_triples = 0
         
-        # Open a session to Neo4j
         with self.driver.session(database=self.database) as session:
             for file_path in json_files:
                 print(f"Processing: {os.path.basename(file_path)}")
@@ -76,19 +88,17 @@ class KnowledgeGraphWriter:
                 file_triples_count = 0
                 for result in data.get("results", []):
                     for relation in result.get("aligned_relations", []):
-                        # Extract the data
+                        
+                        # Correctly extract keys based on Agent 2C's output schema
                         sub = relation.get("subject")
-                        sub_type = relation.get("subject_type")
                         pred = relation.get("predicate")
                         obj = relation.get("object")
-                        obj_type = relation.get("object_type")
+                        obj_alignment = relation.get("_object_alignment")
                         
-                        # Only insert if the triple is complete
                         if sub and pred and obj:
-                            # Execute the transaction
                             session.execute_write(
                                 self.insert_triple, 
-                                sub, sub_type, pred, obj, obj_type
+                                sub, pred, obj, obj_alignment
                             )
                             file_triples_count += 1
                             total_triples += 1

@@ -11,8 +11,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -41,16 +40,15 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
                     "subject": "operator",
                     "predicate": "authorized_for",
-                    "object": "Prod. Area",
+                    "object": "Production Area",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Prod. Area"
                 },
                 {
@@ -58,15 +56,15 @@
                     "predicate": "authorized_for",
                     "object": "Server Room",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Server Room"
                 },
                 {
                     "subject": "operator",
                     "predicate": "authorized_for",
-                    "object": "Gen. Warehouse",
+                    "object": "General Warehouse",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Gen. Warehouse"
                 },
                 {
@@ -74,15 +72,15 @@
                     "predicate": "authorized_for",
                     "object": "Main Entrance",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Main Entrance"
                 },
                 {
                     "subject": "operator",
                     "predicate": "authorized_for",
-                    "object": "Chem. Storage",
+                    "object": "Chemical Storage",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Chem. Storage"
                 },
                 {
@@ -90,7 +88,7 @@
                     "predicate": "authorized_for",
                     "object": "R&D Lab",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "R&D Lab"
                 },
                 {
@@ -98,15 +96,15 @@
                     "predicate": "authorized_for",
                     "object": "Cafeteria",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Cafeteria"
                 },
                 {
                     "subject": "technician",
                     "predicate": "authorized_for",
-                    "object": "Prod. Area",
+                    "object": "Production Area",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Prod. Area"
                 },
                 {
@@ -114,15 +112,15 @@
                     "predicate": "authorized_for",
                     "object": "Server Room",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Server Room"
                 },
                 {
                     "subject": "technician",
                     "predicate": "authorized_for",
-                    "object": "Gen. Warehouse",
+                    "object": "General Warehouse",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Gen. Warehouse"
                 },
                 {
@@ -130,15 +128,15 @@
                     "predicate": "authorized_for",
                     "object": "Main Entrance",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Main Entrance"
                 },
                 {
                     "subject": "technician",
                     "predicate": "authorized_for",
-                    "object": "Chem. Storage",
+                    "object": "Chemical Storage",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Chem. Storage"
                 },
                 {
@@ -146,7 +144,7 @@
                     "predicate": "authorized_for",
                     "object": "R&D Lab",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "R&D Lab"
                 },
                 {
@@ -154,15 +152,15 @@
                     "predicate": "authorized_for",
                     "object": "Cafeteria",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Cafeteria"
                 },
                 {
                     "subject": "supervisor",
                     "predicate": "authorized_for",
-                    "object": "Prod. Area",
+                    "object": "Production Area",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Prod. Area"
                 },
                 {
@@ -170,15 +168,15 @@
                     "predicate": "authorized_for",
                     "object": "Server Room",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Server Room"
                 },
                 {
                     "subject": "supervisor",
                     "predicate": "authorized_for",
-                    "object": "Gen. Warehouse",
+                    "object": "General Warehouse",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Gen. Warehouse"
                 },
                 {
@@ -186,15 +184,15 @@
                     "predicate": "authorized_for",
                     "object": "Main Entrance",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Main Entrance"
                 },
                 {
                     "subject": "supervisor",
                     "predicate": "authorized_for",
-                    "object": "Chem. Storage",
+                    "object": "Chemical Storage",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Chem. Storage"
                 },
                 {
@@ -202,7 +200,7 @@
                     "predicate": "authorized_for",
                     "object": "R&D Lab",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "R&D Lab"
                 },
                 {
@@ -210,15 +208,15 @@
                     "predicate": "authorized_for",
                     "object": "Cafeteria",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Cafeteria"
                 },
                 {
                     "subject": "manager",
                     "predicate": "authorized_for",
-                    "object": "Prod. Area",
+                    "object": "Production Area",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Prod. Area"
                 },
                 {
@@ -226,15 +224,15 @@
                     "predicate": "authorized_for",
                     "object": "Server Room",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Server Room"
                 },
                 {
                     "subject": "manager",
                     "predicate": "authorized_for",
-                    "object": "Gen. Warehouse",
+                    "object": "General Warehouse",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Gen. Warehouse"
                 },
                 {
@@ -242,15 +240,15 @@
                     "predicate": "authorized_for",
                     "object": "Main Entrance",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Main Entrance"
                 },
                 {
                     "subject": "manager",
                     "predicate": "authorized_for",
-                    "object": "Chem. Storage",
+                    "object": "Chemical Storage",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Chem. Storage"
                 },
                 {
@@ -258,7 +256,7 @@
                     "predicate": "authorized_for",
                     "object": "R&D Lab",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "R&D Lab"
                 },
                 {
@@ -266,15 +264,15 @@
                     "predicate": "authorized_for",
                     "object": "Cafeteria",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Cafeteria"
                 },
                 {
                     "subject": "security",
                     "predicate": "authorized_for",
-                    "object": "Prod. Area",
+                    "object": "Production Area",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Prod. Area"
                 },
                 {
@@ -282,15 +280,15 @@
                     "predicate": "authorized_for",
                     "object": "Server Room",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Server Room"
                 },
                 {
                     "subject": "security",
                     "predicate": "authorized_for",
-                    "object": "Gen. Warehouse",
+                    "object": "General Warehouse",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Gen. Warehouse"
                 },
                 {
@@ -298,15 +296,15 @@
                     "predicate": "authorized_for",
                     "object": "Main Entrance",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Main Entrance"
                 },
                 {
                     "subject": "security",
                     "predicate": "authorized_for",
-                    "object": "Chem. Storage",
+                    "object": "Chemical Storage",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Chem. Storage"
                 },
                 {
@@ -314,7 +312,7 @@
                     "predicate": "authorized_for",
                     "object": "R&D Lab",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "R&D Lab"
                 },
                 {
@@ -322,15 +320,15 @@
                     "predicate": "authorized_for",
                     "object": "Cafeteria",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Cafeteria"
                 },
                 {
                     "subject": "visitor",
                     "predicate": "authorized_for",
-                    "object": "Prod. Area",
+                    "object": "Production Area",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Prod. Area"
                 },
                 {
@@ -338,15 +336,15 @@
                     "predicate": "authorized_for",
                     "object": "Server Room",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Server Room"
                 },
                 {
                     "subject": "visitor",
                     "predicate": "authorized_for",
-                    "object": "Gen. Warehouse",
+                    "object": "General Warehouse",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Gen. Warehouse"
                 },
                 {
@@ -354,15 +352,15 @@
                     "predicate": "authorized_for",
                     "object": "Main Entrance",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Main Entrance"
                 },
                 {
                     "subject": "visitor",
                     "predicate": "authorized_for",
-                    "object": "Chem. Storage",
+                    "object": "Chemical Storage",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Chem. Storage"
                 },
                 {
@@ -370,7 +368,7 @@
                     "predicate": "authorized_for",
                     "object": "R&D Lab",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "R&D Lab"
                 },
                 {
@@ -378,7 +376,7 @@
                     "predicate": "authorized_for",
                     "object": "Cafeteria",
                     "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Cafeteria"
                 }
             ]
@@ -391,8 +389,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -407,7 +404,7 @@
                     "predicate": "applies_to_zone",
                     "object": "Production Area",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Production Area"
                 },
                 {
@@ -429,7 +426,7 @@
                     "predicate": "applies_to_zone",
                     "object": "Server Room",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Server Room"
                 },
                 {
@@ -451,7 +448,7 @@
                     "predicate": "applies_to_zone",
                     "object": "General Warehouse",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "General Warehouse"
                 },
                 {
@@ -473,7 +470,7 @@
                     "predicate": "applies_to_zone",
                     "object": "Chemical Storage",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Chemical Storage"
                 },
                 {
@@ -495,7 +492,7 @@
                     "predicate": "applies_to_zone",
                     "object": "R&D Lab",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "R&D Lab"
                 },
                 {
@@ -517,7 +514,7 @@
                     "predicate": "applies_to_zone",
                     "object": "Cafeteria",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Cafeteria"
                 },
                 {
@@ -537,8 +534,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -831,8 +827,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -867,8 +862,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -903,8 +897,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -923,25 +916,24 @@
                 },
                 {
                     "subject": "Chemical Storage",
-                    "predicate": "monitors",
-                    "object": "ST01_FILLING_TMP",
-                    "_subject_alignment": "unaligned",
+                    "predicate": "authorized_for",
+                    "object": "Safety Officer",
+                    "_subject_alignment": "exact",
                     "_object_alignment": "unaligned",
-                    "_raw_object": "ST01_FILLING_TMP"
+                    "_raw_object": "Safety Officer"
                 },
                 {
-                    "subject": "RULE-ACCESS-04",
-                    "predicate": "applies_to_station",
-                    "object": "Chemical Storage",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "Chemical Storage"
+                    "subject": "Chemical Storage",
+                    "predicate": "has_policy",
+                    "object": "zero-tolerance",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-ACCESS-04",
+                    "subject": "UNAUTHORIZED_ACCESS",
                     "predicate": "triggers_action",
                     "object": "immediate escalation to the Safety Officer regardless of role",
-                    "_subject_alignment": "rule_node",
+                    "_subject_alignment": "n/a",
                     "_object_alignment": "literal"
                 }
             ]

@@ -12,8 +12,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "content": "[Context: Alarm Thresholds and Response Matrix - Production Line A]\nDocument: SOP-002 | Rev: 1.8 | Date: 2025-10-20 | Author: Ing. L. Greco - Automation & Control",
             "entities": []
@@ -26,8 +25,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "content": "[Context: Alarm Thresholds and Response Matrix - Production Line A]\nThreshold hierarchy: CRIT_LO < WARN_LO < NOMINAL < WARN_HI < CRIT_HI.",
             "entities": [
@@ -71,10 +69,9 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
-            "content": "[Context: ST01_FILLING Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 15.0. TMP,  = 18.0. TMP, WARN_LO Nominal = 22.0 ± 0.4. TMP, WARN_HI = 26.0. TMP, CRIT_HI = 30.0. TMP, CRITICAL Response = Inspect and notify maintenance. PRS, Unit = bar. PRS, CRIT_LO = 3.0. PRS,  = 3.3. PRS, WARN_LO Nominal = 3.8 ± 0.05. PRS, WARN_HI = 4.2. PRS, CRIT_HI = 4.8. PRS, CRITICAL Response = Inspect and notify maintenance. FLW, Unit = L/min. FLW, CRIT_LO = 105.0. FLW,  = 112.0. FLW, WARN_LO Nominal = 120.0 ± 1.5. FLW, WARN_HI = 128.0. FLW, CRIT_HI = 135.0. FLW, CRITICAL Response = Inspect and notify maintenance",
+            "content": "[Context: ST01_FILLING Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 15.0. TMP,  = 18.0. TMP, WARN_LONominal = 22.0 ± 0.4. TMP, WARN_HI = 26.0. TMP, CRIT_HI = 30.0. TMP, CRITICAL Response = Inspect and notify maintenance. PRS, Unit = bar. PRS, CRIT_LO = 3.0. PRS,  = 3.3. PRS, WARN_LONominal = 3.8 ± 0.05. PRS, WARN_HI = 4.2. PRS, CRIT_HI = 4.8. PRS, CRITICAL Response = Inspect and notify maintenance. FLW, Unit = L/min. FLW, CRIT_LO = 105.0. FLW,  = 112.0. FLW, WARN_LONominal = 120.0 ± 1.5. FLW, WARN_HI = 128.0. FLW, CRIT_HI = 135.0. FLW, CRITICAL Response = Inspect and notify maintenance",
             "entities": [
                 {
                     "span": "TMP",
@@ -104,10 +101,9 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
-            "content": "[Context: ST02_SEALING Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 165.0. TMP,  = 175.0. TMP, WARN_LO Nominal = 185.0 ± 1.2. TMP, WARN_HI = 195.0. TMP, CRIT_HI = 210.0. TMP, CRITICAL Response = E-STOP ST02/ST03/ST04; inspect element. PRS, Unit = bar. PRS, CRIT_LO = 4.2. PRS,  = 4.6. PRS, WARN_LO Nominal = 5.2 ± 0.08. PRS, WARN_HI = 5.7. PRS, CRIT_HI = 6.2. PRS, CRITICAL Response = Inspect and notify maintenance. CUR, Unit = A. CUR, CRIT_LO = 9.5. CUR,  = 11.0. CUR, WARN_LO Nominal = 12.4 ± 0.3. CUR, WARN_HI = 13.5. CUR, CRIT_HI = 15.0. CUR, CRITICAL Response = E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04)",
+            "content": "[Context: ST02_SEALING Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 165.0. TMP,  = 175.0. TMP, WARN_LONominal = 185.0 ± 1.2. TMP, WARN_HI = 195.0. TMP, CRIT_HI = 210.0. TMP, CRITICAL Response = E-STOP ST02/ST03/ST04; inspect element. PRS, Unit = bar. PRS, CRIT_LO = 4.2. PRS,  = 4.6. PRS, WARN_LONominal = 5.2 ± 0.08. PRS, WARN_HI = 5.7. PRS, CRIT_HI = 6.2. PRS, CRITICAL Response = Inspect and notify maintenance. CUR, Unit = A. CUR, CRIT_LO = 9.5. CUR,  = 11.0. CUR, WARN_LONominal = 12.4 ± 0.3. CUR, WARN_HI = 13.5. CUR, CRIT_HI = 15.0. CUR, CRITICAL Response = E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04)",
             "entities": [
                 {
                     "span": "TMP",
@@ -137,10 +133,9 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
-            "content": "[Context: ST03_LABELLING Thresholds]\nSPD, Unit = m/s. SPD, CRIT_LO = 0.65. SPD,  = 0.75. SPD, WARN_LO Nominal = 0.85 ± 0.01. SPD, WARN_HI = 0.95. SPD, CRIT_HI = 1.05. SPD, CRITICAL Response = Inspect and notify maintenance. TEN, Unit = N. TEN, CRIT_LO = 1.5. TEN,  = 1.8. TEN, WARN_LO Nominal = 2.2 ± 0.05. TEN, WARN_HI = 2.6. TEN, CRIT_HI = 3.0. TEN, CRITICAL Response = Inspect and notify maintenance. CNT, Unit = pcs/min. CNT, CRIT_LO = 100. CNT,  = 110. CNT, WARN_LO Nominal = 120 ± 2.0. CNT, WARN_HI = 130. CNT, CRIT_HI = 140. CNT, CRITICAL Response = E-STOP labelling; inspect label path",
+            "content": "[Context: ST03_LABELLING Thresholds]\nSPD, Unit = m/s. SPD, CRIT_LO = 0.65. SPD,  = 0.75. SPD, WARN_LONominal = 0.85 ± 0.01. SPD, WARN_HI = 0.95. SPD, CRIT_HI = 1.05. SPD, CRITICAL Response = Inspect and notify maintenance. TEN, Unit = N. TEN, CRIT_LO = 1.5. TEN,  = 1.8. TEN, WARN_LONominal = 2.2 ± 0.05. TEN, WARN_HI = 2.6. TEN, CRIT_HI = 3.0. TEN, CRITICAL Response = Inspect and notify maintenance. CNT, Unit = pcs/min. CNT, CRIT_LO = 100. CNT,  = 110. CNT, WARN_LONominal = 120 ± 2.0. CNT, WARN_HI = 130. CNT, CRIT_HI = 140. CNT, CRITICAL Response = E-STOP labelling; inspect label path",
             "entities": [
                 {
                     "span": "SPD",
@@ -170,10 +165,9 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
-            "content": "[Context: ST04_PACKAGING Thresholds]\nVIB, Unit = mm/s. VIB, CRIT_LO = 0.01. VIB,  = 0.02. VIB, WARN_LO Nominal = 0.12 ± 0.005. VIB, WARN_HI = 0.2. VIB, CRIT_HI = 0.35. VIB, CRITICAL Response = E-STOP; inspect main bearing. CUR, Unit = A. CUR, CRIT_LO = 6.5. CUR,  = 7.5. CUR, WARN_LO Nominal = 8.7 ± 0.2. CUR, WARN_HI = 9.8. CUR, CRIT_HI = 11.0. CUR, CRITICAL Response = Inspect and notify maintenance. SPD, Unit = m/s. SPD, CRIT_LO = 0.85. SPD,  = 1.0. SPD, WARN_LO Nominal = 1.2 ± 0.02. SPD, WARN_HI = 1.4. SPD, CRIT_HI = 1.6. SPD, CRITICAL Response = Inspect and notify maintenance",
+            "content": "[Context: ST04_PACKAGING Thresholds]\nVIB, Unit = mm/s. VIB, CRIT_LO = 0.01. VIB,  = 0.02. VIB, WARN_LONominal = 0.12 ± 0.005. VIB, WARN_HI = 0.2. VIB, CRIT_HI = 0.35. VIB, CRITICAL Response = E-STOP; inspect main bearing. CUR, Unit = A. CUR, CRIT_LO = 6.5. CUR,  = 7.5. CUR, WARN_LONominal = 8.7 ± 0.2. CUR, WARN_HI = 9.8. CUR, CRIT_HI = 11.0. CUR, CRITICAL Response = Inspect and notify maintenance. SPD, Unit = m/s. SPD, CRIT_LO = 0.85. SPD,  = 1.0. SPD, WARN_LONominal = 1.2 ± 0.02. SPD, WARN_HI = 1.4. SPD, CRIT_HI = 1.6. SPD, CRITICAL Response = Inspect and notify maintenance",
             "entities": [
                 {
                     "span": "VIB",
@@ -224,7 +218,7 @@
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_LO Nominal",
+                    "span": "WARN_LONominal",
                     "category": "Parameter",
                     "source_chunk_id": 5,
                     "source_page": 1
@@ -263,20 +257,181 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
-            "content": "[Context: SRV01_SERVERROOM Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 16.0. TMP,  = 18.0. TMP, WARN_LO Nominal = 21.0 ± 0.3. TMP, WARN_HI = 25.0. TMP, CRIT_HI = 28.0. TMP, CRITICAL Response = Activate backup cooling; prepare controlled PLC shutdown. HUM, Unit = %RH. HUM, CRIT_LO = 25.0. HUM,  = 30.0. HUM, WARN_LO Nominal = 45.0 ± 1.0. HUM, WARN_HI = 60.0. HUM, CRIT_HI = 70.0. HUM, CRITICAL Response = Inspect and notify maintenance",
+            "content": "[Context: SRV01_SERVERROOM Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 16.0. TMP,  = 18.0. TMP, WARN_LONominal = 21.0 ± 0.3. TMP, WARN_HI = 25.0. TMP, CRIT_HI = 28.0. TMP, CRITICAL Response = Activate backup cooling; prepare controlled PLC shutdown. HUM, Unit = %RH. HUM, CRIT_LO = 25.0. HUM,  = 30.0. HUM, WARN_LONominal = 45.0 ± 1.0. HUM, WARN_HI = 60.0. HUM, CRIT_HI = 70.0. HUM, CRITICAL Response = Inspect and notify maintenance",
             "entities": [
                 {
+                    "span": "SRV01_SERVERROOM",
+                    "category": "Zone",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
                     "span": "TMP",
+                    "category": "Sensor",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "°C",
                     "category": "Parameter",
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "HUM",
+                    "span": "CRIT_LO",
                     "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "16.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "18.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "21.0 ± 0.3",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "25.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "28.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "Activate backup cooling; prepare controlled PLC shutdown.",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "%RH",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "25.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "30.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "45.0 ± 1.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "60.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "70.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 6,
+                    "source_page": 1
+                },
+                {
+                    "span": "Inspect and notify maintenance",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 6,
                     "source_page": 1
                 }
@@ -290,10 +445,9 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
-            "content": "[Context: WRH01_WAREHOUSE Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = -1.0. TMP,  = 0.5. TMP, WARN_LO Nominal = 4.0 ± 0.5. TMP, WARN_HI = 8.0. TMP, CRIT_HI = 12.0. TMP, CRITICAL Response = Activate backup refrigeration; notify QC. HUM, Unit = %RH. HUM, CRIT_LO = 55.0. HUM,  = 60.0. HUM, WARN_LO Nominal = 75.0 ± 1.5. HUM, WARN_HI = 85.0. HUM, CRIT_HI = 90.0. HUM, CRITICAL Response = Inspect and notify maintenance",
+            "content": "[Context: WRH01_WAREHOUSE Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = -1.0. TMP,  = 0.5. TMP, WARN_LONominal = 4.0 ± 0.5. TMP, WARN_HI = 8.0. TMP, CRIT_HI = 12.0. TMP, CRITICAL Response = Activate backup refrigeration; notify QC. HUM, Unit = %RH. HUM, CRIT_LO = 55.0. HUM,  = 60.0. HUM, WARN_LONominal = 75.0 ± 1.5. HUM, WARN_HI = 85.0. HUM, CRIT_HI = 90.0. HUM, CRITICAL Response = Inspect and notify maintenance",
             "entities": [
                 {
                     "span": "TMP",
@@ -317,10 +471,9 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
-            "content": "[Context: CHM01_CHEMICALSTORAGE Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 5.0. TMP,  = 10.0. TMP, WARN_LO Nominal = 15.0 ± 0.3. TMP, WARN_HI = 20.0. TMP, CRIT_HI = 25.0. TMP, CRITICAL Response = Activate emergency ventilation; notify safety officer immediatel. HUM, Unit = %RH. HUM, CRIT_LO = 15.0. HUM,  = 20.0. HUM, WARN_LO Nominal = 35.0 ± 1.0. HUM, WARN_HI = 50.0. HUM, CRIT_HI = 60.0. HUM, CRITICAL Response = Activate desiccant system; inspect storage containers for leak",
+            "content": "[Context: CHM01_CHEMICALSTORAGE Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 5.0. TMP,  = 10.0. TMP, WARN_LONominal = 15.0 ± 0.3. TMP, WARN_HI = 20.0. TMP, CRIT_HI = 25.0. TMP, CRITICAL Response = Activate emergency ventilation; notify safety officer immediatel. HUM, Unit = %RH. HUM, CRIT_LO = 15.0. HUM,  = 20.0. HUM, WARN_LONominal = 35.0 ± 1.0. HUM, WARN_HI = 50.0. HUM, CRIT_HI = 60.0. HUM, CRITICAL Response = Activate desiccant system; inspect storage containers for leak",
             "entities": [
                 {
                     "span": "TMP",
@@ -344,10 +497,9 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
-            "content": "[Context: RND01_RDLAB Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 15.0. TMP,  = 18.0. TMP, WARN_LO Nominal = 22.0 ± 0.2. TMP, WARN_HI = 26.0. TMP, CRIT_HI = 30.0. TMP, CRITICAL Response = Inspect and notify maintenance. HUM, Unit = %RH. HUM, CRIT_LO = 25.0. HUM,  = 35.0. HUM, WARN_LO Nominal = 50.0 ± 1.0. HUM, WARN_HI = 65.0. HUM, CRIT_HI = 75.0. HUM, CRITICAL Response = Suspend experiments; inspect HVAC system",
+            "content": "[Context: RND01_RDLAB Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 15.0. TMP,  = 18.0. TMP, WARN_LONominal = 22.0 ± 0.2. TMP, WARN_HI = 26.0. TMP, CRIT_HI = 30.0. TMP, CRITICAL Response = Inspect and notify maintenance. HUM, Unit = %RH. HUM, CRIT_LO = 25.0. HUM,  = 35.0. HUM, WARN_LONominal = 50.0 ± 1.0. HUM, WARN_HI = 65.0. HUM, CRIT_HI = 75.0. HUM, CRITICAL Response = Suspend experiments; inspect HVAC system",
             "entities": [
                 {
                     "span": "TMP",
@@ -371,10 +523,9 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
-            "content": "[Context: CAF01_CAFETERIA Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 14.0. TMP,  = 17.0. TMP, WARN_LO Nominal = 21.0 ± 0.4. TMP, WARN_HI = 26.0. TMP, CRIT_HI = 30.0. TMP, CRITICAL Response = Inspect and notify maintenance. HUM, Unit = %RH. HUM, CRIT_LO = 25.0. HUM,  = 35.0. HUM, WARN_LO Nominal = 55.0 ± 1.5. HUM, WARN_HI = 70.0. HUM, CRIT_HI = 80.0. HUM, CRITICAL Response = Inspect and notify maintenance",
+            "content": "[Context: CAF01_CAFETERIA Thresholds]\nTMP, Unit = °C. TMP, CRIT_LO = 14.0. TMP,  = 17.0. TMP, WARN_LONominal = 21.0 ± 0.4. TMP, WARN_HI = 26.0. TMP, CRIT_HI = 30.0. TMP, CRITICAL Response = Inspect and notify maintenance. HUM, Unit = %RH. HUM, CRIT_LO = 25.0. HUM,  = 35.0. HUM, WARN_LONominal = 55.0 ± 1.5. HUM, WARN_HI = 70.0. HUM, CRIT_HI = 80.0. HUM, CRITICAL Response = Inspect and notify maintenance",
             "entities": [
                 {
                     "span": "TMP",
@@ -398,8 +549,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "content": "[Context: Anomaly Type Definitions for KG Mapping]\nSPIKE, Definition = Transient deviation >3 s , <5 minSingle. SPIKE, Detection Criterion = reading >CRIT. SPIKE, Ontology Class = AnomalyEvent::Spike. DRIFT, Definition = Monotonic deviation >15 min. DRIFT, Detection Criterion = Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift. DRIFT, Ontology Class = Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift. STUCK, Definition = Unchanged >10 consecutive. STUCK, Detection Criterion = readings std(last 10)<0.001×nominal. STUCK, Ontology Class = AnomalyEvent::StuckSensor. OUT_OF_RANGE, Definition = Sustained WARN violation >10 min >WARN for 20+. OUT_OF_RANGE, Detection Criterion = readings. OUT_OF_RANGE, Ontology Class = AnomalyEvent::OutOfRange. CORRELATED, Definition = Causally linked to another station Onset within. CORRELATED, Detection Criterion = 90 min of cause. CORRELATED, Ontology Class = AnomalyEvent::Correlated",
             "entities": [

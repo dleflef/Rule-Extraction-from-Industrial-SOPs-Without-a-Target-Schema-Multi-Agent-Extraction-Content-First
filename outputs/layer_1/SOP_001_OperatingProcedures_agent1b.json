@@ -2,8 +2,15 @@
     "source_file": "SOP_001_OperatingProcedures.pdf",
     "status": "complete",
     "page_count": 2,
-    "chunk_count": 22,
+    "chunk_count": 27,
     "error_message": null,
+    "summary": {
+        "agent": "Agent 1B",
+        "status": "complete",
+        "total_records": 27,
+        "data_preview": "27 hierarchical chunks from SOP_001_OperatingProcedures.pdf",
+        "error_message": null
+    },
     "chunks": [
         {
             "chunk_id": 0,
@@ -14,8 +21,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 118
         },
@@ -28,36 +34,33 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 98
         },
         {
             "chunk_id": 2,
-            "content": "[Context: 1. Station Dependencies]\nST01_FILLING -> ST02_SEALING -> ST03_LABELLING -> ST04_PACKAGING. A fault at any station propagates downstream unless the line is halted.",
+            "content": "[Context: 1. Station Dependencies]\nST01_FILLING fi ST02_SEALING fi ST03_LABELLING fi ST04_PACKAGING. A fault at any station propagates downstream unless the line is halted.",
             "metadata": {
                 "headings": [
                     "1. Station Dependencies"
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 172
         },
         {
             "chunk_id": 3,
-            "content": "[Context: 1. Station Dependencies]\nST01_FILLING, Zone = Production Area. ST01_FILLING, Depends On = -. ST01_FILLING, Downstream Effect = Feeds ST02_SEALING. ST02_SEALING, Zone = Production Area. ST02_SEALING, Depends On = ST01. ST02_SEALING, Downstream Effect = Feeds ST03; thermal fault -> ST04 speed reduction. ST03_LABELLING, Zone = Production Area. ST03_LABELLING, Depends On = ST02. ST03_LABELLING, Downstream Effect = Feeds ST04_PACKAGING. ST04_PACKAGING, Zone = Production Area. ST04_PACKAGING, Depends On = ST03. ST04_PACKAGING, Downstream Effect = Final output. SRV01_SERVERROOM, Zone = Server Room. SRV01_SERVERROOM, Depends On = HVAC. SRV01_SERVERROOM, Downstream Effect = SCADA control; failure -> line halt. WRH01_WAREHOUSE, Zone = General Warehouse. WRH01_WAREHOUSE, Depends On = COMPRESSOR. WRH01_WAREHOUSE, Downstream Effect = Cold storage -product quality. CHM01_CHEMICALSTORAGE Chemical, Zone = Storage. CHM01_CHEMICALSTORAGE Chemical, Depends On = HVAC. CHM01_CHEMICALSTORAGE Chemical, Downstream Effect = Hazardous materials -safety critical. RND01_RDLAB, Zone = R&D Lab. RND01_RDLAB, Depends On = HVAC. RND01_RDLAB, Downstream Effect = Precision experiments -climate sensitive. CAF01_CAFETERIA, Zone = Cafeteria. CAF01_CAFETERIA, Depends On = HVAC. CAF01_CAFETERIA, Downstream Effect = Occupant comfort -food safety",
+            "content": "[Context: 1. Station Dependencies]\nST01_FILLING, Zone = Production Area. ST01_FILLING, Depends On = -. ST01_FILLING, Downstream Effect = Feeds ST02_SEALING. ST02_SEALING, Zone = Production Area. ST02_SEALING, Depends On = ST01. ST02_SEALING, Downstream Effect = Feeds ST03; thermal fault fi ST04 speed reduction. ST03_LABELLING, Zone = Production Area. ST03_LABELLING, Depends On = ST02. ST03_LABELLING, Downstream Effect = Feeds ST04_PACKAGING. ST04_PACKAGING, Zone = Production Area. ST04_PACKAGING, Depends On = ST03. ST04_PACKAGING, Downstream Effect = Final output. SRV01_SERVERROOM, Zone = Server Room. SRV01_SERVERROOM, Depends On = HVAC. SRV01_SERVERROOM, Downstream Effect = SCADA control; failure fi line halt. WRH01_WAREHOUSE, Zone = General Warehouse. WRH01_WAREHOUSE, Depends On = COMPRESSOR. WRH01_WAREHOUSE, Downstream Effect = Cold storage -product quality. CHM01_CHEMICALSTORAGE Chemical, Zone = Storage. CHM01_CHEMICALSTORAGE Chemical, Depends On = HVAC. CHM01_CHEMICALSTORAGE Chemical, Downstream Effect = Hazardous materials -safety critical. RND01_RDLAB, Zone = R&D Lab. RND01_RDLAB, Depends On = HVAC. RND01_RDLAB, Downstream Effect = Precision experiments -climate sensitive. CAF01_CAFETERIA, Zone = Cafeteria. CAF01_CAFETERIA, Depends On = HVAC. CAF01_CAFETERIA, Downstream Effect = Occupant comfort -food safety",
             "metadata": {
                 "headings": [
                     "1. Station Dependencies"
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 1336
         },
@@ -70,8 +73,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 91
         },
@@ -84,8 +86,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 97
         },
@@ -98,8 +99,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 100
         },
@@ -112,8 +112,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 82
         },
@@ -126,8 +125,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 99
         },
@@ -140,8 +138,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 116
         },
@@ -154,8 +151,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 225
         },
@@ -168,8 +164,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 78
         },
@@ -182,8 +177,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 116
         },
@@ -196,8 +190,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 95
         },
@@ -210,8 +203,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 105
         },
@@ -224,8 +216,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 106
         },
@@ -238,80 +229,139 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 116
         },
         {
-            "chunk_id": 18,
-            "content": "[Context: 2.5 SRV01_SERVERROOM]\nRULE-SRV01-01: TMP MUST NOT exceed 25°C. RULE-SRV01-02: TMP > 28°C (CRITICAL) - automatic controlled shutdown of all PLC nodes.",
+            "chunk_id": 17,
+            "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.5 SRV01_SERVERROOM",
             "metadata": {
                 "headings": [
-                    "2.5 SRV01_SERVERROOM"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
-            "char_count": 159
+            "char_count": 52
+        },
+        {
+            "chunk_id": 18,
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-SRV01-01: TMP MUST NOT exceed 25°C. RULE-SRV01-02: TMP > 28°C (CRITICAL) - automatic controlled shutdown of all PLC nodes.",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 157
+        },
+        {
+            "chunk_id": 19,
+            "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.6 WRH01_WAREHOUSE (General Warehouse)",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 71
         },
         {
             "chunk_id": 20,
-            "content": "[Context: 2.6 WRH01_WAREHOUSE (General Warehouse)]\nRULE-WRH01-01: TMP MUST remain between 0.5°C and 8°C. CRITICAL above 12°C - notify QC and quarantine batch. RULE-WRH01-02: HUM above 85%RH - inspect door seals and activate dehumidifier.",
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-WRH01-01: TMP MUST remain between 0.5°C and 8°C. CRITICAL above 12°C - notify QC and quarantine batch. RULE-WRH01-02: HUM above 85%RH - inspect door seals and activate dehumidifier.",
             "metadata": {
                 "headings": [
-                    "2.6 WRH01_WAREHOUSE (General Warehouse)"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
-            "char_count": 237
+            "char_count": 216
+        },
+        {
+            "chunk_id": 21,
+            "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.7 CHM01_CHEMICALSTORAGE (Chemical Storage)",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 76
         },
         {
             "chunk_id": 22,
-            "content": "[Context: 2.7 CHM01_CHEMICALSTORAGE (Chemical Storage)]\nRULE-CHM01-01: TMP MUST remain between 10°C and 20°C. CRITICAL above 25°C - activate emergency ventilation and notify safety officer immediately. RULE-CHM01-02: HUM MUST NOT exceed 50%RH. Elevated humidity accelerates degradation of hygroscopic reagents. Activate desiccant system if HUM >45%RH. RULE-CHM01-03: Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage. UNAUTHORIZED_ACCESS must be escalated within 2 minutes.",
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-CHM01-01: TMP MUST remain between 10°C and 20°C. CRITICAL above 25°C - activate emergency ventilation and notify safety officer immediately. RULE-CHM01-02: HUM MUST NOT exceed 50%RH. Elevated humidity accelerates degradation of hygroscopic reagents. Activate desiccant system if HUM >45%RH. RULE-CHM01-03: Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage. UNAUTHORIZED_ACCESS must be escalated within 2 minutes.",
             "metadata": {
                 "headings": [
-                    "2.7 CHM01_CHEMICALSTORAGE (Chemical Storage)"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
-            "char_count": 537
+            "char_count": 511
+        },
+        {
+            "chunk_id": 23,
+            "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.8 RND01_RDLAB (R&D; Lab)",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 58
         },
         {
             "chunk_id": 24,
-            "content": "[Context: 2.8 RND01_RDLAB (R&D; Lab)]\nRULE-RND01-01: TMP MUST remain between 18°C and 26°C for experimental validity. RULE-RND01-02: HUM drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system.",
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-RND01-01: TMP MUST remain between 18°C and 26°C for experimental validity. RULE-RND01-02: HUM drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system.",
             "metadata": {
                 "headings": [
-                    "2.8 RND01_RDLAB (R&D; Lab)"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
-            "char_count": 259
+            "char_count": 251
+        },
+        {
+            "chunk_id": 25,
+            "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.9 CAF01_CAFETERIA",
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "char_count": 51
         },
         {
             "chunk_id": 26,
-            "content": "[Context: 2.9 CAF01_CAFETERIA]\nRULE-CAF01-01: TMP above 26°C - check ventilation system. Occupant comfort is the primary criterion. RULE-CAF01-02: HUM above 70%RH - inspect drainage and activate ventilation.",
+            "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-CAF01-01: TMP above 26°C - check ventilation system. Occupant comfort is the primary criterion. RULE-CAF01-02: HUM above 70%RH - inspect drainage and activate ventilation.",
             "metadata": {
                 "headings": [
-                    "2.9 CAF01_CAFETERIA"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
-            "char_count": 207
+            "char_count": 206
         }
     ]
 }

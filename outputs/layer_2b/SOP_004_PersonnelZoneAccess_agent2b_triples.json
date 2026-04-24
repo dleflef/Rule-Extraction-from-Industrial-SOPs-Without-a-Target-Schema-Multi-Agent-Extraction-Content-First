@@ -13,8 +13,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -69,8 +68,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -373,8 +371,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -521,8 +518,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -779,8 +775,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -822,8 +817,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -859,8 +853,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "entities": [
                 {
@@ -889,16 +882,16 @@
                 },
                 {
                     "subject": "Chemical Storage",
-                    "predicate": "monitors",
-                    "object": "ST01_FILLING_TMP"
+                    "predicate": "authorized_for",
+                    "object": "Safety Officer"
                 },
                 {
-                    "subject": "RULE-ACCESS-04",
-                    "predicate": "applies_to_station",
-                    "object": "Chemical Storage"
+                    "subject": "Chemical Storage",
+                    "predicate": "has_policy",
+                    "object": "zero-tolerance"
                 },
                 {
-                    "subject": "RULE-ACCESS-04",
+                    "subject": "UNAUTHORIZED_ACCESS",
                     "predicate": "triggers_action",
                     "object": "immediate escalation to the Safety Officer regardless of role"
                 }

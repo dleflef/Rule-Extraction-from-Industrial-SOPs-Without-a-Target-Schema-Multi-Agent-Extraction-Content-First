@@ -11,8 +11,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": []
         },
@@ -24,8 +23,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": []
         },
@@ -37,32 +35,31 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
                     "subject": "ST01_FILLING",
                     "predicate": "feeds_into",
                     "object": "ST02_SEALING",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST02_SEALING"
                 },
                 {
                     "subject": "ST02_SEALING",
                     "predicate": "feeds_into",
                     "object": "ST03_LABELLING",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST03_LABELLING"
                 },
                 {
                     "subject": "ST03_LABELLING",
                     "predicate": "feeds_into",
                     "object": "ST04_PACKAGING",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST04_PACKAGING"
                 }
             ]
@@ -75,40 +72,39 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
                     "subject": "ST01_FILLING",
                     "predicate": "monitors",
                     "object": "ST01_FILLING_TMP",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST01_FILLING_TMP"
                 },
                 {
                     "subject": "ST02_SEALING",
                     "predicate": "monitors",
                     "object": "ST02_SEALING_TMP",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST02_SEALING_TMP"
                 },
                 {
                     "subject": "ST03_LABELLING",
                     "predicate": "monitors",
                     "object": "ST03_LABELLING_TMP",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST03_LABELLING_TMP"
                 },
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "monitors",
                     "object": "ST04_PACKAGING_TMP",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST04_PACKAGING_TMP"
                 },
                 {
@@ -161,8 +157,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -175,17 +170,17 @@
                 {
                     "subject": "RULE-ST01-01",
                     "predicate": "applies_to_sensor",
-                    "object": "FLW",
+                    "object": "ST01_FILLING_FLW",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "FLW"
                 },
                 {
                     "subject": "ST01_FILLING",
                     "predicate": "monitors",
-                    "object": "FLW",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "object": "ST01_FILLING_FLW",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "FLW"
                 }
             ]
@@ -198,8 +193,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -214,7 +208,7 @@
                     "predicate": "applies_to_station",
                     "object": "ST01_FILLING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST01_FILLING"
                 },
                 {
@@ -241,9 +235,9 @@
                 {
                     "subject": "ST01_FILLING",
                     "predicate": "monitors",
-                    "object": "TMP_ST01_FILLING",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "object": "ST01_FILLING_TMP",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "TMP_ST01_FILLING"
                 }
             ]
@@ -256,8 +250,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -272,7 +265,7 @@
                     "predicate": "applies_to_station",
                     "object": "ST01_FILLING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST01_FILLING"
                 },
                 {
@@ -299,9 +292,9 @@
                 {
                     "subject": "ST01_FILLING",
                     "predicate": "monitors",
-                    "object": "PRS",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "object": "ST01_FILLING_PRS",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "PRS"
                 }
             ]
@@ -314,8 +307,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -330,7 +322,7 @@
                     "predicate": "applies_to_station",
                     "object": "ST02_SEALING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST02_SEALING"
                 },
                 {
@@ -350,9 +342,9 @@
                 {
                     "subject": "ST02_SEALING",
                     "predicate": "monitors",
-                    "object": "TMP",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "object": "ST01_FILLING_TMP",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
                 }
             ]
@@ -365,8 +357,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -381,7 +372,7 @@
                     "predicate": "applies_to_station",
                     "object": "ST02_SEALING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST02_SEALING"
                 },
                 {
@@ -415,9 +406,9 @@
                 {
                     "subject": "ST02_SEALING",
                     "predicate": "monitors",
-                    "object": "TMP_ST02_SEALING",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "object": "ST02_SEALING_TMP",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "TMP_ST02_SEALING"
                 }
             ]
@@ -430,8 +421,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -446,7 +436,7 @@
                     "predicate": "applies_to_station",
                     "object": "ST02_SEALING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST02_SEALING"
                 },
                 {
@@ -480,8 +470,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -496,15 +485,15 @@
                     "predicate": "applies_to_station",
                     "object": "ST02_SEALING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST02_SEALING"
                 },
                 {
                     "subject": "RULE-ST02-04",
                     "predicate": "applies_to_sensor",
-                    "object": "ST02_SEALING-CUR",
+                    "object": "ST02_SEALING_CUR",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "ST02_SEALING-CUR"
                 },
                 {
@@ -517,17 +506,17 @@
                 {
                     "subject": "ST02_SEALING",
                     "predicate": "monitors",
-                    "object": "ST02_SEALING-CUR",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "object": "ST02_SEALING_CUR",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "ST02_SEALING-CUR"
                 },
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "feeds_into",
-                    "object": "ST04_PACKAGING-SPD",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "object": "ST04_PACKAGING",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "ST04_PACKAGING-SPD"
                 }
             ]
@@ -540,8 +529,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -604,8 +592,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -620,7 +607,7 @@
                     "predicate": "applies_to_station",
                     "object": "ST03_LABELLING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST03_LABELLING"
                 },
                 {
@@ -655,7 +642,7 @@
                     "subject": "ST03_LABELLING",
                     "predicate": "monitors",
                     "object": "CNT_ST03_LABELLING",
-                    "_subject_alignment": "unaligned",
+                    "_subject_alignment": "exact",
                     "_object_alignment": "unaligned",
                     "_raw_object": "CNT_ST03_LABELLING"
                 }
@@ -669,8 +656,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -685,7 +671,7 @@
                     "predicate": "applies_to_station",
                     "object": "ST03_LABELLING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST03_LABELLING"
                 },
                 {
@@ -706,7 +692,7 @@
                     "subject": "ST03_LABELLING",
                     "predicate": "monitors",
                     "object": "TEN STUCK",
-                    "_subject_alignment": "unaligned",
+                    "_subject_alignment": "exact",
                     "_object_alignment": "unaligned",
                     "_raw_object": "TEN STUCK"
                 }
@@ -720,8 +706,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -736,7 +721,7 @@
                     "predicate": "applies_to_station",
                     "object": "ST04_PACKAGING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST04_PACKAGING"
                 },
                 {
@@ -777,8 +762,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -793,7 +777,7 @@
                     "predicate": "applies_to_station",
                     "object": "ST04_PACKAGING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST04_PACKAGING"
                 },
                 {
@@ -827,9 +811,9 @@
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "monitors",
-                    "object": "VIB_ST04_PACKAGING",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "object": "ST04_PACKAGING_CNT",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "VIB_ST04_PACKAGING"
                 }
             ]
@@ -842,8 +826,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -858,7 +841,7 @@
                     "predicate": "applies_to_station",
                     "object": "ST04_PACKAGING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "ST04_PACKAGING"
                 },
                 {
@@ -885,10 +868,31 @@
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "monitors",
-                    "object": "SPD_ST04_PACKAGING",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
+                    "object": "ST04_PACKAGING_SPD",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "SPD_ST04_PACKAGING"
+                }
+            ]
+        },
+        {
+            "chunk_id": 17,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "SRV01_SERVERROOM",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "SRV01_SERVERROOM"
                 }
             ]
         },
@@ -896,12 +900,11 @@
             "chunk_id": 18,
             "metadata": {
                 "headings": [
-                    "2.5 SRV01_SERVERROOM"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -913,37 +916,16 @@
                 },
                 {
                     "subject": "RULE-SRV01-01",
-                    "predicate": "applies_to_station",
-                    "object": "SRV01_SERVERROOM",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST01_FILLING_TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "SRV01_SERVERROOM"
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "TMP"
                 },
                 {
                     "subject": "RULE-SRV01-01",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-SRV01-01",
-                    "predicate": "has_condition",
-                    "object": "TMP MUST NOT exceed 25°C.",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-SRV01-01",
-                    "predicate": "triggers_action",
-                    "object": "",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-SRV01-01",
-                    "predicate": "has_severity",
-                    "object": "WARNING",
+                    "predicate": "has_threshold",
+                    "object": "25.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -956,30 +938,16 @@
                 },
                 {
                     "subject": "RULE-SRV01-02",
-                    "predicate": "applies_to_station",
-                    "object": "SRV01_SERVERROOM",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST01_FILLING_TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "SRV01_SERVERROOM"
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "TMP"
                 },
                 {
                     "subject": "RULE-SRV01-02",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-SRV01-02",
-                    "predicate": "has_condition",
-                    "object": "TMP > 28°C (CRITICAL)",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-SRV01-02",
-                    "predicate": "triggers_action",
-                    "object": "automatic controlled shutdown of all PLC nodes",
+                    "predicate": "has_threshold",
+                    "object": "28.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -989,6 +957,34 @@
                     "object": "CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-02",
+                    "predicate": "triggers_action",
+                    "object": "automatic controlled shutdown of all PLC nodes",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                }
+            ]
+        },
+        {
+            "chunk_id": 19,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "WRH01_WAREHOUSE",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "WRH01_WAREHOUSE"
                 }
             ]
         },
@@ -996,12 +992,11 @@
             "chunk_id": 20,
             "metadata": {
                 "headings": [
-                    "2.6 WRH01_WAREHOUSE (General Warehouse)"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -1014,10 +1009,10 @@
                 {
                     "subject": "RULE-WRH01-01",
                     "predicate": "applies_to_station",
-                    "object": "WRH01_WAREHOUSE",
+                    "object": "ST04_PACKAGING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "WRH01_WAREHOUSE"
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST04_PACKAGING"
                 },
                 {
                     "subject": "RULE-WRH01-01",
@@ -1029,7 +1024,7 @@
                 {
                     "subject": "RULE-WRH01-01",
                     "predicate": "has_condition",
-                    "object": "between 0.5°C and 8°C",
+                    "object": "above 12°C",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1057,10 +1052,10 @@
                 {
                     "subject": "RULE-WRH01-02",
                     "predicate": "applies_to_station",
-                    "object": "WRH01_WAREHOUSE",
+                    "object": "ST04_PACKAGING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "WRH01_WAREHOUSE"
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST04_PACKAGING"
                 },
                 {
                     "subject": "RULE-WRH01-02",
@@ -1086,15 +1081,35 @@
             ]
         },
         {
-            "chunk_id": 22,
+            "chunk_id": 21,
             "metadata": {
                 "headings": [
-                    "2.7 CHM01_CHEMICALSTORAGE (Chemical Storage)"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "CHM01_CHEMICALSTORAGE",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "CHM01_CHEMICALSTORAGE"
+                }
+            ]
+        },
+        {
+            "chunk_id": 22,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
                 ],
-                "is_table": false
+                "page_numbers": [
+                    2
+                ]
             },
             "aligned_relations": [
                 {
@@ -1109,7 +1124,7 @@
                     "predicate": "applies_to_station",
                     "object": "Chemical Storage",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Chemical Storage"
                 },
                 {
@@ -1145,7 +1160,7 @@
                     "predicate": "applies_to_station",
                     "object": "Chemical Storage",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Chemical Storage"
                 },
                 {
@@ -1181,7 +1196,7 @@
                     "predicate": "applies_to_station",
                     "object": "Chemical Storage",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "Chemical Storage"
                 },
                 {
@@ -1201,15 +1216,35 @@
             ]
         },
         {
-            "chunk_id": 24,
+            "chunk_id": 23,
             "metadata": {
                 "headings": [
-                    "2.8 RND01_RDLAB (R&D; Lab)"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "RND01_RDLAB",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "RND01_RDLAB"
+                }
+            ]
+        },
+        {
+            "chunk_id": 24,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
                 ],
-                "is_table": false
+                "page_numbers": [
+                    2
+                ]
             },
             "aligned_relations": [
                 {
@@ -1221,37 +1256,44 @@
                 },
                 {
                     "subject": "RULE-RND01-01",
-                    "predicate": "applies_to_station",
-                    "object": "RND01_RDLAB",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST04_PACKAGING_TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "RND01_RDLAB"
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST04_PACKAGING_TMP"
                 },
                 {
                     "subject": "RULE-RND01-01",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP",
+                    "predicate": "has_crit_hi",
+                    "object": "26.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-RND01-01",
-                    "predicate": "has_condition",
-                    "object": "must remain between 18°C and 26°C for experimental validity",
+                    "predicate": "has_warn_hi",
+                    "object": "24.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-01",
+                    "predicate": "has_crit_lo",
+                    "object": "18.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-01",
+                    "predicate": "has_warn_lo",
+                    "object": "20.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-RND01-01",
                     "predicate": "triggers_action",
-                    "object": "",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-RND01-01",
-                    "predicate": "has_severity",
-                    "object": "WARNING",
+                    "object": "No action specified",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1264,39 +1306,69 @@
                 },
                 {
                     "subject": "RULE-RND01-02",
-                    "predicate": "applies_to_station",
-                    "object": "RND01_RDLAB",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST04_PACKAGING_HUM",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "unaligned",
-                    "_raw_object": "RND01_RDLAB"
+                    "_raw_object": "ST04_PACKAGING_HUM"
                 },
                 {
                     "subject": "RULE-RND01-02",
-                    "predicate": "has_sensor_type",
-                    "object": "HUM",
+                    "predicate": "has_crit_hi",
+                    "object": "75.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-RND01-02",
-                    "predicate": "has_condition",
-                    "object": "drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system",
+                    "predicate": "has_warn_hi",
+                    "object": "65.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-RND01-02",
                     "predicate": "triggers_action",
-                    "object": "",
+                    "object": "Activate dehumidifier",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-RND01-02",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "ST04_PACKAGING_TMP",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST04_PACKAGING_TMP"
+                },
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "ST04_PACKAGING_HUM",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "ST04_PACKAGING_HUM"
+                }
+            ]
+        },
+        {
+            "chunk_id": 25,
+            "metadata": {
+                "headings": [
+                    "2.4 ST04_PACKAGING"
+                ],
+                "page_numbers": [
+                    2
+                ]
+            },
+            "aligned_relations": [
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "CAF01_CAFETERIA_TMP",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "CAF01_CAFETERIA_TMP"
                 }
             ]
         },
@@ -1304,12 +1376,11 @@
             "chunk_id": 26,
             "metadata": {
                 "headings": [
-                    "2.9 CAF01_CAFETERIA"
+                    "2.4 ST04_PACKAGING"
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -1322,10 +1393,10 @@
                 {
                     "subject": "RULE-CAF01-01",
                     "predicate": "applies_to_station",
-                    "object": "CAF01_CAFETERIA",
+                    "object": "ST04_PACKAGING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "CAF01_CAFETERIA"
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST04_PACKAGING"
                 },
                 {
                     "subject": "RULE-CAF01-01",
@@ -1356,14 +1427,6 @@
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "CAF01_CAFETERIA",
-                    "predicate": "monitors",
-                    "object": "CAF01_CAFETERIA_TMP",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "CAF01_CAFETERIA_TMP"
-                },
-                {
                     "subject": "RULE-CAF01-02",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule",
@@ -1373,10 +1436,10 @@
                 {
                     "subject": "RULE-CAF01-02",
                     "predicate": "applies_to_station",
-                    "object": "CAF01_CAFETERIA",
+                    "object": "ST04_PACKAGING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "CAF01_CAFETERIA"
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST04_PACKAGING"
                 },
                 {
                     "subject": "RULE-CAF01-02",
@@ -1405,14 +1468,6 @@
                     "object": "WARNING",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
-                },
-                {
-                    "subject": "CAF01_CAFETERIA",
-                    "predicate": "monitors",
-                    "object": "CAF01_CAFETERIA_HUM",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "CAF01_CAFETERIA_HUM"
                 }
             ]
         }

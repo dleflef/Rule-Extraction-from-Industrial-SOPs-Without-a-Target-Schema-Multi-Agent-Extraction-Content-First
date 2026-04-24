@@ -11,8 +11,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": []
         },
@@ -24,8 +23,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -66,8 +64,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -80,9 +77,9 @@
                 {
                     "subject": "RULE-2-01",
                     "predicate": "applies_to_sensor",
-                    "object": "TMP",
+                    "object": "ST01_FILLING_TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
                 },
                 {
@@ -101,8 +98,8 @@
                 },
                 {
                     "subject": "RULE-2-01",
-                    "predicate": "has_warn_hi",
-                    "object": "26.0",
+                    "predicate": "has_warn_lo",
+                    "object": "18.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -115,18 +112,17 @@
                 },
                 {
                     "subject": "RULE-2-01",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance.",
+                    "predicate": "has_warn_hi",
+                    "object": "26.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "ST01_FILLING",
-                    "predicate": "monitors",
-                    "object": "TMP",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "TMP"
+                    "subject": "RULE-2-01",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-2-02",
@@ -138,9 +134,9 @@
                 {
                     "subject": "RULE-2-02",
                     "predicate": "applies_to_sensor",
-                    "object": "PRS",
+                    "object": "ST01_FILLING_PRS",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "PRS"
                 },
                 {
@@ -159,8 +155,8 @@
                 },
                 {
                     "subject": "RULE-2-02",
-                    "predicate": "has_warn_hi",
-                    "object": "4.2",
+                    "predicate": "has_warn_lo",
+                    "object": "3.3",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -173,18 +169,17 @@
                 },
                 {
                     "subject": "RULE-2-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance.",
+                    "predicate": "has_warn_hi",
+                    "object": "4.2",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "ST01_FILLING",
-                    "predicate": "monitors",
-                    "object": "PRS",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "PRS"
+                    "subject": "RULE-2-02",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-2-03",
@@ -196,9 +191,9 @@
                 {
                     "subject": "RULE-2-03",
                     "predicate": "applies_to_sensor",
-                    "object": "FLW",
+                    "object": "ST01_FILLING_FLW",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "FLW"
                 },
                 {
@@ -217,8 +212,8 @@
                 },
                 {
                     "subject": "RULE-2-03",
-                    "predicate": "has_warn_hi",
-                    "object": "128.0",
+                    "predicate": "has_warn_lo",
+                    "object": "112.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -231,18 +226,17 @@
                 },
                 {
                     "subject": "RULE-2-03",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance.",
+                    "predicate": "has_warn_hi",
+                    "object": "128.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "ST01_FILLING",
-                    "predicate": "monitors",
-                    "object": "FLW",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "FLW"
+                    "subject": "RULE-2-03",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -254,8 +248,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -268,9 +261,9 @@
                 {
                     "subject": "RULE-3-01",
                     "predicate": "applies_to_sensor",
-                    "object": "TMP",
+                    "object": "ST01_FILLING_TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
                 },
                 {
@@ -289,8 +282,8 @@
                 },
                 {
                     "subject": "RULE-3-01",
-                    "predicate": "has_warn_hi",
-                    "object": "195.0",
+                    "predicate": "has_warn_lo",
+                    "object": "185.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -318,9 +311,9 @@
                 {
                     "subject": "RULE-3-02",
                     "predicate": "applies_to_sensor",
-                    "object": "PRS",
+                    "object": "ST01_FILLING_PRS",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "PRS"
                 },
                 {
@@ -339,8 +332,8 @@
                 },
                 {
                     "subject": "RULE-3-02",
-                    "predicate": "has_warn_hi",
-                    "object": "5.7",
+                    "predicate": "has_warn_lo",
+                    "object": "5.2",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -368,9 +361,9 @@
                 {
                     "subject": "RULE-3-03",
                     "predicate": "applies_to_sensor",
-                    "object": "CUR",
+                    "object": "ST02_SEALING_CUR",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "CUR"
                 },
                 {
@@ -389,8 +382,8 @@
                 },
                 {
                     "subject": "RULE-3-03",
-                    "predicate": "has_warn_hi",
-                    "object": "13.5",
+                    "predicate": "has_warn_lo",
+                    "object": "12.4",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -418,8 +411,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -452,8 +444,8 @@
                 },
                 {
                     "subject": "RULE-4-01",
-                    "predicate": "has_warn_hi",
-                    "object": "0.95",
+                    "predicate": "has_warn_lo",
+                    "object": "0.75",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -461,6 +453,13 @@
                     "subject": "RULE-4-01",
                     "predicate": "has_crit_hi",
                     "object": "1.05",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-4-01",
+                    "predicate": "has_warn_hi",
+                    "object": "0.95",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -501,8 +500,8 @@
                 },
                 {
                     "subject": "RULE-4-02",
-                    "predicate": "has_warn_hi",
-                    "object": "2.6",
+                    "predicate": "has_warn_lo",
+                    "object": "1.8",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -510,6 +509,13 @@
                     "subject": "RULE-4-02",
                     "predicate": "has_crit_hi",
                     "object": "3.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-4-02",
+                    "predicate": "has_warn_hi",
+                    "object": "2.6",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -550,8 +556,8 @@
                 },
                 {
                     "subject": "RULE-4-03",
-                    "predicate": "has_warn_hi",
-                    "object": "130",
+                    "predicate": "has_warn_lo",
+                    "object": "110",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -559,6 +565,13 @@
                     "subject": "RULE-4-03",
                     "predicate": "has_crit_hi",
                     "object": "140",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-4-03",
+                    "predicate": "has_warn_hi",
+                    "object": "130",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -579,8 +592,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -633,6 +645,14 @@
                     "_object_alignment": "literal"
                 },
                 {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "ST04_PACKAGING_CNT",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "llm_aligned",
+                    "_raw_object": "VIB_ST04_PACKAGING"
+                },
+                {
                     "subject": "RULE-5-02",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule",
@@ -682,6 +702,14 @@
                     "_object_alignment": "literal"
                 },
                 {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "ST04_PACKAGING_TMP",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "llm_aligned",
+                    "_raw_object": "CUR_ST04_PACKAGING"
+                },
+                {
                     "subject": "RULE-5-03",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule",
@@ -729,6 +757,14 @@
                     "object": "Inspect and notify maintenance",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
+                },
+                {
+                    "subject": "ST04_PACKAGING",
+                    "predicate": "monitors",
+                    "object": "ST04_PACKAGING_SPD",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "llm_aligned",
+                    "_raw_object": "SPD_ST04_PACKAGING"
                 }
             ]
         },
@@ -740,8 +776,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -754,10 +789,10 @@
                 {
                     "subject": "RULE-6-01",
                     "predicate": "applies_to_sensor",
-                    "object": "TMP",
+                    "object": "SRV01_SERVERROOM_TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "unaligned",
-                    "_raw_object": "TMP"
+                    "_raw_object": "SRV01_SERVERROOM_TMP"
                 },
                 {
                     "subject": "RULE-6-01",
@@ -782,46 +817,25 @@
                 },
                 {
                     "subject": "RULE-6-01",
+                    "predicate": "has_crit_hi",
+                    "object": "28.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-6-01",
                     "predicate": "triggers_action",
                     "object": "Activate backup cooling; prepare controlled PLC shutdown.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-6-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-6-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "HUM",
-                    "_subject_alignment": "rule_node",
+                    "subject": "SRV01_SERVERROOM",
+                    "predicate": "monitors",
+                    "object": "SRV01_SERVERROOM_TMP",
+                    "_subject_alignment": "unaligned",
                     "_object_alignment": "unaligned",
-                    "_raw_object": "HUM"
-                },
-                {
-                    "subject": "RULE-6-02",
-                    "predicate": "has_unit",
-                    "object": "%RH",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-6-02",
-                    "predicate": "has_crit_lo",
-                    "object": "25.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-6-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
+                    "_raw_object": "SRV01_SERVERROOM_TMP"
                 }
             ]
         },
@@ -833,8 +847,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -847,9 +860,9 @@
                 {
                     "subject": "RULE-7-01",
                     "predicate": "applies_to_sensor",
-                    "object": "TMP",
+                    "object": "ST01_FILLING_TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
                 },
                 {
@@ -869,7 +882,7 @@
                 {
                     "subject": "RULE-7-01",
                     "predicate": "has_warn_lo",
-                    "object": "4.0",
+                    "object": "0.5",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -877,6 +890,13 @@
                     "subject": "RULE-7-01",
                     "predicate": "has_crit_hi",
                     "object": "12.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-7-01",
+                    "predicate": "has_warn_hi",
+                    "object": "8.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -919,7 +939,7 @@
                 {
                     "subject": "RULE-7-02",
                     "predicate": "has_warn_lo",
-                    "object": "75.0",
+                    "object": "60.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -927,6 +947,13 @@
                     "subject": "RULE-7-02",
                     "predicate": "has_crit_hi",
                     "object": "90.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-7-02",
+                    "predicate": "has_warn_hi",
+                    "object": "85.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -947,8 +974,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -961,9 +987,9 @@
                 {
                     "subject": "RULE-8-01",
                     "predicate": "applies_to_sensor",
-                    "object": "TMP",
+                    "object": "ST01_FILLING_TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
                 },
                 {
@@ -1061,8 +1087,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -1096,7 +1121,7 @@
                 {
                     "subject": "RULE-9-01",
                     "predicate": "has_warn_lo",
-                    "object": "22.0",
+                    "object": "18.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1109,59 +1134,25 @@
                 },
                 {
                     "subject": "RULE-9-01",
+                    "predicate": "has_warn_hi",
+                    "object": "26.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-9-01",
                     "predicate": "triggers_action",
                     "object": "Inspect and notify maintenance.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-9-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_sensor_type",
-                    "object": "HUM",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_unit",
-                    "object": "%RH",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_crit_lo",
-                    "object": "25.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_warn_lo",
-                    "object": "50.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_crit_hi",
-                    "object": "75.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "triggers_action",
-                    "object": "Suspend experiments; inspect HVAC system.",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
+                    "subject": "ST01_RDLAB",
+                    "predicate": "monitors",
+                    "object": "ST01_FILLING_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "TMP"
                 }
             ]
         },
@@ -1173,8 +1164,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {
@@ -1187,9 +1177,9 @@
                 {
                     "subject": "RULE-10-01",
                     "predicate": "applies_to_sensor",
-                    "object": "TMP",
+                    "object": "ST01_FILLING_TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
                 },
                 {
@@ -1208,8 +1198,8 @@
                 },
                 {
                     "subject": "RULE-10-01",
-                    "predicate": "has_warn_hi",
-                    "object": "26.0",
+                    "predicate": "has_warn_lo",
+                    "object": "21.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1223,59 +1213,17 @@
                 {
                     "subject": "RULE-10-01",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance.",
+                    "object": "Inspect and notify maintenance",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-10-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "HUM",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "HUM"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "has_unit",
-                    "object": "%RH",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "has_crit_lo",
-                    "object": "25.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "has_warn_hi",
-                    "object": "70.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "has_crit_hi",
-                    "object": "80.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-10-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance.",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
+                    "subject": "CAF01_CAFETERIA",
+                    "predicate": "monitors",
+                    "object": "ST01_FILLING_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "TMP"
                 }
             ]
         },
@@ -1287,8 +1235,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "aligned_relations": [
                 {

@@ -4,6 +4,13 @@
     "page_count": 2,
     "chunk_count": 7,
     "error_message": null,
+    "summary": {
+        "agent": "Agent 1B",
+        "status": "complete",
+        "total_records": 7,
+        "data_preview": "7 hierarchical chunks from SOP_004_PersonnelZoneAccess.pdf",
+        "error_message": null
+    },
     "chunks": [
         {
             "chunk_id": 0,
@@ -14,8 +21,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 158
         },
@@ -28,8 +34,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 1268
         },
@@ -42,8 +47,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 729
         },
@@ -56,8 +60,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 457
         },
@@ -70,8 +73,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 179
         },
@@ -84,8 +86,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 122
         },
@@ -98,8 +99,7 @@
                 ],
                 "page_numbers": [
                     2
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 280
         }

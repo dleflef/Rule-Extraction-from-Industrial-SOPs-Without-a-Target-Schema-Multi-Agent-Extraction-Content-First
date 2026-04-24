@@ -1,31 +1,24 @@
 {
     "summary": {
         "ground_truth_rules": 86,
-        "reconstructed_rules": 75,
+        "reconstructed_rules": 72,
         "metrics": {
-            "precision": 0.2133,
-            "recall": 0.186,
-            "f1_score": 0.1988
+            "precision": 0.1944,
+            "recall": 0.1628,
+            "f1_score": 0.1772
         },
         "counts": {
-            "TP": 16,
-            "FP": 59,
-            "FN": 70
+            "TP": 14,
+            "FP": 58,
+            "FN": 72
         },
         "per_rule_class": {
             "OperationalRule": {
-                "TP": 9,
+                "TP": 8,
                 "FP": 0,
-                "FN": 19,
+                "FN": 20,
                 "precision": 1.0,
-                "recall": 0.321
-            },
-            "ThresholdRule": {
-                "TP": 1,
-                "FP": 46,
-                "FN": 26,
-                "precision": 0.021,
-                "recall": 0.037
+                "recall": 0.286
             },
             "MaintenanceRule": {
                 "TP": 6,
@@ -33,6 +26,13 @@
                 "FN": 5,
                 "precision": 0.75,
                 "recall": 0.545
+            },
+            "ThresholdRule": {
+                "TP": 0,
+                "FP": 45,
+                "FN": 27,
+                "precision": 0.0,
+                "recall": 0.0
             },
             "AccessRule": {
                 "TP": 0,
@@ -44,33 +44,33 @@
         },
         "field_accuracy": {
             "station": {
-                "hits": 14,
-                "possible": 16,
-                "accuracy": 0.875
+                "hits": 11,
+                "possible": 14,
+                "accuracy": 0.786
             },
             "sensor": {
-                "hits": 0,
-                "possible": 3,
-                "accuracy": 0.0
+                "hits": 1,
+                "possible": 4,
+                "accuracy": 0.25
             },
             "sensorType": {
-                "hits": 16,
-                "possible": 16,
+                "hits": 13,
+                "possible": 13,
                 "accuracy": 1.0
             },
             "condition": {
-                "hits": 16,
-                "possible": 16,
+                "hits": 13,
+                "possible": 13,
                 "accuracy": 1.0
             },
             "action": {
-                "hits": 12,
-                "possible": 13,
-                "accuracy": 0.923
+                "hits": 14,
+                "possible": 14,
+                "accuracy": 1.0
             },
             "severity": {
-                "hits": 16,
-                "possible": 16,
+                "hits": 13,
+                "possible": 13,
                 "accuracy": 1.0
             },
             "unit": {
@@ -125,6 +125,31 @@
                 "critLo": "165.0",
                 "warnLo": "175.0",
                 "unit": "°C"
+            },
+            "match_score": 1.0
+        },
+        {
+            "extracted": {
+                "ruleId": "RULE-ST02-04",
+                "rule_class": "ThresholdRule",
+                "station": "ST02_SEALING",
+                "sensor": "ST02_SEALING_CUR",
+                "action": "Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING."
+            },
+            "matched_ground_truth": {
+                "ruleId": "RULE-ST02-04",
+                "rule_class": "OperationalRule",
+                "station": "ST02_SEALING",
+                "sensor": "ST02_SEALING_CUR",
+                "sensorType": "CUR",
+                "condition": "CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING",
+                "action": "Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers WARNING",
+                "severity": "WARNING",
+                "critHi": "15.0",
+                "warnHi": "13.5",
+                "critLo": "9.5",
+                "warnLo": "11.0",
+                "unit": "A"
             },
             "match_score": 1.0
         },
@@ -211,76 +236,22 @@
         },
         {
             "extracted": {
-                "ruleId": "RULE-SRV01-01",
-                "rule_class": "ThresholdRule",
-                "station": "SRV01_SERVERROOM",
-                "sensorType": "TMP",
-                "condition": "TMP MUST NOT exceed 25°C.",
-                "action": "",
-                "severity": "WARNING"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-ST01-02",
-                "rule_class": "OperationalRule",
-                "station": "ST01_FILLING",
-                "sensor": "ST01_FILLING_TMP",
-                "sensorType": "TMP",
-                "condition": "TMP exceeds 26°C",
-                "action": "Reduce speed by 10% and notify QC",
-                "severity": "WARNING",
-                "critHi": "30.0",
-                "warnHi": "26.0",
-                "critLo": "15.0",
-                "warnLo": "18.0",
-                "unit": "°C"
-            },
-            "match_score": 0.5
-        },
-        {
-            "extracted": {
-                "ruleId": "RULE-SRV01-02",
-                "rule_class": "ThresholdRule",
-                "station": "SRV01_SERVERROOM",
-                "sensorType": "TMP",
-                "condition": "TMP > 28°C (CRITICAL)",
-                "action": "automatic controlled shutdown of all PLC nodes",
-                "severity": "CRITICAL"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-SRV01-02",
-                "rule_class": "OperationalRule",
-                "station": "SRV01_SERVERROOM",
-                "sensor": "SRV01_SERVERROOM_TMP",
-                "sensorType": "TMP",
-                "condition": "TMP > 28°C (CRITICAL)",
-                "action": "Automatic controlled shutdown of all PLC nodes",
-                "severity": "CRITICAL",
-                "critHi": "28.0",
-                "warnHi": "25.0",
-                "critLo": "16.0",
-                "warnLo": "18.0",
-                "unit": "°C"
-            },
-            "match_score": 1.0
-        },
-        {
-            "extracted": {
                 "ruleId": "RULE-WRH01-01",
                 "rule_class": "ThresholdRule",
-                "station": "WRH01_WAREHOUSE",
+                "station": "ST04_PACKAGING",
                 "sensorType": "TMP",
-                "condition": "between 0.5°C and 8°C",
+                "condition": "above 12°C",
                 "action": "notify QC and quarantine batch",
                 "severity": "CRITICAL"
             },
             "matched_ground_truth": {
-                "ruleId": "RULE-THR-WRH01-TMP-CRIT",
-                "rule_class": "ThresholdRule",
+                "ruleId": "RULE-WRH01-01b",
+                "rule_class": "OperationalRule",
                 "station": "WRH01_WAREHOUSE",
                 "sensor": "WRH01_WAREHOUSE_TMP",
                 "sensorType": "TMP",
-                "condition": "Temperature critical thresholds: CRIT_LO=-1.0°C, WARN_LOW=0.5°C, nominal=4.0±0.5°C, WARN_HI=8.0°C, CRIT_HI=12.0°C",
-                "action": "Activate backup refrigeration; notify QC",
+                "condition": "TMP CRITICAL above 12°C",
+                "action": "Notify QC and quarantine batch",
                 "severity": "CRITICAL",
                 "critHi": "12.0",
                 "warnHi": "8.0",
@@ -288,16 +259,16 @@
                 "warnLo": "0.5",
                 "unit": "°C"
             },
-            "match_score": 0.819
+            "match_score": 0.714
         },
         {
             "extracted": {
-                "ruleId": "RULE-RND01-01",
+                "ruleId": "RULE-CAF01-01",
                 "rule_class": "ThresholdRule",
-                "station": "RND01_RDLAB",
+                "station": "ST04_PACKAGING",
                 "sensorType": "TMP",
-                "condition": "must remain between 18°C and 26°C for experimental validity",
-                "action": "",
+                "condition": "TMP above 26°C",
+                "action": "check ventilation system",
                 "severity": "WARNING"
             },
             "matched_ground_truth": {
@@ -315,40 +286,13 @@
                 "warnLo": "17.0",
                 "unit": "°C"
             },
-            "match_score": 0.5
-        },
-        {
-            "extracted": {
-                "ruleId": "RULE-RND01-02",
-                "rule_class": "ThresholdRule",
-                "station": "RND01_RDLAB",
-                "sensorType": "HUM",
-                "condition": "drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system",
-                "action": "",
-                "severity": "CRITICAL"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-RND01-02b",
-                "rule_class": "OperationalRule",
-                "station": "RND01_RDLAB",
-                "sensor": "RND01_RDLAB_HUM",
-                "sensorType": "HUM",
-                "condition": "HUM above 75%RH (CRITICAL)",
-                "action": "Suspend sensitive experiments and inspect HVAC system",
-                "severity": "CRITICAL",
-                "critHi": "75.0",
-                "warnHi": "65.0",
-                "critLo": "25.0",
-                "warnLo": "35.0",
-                "unit": "%RH"
-            },
-            "match_score": 0.933
+            "match_score": 0.714
         },
         {
             "extracted": {
                 "ruleId": "RULE-CAF01-02",
                 "rule_class": "ThresholdRule",
-                "station": "CAF01_CAFETERIA",
+                "station": "ST04_PACKAGING",
                 "sensorType": "HUM",
                 "condition": "HUM above 70%RH",
                 "action": "inspect drainage and activate ventilation",
@@ -369,17 +313,18 @@
                 "warnLo": "35.0",
                 "unit": "%RH"
             },
-            "match_score": 1.0
+            "match_score": 0.714
         },
         {
             "extracted": {
                 "ruleId": "RULE-2-01",
                 "rule_class": "MaintenanceRule",
-                "sensor": "TMP",
+                "sensor": "ST01_FILLING_TMP",
                 "unit": "°C",
                 "critLo": 15.0,
-                "warnHi": 26.0,
+                "warnLo": 18.0,
                 "critHi": 30.0,
+                "warnHi": 26.0,
                 "action": "Inspect and lubricate bearing",
                 "station": "ST04_PACKAGING",
                 "sensorType": "VIB",
@@ -407,11 +352,12 @@
             "extracted": {
                 "ruleId": "RULE-2-02",
                 "rule_class": "MaintenanceRule",
-                "sensor": "PRS",
+                "sensor": "ST01_FILLING_PRS",
                 "unit": "bar",
                 "critLo": 3.0,
-                "warnHi": 4.2,
+                "warnLo": 3.3,
                 "critHi": 4.8,
+                "warnHi": 4.2,
                 "action": "Inspect sealing jaw",
                 "station": "ST02_SEALING",
                 "sensorType": "CUR",
@@ -439,11 +385,12 @@
             "extracted": {
                 "ruleId": "RULE-2-03",
                 "rule_class": "MaintenanceRule",
-                "sensor": "FLW",
+                "sensor": "ST01_FILLING_FLW",
                 "unit": "L/min",
                 "critLo": 105.0,
-                "warnHi": 128.0,
+                "warnLo": 112.0,
                 "critHi": 135.0,
+                "warnHi": 128.0,
                 "action": "Replace sensor",
                 "station": "ST03_LABELLING",
                 "sensorType": "TEN",
@@ -553,7 +500,7 @@
         {
             "ruleId": "RULE-ST01-01",
             "rule_class": "ThresholdRule",
-            "sensor": "FLW"
+            "sensor": "ST01_FILLING_FLW"
         },
         {
             "ruleId": "RULE-ST01-02",
@@ -587,13 +534,6 @@
             "action": "schedule maintenance"
         },
         {
-            "ruleId": "RULE-ST02-04",
-            "rule_class": "ThresholdRule",
-            "station": "ST02_SEALING",
-            "sensor": "ST02_SEALING-CUR",
-            "action": "Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING."
-        },
-        {
             "ruleId": "RULE-ST03-01",
             "rule_class": "ThresholdRule",
             "sensor": "TEN",
@@ -619,9 +559,21 @@
             "action": "verify RULE-ST02-04"
         },
         {
+            "ruleId": "RULE-SRV01-01",
+            "rule_class": "ThresholdRule",
+            "sensor": "ST01_FILLING_TMP"
+        },
+        {
+            "ruleId": "RULE-SRV01-02",
+            "rule_class": "ThresholdRule",
+            "sensor": "ST01_FILLING_TMP",
+            "severity": "CRITICAL",
+            "action": "automatic controlled shutdown of all PLC nodes"
+        },
+        {
             "ruleId": "RULE-WRH01-02",
             "rule_class": "ThresholdRule",
-            "station": "WRH01_WAREHOUSE",
+            "station": "ST04_PACKAGING",
             "sensorType": "HUM",
             "condition": "above 85%RH",
             "action": "inspect door seals and activate dehumidifier"
@@ -650,13 +602,22 @@
             "action": "UNAUTHORIZED_ACCESS must be escalated within 2 minutes"
         },
         {
-            "ruleId": "RULE-CAF01-01",
+            "ruleId": "RULE-RND01-01",
             "rule_class": "ThresholdRule",
-            "station": "CAF01_CAFETERIA",
-            "sensorType": "TMP",
-            "condition": "TMP above 26°C",
-            "action": "check ventilation system",
-            "severity": "WARNING"
+            "sensor": "ST04_PACKAGING_TMP",
+            "critHi": 26.0,
+            "warnHi": 24.0,
+            "critLo": 18.0,
+            "warnLo": 20.0,
+            "action": "No action specified"
+        },
+        {
+            "ruleId": "RULE-RND01-02",
+            "rule_class": "ThresholdRule",
+            "sensor": "ST04_PACKAGING_HUM",
+            "critHi": 75.0,
+            "warnHi": 65.0,
+            "action": "Activate dehumidifier"
         },
         {
             "ruleId": "RULE-1-01",
@@ -668,35 +629,40 @@
         {
             "ruleId": "RULE-3-01",
             "rule_class": "ThresholdRule",
-            "sensor": "TMP",
+            "sensor": "ST02_SEALING_PRS",
             "unit": "°C",
             "critLo": 165.0,
-            "warnHi": 15.0,
+            "warnLo": 185.0,
             "critHi": 210.0,
-            "action": "E-STOP ST02/ST03/ST04; inspect element.",
-            "severity": "WARNING"
+            "action": "Inspect sealing jaw",
+            "station": "ST02_SEALING",
+            "severity": "WARNING",
+            "warnHi": 15.0
         },
         {
             "ruleId": "RULE-3-02",
             "rule_class": "ThresholdRule",
-            "sensor": "PRS",
+            "sensor": "Conveyor speed drop",
             "unit": "bar",
             "critLo": 4.2,
-            "warnHi": 5.7,
+            "warnLo": 5.2,
             "critHi": 3.0,
-            "action": "Inspect and notify maintenance.",
+            "action": "Reset ST04 spee",
+            "station": "ST04_PACKAGING",
             "severity": "CRITICAL"
         },
         {
             "ruleId": "RULE-3-03",
             "rule_class": "ThresholdRule",
-            "sensor": "CUR",
+            "sensor": "drift",
             "unit": "A",
             "critLo": 9.5,
-            "warnHi": 10.0,
+            "warnLo": 12.4,
             "critHi": 15.0,
-            "action": "E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04)",
-            "severity": "WARNING"
+            "action": "Restore WRH01-TMP <8°C",
+            "station": "WRH01-TMP",
+            "severity": "WARNING",
+            "warnHi": 10.0
         },
         {
             "ruleId": "RULE-4-01",
@@ -704,8 +670,9 @@
             "sensorType": "SPD",
             "unit": "m/s",
             "critLo": 0.65,
-            "warnHi": 0.95,
+            "warnLo": 0.75,
             "critHi": 1.05,
+            "warnHi": 0.95,
             "action": "Inspect and notify maintenance."
         },
         {
@@ -714,8 +681,9 @@
             "sensorType": "TEN",
             "unit": "N",
             "critLo": 1.5,
-            "warnHi": 2.6,
+            "warnLo": 1.8,
             "critHi": 3.0,
+            "warnHi": 2.6,
             "action": "Inspect and notify maintenance."
         },
         {
@@ -724,8 +692,9 @@
             "sensorType": "CNT",
             "unit": "pcs/min",
             "critLo": 100.0,
-            "warnHi": 130.0,
+            "warnLo": 110.0,
             "critHi": 140.0,
+            "warnHi": 130.0,
             "action": "E-STOP labelling; inspect label path"
         },
         {
@@ -761,28 +730,22 @@
         {
             "ruleId": "RULE-6-01",
             "rule_class": "ThresholdRule",
-            "sensor": "TMP",
+            "sensor": "SRV01_SERVERROOM_TMP",
             "unit": "°C",
             "critLo": 16.0,
             "warnHi": 25.0,
+            "critHi": 28.0,
             "action": "Activate backup cooling; prepare controlled PLC shutdown."
-        },
-        {
-            "ruleId": "RULE-6-02",
-            "rule_class": "ThresholdRule",
-            "sensor": "HUM",
-            "unit": "%RH",
-            "critLo": 25.0,
-            "action": "Inspect and notify maintenance"
         },
         {
             "ruleId": "RULE-7-01",
             "rule_class": "ThresholdRule",
-            "sensor": "TMP",
+            "sensor": "ST01_FILLING_TMP",
             "unit": "°C",
             "critLo": -1.0,
-            "warnLo": 4.0,
+            "warnLo": 0.5,
             "critHi": 12.0,
+            "warnHi": 8.0,
             "action": "Activate backup refrigeration; notify QC"
         },
         {
@@ -791,14 +754,15 @@
             "sensor": "HUM",
             "unit": "%RH",
             "critLo": 55.0,
-            "warnLo": 75.0,
+            "warnLo": 60.0,
             "critHi": 90.0,
+            "warnHi": 85.0,
             "action": "Inspect and notify maintenance"
         },
         {
             "ruleId": "RULE-8-01",
             "rule_class": "ThresholdRule",
-            "sensor": "TMP",
+            "sensor": "ST01_FILLING_TMP",
             "unit": "°C",
             "critLo": 5.0,
             "warnHi": 20.0,
@@ -821,39 +785,20 @@
             "sensorType": "TMP",
             "unit": "°C",
             "critLo": 15.0,
-            "warnLo": 22.0,
+            "warnLo": 18.0,
             "critHi": 30.0,
+            "warnHi": 26.0,
             "action": "Inspect and notify maintenance."
-        },
-        {
-            "ruleId": "RULE-9-02",
-            "rule_class": "ThresholdRule",
-            "sensorType": "HUM",
-            "unit": "%RH",
-            "critLo": 25.0,
-            "warnLo": 50.0,
-            "critHi": 75.0,
-            "action": "Suspend experiments; inspect HVAC system."
         },
         {
             "ruleId": "RULE-10-01",
             "rule_class": "ThresholdRule",
-            "sensor": "TMP",
+            "sensor": "ST01_FILLING_TMP",
             "unit": "°C",
             "critLo": 14.0,
-            "warnHi": 26.0,
+            "warnLo": 21.0,
             "critHi": 30.0,
-            "action": "Inspect and notify maintenance."
-        },
-        {
-            "ruleId": "RULE-10-02",
-            "rule_class": "ThresholdRule",
-            "sensor": "HUM",
-            "unit": "%RH",
-            "critLo": 25.0,
-            "warnHi": 70.0,
-            "critHi": 80.0,
-            "action": "Inspect and notify maintenance."
+            "action": "Inspect and notify maintenance"
         },
         {
             "ruleId": "RULE-11-01",
@@ -1008,9 +953,7 @@
         },
         {
             "ruleId": "RULE-ACCESS-04",
-            "rule_class": "AccessRule",
-            "station": "Chemical Storage",
-            "action": "immediate escalation to the Safety Officer regardless of role"
+            "rule_class": "AccessRule"
         }
     ],
     "false_negatives": [
@@ -1028,6 +971,21 @@
             "critLo": "105.0",
             "warnLo": "112.0",
             "unit": "L/min"
+        },
+        {
+            "ruleId": "RULE-ST01-02",
+            "rule_class": "OperationalRule",
+            "station": "ST01_FILLING",
+            "sensor": "ST01_FILLING_TMP",
+            "sensorType": "TMP",
+            "condition": "TMP exceeds 26°C",
+            "action": "Reduce speed by 10% and notify QC",
+            "severity": "WARNING",
+            "critHi": "30.0",
+            "warnHi": "26.0",
+            "critLo": "15.0",
+            "warnLo": "18.0",
+            "unit": "°C"
         },
         {
             "ruleId": "RULE-ST01-03",
@@ -1067,21 +1025,6 @@
             "sensorType": "CUR",
             "condition": "CUR increase >1.5 A above nominal sustained >5 min",
             "action": "Schedule maintenance",
-            "severity": "WARNING",
-            "critHi": "15.0",
-            "warnHi": "13.5",
-            "critLo": "9.5",
-            "warnLo": "11.0",
-            "unit": "A"
-        },
-        {
-            "ruleId": "RULE-ST02-04",
-            "rule_class": "OperationalRule",
-            "station": "ST02_SEALING",
-            "sensor": "ST02_SEALING_CUR",
-            "sensorType": "CUR",
-            "condition": "CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING",
-            "action": "Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers WARNING",
             "severity": "WARNING",
             "critHi": "15.0",
             "warnHi": "13.5",
@@ -1165,6 +1108,21 @@
             "unit": "°C"
         },
         {
+            "ruleId": "RULE-SRV01-02",
+            "rule_class": "OperationalRule",
+            "station": "SRV01_SERVERROOM",
+            "sensor": "SRV01_SERVERROOM_TMP",
+            "sensorType": "TMP",
+            "condition": "TMP > 28°C (CRITICAL)",
+            "action": "Automatic controlled shutdown of all PLC nodes",
+            "severity": "CRITICAL",
+            "critHi": "28.0",
+            "warnHi": "25.0",
+            "critLo": "16.0",
+            "warnLo": "18.0",
+            "unit": "°C"
+        },
+        {
             "ruleId": "RULE-WRH01-01a",
             "rule_class": "OperationalRule",
             "station": "WRH01_WAREHOUSE",
@@ -1173,21 +1131,6 @@
             "condition": "TMP MUST remain between 0.5°C and 8°C",
             "action": "Activate backup refrigeration; notify QC",
             "severity": "MANDATORY",
-            "critHi": "12.0",
-            "warnHi": "8.0",
-            "critLo": "-1.0",
-            "warnLo": "0.5",
-            "unit": "°C"
-        },
-        {
-            "ruleId": "RULE-WRH01-01b",
-            "rule_class": "OperationalRule",
-            "station": "WRH01_WAREHOUSE",
-            "sensor": "WRH01_WAREHOUSE_TMP",
-            "sensorType": "TMP",
-            "condition": "TMP CRITICAL above 12°C",
-            "action": "Notify QC and quarantine batch",
-            "severity": "CRITICAL",
             "critHi": "12.0",
             "warnHi": "8.0",
             "critLo": "-1.0",
@@ -1308,6 +1251,21 @@
             "condition": "HUM drift above 65%RH",
             "action": "Activate dehumidifier",
             "severity": "WARNING",
+            "critHi": "75.0",
+            "warnHi": "65.0",
+            "critLo": "25.0",
+            "warnLo": "35.0",
+            "unit": "%RH"
+        },
+        {
+            "ruleId": "RULE-RND01-02b",
+            "rule_class": "OperationalRule",
+            "station": "RND01_RDLAB",
+            "sensor": "RND01_RDLAB_HUM",
+            "sensorType": "HUM",
+            "condition": "HUM above 75%RH (CRITICAL)",
+            "action": "Suspend sensitive experiments and inspect HVAC system",
+            "severity": "CRITICAL",
             "critHi": "75.0",
             "warnHi": "65.0",
             "critLo": "25.0",
@@ -1523,6 +1481,21 @@
             "critLo": "25.0",
             "warnLo": "30.0",
             "unit": "%RH"
+        },
+        {
+            "ruleId": "RULE-THR-WRH01-TMP-CRIT",
+            "rule_class": "ThresholdRule",
+            "station": "WRH01_WAREHOUSE",
+            "sensor": "WRH01_WAREHOUSE_TMP",
+            "sensorType": "TMP",
+            "condition": "Temperature critical thresholds: CRIT_LO=-1.0°C, WARN_LOW=0.5°C, nominal=4.0±0.5°C, WARN_HI=8.0°C, CRIT_HI=12.0°C",
+            "action": "Activate backup refrigeration; notify QC",
+            "severity": "CRITICAL",
+            "critHi": "12.0",
+            "warnHi": "8.0",
+            "critLo": "-1.0",
+            "warnLo": "0.5",
+            "unit": "°C"
         },
         {
             "ruleId": "RULE-THR-WRH01-HUM-CRIT",

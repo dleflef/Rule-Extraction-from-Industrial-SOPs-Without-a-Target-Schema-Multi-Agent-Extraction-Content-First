@@ -4,6 +4,13 @@
     "page_count": 1,
     "chunk_count": 4,
     "error_message": null,
+    "summary": {
+        "agent": "Agent 1B",
+        "status": "complete",
+        "total_records": 4,
+        "data_preview": "4 hierarchical chunks from SOP_003_MaintenanceRules.pdf",
+        "error_message": null
+    },
     "chunks": [
         {
             "chunk_id": 0,
@@ -14,8 +21,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 122
         },
@@ -28,8 +34,7 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 120
         },
@@ -42,24 +47,22 @@
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
             "char_count": 1853
         },
         {
             "chunk_id": 3,
-            "content": "[Context: 2. Correlated Fault Resolution]\nST02_SEALING-CUR -> ST04_PACKAGING-SPD-> Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee, Primary Fault = ST02_SEALING-CUR -> ST04_PACKAGING-SPD-> Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee. ST02_SEALING-CUR -> ST04_PACKAGING-SPD-> Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee, Secondary Effect = ST02_SEALING-CUR -> ST04_PACKAGING-SPD-> Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee. ST02_SEALING-CUR -> ST04_PACKAGING-SPD-> Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee, Resolution = ST02_SEALING-CUR -> ST04_PACKAGING-SPD-> Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee. WRH01-TMP -> QC HOLD Cold warehouse, Primary Fault = drift. WRH01-TMP -> QC HOLD Cold warehouse, Secondary Effect = Product quality risk. WRH01-TMP -> QC HOLD Cold warehouse, Resolution = 1.Restore WRH01-TMP <8°C. 2.Notify QC. 3.Place batch on HOLD",
+            "content": "[Context: 2. Correlated Fault Resolution]\nST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee, Primary Fault = ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee. ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee, Secondary Effect = ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee. ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee, Resolution = ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee. WRH01-TMP › fi QC HOLD Cold warehouse, Primary Fault = drift. WRH01-TMP › fi QC HOLD Cold warehouse, Secondary Effect = Product quality risk. WRH01-TMP › fi QC HOLD Cold warehouse, Resolution = 1.Restore WRH01-TMP <8°C. 2.Notify QC. 3.Place batch on HOLD",
             "metadata": {
                 "headings": [
                     "2. Correlated Fault Resolution"
                 ],
                 "page_numbers": [
                     1
-                ],
-                "is_table": false
+                ]
             },
-            "char_count": 1388
+            "char_count": 1406
         }
     ]
 }
