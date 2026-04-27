@@ -11,7 +11,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": []
         },
@@ -23,7 +24,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": []
         },
@@ -35,7 +37,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -72,80 +75,81 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "aligned_relations": [
                 {
                     "subject": "ST01_FILLING",
                     "predicate": "monitors",
-                    "object": "ST01_FILLING_TMP",
+                    "object": "COMPRESSOR",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "exact",
-                    "_raw_object": "ST01_FILLING_TMP"
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "COMPRESSOR"
                 },
                 {
                     "subject": "ST02_SEALING",
                     "predicate": "monitors",
-                    "object": "ST02_SEALING_TMP",
+                    "object": "COMPRESSOR",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "exact",
-                    "_raw_object": "ST02_SEALING_TMP"
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "COMPRESSOR"
                 },
                 {
                     "subject": "ST03_LABELLING",
                     "predicate": "monitors",
-                    "object": "ST03_LABELLING_TMP",
+                    "object": "COMPRESSOR",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "exact",
-                    "_raw_object": "ST03_LABELLING_TMP"
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "COMPRESSOR"
                 },
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "monitors",
-                    "object": "ST04_PACKAGING_TMP",
+                    "object": "COMPRESSOR",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "exact",
-                    "_raw_object": "ST04_PACKAGING_TMP"
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "COMPRESSOR"
                 },
                 {
                     "subject": "SRV01_SERVERROOM",
                     "predicate": "monitors",
-                    "object": "SRV01_SERVERROOM_TMP",
-                    "_subject_alignment": "unaligned",
+                    "object": "COMPRESSOR",
+                    "_subject_alignment": "exact",
                     "_object_alignment": "unaligned",
-                    "_raw_object": "SRV01_SERVERROOM_TMP"
+                    "_raw_object": "COMPRESSOR"
                 },
                 {
                     "subject": "WRH01_WAREHOUSE",
                     "predicate": "monitors",
-                    "object": "WRH01_WAREHOUSE_TMP",
-                    "_subject_alignment": "unaligned",
+                    "object": "COMPRESSOR",
+                    "_subject_alignment": "exact",
                     "_object_alignment": "unaligned",
-                    "_raw_object": "WRH01_WAREHOUSE_TMP"
+                    "_raw_object": "COMPRESSOR"
                 },
                 {
                     "subject": "CHM01_CHEMICALSTORAGE",
                     "predicate": "monitors",
-                    "object": "CHM01_CHEMICALSTORAGE_TMP",
-                    "_subject_alignment": "unaligned",
+                    "object": "COMPRESSOR",
+                    "_subject_alignment": "fuzzy",
                     "_object_alignment": "unaligned",
-                    "_raw_object": "CHM01_CHEMICALSTORAGE_TMP"
+                    "_raw_object": "COMPRESSOR"
                 },
                 {
                     "subject": "RND01_RDLAB",
                     "predicate": "monitors",
-                    "object": "RND01_RDLAB_TMP",
-                    "_subject_alignment": "unaligned",
+                    "object": "COMPRESSOR",
+                    "_subject_alignment": "exact",
                     "_object_alignment": "unaligned",
-                    "_raw_object": "RND01_RDLAB_TMP"
+                    "_raw_object": "COMPRESSOR"
                 },
                 {
                     "subject": "CAF01_CAFETERIA",
                     "predicate": "monitors",
-                    "object": "CAF01_CAFETERIA_TMP",
-                    "_subject_alignment": "unaligned",
+                    "object": "COMPRESSOR",
+                    "_subject_alignment": "exact",
                     "_object_alignment": "unaligned",
-                    "_raw_object": "CAF01_CAFETERIA_TMP"
+                    "_raw_object": "COMPRESSOR"
                 }
             ]
         },
@@ -157,7 +161,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -193,7 +198,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -250,7 +256,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -307,7 +314,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -342,7 +350,7 @@
                 {
                     "subject": "ST02_SEALING",
                     "predicate": "monitors",
-                    "object": "ST01_FILLING_TMP",
+                    "object": "RND01_RDLAB_TMP",
                     "_subject_alignment": "exact",
                     "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
@@ -357,7 +365,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -421,7 +430,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -470,7 +480,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -493,7 +504,7 @@
                     "predicate": "applies_to_sensor",
                     "object": "ST02_SEALING_CUR",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "llm_aligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "ST02_SEALING-CUR"
                 },
                 {
@@ -508,7 +519,7 @@
                     "predicate": "monitors",
                     "object": "ST02_SEALING_CUR",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "llm_aligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "ST02_SEALING-CUR"
                 },
                 {
@@ -529,7 +540,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -542,9 +554,9 @@
                 {
                     "subject": "RULE-ST03-01",
                     "predicate": "applies_to_sensor",
-                    "object": "TEN",
+                    "object": "ST03_LABELLING_TEN",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "TEN"
                 },
                 {
@@ -592,7 +604,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -641,9 +654,9 @@
                 {
                     "subject": "ST03_LABELLING",
                     "predicate": "monitors",
-                    "object": "CNT_ST03_LABELLING",
+                    "object": "ST03_LABELLING_CNT",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "CNT_ST03_LABELLING"
                 }
             ]
@@ -656,7 +669,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -691,9 +705,9 @@
                 {
                     "subject": "ST03_LABELLING",
                     "predicate": "monitors",
-                    "object": "TEN STUCK",
+                    "object": "ST03_LABELLING_TEN",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "TEN STUCK"
                 }
             ]
@@ -706,7 +720,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -762,7 +777,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -811,7 +827,7 @@
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "monitors",
-                    "object": "ST04_PACKAGING_CNT",
+                    "object": "ST04_PACKAGING_VIB",
                     "_subject_alignment": "exact",
                     "_object_alignment": "llm_aligned",
                     "_raw_object": "VIB_ST04_PACKAGING"
@@ -826,7 +842,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -883,15 +900,16 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "monitors",
-                    "object": "SRV01_SERVERROOM",
+                    "object": "SRV01_SERVERROOM_TMP",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "SRV01_SERVERROOM"
                 }
             ]
@@ -904,7 +922,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -917,7 +936,7 @@
                 {
                     "subject": "RULE-SRV01-01",
                     "predicate": "applies_to_sensor",
-                    "object": "ST01_FILLING_TMP",
+                    "object": "RND01_RDLAB_TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
@@ -939,7 +958,7 @@
                 {
                     "subject": "RULE-SRV01-02",
                     "predicate": "applies_to_sensor",
-                    "object": "ST01_FILLING_TMP",
+                    "object": "RND01_RDLAB_TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
@@ -975,15 +994,16 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "monitors",
-                    "object": "WRH01_WAREHOUSE",
+                    "object": "WRH01_WAREHOUSE_TMP",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "WRH01_WAREHOUSE"
                 }
             ]
@@ -996,7 +1016,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -1088,15 +1109,16 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "monitors",
-                    "object": "CHM01_CHEMICALSTORAGE",
+                    "object": "CHM01_CHEMICALSTORAGE_TMP",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "CHM01_CHEMICALSTORAGE"
                 }
             ]
@@ -1109,7 +1131,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -1122,9 +1145,9 @@
                 {
                     "subject": "RULE-CHM01-01",
                     "predicate": "applies_to_station",
-                    "object": "Chemical Storage",
+                    "object": "CHM01_CHEMICALSTORAGE",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Chemical Storage"
                 },
                 {
@@ -1158,9 +1181,9 @@
                 {
                     "subject": "RULE-CHM01-02",
                     "predicate": "applies_to_station",
-                    "object": "Chemical Storage",
+                    "object": "CHM01_CHEMICALSTORAGE",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Chemical Storage"
                 },
                 {
@@ -1194,9 +1217,9 @@
                 {
                     "subject": "RULE-CHM01-03",
                     "predicate": "applies_to_station",
-                    "object": "Chemical Storage",
+                    "object": "CHM01_CHEMICALSTORAGE",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
+                    "_object_alignment": "llm_aligned",
                     "_raw_object": "Chemical Storage"
                 },
                 {
@@ -1223,15 +1246,16 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "monitors",
-                    "object": "RND01_RDLAB",
+                    "object": "RND01_RDLAB_TMP",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
                     "_raw_object": "RND01_RDLAB"
                 }
             ]
@@ -1244,7 +1268,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -1259,7 +1284,7 @@
                     "predicate": "applies_to_sensor",
                     "object": "ST04_PACKAGING_TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
+                    "_object_alignment": "unaligned",
                     "_raw_object": "ST04_PACKAGING_TMP"
                 },
                 {
@@ -1338,7 +1363,7 @@
                     "predicate": "monitors",
                     "object": "ST04_PACKAGING_TMP",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "exact",
+                    "_object_alignment": "unaligned",
                     "_raw_object": "ST04_PACKAGING_TMP"
                 },
                 {
@@ -1359,7 +1384,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -1367,7 +1393,7 @@
                     "predicate": "monitors",
                     "object": "CAF01_CAFETERIA_TMP",
                     "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
+                    "_object_alignment": "exact",
                     "_raw_object": "CAF01_CAFETERIA_TMP"
                 }
             ]
@@ -1380,7 +1406,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {

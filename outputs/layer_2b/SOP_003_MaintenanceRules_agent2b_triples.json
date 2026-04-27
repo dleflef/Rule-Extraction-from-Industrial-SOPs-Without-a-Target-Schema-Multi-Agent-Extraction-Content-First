@@ -13,7 +13,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -23,7 +24,7 @@
                     "source_page": 1
                 },
                 {
-                    "span": "S01_TEMP",
+                    "span": "S01_PRODUCTION_TEMP",
                     "category": "Sensor",
                     "source_chunk_id": 0,
                     "source_page": 1
@@ -54,12 +55,12 @@
                 {
                     "subject": "RULE-0-01",
                     "predicate": "has_condition",
-                    "object": "Temperature exceeds 35.0 degrees Celsius"
+                    "object": "Temperature exceeds 85.0 degrees Celsius"
                 },
                 {
                     "subject": "RULE-0-01",
                     "predicate": "triggers_action",
-                    "object": "Alert maintenance team"
+                    "object": "Initiate predictive maintenance for ST01_PRODUCTION"
                 },
                 {
                     "subject": "RULE-0-01",
@@ -69,7 +70,7 @@
                 {
                     "subject": "ST01_PRODUCTION",
                     "predicate": "monitors",
-                    "object": "S01_TEMP"
+                    "object": "S01_PRODUCTION_TEMP"
                 }
             ]
         },
@@ -81,7 +82,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -113,17 +115,18 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
                     "span": "MAINT-01",
-                    "category": "Component",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "VIB",
+                    "span": "VIB. MAINT-01",
                     "category": "Sensor",
                     "source_chunk_id": 2,
                     "source_page": 1
@@ -136,18 +139,18 @@
                 },
                 {
                     "span": "VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH",
-                    "category": "AnomalyEvent",
+                    "category": "Parameter",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-02",
-                    "category": "Component",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "CUR",
+                    "span": "CUR. MAINT-02",
                     "category": "Sensor",
                     "source_chunk_id": 2,
                     "source_page": 1
@@ -160,18 +163,18 @@
                 },
                 {
                     "span": "CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw",
-                    "category": "AnomalyEvent",
+                    "category": "Parameter",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-03",
-                    "category": "Component",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "TEN",
+                    "span": "TEN. MAINT-03",
                     "category": "Sensor",
                     "source_chunk_id": 2,
                     "source_page": 1
@@ -184,18 +187,18 @@
                 },
                 {
                     "span": "TEN STUCK >10 samples Replace sensor",
-                    "category": "AnomalyEvent",
+                    "category": "Parameter",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-04",
-                    "category": "Component",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "PRS",
+                    "span": "PRS. MAINT-04",
                     "category": "Sensor",
                     "source_chunk_id": 2,
                     "source_page": 1
@@ -208,18 +211,18 @@
                 },
                 {
                     "span": "PRS <3.3 bar for >15 min Inspect filter and pump",
-                    "category": "AnomalyEvent",
+                    "category": "Parameter",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-05",
-                    "category": "Component",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "TMP",
+                    "span": "TMP. MAINT-05",
                     "category": "Sensor",
                     "source_chunk_id": 2,
                     "source_page": 1
@@ -232,13 +235,13 @@
                 },
                 {
                     "span": "TMP >25°C for >5 min Activate secondary cooling",
-                    "category": "AnomalyEvent",
+                    "category": "Parameter",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-06",
-                    "category": "Component",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
@@ -250,13 +253,13 @@
                 },
                 {
                     "span": "TMP DRIFT >2°C over 2 h Inspect compressor; notify",
-                    "category": "AnomalyEvent",
+                    "category": "Parameter",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-07",
-                    "category": "Component",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
@@ -268,19 +271,13 @@
                 },
                 {
                     "span": "TMP >20°C for >10 min Emergency ventilation; notify",
-                    "category": "AnomalyEvent",
+                    "category": "Parameter",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-08",
-                    "category": "Component",
-                    "source_chunk_id": 2,
-                    "source_page": 1
-                },
-                {
-                    "span": "HUM",
-                    "category": "Sensor",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
@@ -291,8 +288,14 @@
                     "source_page": 1
                 },
                 {
+                    "span": "HUM. MAINT-08",
+                    "category": "Sensor",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
                     "span": "HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH",
-                    "category": "AnomalyEvent",
+                    "category": "Parameter",
                     "source_chunk_id": 2,
                     "source_page": 1
                 }
@@ -331,7 +334,7 @@
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "monitors",
-                    "object": "VIB ST04_PACKAGING"
+                    "object": "VIB. MAINT-01"
                 },
                 {
                     "subject": "RULE-2-02",
@@ -366,7 +369,7 @@
                 {
                     "subject": "ST02_SEALING",
                     "predicate": "monitors",
-                    "object": "CUR ST02_SEALING"
+                    "object": "CUR. MAINT-02"
                 },
                 {
                     "subject": "RULE-2-03",
@@ -401,7 +404,7 @@
                 {
                     "subject": "ST03_LABELLING",
                     "predicate": "monitors",
-                    "object": "TEN ST03_LABELLING"
+                    "object": "TEN. MAINT-03"
                 },
                 {
                     "subject": "RULE-2-04",
@@ -436,7 +439,7 @@
                 {
                     "subject": "ST01_FILLING",
                     "predicate": "monitors",
-                    "object": "PRS ST01_FILLING"
+                    "object": "PRS. MAINT-04"
                 },
                 {
                     "subject": "RULE-2-05",
@@ -471,7 +474,7 @@
                 {
                     "subject": "SRV01_SERVERROOM",
                     "predicate": "monitors",
-                    "object": "TMP SRV01_SERVERROOM"
+                    "object": "TMP. MAINT-05"
                 },
                 {
                     "subject": "RULE-2-06",
@@ -506,7 +509,7 @@
                 {
                     "subject": "WRH01_WAREHOUSE",
                     "predicate": "monitors",
-                    "object": "TMP WRH01_WAREHOUSE"
+                    "object": "TMP. MAINT-06"
                 },
                 {
                     "subject": "RULE-2-07",
@@ -541,7 +544,7 @@
                 {
                     "subject": "CHM01_CHEMICALSTORAGE",
                     "predicate": "monitors",
-                    "object": "TMP CHM01_CHEMICALSTORAGE"
+                    "object": "TMP. MAINT-07"
                 },
                 {
                     "subject": "RULE-2-08",
@@ -576,7 +579,7 @@
                 {
                     "subject": "RND01_RDLAB",
                     "predicate": "monitors",
-                    "object": "HUM RND01_RDLAB"
+                    "object": "HUM. MAINT-08"
                 }
             ]
         },
@@ -588,7 +591,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
@@ -598,19 +602,19 @@
                     "source_page": 1
                 },
                 {
-                    "span": "ST04_PACKAGING-SPDfl",
-                    "category": "Sensor",
+                    "span": "fi ST04_PACKAGING-SPDfl",
+                    "category": "Component",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "Sealing motor overload",
-                    "category": "Parameter",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "Conveyor speed drop",
+                    "span": "Conveyor speed drop via electrical coupling",
                     "category": "Parameter",
                     "source_chunk_id": 3,
                     "source_page": 1
@@ -628,14 +632,32 @@
                     "source_page": 1
                 },
                 {
-                    "span": "ST04 spee",
-                    "category": "Sensor",
+                    "span": "Primary Fault",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Secondary Effect",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Resolution",
+                    "category": "Parameter",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "WRH01-TMP",
                     "category": "Component",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "QC HOLD",
+                    "category": "Zone",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
@@ -647,7 +669,7 @@
                 },
                 {
                     "span": "drift",
-                    "category": "Parameter",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
@@ -656,19 +678,27 @@
                     "category": "AnomalyEvent",
                     "source_chunk_id": 3,
                     "source_page": 1
+                },
+                {
+                    "span": "Restore WRH01-TMP <8°C",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Notify QC",
+                    "category": "Role",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Place batch on HOLD",
+                    "category": "Action",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 }
             ],
             "relations": [
-                {
-                    "subject": "ST02_SEALING-CUR",
-                    "predicate": "monitors",
-                    "object": "Sealing motor overload"
-                },
-                {
-                    "subject": "ST04_PACKAGING-SPDfl",
-                    "predicate": "monitors",
-                    "object": "Conveyor speed drop"
-                },
                 {
                     "subject": "RULE-3-01",
                     "predicate": "rdf:type",
@@ -681,58 +711,18 @@
                 },
                 {
                     "subject": "RULE-3-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "Sealing motor overload"
+                    "predicate": "triggers_action",
+                    "object": "1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee."
                 },
                 {
                     "subject": "RULE-3-01",
-                    "predicate": "triggers_action",
-                    "object": "Inspect sealing jaw"
+                    "predicate": "has_severity",
+                    "object": "WARNING"
                 },
                 {
-                    "subject": "RULE-3-02",
-                    "predicate": "rdf:type",
-                    "object": "OperationalRule"
-                },
-                {
-                    "subject": "RULE-3-02",
-                    "predicate": "applies_to_station",
-                    "object": "ST04_PACKAGING-SPDfl"
-                },
-                {
-                    "subject": "RULE-3-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "Conveyor speed drop"
-                },
-                {
-                    "subject": "RULE-3-02",
-                    "predicate": "triggers_action",
-                    "object": "Reset ST04 spee"
-                },
-                {
-                    "subject": "WRH01-TMP",
+                    "subject": "ST02_SEALING-CUR",
                     "predicate": "monitors",
-                    "object": "drift"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "rdf:type",
-                    "object": "OperationalRule"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "applies_to_station",
-                    "object": "WRH01-TMP"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "applies_to_sensor",
-                    "object": "drift"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "triggers_action",
-                    "object": "Restore WRH01-TMP <8°C"
+                    "object": "fi ST04_PACKAGING-SPDfl"
                 }
             ]
         }

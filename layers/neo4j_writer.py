@@ -46,13 +46,13 @@ class KnowledgeGraphWriter:
 
         # 2. Handle Literal Properties (Numbers, Action Text, Conditions)
         if obj_alignment == "literal":
-            # Clean predicate to be a valid property name (e.g., has_warn_hi)
-            prop_name = predicate.replace(":", "_")
-            
-            # Example: MATCH (s {name: "RULE-ST01-01"}) SET s.has_warn_hi = "26.0"
+            # Sanitize to a valid Cypher identifier; backtick-quote for safety
+            prop_name = predicate.replace(":", "_").replace(" ", "_").replace("-", "_")
+
+            # Example: MATCH (s {name: "RULE-ST01-01"}) SET s.`has_warn_hi` = "26.0"
             query = f"""
             MERGE (s {{name: $subject}})
-            SET s.{prop_name} = $obj
+            SET s.`{prop_name}` = $obj
             """
             tx.run(query, subject=subject, obj=obj)
             return

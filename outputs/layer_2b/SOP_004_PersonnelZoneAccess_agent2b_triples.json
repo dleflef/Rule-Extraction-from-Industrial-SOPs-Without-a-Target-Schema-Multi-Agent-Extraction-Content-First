@@ -13,7 +13,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -35,30 +36,19 @@
                     "source_page": 1
                 },
                 {
-                    "span": "2025-12-01",
+                    "span": "Date: 2025-12-01",
                     "category": "Parameter",
                     "source_chunk_id": 0,
                     "source_page": 1
                 },
                 {
-                    "span": "Ing. F. Ferrari - Safety & Compliance",
+                    "span": "Author: Ing. F. Ferrari - Safety & Compliance",
                     "category": "Role",
                     "source_chunk_id": 0,
                     "source_page": 1
                 }
             ],
-            "relations": [
-                {
-                    "subject": "Personnel Zone Access and Alarm Response Procedures",
-                    "predicate": "authorized_for",
-                    "object": "Role"
-                },
-                {
-                    "subject": "Personnel Zone Access and Alarm Response Procedures",
-                    "predicate": "applies_to_zone",
-                    "object": "Zone"
-                }
-            ]
+            "relations": []
         },
         {
             "chunk_id": 1,
@@ -68,7 +58,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
@@ -152,214 +143,34 @@
             ],
             "relations": [
                 {
-                    "subject": "operator",
+                    "subject": "RULE-1-01",
                     "predicate": "authorized_for",
-                    "object": "Prod. Area"
+                    "object": "operator"
                 },
                 {
-                    "subject": "operator",
+                    "subject": "RULE-1-02",
                     "predicate": "authorized_for",
-                    "object": "Server Room"
+                    "object": "technician"
                 },
                 {
-                    "subject": "operator",
+                    "subject": "RULE-1-03",
                     "predicate": "authorized_for",
-                    "object": "Gen. Warehouse"
+                    "object": "supervisor"
                 },
                 {
-                    "subject": "operator",
+                    "subject": "RULE-1-04",
                     "predicate": "authorized_for",
-                    "object": "Main Entrance"
+                    "object": "manager"
                 },
                 {
-                    "subject": "operator",
+                    "subject": "RULE-1-05",
                     "predicate": "authorized_for",
-                    "object": "Chem. Storage"
+                    "object": "security"
                 },
                 {
-                    "subject": "operator",
+                    "subject": "RULE-1-06",
                     "predicate": "authorized_for",
-                    "object": "R&D Lab"
-                },
-                {
-                    "subject": "operator",
-                    "predicate": "authorized_for",
-                    "object": "Cafeteria"
-                },
-                {
-                    "subject": "technician",
-                    "predicate": "authorized_for",
-                    "object": "Prod. Area"
-                },
-                {
-                    "subject": "technician",
-                    "predicate": "authorized_for",
-                    "object": "Server Room"
-                },
-                {
-                    "subject": "technician",
-                    "predicate": "authorized_for",
-                    "object": "Gen. Warehouse"
-                },
-                {
-                    "subject": "technician",
-                    "predicate": "authorized_for",
-                    "object": "Main Entrance"
-                },
-                {
-                    "subject": "technician",
-                    "predicate": "authorized_for",
-                    "object": "Chem. Storage"
-                },
-                {
-                    "subject": "technician",
-                    "predicate": "authorized_for",
-                    "object": "R&D Lab"
-                },
-                {
-                    "subject": "technician",
-                    "predicate": "authorized_for",
-                    "object": "Cafeteria"
-                },
-                {
-                    "subject": "supervisor",
-                    "predicate": "authorized_for",
-                    "object": "Prod. Area"
-                },
-                {
-                    "subject": "supervisor",
-                    "predicate": "authorized_for",
-                    "object": "Server Room"
-                },
-                {
-                    "subject": "supervisor",
-                    "predicate": "authorized_for",
-                    "object": "Gen. Warehouse"
-                },
-                {
-                    "subject": "supervisor",
-                    "predicate": "authorized_for",
-                    "object": "Main Entrance"
-                },
-                {
-                    "subject": "supervisor",
-                    "predicate": "authorized_for",
-                    "object": "Chem. Storage"
-                },
-                {
-                    "subject": "supervisor",
-                    "predicate": "authorized_for",
-                    "object": "R&D Lab"
-                },
-                {
-                    "subject": "supervisor",
-                    "predicate": "authorized_for",
-                    "object": "Cafeteria"
-                },
-                {
-                    "subject": "manager",
-                    "predicate": "authorized_for",
-                    "object": "Prod. Area"
-                },
-                {
-                    "subject": "manager",
-                    "predicate": "authorized_for",
-                    "object": "Server Room"
-                },
-                {
-                    "subject": "manager",
-                    "predicate": "authorized_for",
-                    "object": "Gen. Warehouse"
-                },
-                {
-                    "subject": "manager",
-                    "predicate": "authorized_for",
-                    "object": "Main Entrance"
-                },
-                {
-                    "subject": "manager",
-                    "predicate": "authorized_for",
-                    "object": "Chem. Storage"
-                },
-                {
-                    "subject": "manager",
-                    "predicate": "authorized_for",
-                    "object": "R&D Lab"
-                },
-                {
-                    "subject": "manager",
-                    "predicate": "authorized_for",
-                    "object": "Cafeteria"
-                },
-                {
-                    "subject": "security",
-                    "predicate": "authorized_for",
-                    "object": "Prod. Area"
-                },
-                {
-                    "subject": "security",
-                    "predicate": "authorized_for",
-                    "object": "Server Room"
-                },
-                {
-                    "subject": "security",
-                    "predicate": "authorized_for",
-                    "object": "Gen. Warehouse"
-                },
-                {
-                    "subject": "security",
-                    "predicate": "authorized_for",
-                    "object": "Main Entrance"
-                },
-                {
-                    "subject": "security",
-                    "predicate": "authorized_for",
-                    "object": "Chem. Storage"
-                },
-                {
-                    "subject": "security",
-                    "predicate": "authorized_for",
-                    "object": "R&D Lab"
-                },
-                {
-                    "subject": "security",
-                    "predicate": "authorized_for",
-                    "object": "Cafeteria"
-                },
-                {
-                    "subject": "visitor",
-                    "predicate": "authorized_for",
-                    "object": "Prod. Area"
-                },
-                {
-                    "subject": "visitor",
-                    "predicate": "authorized_for",
-                    "object": "Server Room"
-                },
-                {
-                    "subject": "visitor",
-                    "predicate": "authorized_for",
-                    "object": "Gen. Warehouse"
-                },
-                {
-                    "subject": "visitor",
-                    "predicate": "authorized_for",
-                    "object": "Main Entrance"
-                },
-                {
-                    "subject": "visitor",
-                    "predicate": "authorized_for",
-                    "object": "Chem. Storage"
-                },
-                {
-                    "subject": "visitor",
-                    "predicate": "authorized_for",
-                    "object": "R&D Lab"
-                },
-                {
-                    "subject": "visitor",
-                    "predicate": "authorized_for",
-                    "object": "Cafeteria"
+                    "object": "visitor"
                 }
             ]
         },
@@ -371,7 +182,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
@@ -419,94 +231,179 @@
             ],
             "relations": [
                 {
-                    "subject": "RULE-Production-Area-ACC-01",
+                    "subject": "RULE-2-01",
                     "predicate": "rdf:type",
-                    "object": "AccessRule"
+                    "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-Production-Area-ACC-01",
+                    "subject": "RULE-2-01",
                     "predicate": "applies_to_zone",
                     "object": "Production Area"
                 },
                 {
-                    "subject": "RULE-Production-Area-ACC-01",
-                    "predicate": "triggers_action",
-                    "object": "access badge required"
+                    "subject": "RULE-2-01",
+                    "predicate": "has_crit_hi",
+                    "object": "12"
                 },
                 {
-                    "subject": "RULE-Server-Room-ACC-02",
+                    "subject": "RULE-2-01",
+                    "predicate": "has_warn_hi",
+                    "object": "10"
+                },
+                {
+                    "subject": "Production Area",
+                    "predicate": "monitors",
+                    "object": "None"
+                },
+                {
+                    "subject": "RULE-2-02",
                     "predicate": "rdf:type",
-                    "object": "AccessRule"
+                    "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-Server-Room-ACC-02",
+                    "subject": "RULE-2-02",
                     "predicate": "applies_to_zone",
                     "object": "Server Room"
                 },
                 {
-                    "subject": "RULE-Server-Room-ACC-02",
-                    "predicate": "triggers_action",
-                    "object": "access badge required"
+                    "subject": "RULE-2-02",
+                    "predicate": "has_crit_hi",
+                    "object": "2"
                 },
                 {
-                    "subject": "RULE-General-Warehouse-ACC-03",
+                    "subject": "RULE-2-02",
+                    "predicate": "has_warn_hi",
+                    "object": "None"
+                },
+                {
+                    "subject": "Server Room",
+                    "predicate": "monitors",
+                    "object": "None"
+                },
+                {
+                    "subject": "RULE-2-03",
                     "predicate": "rdf:type",
-                    "object": "AccessRule"
+                    "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-General-Warehouse-ACC-03",
+                    "subject": "RULE-2-03",
                     "predicate": "applies_to_zone",
                     "object": "General Warehouse"
                 },
                 {
-                    "subject": "RULE-General-Warehouse-ACC-03",
-                    "predicate": "triggers_action",
-                    "object": "access badge required"
+                    "subject": "RULE-2-03",
+                    "predicate": "has_crit_hi",
+                    "object": "4"
                 },
                 {
-                    "subject": "RULE-Chemical-Storage-ACC-04",
+                    "subject": "RULE-2-03",
+                    "predicate": "has_warn_hi",
+                    "object": "3"
+                },
+                {
+                    "subject": "General Warehouse",
+                    "predicate": "monitors",
+                    "object": "None"
+                },
+                {
+                    "subject": "RULE-2-04",
                     "predicate": "rdf:type",
-                    "object": "AccessRule"
+                    "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-Chemical-Storage-ACC-04",
+                    "subject": "RULE-2-04",
+                    "predicate": "applies_to_zone",
+                    "object": "Main Entrance"
+                },
+                {
+                    "subject": "RULE-2-04",
+                    "predicate": "has_crit_hi",
+                    "object": "8"
+                },
+                {
+                    "subject": "RULE-2-04",
+                    "predicate": "has_warn_hi",
+                    "object": "None"
+                },
+                {
+                    "subject": "Main Entrance",
+                    "predicate": "monitors",
+                    "object": "None"
+                },
+                {
+                    "subject": "RULE-2-05",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule"
+                },
+                {
+                    "subject": "RULE-2-05",
                     "predicate": "applies_to_zone",
                     "object": "Chemical Storage"
                 },
                 {
-                    "subject": "RULE-Chemical-Storage-ACC-04",
-                    "predicate": "triggers_action",
-                    "object": "access badge required -see RULE-CHM01-03"
+                    "subject": "RULE-2-05",
+                    "predicate": "has_crit_hi",
+                    "object": "4"
                 },
                 {
-                    "subject": "RULE-R&D-Lab-ACC-05",
+                    "subject": "RULE-2-05",
+                    "predicate": "has_warn_hi",
+                    "object": "None"
+                },
+                {
+                    "subject": "Chemical Storage",
+                    "predicate": "monitors",
+                    "object": "None"
+                },
+                {
+                    "subject": "RULE-2-06",
                     "predicate": "rdf:type",
-                    "object": "AccessRule"
+                    "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-R&D-Lab-ACC-05",
+                    "subject": "RULE-2-06",
                     "predicate": "applies_to_zone",
                     "object": "R&D Lab"
                 },
                 {
-                    "subject": "RULE-R&D-Lab-ACC-05",
-                    "predicate": "triggers_action",
-                    "object": "access badge required -precision experiments may be disturbed"
+                    "subject": "RULE-2-06",
+                    "predicate": "has_crit_hi",
+                    "object": "6"
                 },
                 {
-                    "subject": "RULE-Cafeteria-ACC-06",
+                    "subject": "RULE-2-06",
+                    "predicate": "has_warn_hi",
+                    "object": "5"
+                },
+                {
+                    "subject": "R&D Lab",
+                    "predicate": "monitors",
+                    "object": "None"
+                },
+                {
+                    "subject": "RULE-2-07",
                     "predicate": "rdf:type",
-                    "object": "AccessRule"
+                    "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-Cafeteria-ACC-06",
+                    "subject": "RULE-2-07",
                     "predicate": "applies_to_zone",
                     "object": "Cafeteria"
                 },
                 {
-                    "subject": "RULE-Cafeteria-ACC-06",
-                    "predicate": "triggers_action",
-                    "object": "access badge required -occupant comfort"
+                    "subject": "RULE-2-07",
+                    "predicate": "has_crit_hi",
+                    "object": "None"
+                },
+                {
+                    "subject": "RULE-2-07",
+                    "predicate": "has_warn_hi",
+                    "object": "None"
+                },
+                {
+                    "subject": "Cafeteria",
+                    "predicate": "monitors",
+                    "object": "None"
                 }
             ]
         },
@@ -518,7 +415,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
@@ -534,7 +432,7 @@
                     "source_page": 1
                 },
                 {
-                    "span": "Max Ack -CRITICAL (min)",
+                    "span": "3",
                     "category": "Parameter",
                     "source_chunk_id": 3,
                     "source_page": 1
@@ -546,8 +444,26 @@
                     "source_page": 1
                 },
                 {
+                    "span": "Max Ack -CRITICAL (min)",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "2",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
                     "span": "supervisor",
                     "category": "Role",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "5",
+                    "category": "Parameter",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
@@ -558,8 +474,20 @@
                     "source_page": 1
                 },
                 {
+                    "span": "15",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
                     "span": "security",
                     "category": "Role",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "20",
+                    "category": "Parameter",
                     "source_chunk_id": 3,
                     "source_page": 1
                 }
@@ -567,33 +495,13 @@
             "relations": [
                 {
                     "subject": "RULE-3-01",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-01",
-                    "predicate": "applies_to_role",
-                    "object": "operator"
-                },
-                {
-                    "subject": "RULE-3-01",
                     "predicate": "has_severity",
                     "object": "WARNING"
                 },
                 {
                     "subject": "RULE-3-01",
-                    "predicate": "has_warn_hi",
-                    "object": "15.0"
-                },
-                {
-                    "subject": "RULE-3-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-02",
-                    "predicate": "applies_to_role",
-                    "object": "operator"
+                    "predicate": "has_crit_hi",
+                    "object": "15"
                 },
                 {
                     "subject": "RULE-3-02",
@@ -603,17 +511,7 @@
                 {
                     "subject": "RULE-3-02",
                     "predicate": "has_crit_hi",
-                    "object": "3.0"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "applies_to_role",
-                    "object": "technician"
+                    "object": "3"
                 },
                 {
                     "subject": "RULE-3-03",
@@ -622,18 +520,8 @@
                 },
                 {
                     "subject": "RULE-3-03",
-                    "predicate": "has_warn_hi",
-                    "object": "10.0"
-                },
-                {
-                    "subject": "RULE-3-04",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-04",
-                    "predicate": "applies_to_role",
-                    "object": "technician"
+                    "predicate": "has_crit_hi",
+                    "object": "10"
                 },
                 {
                     "subject": "RULE-3-04",
@@ -643,17 +531,7 @@
                 {
                     "subject": "RULE-3-04",
                     "predicate": "has_crit_hi",
-                    "object": "2.0"
-                },
-                {
-                    "subject": "RULE-3-05",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-05",
-                    "predicate": "applies_to_role",
-                    "object": "supervisor"
+                    "object": "2"
                 },
                 {
                     "subject": "RULE-3-05",
@@ -662,18 +540,8 @@
                 },
                 {
                     "subject": "RULE-3-05",
-                    "predicate": "has_warn_hi",
-                    "object": "5.0"
-                },
-                {
-                    "subject": "RULE-3-06",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-06",
-                    "predicate": "applies_to_role",
-                    "object": "supervisor"
+                    "predicate": "has_crit_hi",
+                    "object": "5"
                 },
                 {
                     "subject": "RULE-3-06",
@@ -683,17 +551,7 @@
                 {
                     "subject": "RULE-3-06",
                     "predicate": "has_crit_hi",
-                    "object": "1.0"
-                },
-                {
-                    "subject": "RULE-3-07",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-07",
-                    "predicate": "applies_to_role",
-                    "object": "manager"
+                    "object": "1"
                 },
                 {
                     "subject": "RULE-3-07",
@@ -702,18 +560,8 @@
                 },
                 {
                     "subject": "RULE-3-07",
-                    "predicate": "has_warn_hi",
-                    "object": "15.0"
-                },
-                {
-                    "subject": "RULE-3-08",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-08",
-                    "predicate": "applies_to_role",
-                    "object": "manager"
+                    "predicate": "has_crit_hi",
+                    "object": "15"
                 },
                 {
                     "subject": "RULE-3-08",
@@ -723,17 +571,7 @@
                 {
                     "subject": "RULE-3-08",
                     "predicate": "has_crit_hi",
-                    "object": "5.0"
-                },
-                {
-                    "subject": "RULE-3-09",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-09",
-                    "predicate": "applies_to_role",
-                    "object": "security"
+                    "object": "5"
                 },
                 {
                     "subject": "RULE-3-09",
@@ -742,18 +580,8 @@
                 },
                 {
                     "subject": "RULE-3-09",
-                    "predicate": "has_warn_hi",
-                    "object": "20.0"
-                },
-                {
-                    "subject": "RULE-3-10",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-10",
-                    "predicate": "applies_to_role",
-                    "object": "security"
+                    "predicate": "has_crit_hi",
+                    "object": "20"
                 },
                 {
                     "subject": "RULE-3-10",
@@ -763,7 +591,7 @@
                 {
                     "subject": "RULE-3-10",
                     "predicate": "has_crit_hi",
-                    "object": "5.0"
+                    "object": "5"
                 }
             ]
         },
@@ -775,7 +603,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -817,7 +646,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -853,7 +683,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -882,16 +713,16 @@
                 },
                 {
                     "subject": "Chemical Storage",
-                    "predicate": "authorized_for",
-                    "object": "Safety Officer"
+                    "predicate": "monitors",
+                    "object": "ST01_FILLING_TMP"
                 },
                 {
-                    "subject": "Chemical Storage",
-                    "predicate": "has_policy",
-                    "object": "zero-tolerance"
+                    "subject": "RULE-ACCESS-04",
+                    "predicate": "applies_to_station",
+                    "object": "Chemical Storage"
                 },
                 {
-                    "subject": "UNAUTHORIZED_ACCESS",
+                    "subject": "RULE-ACCESS-04",
                     "predicate": "triggers_action",
                     "object": "immediate escalation to the Safety Officer regardless of role"
                 }

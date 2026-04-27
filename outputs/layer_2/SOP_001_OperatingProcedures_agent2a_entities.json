@@ -12,7 +12,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: Standard Operating Procedures - Production Line A]\nDocument: SOP-001 | Rev: 2.3 | Date: 2025-11-15 | Author:",
             "entities": []
@@ -25,7 +26,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: Standard Operating Procedures - Production Line A]\nIng. M. Bianchi - Process Engineering",
             "entities": [
@@ -51,7 +53,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 1. Station Dependencies]\nST01_FILLING fi ST02_SEALING fi ST03_LABELLING fi ST04_PACKAGING. A fault at any station propagates downstream unless the line is halted.",
             "entities": [
@@ -89,7 +92,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "content": "[Context: 1. Station Dependencies]\nST01_FILLING, Zone = Production Area. ST01_FILLING, Depends On = -. ST01_FILLING, Downstream Effect = Feeds ST02_SEALING. ST02_SEALING, Zone = Production Area. ST02_SEALING, Depends On = ST01. ST02_SEALING, Downstream Effect = Feeds ST03; thermal fault fi ST04 speed reduction. ST03_LABELLING, Zone = Production Area. ST03_LABELLING, Depends On = ST02. ST03_LABELLING, Downstream Effect = Feeds ST04_PACKAGING. ST04_PACKAGING, Zone = Production Area. ST04_PACKAGING, Depends On = ST03. ST04_PACKAGING, Downstream Effect = Final output. SRV01_SERVERROOM, Zone = Server Room. SRV01_SERVERROOM, Depends On = HVAC. SRV01_SERVERROOM, Downstream Effect = SCADA control; failure fi line halt. WRH01_WAREHOUSE, Zone = General Warehouse. WRH01_WAREHOUSE, Depends On = COMPRESSOR. WRH01_WAREHOUSE, Downstream Effect = Cold storage -product quality. CHM01_CHEMICALSTORAGE Chemical, Zone = Storage. CHM01_CHEMICALSTORAGE Chemical, Depends On = HVAC. CHM01_CHEMICALSTORAGE Chemical, Downstream Effect = Hazardous materials -safety critical. RND01_RDLAB, Zone = R&D Lab. RND01_RDLAB, Depends On = HVAC. RND01_RDLAB, Downstream Effect = Precision experiments -climate sensitive. CAF01_CAFETERIA, Zone = Cafeteria. CAF01_CAFETERIA, Depends On = HVAC. CAF01_CAFETERIA, Downstream Effect = Occupant comfort -food safety",
             "entities": [
@@ -182,6 +186,42 @@
                     "category": "Zone",
                     "source_chunk_id": 3,
                     "source_page": 1
+                },
+                {
+                    "span": "HVAC",
+                    "category": "Sensor",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "COMPRESSOR",
+                    "category": "Component",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Cold storage -product quality",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Hazardous materials -safety critical",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Precision experiments -climate sensitive",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Occupant comfort -food safety",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 }
             ]
         },
@@ -193,7 +233,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.1 ST01_FILLING]\nRULE-ST01-01: FLW MUST be maintained between 112 and 128 L/min.",
             "entities": [
@@ -219,7 +260,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.1 ST01_FILLING]\nRULE-ST01-02: If TMP exceeds 26°C, reduce speed by 10% and notify QC.",
             "entities": [
@@ -245,7 +287,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.1 ST01_FILLING]\nRULE-ST01-03: PRS drop below 3.3 bar - inspect inlet valve within 5 min.",
             "entities": [
@@ -277,7 +320,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-01: TMP MUST remain between 175°C and 195°C.",
             "entities": [
@@ -303,7 +347,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-02: TMP > 210°C (CRITICAL) - emergency stop ST02, ST03, ST04.",
             "entities": [
@@ -341,7 +386,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-03: CUR increase >1.5 A above nominal sustained >5 min - schedule maintenance.",
             "entities": [
@@ -367,7 +413,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-04: CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling. Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING.",
             "entities": [
@@ -411,7 +458,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.3 ST03_LABELLING]\nRULE-ST03-01: TEN MUST be between 1.8 and 2.6 N.",
             "entities": [
@@ -449,7 +497,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.3 ST03_LABELLING]\nRULE-ST03-02: CNT below 110 pcs/min - check for label jam. Below 100 (CRITICAL): halt.",
             "entities": [
@@ -481,7 +530,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.3 ST03_LABELLING]\nRULE-ST03-03: TEN STUCK >10 consecutive samples - sensor failure.",
             "entities": [
@@ -507,7 +557,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-ST04-01: VIB > 0.20 mm/s (WARNING) - schedule maintenance within 24 h.",
             "entities": [
@@ -539,7 +590,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-ST04-02: VIB > 0.35 mm/s (CRITICAL) - emergency stop; inspect bearings.",
             "entities": [
@@ -577,7 +629,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-ST04-03: SPD drops below 1.00 m/s without operator command - verify RULE-ST02-04.",
             "entities": [
@@ -603,7 +656,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.5 SRV01_SERVERROOM",
             "entities": [
@@ -629,7 +683,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-SRV01-01: TMP MUST NOT exceed 25°C. RULE-SRV01-02: TMP > 28°C (CRITICAL) - automatic controlled shutdown of all PLC nodes.",
             "entities": [
@@ -655,7 +710,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.6 WRH01_WAREHOUSE (General Warehouse)",
             "entities": [
@@ -681,7 +737,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-WRH01-01: TMP MUST remain between 0.5°C and 8°C. CRITICAL above 12°C - notify QC and quarantine batch. RULE-WRH01-02: HUM above 85%RH - inspect door seals and activate dehumidifier.",
             "entities": [
@@ -707,7 +764,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.7 CHM01_CHEMICALSTORAGE (Chemical Storage)",
             "entities": [
@@ -733,7 +791,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-CHM01-01: TMP MUST remain between 10°C and 20°C. CRITICAL above 25°C - activate emergency ventilation and notify safety officer immediately. RULE-CHM01-02: HUM MUST NOT exceed 50%RH. Elevated humidity accelerates degradation of hygroscopic reagents. Activate desiccant system if HUM >45%RH. RULE-CHM01-03: Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage. UNAUTHORIZED_ACCESS must be escalated within 2 minutes.",
             "entities": [
@@ -771,7 +830,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.8 RND01_RDLAB (R&D; Lab)",
             "entities": [
@@ -797,7 +857,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-RND01-01: TMP MUST remain between 18°C and 26°C for experimental validity. RULE-RND01-02: HUM drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system.",
             "entities": [
@@ -823,7 +884,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.9 CAF01_CAFETERIA",
             "entities": [
@@ -849,7 +911,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-CAF01-01: TMP above 26°C - check ventilation system. Occupant comfort is the primary criterion. RULE-CAF01-02: HUM above 70%RH - inspect drainage and activate ventilation.",
             "entities": [

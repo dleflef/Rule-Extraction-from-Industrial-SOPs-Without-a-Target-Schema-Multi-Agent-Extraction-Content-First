@@ -184,11 +184,8 @@ def _fuzzy_align(
     )
     candidates = typed_nodes if typed_nodes else official_nodes
 
-    # Pass 1 — exact
+    # Pass 1 — exact match within the typed candidate set
     if raw in candidates:
-        return raw, "exact"
-    # Also check full set in case the typed subset missed it
-    if typed_nodes and raw in official_nodes:
         return raw, "exact"
 
     # Pass 2 — normalised exact
@@ -197,7 +194,7 @@ def _fuzzy_align(
         if _normalise(name) == rn:
             return name, "exact"
 
-    # Pass 3 — substring containment; collect ALL matches and prefer shortest
+    # Pass 3 — uppercase substring containment (e.g. "ST01_FILLING" ↔ "ST01 Filling Station")
     raw_up = raw.upper()
     matches = [
         name for name in candidates
@@ -205,6 +202,17 @@ def _fuzzy_align(
     ]
     if matches:
         return min(matches, key=len), "fuzzy"
+
+    # Pass 3B — separator-stripped containment
+    # Handles CHM01_CHEMICALSTORAGE → "Chemical Storage" (cleaned: chemicalstorage ⊂ chm01chemicalstorage)
+    # and RND01_RDLAB → "R&D Lab" (cleaned: rdlab ⊂ rnd01rdlab), etc.
+    raw_clean = re.sub(r"[^a-z0-9]", "", raw.lower())
+    fuzzy_matches = [
+        name for name in candidates
+        if (nc := re.sub(r"[^a-z0-9]", "", name.lower())) and nc in raw_clean
+    ]
+    if fuzzy_matches:
+        return min(fuzzy_matches, key=len), "fuzzy"
 
     # Pass 4 — few-shot LLM alignment (use typed candidates for shorter, focused prompt)
     return _llm_align(raw, candidates, context=context)

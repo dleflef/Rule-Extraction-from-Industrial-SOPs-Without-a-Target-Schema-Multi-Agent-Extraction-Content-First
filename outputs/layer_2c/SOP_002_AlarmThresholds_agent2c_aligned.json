@@ -11,7 +11,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": []
         },
@@ -23,7 +24,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "aligned_relations": [
                 {
@@ -64,7 +66,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "aligned_relations": [
                 {
@@ -77,7 +80,7 @@
                 {
                     "subject": "RULE-2-01",
                     "predicate": "applies_to_sensor",
-                    "object": "ST01_FILLING_TMP",
+                    "object": "RND01_RDLAB_TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
@@ -98,8 +101,8 @@
                 },
                 {
                     "subject": "RULE-2-01",
-                    "predicate": "has_warn_lo",
-                    "object": "18.0",
+                    "predicate": "has_warn_hi",
+                    "object": "26.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -107,13 +110,6 @@
                     "subject": "RULE-2-01",
                     "predicate": "has_crit_hi",
                     "object": "30.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "has_warn_hi",
-                    "object": "26.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -155,8 +151,8 @@
                 },
                 {
                     "subject": "RULE-2-02",
-                    "predicate": "has_warn_lo",
-                    "object": "3.3",
+                    "predicate": "has_warn_hi",
+                    "object": "4.2",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -164,13 +160,6 @@
                     "subject": "RULE-2-02",
                     "predicate": "has_crit_hi",
                     "object": "4.8",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "has_warn_hi",
-                    "object": "4.2",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -212,8 +201,8 @@
                 },
                 {
                     "subject": "RULE-2-03",
-                    "predicate": "has_warn_lo",
-                    "object": "112.0",
+                    "predicate": "has_warn_hi",
+                    "object": "128.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -221,13 +210,6 @@
                     "subject": "RULE-2-03",
                     "predicate": "has_crit_hi",
                     "object": "135.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-03",
-                    "predicate": "has_warn_hi",
-                    "object": "128.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -248,7 +230,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "aligned_relations": [
                 {
@@ -260,16 +243,8 @@
                 },
                 {
                     "subject": "RULE-3-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST01_FILLING_TMP",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "fuzzy",
-                    "_raw_object": "TMP"
-                },
-                {
-                    "subject": "RULE-3-01",
-                    "predicate": "has_unit",
-                    "object": "°C",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -282,8 +257,8 @@
                 },
                 {
                     "subject": "RULE-3-01",
-                    "predicate": "has_warn_lo",
-                    "object": "185.0",
+                    "predicate": "has_warn_hi",
+                    "object": "195.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -310,16 +285,8 @@
                 },
                 {
                     "subject": "RULE-3-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST01_FILLING_PRS",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "fuzzy",
-                    "_raw_object": "PRS"
-                },
-                {
-                    "subject": "RULE-3-02",
-                    "predicate": "has_unit",
-                    "object": "bar",
+                    "predicate": "has_sensor_type",
+                    "object": "PRS",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -332,8 +299,8 @@
                 },
                 {
                     "subject": "RULE-3-02",
-                    "predicate": "has_warn_lo",
-                    "object": "5.2",
+                    "predicate": "has_warn_hi",
+                    "object": "5.7",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -360,16 +327,8 @@
                 },
                 {
                     "subject": "RULE-3-03",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST02_SEALING_CUR",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "fuzzy",
-                    "_raw_object": "CUR"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "has_unit",
-                    "object": "A",
+                    "predicate": "has_sensor_type",
+                    "object": "CUR",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -382,8 +341,8 @@
                 },
                 {
                     "subject": "RULE-3-03",
-                    "predicate": "has_warn_lo",
-                    "object": "12.4",
+                    "predicate": "has_warn_hi",
+                    "object": "13.5",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -411,7 +370,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "aligned_relations": [
                 {
@@ -430,13 +390,6 @@
                 },
                 {
                     "subject": "RULE-4-01",
-                    "predicate": "has_unit",
-                    "object": "m/s",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-4-01",
                     "predicate": "has_crit_lo",
                     "object": "0.65",
                     "_subject_alignment": "rule_node",
@@ -444,8 +397,8 @@
                 },
                 {
                     "subject": "RULE-4-01",
-                    "predicate": "has_warn_lo",
-                    "object": "0.75",
+                    "predicate": "has_warn_hi",
+                    "object": "0.95",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -453,13 +406,6 @@
                     "subject": "RULE-4-01",
                     "predicate": "has_crit_hi",
                     "object": "1.05",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-4-01",
-                    "predicate": "has_warn_hi",
-                    "object": "0.95",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -486,13 +432,6 @@
                 },
                 {
                     "subject": "RULE-4-02",
-                    "predicate": "has_unit",
-                    "object": "N",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-4-02",
                     "predicate": "has_crit_lo",
                     "object": "1.5",
                     "_subject_alignment": "rule_node",
@@ -500,8 +439,8 @@
                 },
                 {
                     "subject": "RULE-4-02",
-                    "predicate": "has_warn_lo",
-                    "object": "1.8",
+                    "predicate": "has_warn_hi",
+                    "object": "2.6",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -509,13 +448,6 @@
                     "subject": "RULE-4-02",
                     "predicate": "has_crit_hi",
                     "object": "3.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-4-02",
-                    "predicate": "has_warn_hi",
-                    "object": "2.6",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -542,13 +474,6 @@
                 },
                 {
                     "subject": "RULE-4-03",
-                    "predicate": "has_unit",
-                    "object": "pcs/min",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-4-03",
                     "predicate": "has_crit_lo",
                     "object": "100",
                     "_subject_alignment": "rule_node",
@@ -556,8 +481,8 @@
                 },
                 {
                     "subject": "RULE-4-03",
-                    "predicate": "has_warn_lo",
-                    "object": "110",
+                    "predicate": "has_warn_hi",
+                    "object": "130",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -565,13 +490,6 @@
                     "subject": "RULE-4-03",
                     "predicate": "has_crit_hi",
                     "object": "140",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-4-03",
-                    "predicate": "has_warn_hi",
-                    "object": "130",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -592,16 +510,10 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "aligned_relations": [
-                {
-                    "subject": "RULE-5-01",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
                 {
                     "subject": "RULE-5-01",
                     "predicate": "has_sensor_type",
@@ -640,22 +552,7 @@
                 {
                     "subject": "RULE-5-01",
                     "predicate": "triggers_action",
-                    "object": "E-STOP; inspect main bearing",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "ST04_PACKAGING",
-                    "predicate": "monitors",
-                    "object": "ST04_PACKAGING_CNT",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "llm_aligned",
-                    "_raw_object": "VIB_ST04_PACKAGING"
-                },
-                {
-                    "subject": "RULE-5-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
+                    "object": "E-STOP; inspect main bearing.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -697,22 +594,7 @@
                 {
                     "subject": "RULE-5-02",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "ST04_PACKAGING",
-                    "predicate": "monitors",
-                    "object": "ST04_PACKAGING_TMP",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "llm_aligned",
-                    "_raw_object": "CUR_ST04_PACKAGING"
-                },
-                {
-                    "subject": "RULE-5-03",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
+                    "object": "Inspect and notify maintenance.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -754,17 +636,9 @@
                 {
                     "subject": "RULE-5-03",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance",
+                    "object": "Inspect and notify maintenance.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
-                },
-                {
-                    "subject": "ST04_PACKAGING",
-                    "predicate": "monitors",
-                    "object": "ST04_PACKAGING_SPD",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "llm_aligned",
-                    "_raw_object": "SPD_ST04_PACKAGING"
                 }
             ]
         },
@@ -776,7 +650,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "aligned_relations": [
                 {
@@ -789,15 +664,15 @@
                 {
                     "subject": "RULE-6-01",
                     "predicate": "applies_to_sensor",
-                    "object": "SRV01_SERVERROOM_TMP",
+                    "object": "RND01_RDLAB_TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "SRV01_SERVERROOM_TMP"
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "TMP"
                 },
                 {
                     "subject": "RULE-6-01",
                     "predicate": "has_unit",
-                    "object": "°C",
+                    "object": "°C.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -832,10 +707,10 @@
                 {
                     "subject": "SRV01_SERVERROOM",
                     "predicate": "monitors",
-                    "object": "SRV01_SERVERROOM_TMP",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "SRV01_SERVERROOM_TMP"
+                    "object": "RND01_RDLAB_TMP",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "TMP"
                 }
             ]
         },
@@ -847,7 +722,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": true
             },
             "aligned_relations": [
                 {
@@ -860,7 +736,7 @@
                 {
                     "subject": "RULE-7-01",
                     "predicate": "applies_to_sensor",
-                    "object": "ST01_FILLING_TMP",
+                    "object": "RND01_RDLAB_TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
@@ -868,7 +744,7 @@
                 {
                     "subject": "RULE-7-01",
                     "predicate": "has_unit",
-                    "object": "°C",
+                    "object": "°C.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -881,8 +757,8 @@
                 },
                 {
                     "subject": "RULE-7-01",
-                    "predicate": "has_warn_lo",
-                    "object": "0.5",
+                    "predicate": "has_warn_hi",
+                    "object": "8.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -895,74 +771,18 @@
                 },
                 {
                     "subject": "RULE-7-01",
-                    "predicate": "has_warn_hi",
-                    "object": "8.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-7-01",
                     "predicate": "triggers_action",
-                    "object": "Activate backup refrigeration; notify QC",
+                    "object": "Activate backup refrigeration; notify QC.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-7-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "HUM",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "HUM"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "has_unit",
-                    "object": "%RH",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "has_crit_lo",
-                    "object": "55.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "has_warn_lo",
-                    "object": "60.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "has_crit_hi",
-                    "object": "90.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "has_warn_hi",
-                    "object": "85.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
+                    "subject": "TMP",
+                    "predicate": "monitors",
+                    "object": "WRH01_WAREHOUSE_TMP",
+                    "_subject_alignment": "unaligned",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "WRH01_WAREHOUSE"
                 }
             ]
         },
@@ -974,7 +794,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": true
             },
             "aligned_relations": [
                 {
@@ -987,7 +808,7 @@
                 {
                     "subject": "RULE-8-01",
                     "predicate": "applies_to_sensor",
-                    "object": "ST01_FILLING_TMP",
+                    "object": "RND01_RDLAB_TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
@@ -995,7 +816,7 @@
                 {
                     "subject": "RULE-8-01",
                     "predicate": "has_unit",
-                    "object": "°C",
+                    "object": "°C.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1008,8 +829,8 @@
                 },
                 {
                     "subject": "RULE-8-01",
-                    "predicate": "has_warn_hi",
-                    "object": "20.0",
+                    "predicate": "has_warn_lo",
+                    "object": "10.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1022,60 +843,25 @@
                 },
                 {
                     "subject": "RULE-8-01",
+                    "predicate": "has_warn_hi",
+                    "object": "20.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-8-01",
                     "predicate": "triggers_action",
                     "object": "Activate emergency ventilation; notify safety officer immediately.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-8-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "HUM",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "HUM"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "has_unit",
-                    "object": "%RH",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "has_crit_lo",
-                    "object": "15.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "has_warn_hi",
-                    "object": "50.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "has_crit_hi",
-                    "object": "60.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "triggers_action",
-                    "object": "Activate desiccant system; inspect storage containers for leak.",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
+                    "subject": "CHM01_CHEMICALSTORAGE",
+                    "predicate": "monitors",
+                    "object": "RND01_RDLAB_TMP",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "TMP"
                 }
             ]
         },
@@ -1087,7 +873,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": true
             },
             "aligned_relations": [
                 {
@@ -1106,29 +893,8 @@
                 },
                 {
                     "subject": "RULE-9-01",
-                    "predicate": "has_unit",
-                    "object": "°C",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-9-01",
                     "predicate": "has_crit_lo",
                     "object": "15.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-9-01",
-                    "predicate": "has_warn_lo",
-                    "object": "18.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-9-01",
-                    "predicate": "has_crit_hi",
-                    "object": "30.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1141,18 +907,59 @@
                 },
                 {
                     "subject": "RULE-9-01",
+                    "predicate": "has_crit_hi",
+                    "object": "30.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-9-01",
                     "predicate": "triggers_action",
                     "object": "Inspect and notify maintenance.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "ST01_RDLAB",
-                    "predicate": "monitors",
-                    "object": "ST01_FILLING_TMP",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "fuzzy",
-                    "_raw_object": "TMP"
+                    "subject": "RULE-9-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-9-02",
+                    "predicate": "has_sensor_type",
+                    "object": "HUM",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-9-02",
+                    "predicate": "has_crit_lo",
+                    "object": "25.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-9-02",
+                    "predicate": "has_warn_hi",
+                    "object": "65.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-9-02",
+                    "predicate": "has_crit_hi",
+                    "object": "75.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-9-02",
+                    "predicate": "triggers_action",
+                    "object": "Suspend experiments; inspect HVAC system.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -1164,7 +971,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": true
             },
             "aligned_relations": [
                 {
@@ -1177,7 +985,7 @@
                 {
                     "subject": "RULE-10-01",
                     "predicate": "applies_to_sensor",
-                    "object": "ST01_FILLING_TMP",
+                    "object": "RND01_RDLAB_TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
@@ -1185,7 +993,7 @@
                 {
                     "subject": "RULE-10-01",
                     "predicate": "has_unit",
-                    "object": "°C",
+                    "object": "°C.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1198,8 +1006,8 @@
                 },
                 {
                     "subject": "RULE-10-01",
-                    "predicate": "has_warn_lo",
-                    "object": "21.0",
+                    "predicate": "has_warn_hi",
+                    "object": "26.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1213,15 +1021,15 @@
                 {
                     "subject": "RULE-10-01",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance",
+                    "object": "Inspect and notify maintenance.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "CAF01_CAFETERIA",
                     "predicate": "monitors",
-                    "object": "ST01_FILLING_TMP",
-                    "_subject_alignment": "unaligned",
+                    "object": "RND01_RDLAB_TMP",
+                    "_subject_alignment": "exact",
                     "_object_alignment": "fuzzy",
                     "_raw_object": "TMP"
                 }
@@ -1235,7 +1043,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": true
             },
             "aligned_relations": [
                 {
@@ -1247,17 +1056,51 @@
                 },
                 {
                     "subject": "RULE-11-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "SPIKE",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "SPIKE"
+                    "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-11-01",
                     "predicate": "has_condition",
-                    "object": "Transient deviation >3 s , <5 minSingle. reading >CRIT.",
+                    "object": "Transient deviation >3 s , <5 minSingle",
                     "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-11-01",
+                    "predicate": "triggers_action",
+                    "object": "Trigger alert for transient spike",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-11-01",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "SPIKE",
+                    "predicate": "Definition",
+                    "object": "Transient deviation >3 s , <5 minSingle",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "SPIKE",
+                    "predicate": "Detection Criterion",
+                    "object": "reading >CRIT",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "SPIKE",
+                    "predicate": "Ontology Class",
+                    "object": "AnomalyEvent::Spike",
+                    "_subject_alignment": "n/a",
                     "_object_alignment": "literal"
                 },
                 {
@@ -1269,17 +1112,51 @@
                 },
                 {
                     "subject": "RULE-11-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "DRIFT",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "DRIFT"
+                    "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-11-02",
                     "predicate": "has_condition",
-                    "object": "Monotonic deviation >15 min. Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift.",
+                    "object": "Monotonic deviation >15 min",
                     "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-11-02",
+                    "predicate": "triggers_action",
+                    "object": "Trigger alert for drift",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-11-02",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "DRIFT",
+                    "predicate": "Definition",
+                    "object": "Monotonic deviation >15 min",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "DRIFT",
+                    "predicate": "Detection Criterion",
+                    "object": "Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift.",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "DRIFT",
+                    "predicate": "Ontology Class",
+                    "object": "Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift.",
+                    "_subject_alignment": "n/a",
                     "_object_alignment": "literal"
                 },
                 {
@@ -1291,17 +1168,51 @@
                 },
                 {
                     "subject": "RULE-11-03",
-                    "predicate": "applies_to_sensor",
-                    "object": "STUCK",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "STUCK"
+                    "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-11-03",
                     "predicate": "has_condition",
-                    "object": "Unchanged >10 consecutive. readings std(last 10)<0.001×nominal.",
+                    "object": "Unchanged >10 consecutive readings std(last 10)<0.001×nominal",
                     "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-11-03",
+                    "predicate": "triggers_action",
+                    "object": "Trigger alert for stuck sensor",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-11-03",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "STUCK",
+                    "predicate": "Definition",
+                    "object": "Unchanged >10 consecutive readings std(last 10)<0.001×nominal",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "STUCK",
+                    "predicate": "Detection Criterion",
+                    "object": "readings std(last 10)<0.001×nominal",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "STUCK",
+                    "predicate": "Ontology Class",
+                    "object": "AnomalyEvent::StuckSensor",
+                    "_subject_alignment": "n/a",
                     "_object_alignment": "literal"
                 },
                 {
@@ -1313,17 +1224,51 @@
                 },
                 {
                     "subject": "RULE-11-04",
-                    "predicate": "applies_to_sensor",
-                    "object": "OUT_OF_RANGE",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "OUT_OF_RANGE"
+                    "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-11-04",
                     "predicate": "has_condition",
-                    "object": "Sustained WARN violation >10 min >WARN for 20+. readings.",
+                    "object": "Sustained WARN violation >10 min >WARN for 20+ readings",
                     "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-11-04",
+                    "predicate": "triggers_action",
+                    "object": "Trigger alert for out of range condition",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-11-04",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "OUT_OF_RANGE",
+                    "predicate": "Definition",
+                    "object": "Sustained WARN violation >10 min >WARN for 20+ readings",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "OUT_OF_RANGE",
+                    "predicate": "Detection Criterion",
+                    "object": "readings",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "OUT_OF_RANGE",
+                    "predicate": "Ontology Class",
+                    "object": "AnomalyEvent::OutOfRange",
+                    "_subject_alignment": "n/a",
                     "_object_alignment": "literal"
                 },
                 {
@@ -1335,17 +1280,51 @@
                 },
                 {
                     "subject": "RULE-11-05",
-                    "predicate": "applies_to_sensor",
-                    "object": "CORRELATED",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "CORRELATED"
+                    "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-11-05",
                     "predicate": "has_condition",
-                    "object": "Causally linked to another station Onset within. 90 min of cause.",
+                    "object": "Causally linked to another station Onset within 90 min of cause",
                     "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-11-05",
+                    "predicate": "triggers_action",
+                    "object": "Trigger alert for correlated anomaly",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-11-05",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "CORRELATED",
+                    "predicate": "Definition",
+                    "object": "Causally linked to another station Onset within 90 min of cause",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "CORRELATED",
+                    "predicate": "Detection Criterion",
+                    "object": "90 min of cause",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "CORRELATED",
+                    "predicate": "Ontology Class",
+                    "object": "AnomalyEvent::Correlated",
+                    "_subject_alignment": "n/a",
                     "_object_alignment": "literal"
                 }
             ]

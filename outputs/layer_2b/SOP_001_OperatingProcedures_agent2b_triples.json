@@ -13,7 +13,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [],
             "relations": []
@@ -26,7 +27,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -52,7 +54,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -106,7 +109,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
@@ -198,53 +202,89 @@
                     "category": "Zone",
                     "source_chunk_id": 3,
                     "source_page": 1
+                },
+                {
+                    "span": "HVAC",
+                    "category": "Sensor",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "COMPRESSOR",
+                    "category": "Component",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Cold storage -product quality",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Hazardous materials -safety critical",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Precision experiments -climate sensitive",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Occupant comfort -food safety",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 3,
+                    "source_page": 1
                 }
             ],
             "relations": [
                 {
                     "subject": "ST01_FILLING",
                     "predicate": "monitors",
-                    "object": "ST01_FILLING_TMP"
+                    "object": "COMPRESSOR"
                 },
                 {
                     "subject": "ST02_SEALING",
                     "predicate": "monitors",
-                    "object": "ST02_SEALING_TMP"
+                    "object": "COMPRESSOR"
                 },
                 {
                     "subject": "ST03_LABELLING",
                     "predicate": "monitors",
-                    "object": "ST03_LABELLING_TMP"
+                    "object": "COMPRESSOR"
                 },
                 {
                     "subject": "ST04_PACKAGING",
                     "predicate": "monitors",
-                    "object": "ST04_PACKAGING_TMP"
+                    "object": "COMPRESSOR"
                 },
                 {
                     "subject": "SRV01_SERVERROOM",
                     "predicate": "monitors",
-                    "object": "SRV01_SERVERROOM_TMP"
+                    "object": "COMPRESSOR"
                 },
                 {
                     "subject": "WRH01_WAREHOUSE",
                     "predicate": "monitors",
-                    "object": "WRH01_WAREHOUSE_TMP"
+                    "object": "COMPRESSOR"
                 },
                 {
-                    "subject": "CHM01_CHEMICALSTORAGE",
+                    "subject": "CHM01_CHEMICALSTORAGE Chemical",
                     "predicate": "monitors",
-                    "object": "CHM01_CHEMICALSTORAGE_TMP"
+                    "object": "COMPRESSOR"
                 },
                 {
                     "subject": "RND01_RDLAB",
                     "predicate": "monitors",
-                    "object": "RND01_RDLAB_TMP"
+                    "object": "COMPRESSOR"
                 },
                 {
                     "subject": "CAF01_CAFETERIA",
                     "predicate": "monitors",
-                    "object": "CAF01_CAFETERIA_TMP"
+                    "object": "COMPRESSOR"
                 }
             ]
         },
@@ -256,7 +296,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -298,7 +339,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -355,7 +397,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -418,7 +461,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -470,7 +514,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -544,7 +589,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -596,7 +642,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -671,7 +718,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -745,7 +793,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -813,7 +862,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -865,7 +915,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -928,7 +979,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -1002,7 +1054,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -1059,7 +1112,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -1091,7 +1145,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -1158,7 +1213,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -1190,7 +1246,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -1272,7 +1329,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -1304,7 +1362,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -1413,7 +1472,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -1445,7 +1505,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -1542,7 +1603,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -1574,7 +1636,8 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {

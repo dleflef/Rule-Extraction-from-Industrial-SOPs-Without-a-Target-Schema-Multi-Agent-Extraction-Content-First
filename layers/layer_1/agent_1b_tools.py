@@ -119,12 +119,24 @@ def chunk_docling_document(docling_dict: Dict[str, Any]) -> List[Dict[str, Any]]
                     if hasattr(item, "prov") and item.prov:
                         pages.extend([p.page_no for p in item.prov if hasattr(p, "page_no")])
 
+            # Detect table chunks: try Docling class first, fall back to markdown markers
+            is_table = False
+            if hasattr(chunk.meta, "doc_items"):
+                for item in chunk.meta.doc_items:
+                    if item.__class__.__name__ == "TableItem":
+                        is_table = True
+                        break
+            if not is_table and text:
+                pipe_lines = sum(1 for ln in text.split("\n") if ln.strip().startswith("|"))
+                is_table = pipe_lines >= 2
+
             raw_chunks.append({
                 "chunk_id":   idx,
                 "content":    text,
                 "metadata":   {
                     "headings":     headings,
                     "page_numbers": sorted(set(pages)),
+                    "is_table":     is_table,
                 },
                 "char_count": len(text),
             })

@@ -13,7 +13,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [],
             "relations": []
@@ -26,7 +27,8 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": false
             },
             "entities": [
                 {
@@ -91,24 +93,127 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
                     "span": "TMP",
-                    "category": "Sensor",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "Unit",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "PRS",
-                    "category": "Sensor",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "FLW",
-                    "category": "Sensor",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 2,
                     "source_page": 1
                 }
@@ -136,18 +241,13 @@
                 },
                 {
                     "subject": "RULE-2-01",
-                    "predicate": "has_warn_lo",
-                    "object": "18.0"
+                    "predicate": "has_warn_hi",
+                    "object": "26.0"
                 },
                 {
                     "subject": "RULE-2-01",
                     "predicate": "has_crit_hi",
                     "object": "30.0"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "has_warn_hi",
-                    "object": "26.0"
                 },
                 {
                     "subject": "RULE-2-01",
@@ -176,18 +276,13 @@
                 },
                 {
                     "subject": "RULE-2-02",
-                    "predicate": "has_warn_lo",
-                    "object": "3.3"
+                    "predicate": "has_warn_hi",
+                    "object": "4.2"
                 },
                 {
                     "subject": "RULE-2-02",
                     "predicate": "has_crit_hi",
                     "object": "4.8"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "has_warn_hi",
-                    "object": "4.2"
                 },
                 {
                     "subject": "RULE-2-02",
@@ -216,18 +311,13 @@
                 },
                 {
                     "subject": "RULE-2-03",
-                    "predicate": "has_warn_lo",
-                    "object": "112.0"
+                    "predicate": "has_warn_hi",
+                    "object": "128.0"
                 },
                 {
                     "subject": "RULE-2-03",
                     "predicate": "has_crit_hi",
                     "object": "135.0"
-                },
-                {
-                    "subject": "RULE-2-03",
-                    "predicate": "has_warn_hi",
-                    "object": "128.0"
                 },
                 {
                     "subject": "RULE-2-03",
@@ -244,12 +334,85 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
                     "span": "TMP",
                     "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Unit = °C.",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "165.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "175.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "185.0 ± 1.2",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "195.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "210.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "TMP, CRITICAL Response = E-STOP ST02/ST03/ST04; inspect element.",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
@@ -260,8 +423,152 @@
                     "source_page": 1
                 },
                 {
+                    "span": "Unit = bar.",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "4.2",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "4.6",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "5.2 ± 0.08",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "5.7",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "6.2",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "PRS, CRITICAL Response = Inspect and notify maintenance.",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
                     "span": "CUR",
                     "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Unit = A.",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "9.5",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "11.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "12.4 ± 0.3",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "13.5",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "15.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "CUR, CRITICAL Response = E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04)",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 3,
                     "source_page": 1
                 }
@@ -274,13 +581,8 @@
                 },
                 {
                     "subject": "RULE-3-01",
-                    "predicate": "applies_to_sensor",
+                    "predicate": "has_sensor_type",
                     "object": "TMP"
-                },
-                {
-                    "subject": "RULE-3-01",
-                    "predicate": "has_unit",
-                    "object": "°C"
                 },
                 {
                     "subject": "RULE-3-01",
@@ -289,8 +591,8 @@
                 },
                 {
                     "subject": "RULE-3-01",
-                    "predicate": "has_warn_lo",
-                    "object": "185.0"
+                    "predicate": "has_warn_hi",
+                    "object": "195.0"
                 },
                 {
                     "subject": "RULE-3-01",
@@ -309,13 +611,8 @@
                 },
                 {
                     "subject": "RULE-3-02",
-                    "predicate": "applies_to_sensor",
+                    "predicate": "has_sensor_type",
                     "object": "PRS"
-                },
-                {
-                    "subject": "RULE-3-02",
-                    "predicate": "has_unit",
-                    "object": "bar"
                 },
                 {
                     "subject": "RULE-3-02",
@@ -324,8 +621,8 @@
                 },
                 {
                     "subject": "RULE-3-02",
-                    "predicate": "has_warn_lo",
-                    "object": "5.2"
+                    "predicate": "has_warn_hi",
+                    "object": "5.7"
                 },
                 {
                     "subject": "RULE-3-02",
@@ -344,13 +641,8 @@
                 },
                 {
                     "subject": "RULE-3-03",
-                    "predicate": "applies_to_sensor",
+                    "predicate": "has_sensor_type",
                     "object": "CUR"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "has_unit",
-                    "object": "A"
                 },
                 {
                     "subject": "RULE-3-03",
@@ -359,8 +651,8 @@
                 },
                 {
                     "subject": "RULE-3-03",
-                    "predicate": "has_warn_lo",
-                    "object": "12.4"
+                    "predicate": "has_warn_hi",
+                    "object": "13.5"
                 },
                 {
                     "subject": "RULE-3-03",
@@ -382,12 +674,91 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
                     "span": "SPD",
                     "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "Unit = m/s.",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "0.65",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "0.75",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "0.85 ± 0.01",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "0.95",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "1.05",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "Inspect and notify maintenance.",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
@@ -398,8 +769,152 @@
                     "source_page": 1
                 },
                 {
+                    "span": "Unit = N.",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "1.5",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "1.8",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "2.2 ± 0.05",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "2.6",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "3.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
                     "span": "CNT",
                     "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "Unit = pcs/min.",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "100",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "110",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "120 ± 2.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "130",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "140",
+                    "category": "Parameter",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 4,
+                    "source_page": 1
+                },
+                {
+                    "span": "E-STOP labelling; inspect label path",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 4,
                     "source_page": 1
                 }
@@ -417,28 +932,18 @@
                 },
                 {
                     "subject": "RULE-4-01",
-                    "predicate": "has_unit",
-                    "object": "m/s"
-                },
-                {
-                    "subject": "RULE-4-01",
                     "predicate": "has_crit_lo",
                     "object": "0.65"
                 },
                 {
                     "subject": "RULE-4-01",
-                    "predicate": "has_warn_lo",
-                    "object": "0.75"
+                    "predicate": "has_warn_hi",
+                    "object": "0.95"
                 },
                 {
                     "subject": "RULE-4-01",
                     "predicate": "has_crit_hi",
                     "object": "1.05"
-                },
-                {
-                    "subject": "RULE-4-01",
-                    "predicate": "has_warn_hi",
-                    "object": "0.95"
                 },
                 {
                     "subject": "RULE-4-01",
@@ -457,28 +962,18 @@
                 },
                 {
                     "subject": "RULE-4-02",
-                    "predicate": "has_unit",
-                    "object": "N"
-                },
-                {
-                    "subject": "RULE-4-02",
                     "predicate": "has_crit_lo",
                     "object": "1.5"
                 },
                 {
                     "subject": "RULE-4-02",
-                    "predicate": "has_warn_lo",
-                    "object": "1.8"
+                    "predicate": "has_warn_hi",
+                    "object": "2.6"
                 },
                 {
                     "subject": "RULE-4-02",
                     "predicate": "has_crit_hi",
                     "object": "3.0"
-                },
-                {
-                    "subject": "RULE-4-02",
-                    "predicate": "has_warn_hi",
-                    "object": "2.6"
                 },
                 {
                     "subject": "RULE-4-02",
@@ -497,28 +992,18 @@
                 },
                 {
                     "subject": "RULE-4-03",
-                    "predicate": "has_unit",
-                    "object": "pcs/min"
-                },
-                {
-                    "subject": "RULE-4-03",
                     "predicate": "has_crit_lo",
                     "object": "100"
                 },
                 {
                     "subject": "RULE-4-03",
-                    "predicate": "has_warn_lo",
-                    "object": "110"
+                    "predicate": "has_warn_hi",
+                    "object": "130"
                 },
                 {
                     "subject": "RULE-4-03",
                     "predicate": "has_crit_hi",
                     "object": "140"
-                },
-                {
-                    "subject": "RULE-4-03",
-                    "predicate": "has_warn_hi",
-                    "object": "130"
                 },
                 {
                     "subject": "RULE-4-03",
@@ -535,23 +1020,12 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
                     "span": "VIB",
-                    "category": "Sensor",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "CUR",
-                    "category": "Sensor",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "SPD",
                     "category": "Sensor",
                     "source_chunk_id": 5,
                     "source_page": 1
@@ -563,8 +1037,164 @@
                     "source_page": 1
                 },
                 {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "0.01",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "0.02",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "0.12 ± 0.005",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "0.2",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "0.35",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "E-STOP; inspect main bearing.",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "CUR",
+                    "category": "Sensor",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
                     "span": "A",
                     "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "6.5",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "7.5",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "8.7 ± 0.2",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "9.8",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "11.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "Inspect and notify maintenance.",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "SPD",
+                    "category": "Sensor",
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
@@ -581,7 +1211,19 @@
                     "source_page": 1
                 },
                 {
+                    "span": "0.85",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
                     "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "1.0",
                     "category": "Parameter",
                     "source_chunk_id": 5,
                     "source_page": 1
@@ -593,7 +1235,19 @@
                     "source_page": 1
                 },
                 {
+                    "span": "1.2 ± 0.02",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
                     "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "1.4",
                     "category": "Parameter",
                     "source_chunk_id": 5,
                     "source_page": 1
@@ -605,7 +1259,13 @@
                     "source_page": 1
                 },
                 {
-                    "span": "E-STOP; inspect main bearing",
+                    "span": "1.6",
+                    "category": "Parameter",
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL Response",
                     "category": "AnomalyEvent",
                     "source_chunk_id": 5,
                     "source_page": 1
@@ -618,11 +1278,6 @@
                 }
             ],
             "relations": [
-                {
-                    "subject": "RULE-5-01",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
                 {
                     "subject": "RULE-5-01",
                     "predicate": "has_sensor_type",
@@ -651,17 +1306,7 @@
                 {
                     "subject": "RULE-5-01",
                     "predicate": "triggers_action",
-                    "object": "E-STOP; inspect main bearing"
-                },
-                {
-                    "subject": "ST04_PACKAGING",
-                    "predicate": "monitors",
-                    "object": "VIB_ST04_PACKAGING"
-                },
-                {
-                    "subject": "RULE-5-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
+                    "object": "E-STOP; inspect main bearing."
                 },
                 {
                     "subject": "RULE-5-02",
@@ -691,17 +1336,7 @@
                 {
                     "subject": "RULE-5-02",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance"
-                },
-                {
-                    "subject": "ST04_PACKAGING",
-                    "predicate": "monitors",
-                    "object": "CUR_ST04_PACKAGING"
-                },
-                {
-                    "subject": "RULE-5-03",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
+                    "object": "Inspect and notify maintenance."
                 },
                 {
                     "subject": "RULE-5-03",
@@ -731,12 +1366,7 @@
                 {
                     "subject": "RULE-5-03",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance"
-                },
-                {
-                    "subject": "ST04_PACKAGING",
-                    "predicate": "monitors",
-                    "object": "SPD_ST04_PACKAGING"
+                    "object": "Inspect and notify maintenance."
                 }
             ]
         },
@@ -748,15 +1378,10 @@
                 ],
                 "page_numbers": [
                     1
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
-                {
-                    "span": "SRV01_SERVERROOM",
-                    "category": "Zone",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
                 {
                     "span": "TMP",
                     "category": "Sensor",
@@ -764,7 +1389,7 @@
                     "source_page": 1
                 },
                 {
-                    "span": "°C",
+                    "span": "Unit = °C.",
                     "category": "Parameter",
                     "source_chunk_id": 6,
                     "source_page": 1
@@ -830,13 +1455,7 @@
                     "source_page": 1
                 },
                 {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "Activate backup cooling; prepare controlled PLC shutdown.",
+                    "span": "TMP, CRITICAL Response = Activate backup cooling; prepare controlled PLC shutdown.",
                     "category": "AnomalyEvent",
                     "source_chunk_id": 6,
                     "source_page": 1
@@ -848,7 +1467,7 @@
                     "source_page": 1
                 },
                 {
-                    "span": "%RH",
+                    "span": "Unit = %RH.",
                     "category": "Parameter",
                     "source_chunk_id": 6,
                     "source_page": 1
@@ -914,13 +1533,7 @@
                     "source_page": 1
                 },
                 {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "Inspect and notify maintenance",
+                    "span": "HUM, CRITICAL Response = Inspect and notify maintenance",
                     "category": "AnomalyEvent",
                     "source_chunk_id": 6,
                     "source_page": 1
@@ -935,12 +1548,12 @@
                 {
                     "subject": "RULE-6-01",
                     "predicate": "applies_to_sensor",
-                    "object": "SRV01_SERVERROOM_TMP"
+                    "object": "TMP"
                 },
                 {
                     "subject": "RULE-6-01",
                     "predicate": "has_unit",
-                    "object": "°C"
+                    "object": "°C."
                 },
                 {
                     "subject": "RULE-6-01",
@@ -965,7 +1578,7 @@
                 {
                     "subject": "SRV01_SERVERROOM",
                     "predicate": "monitors",
-                    "object": "SRV01_SERVERROOM_TMP"
+                    "object": "TMP"
                 }
             ]
         },
@@ -977,18 +1590,175 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
                     "span": "TMP",
+                    "category": "Sensor",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "Unit = °C.",
                     "category": "Parameter",
                     "source_chunk_id": 7,
                     "source_page": 2
                 },
                 {
-                    "span": "HUM",
+                    "span": "CRIT_LO",
                     "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "-1.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "0.5",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "4.0 ± 0.5",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "8.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "12.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "Activate backup refrigeration; notify QC.",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "Unit = %RH.",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "55.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "60.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "75.0 ± 1.5",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "85.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "90.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRITICAL Response",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 7,
+                    "source_page": 2
+                },
+                {
+                    "span": "Inspect and notify maintenance",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 7,
                     "source_page": 2
                 }
@@ -1007,7 +1777,7 @@
                 {
                     "subject": "RULE-7-01",
                     "predicate": "has_unit",
-                    "object": "°C"
+                    "object": "°C."
                 },
                 {
                     "subject": "RULE-7-01",
@@ -1016,8 +1786,8 @@
                 },
                 {
                     "subject": "RULE-7-01",
-                    "predicate": "has_warn_lo",
-                    "object": "0.5"
+                    "predicate": "has_warn_hi",
+                    "object": "8.0"
                 },
                 {
                     "subject": "RULE-7-01",
@@ -1026,53 +1796,13 @@
                 },
                 {
                     "subject": "RULE-7-01",
-                    "predicate": "has_warn_hi",
-                    "object": "8.0"
-                },
-                {
-                    "subject": "RULE-7-01",
                     "predicate": "triggers_action",
-                    "object": "Activate backup refrigeration; notify QC"
+                    "object": "Activate backup refrigeration; notify QC."
                 },
                 {
-                    "subject": "RULE-7-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "HUM"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "has_unit",
-                    "object": "%RH"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "has_crit_lo",
-                    "object": "55.0"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "has_warn_lo",
-                    "object": "60.0"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "has_crit_hi",
-                    "object": "90.0"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "has_warn_hi",
-                    "object": "85.0"
-                },
-                {
-                    "subject": "RULE-7-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance"
+                    "subject": "TMP",
+                    "predicate": "monitors",
+                    "object": "WRH01_WAREHOUSE"
                 }
             ]
         },
@@ -1084,18 +1814,115 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
                     "span": "TMP",
+                    "category": "Sensor",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "Unit = °C.",
                     "category": "Parameter",
                     "source_chunk_id": 8,
                     "source_page": 2
                 },
                 {
-                    "span": "HUM",
+                    "span": "CRIT_LO",
                     "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "10.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_LONominal = 15.0 ± 0.3",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "20.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "25.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "Activate emergency ventilation; notify safety officer immediately.",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "Unit = %RH.",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "20.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_LONominal = 35.0 ± 1.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "50.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "60.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 8,
+                    "source_page": 2
+                },
+                {
+                    "span": "Activate desiccant system; inspect storage containers for leak.",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 8,
                     "source_page": 2
                 }
@@ -1114,7 +1941,7 @@
                 {
                     "subject": "RULE-8-01",
                     "predicate": "has_unit",
-                    "object": "°C"
+                    "object": "°C."
                 },
                 {
                     "subject": "RULE-8-01",
@@ -1123,8 +1950,8 @@
                 },
                 {
                     "subject": "RULE-8-01",
-                    "predicate": "has_warn_hi",
-                    "object": "20.0"
+                    "predicate": "has_warn_lo",
+                    "object": "10.0"
                 },
                 {
                     "subject": "RULE-8-01",
@@ -1133,43 +1960,18 @@
                 },
                 {
                     "subject": "RULE-8-01",
+                    "predicate": "has_warn_hi",
+                    "object": "20.0"
+                },
+                {
+                    "subject": "RULE-8-01",
                     "predicate": "triggers_action",
                     "object": "Activate emergency ventilation; notify safety officer immediately."
                 },
                 {
-                    "subject": "RULE-8-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "HUM"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "has_unit",
-                    "object": "%RH"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "has_crit_lo",
-                    "object": "15.0"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "has_warn_hi",
-                    "object": "50.0"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "has_crit_hi",
-                    "object": "60.0"
-                },
-                {
-                    "subject": "RULE-8-02",
-                    "predicate": "triggers_action",
-                    "object": "Activate desiccant system; inspect storage containers for leak."
+                    "subject": "CHM01_CHEMICALSTORAGE",
+                    "predicate": "monitors",
+                    "object": "TMP"
                 }
             ]
         },
@@ -1181,18 +1983,163 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
                     "span": "TMP",
+                    "category": "Sensor",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "Unit = °C.",
                     "category": "Parameter",
                     "source_chunk_id": 9,
                     "source_page": 2
                 },
                 {
-                    "span": "HUM",
+                    "span": "CRIT_LO",
                     "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "15.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "18.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "22.0 ± 0.2",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "26.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "30.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "TMP, CRITICAL Response = Inspect and notify maintenance.",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "Unit = %RH.",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "25.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "35.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "50.0 ± 1.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "65.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "75.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "HUM, CRITICAL Response = Suspend experiments; inspect HVAC system",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 9,
                     "source_page": 2
                 }
@@ -1210,23 +2157,8 @@
                 },
                 {
                     "subject": "RULE-9-01",
-                    "predicate": "has_unit",
-                    "object": "°C"
-                },
-                {
-                    "subject": "RULE-9-01",
                     "predicate": "has_crit_lo",
                     "object": "15.0"
-                },
-                {
-                    "subject": "RULE-9-01",
-                    "predicate": "has_warn_lo",
-                    "object": "18.0"
-                },
-                {
-                    "subject": "RULE-9-01",
-                    "predicate": "has_crit_hi",
-                    "object": "30.0"
                 },
                 {
                     "subject": "RULE-9-01",
@@ -1235,13 +2167,43 @@
                 },
                 {
                     "subject": "RULE-9-01",
+                    "predicate": "has_crit_hi",
+                    "object": "30.0"
+                },
+                {
+                    "subject": "RULE-9-01",
                     "predicate": "triggers_action",
                     "object": "Inspect and notify maintenance."
                 },
                 {
-                    "subject": "ST01_RDLAB",
-                    "predicate": "monitors",
-                    "object": "TMP"
+                    "subject": "RULE-9-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule"
+                },
+                {
+                    "subject": "RULE-9-02",
+                    "predicate": "has_sensor_type",
+                    "object": "HUM"
+                },
+                {
+                    "subject": "RULE-9-02",
+                    "predicate": "has_crit_lo",
+                    "object": "25.0"
+                },
+                {
+                    "subject": "RULE-9-02",
+                    "predicate": "has_warn_hi",
+                    "object": "65.0"
+                },
+                {
+                    "subject": "RULE-9-02",
+                    "predicate": "has_crit_hi",
+                    "object": "75.0"
+                },
+                {
+                    "subject": "RULE-9-02",
+                    "predicate": "triggers_action",
+                    "object": "Suspend experiments; inspect HVAC system."
                 }
             ]
         },
@@ -1253,18 +2215,163 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
                     "span": "TMP",
+                    "category": "Sensor",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "Unit = °C.",
                     "category": "Parameter",
                     "source_chunk_id": 10,
                     "source_page": 2
                 },
                 {
-                    "span": "HUM",
+                    "span": "CRIT_LO",
                     "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "14.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "17.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "21.0 ± 0.4",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "26.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "30.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "TMP, CRITICAL Response = Inspect and notify maintenance.",
+                    "category": "AnomalyEvent",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "HUM",
+                    "category": "Sensor",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "Unit = %RH.",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_LO",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "25.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "35.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_LONominal",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "55.0 ± 1.5",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "WARN_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "70.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRIT_HI",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "80.0",
+                    "category": "Parameter",
+                    "source_chunk_id": 10,
+                    "source_page": 2
+                },
+                {
+                    "span": "HUM, CRITICAL Response = Inspect and notify maintenance.",
+                    "category": "AnomalyEvent",
                     "source_chunk_id": 10,
                     "source_page": 2
                 }
@@ -1283,7 +2390,7 @@
                 {
                     "subject": "RULE-10-01",
                     "predicate": "has_unit",
-                    "object": "°C"
+                    "object": "°C."
                 },
                 {
                     "subject": "RULE-10-01",
@@ -1292,8 +2399,8 @@
                 },
                 {
                     "subject": "RULE-10-01",
-                    "predicate": "has_warn_lo",
-                    "object": "21.0"
+                    "predicate": "has_warn_hi",
+                    "object": "26.0"
                 },
                 {
                     "subject": "RULE-10-01",
@@ -1303,7 +2410,7 @@
                 {
                     "subject": "RULE-10-01",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance"
+                    "object": "Inspect and notify maintenance."
                 },
                 {
                     "subject": "CAF01_CAFETERIA",
@@ -1320,12 +2427,43 @@
                 ],
                 "page_numbers": [
                     2
-                ]
+                ],
+                "is_table": true
             },
             "entities": [
                 {
                     "span": "SPIKE",
                     "category": "AnomalyEvent",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
+                    "span": "Definition",
+                    "category": "Parameter",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
+                    "span": "Transient deviation >3 s , <5 minSingle",
+                    "category": "Parameter",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
+                    "span": "Detection Criterion",
+                    "category": "Parameter",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
+                    "span": "reading >CRIT",
+                    "category": "Parameter",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
+                    "span": "Ontology Class",
+                    "category": "Parameter",
                     "source_chunk_id": 11,
                     "source_page": 2
                 },
@@ -1336,8 +2474,32 @@
                     "source_page": 2
                 },
                 {
+                    "span": "Monotonic deviation >15 min",
+                    "category": "Parameter",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
+                    "span": "Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift.",
+                    "category": "Parameter",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
                     "span": "STUCK",
                     "category": "AnomalyEvent",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
+                    "span": "Unchanged >10 consecutive",
+                    "category": "Parameter",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
+                    "span": "readings std(last 10)<0.001×nominal",
+                    "category": "Parameter",
                     "source_chunk_id": 11,
                     "source_page": 2
                 },
@@ -1348,8 +2510,32 @@
                     "source_page": 2
                 },
                 {
+                    "span": "Sustained WARN violation >10 min >WARN for 20+",
+                    "category": "Parameter",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
+                    "span": "readings",
+                    "category": "Parameter",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
                     "span": "CORRELATED",
                     "category": "AnomalyEvent",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
+                    "span": "Causally linked to another station Onset within.",
+                    "category": "Parameter",
+                    "source_chunk_id": 11,
+                    "source_page": 2
+                },
+                {
+                    "span": "90 min of cause",
+                    "category": "Parameter",
                     "source_chunk_id": 11,
                     "source_page": 2
                 }
@@ -1362,13 +2548,38 @@
                 },
                 {
                     "subject": "RULE-11-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "SPIKE"
+                    "predicate": "has_sensor_type",
+                    "object": "TMP"
                 },
                 {
                     "subject": "RULE-11-01",
                     "predicate": "has_condition",
-                    "object": "Transient deviation >3 s , <5 minSingle. reading >CRIT."
+                    "object": "Transient deviation >3 s , <5 minSingle"
+                },
+                {
+                    "subject": "RULE-11-01",
+                    "predicate": "triggers_action",
+                    "object": "Trigger alert for transient spike"
+                },
+                {
+                    "subject": "RULE-11-01",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL"
+                },
+                {
+                    "subject": "SPIKE",
+                    "predicate": "Definition",
+                    "object": "Transient deviation >3 s , <5 minSingle"
+                },
+                {
+                    "subject": "SPIKE",
+                    "predicate": "Detection Criterion",
+                    "object": "reading >CRIT"
+                },
+                {
+                    "subject": "SPIKE",
+                    "predicate": "Ontology Class",
+                    "object": "AnomalyEvent::Spike"
                 },
                 {
                     "subject": "RULE-11-02",
@@ -1377,13 +2588,38 @@
                 },
                 {
                     "subject": "RULE-11-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "DRIFT"
+                    "predicate": "has_sensor_type",
+                    "object": "TMP"
                 },
                 {
                     "subject": "RULE-11-02",
                     "predicate": "has_condition",
-                    "object": "Monotonic deviation >15 min. Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift."
+                    "object": "Monotonic deviation >15 min"
+                },
+                {
+                    "subject": "RULE-11-02",
+                    "predicate": "triggers_action",
+                    "object": "Trigger alert for drift"
+                },
+                {
+                    "subject": "RULE-11-02",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL"
+                },
+                {
+                    "subject": "DRIFT",
+                    "predicate": "Definition",
+                    "object": "Monotonic deviation >15 min"
+                },
+                {
+                    "subject": "DRIFT",
+                    "predicate": "Detection Criterion",
+                    "object": "Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift."
+                },
+                {
+                    "subject": "DRIFT",
+                    "predicate": "Ontology Class",
+                    "object": "Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift."
                 },
                 {
                     "subject": "RULE-11-03",
@@ -1392,13 +2628,38 @@
                 },
                 {
                     "subject": "RULE-11-03",
-                    "predicate": "applies_to_sensor",
-                    "object": "STUCK"
+                    "predicate": "has_sensor_type",
+                    "object": "TMP"
                 },
                 {
                     "subject": "RULE-11-03",
                     "predicate": "has_condition",
-                    "object": "Unchanged >10 consecutive. readings std(last 10)<0.001×nominal."
+                    "object": "Unchanged >10 consecutive readings std(last 10)<0.001×nominal"
+                },
+                {
+                    "subject": "RULE-11-03",
+                    "predicate": "triggers_action",
+                    "object": "Trigger alert for stuck sensor"
+                },
+                {
+                    "subject": "RULE-11-03",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL"
+                },
+                {
+                    "subject": "STUCK",
+                    "predicate": "Definition",
+                    "object": "Unchanged >10 consecutive readings std(last 10)<0.001×nominal"
+                },
+                {
+                    "subject": "STUCK",
+                    "predicate": "Detection Criterion",
+                    "object": "readings std(last 10)<0.001×nominal"
+                },
+                {
+                    "subject": "STUCK",
+                    "predicate": "Ontology Class",
+                    "object": "AnomalyEvent::StuckSensor"
                 },
                 {
                     "subject": "RULE-11-04",
@@ -1407,13 +2668,38 @@
                 },
                 {
                     "subject": "RULE-11-04",
-                    "predicate": "applies_to_sensor",
-                    "object": "OUT_OF_RANGE"
+                    "predicate": "has_sensor_type",
+                    "object": "TMP"
                 },
                 {
                     "subject": "RULE-11-04",
                     "predicate": "has_condition",
-                    "object": "Sustained WARN violation >10 min >WARN for 20+. readings."
+                    "object": "Sustained WARN violation >10 min >WARN for 20+ readings"
+                },
+                {
+                    "subject": "RULE-11-04",
+                    "predicate": "triggers_action",
+                    "object": "Trigger alert for out of range condition"
+                },
+                {
+                    "subject": "RULE-11-04",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL"
+                },
+                {
+                    "subject": "OUT_OF_RANGE",
+                    "predicate": "Definition",
+                    "object": "Sustained WARN violation >10 min >WARN for 20+ readings"
+                },
+                {
+                    "subject": "OUT_OF_RANGE",
+                    "predicate": "Detection Criterion",
+                    "object": "readings"
+                },
+                {
+                    "subject": "OUT_OF_RANGE",
+                    "predicate": "Ontology Class",
+                    "object": "AnomalyEvent::OutOfRange"
                 },
                 {
                     "subject": "RULE-11-05",
@@ -1422,13 +2708,38 @@
                 },
                 {
                     "subject": "RULE-11-05",
-                    "predicate": "applies_to_sensor",
-                    "object": "CORRELATED"
+                    "predicate": "has_sensor_type",
+                    "object": "TMP"
                 },
                 {
                     "subject": "RULE-11-05",
                     "predicate": "has_condition",
-                    "object": "Causally linked to another station Onset within. 90 min of cause."
+                    "object": "Causally linked to another station Onset within 90 min of cause"
+                },
+                {
+                    "subject": "RULE-11-05",
+                    "predicate": "triggers_action",
+                    "object": "Trigger alert for correlated anomaly"
+                },
+                {
+                    "subject": "RULE-11-05",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL"
+                },
+                {
+                    "subject": "CORRELATED",
+                    "predicate": "Definition",
+                    "object": "Causally linked to another station Onset within 90 min of cause"
+                },
+                {
+                    "subject": "CORRELATED",
+                    "predicate": "Detection Criterion",
+                    "object": "90 min of cause"
+                },
+                {
+                    "subject": "CORRELATED",
+                    "predicate": "Ontology Class",
+                    "object": "AnomalyEvent::Correlated"
                 }
             ]
         }
