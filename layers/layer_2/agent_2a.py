@@ -1,36 +1,31 @@
 from langgraph.graph import END, StateGraph
 from .agent_2a_state import Agent2AState
-from .agent_2a_tools import extract_entities_from_chunk, PROMPT_MODE
-
+from .agent_2a_tools import extract_entities_from_chunk
 
 def extraction_node(state: Agent2AState) -> dict:
     """Iterates over text chunks and extracts entities synchronously."""
-    prompt_mode = state.get("prompt_mode") or PROMPT_MODE
-    print(f"\n[Agent 2A] Entity Extraction (mode={prompt_mode}) for: {state['source_file']}")
+    print(f"\n[Agent 2A] Entity Extraction starting for: {state['source_file']}")
 
     chunks = state.get("chunks", [])
     if not chunks:
-        return {"status": "error", "error_message": "No chunks provided."}
+        return {"status": "error", "error_message": "No chunks provided to Agent 2A."}
 
     extracted_data = []
     total_chunks = len(chunks)
 
     for i, chunk in enumerate(chunks):
-        chunk_text = chunk.get("content", "")
+        chunk_text = chunk.get("content") or ""
         metadata   = chunk.get("metadata", {})
-        is_table   = metadata.get("is_table", False)
 
         if not chunk_text.strip():
             continue
 
-        print(f"  -> Chunk {i+1}/{total_chunks} (ID: {chunk['chunk_id']}, table={is_table})...")
-        entities = extract_entities_from_chunk(
-            chunk_text,
-            prompt_mode=prompt_mode,
-            is_table=is_table,
-        )
+        print(f"  -> Processing Chunk {i+1}/{total_chunks} (ID: {chunk['chunk_id']})...")
+        
+        # Execute unified extraction
+        entities = extract_entities_from_chunk(chunk_text)
 
-        # Attach provenance to each entity so downstream agents can trace back
+        # Attach provenance to each entity so Layer 2B (Relation Extractor) can trace back
         pages = metadata.get("page_numbers", [])
         for ent in entities:
             ent["source_chunk_id"] = chunk["chunk_id"]
@@ -51,6 +46,9 @@ def extraction_node(state: Agent2AState) -> dict:
         "status": "complete",
     }
 
+# ---------------------------------------------------------------------------
+# Graph Compilation
+# ---------------------------------------------------------------------------
 
 _workflow = StateGraph(Agent2AState)
 _workflow.add_node("extract", extraction_node)

@@ -12,59 +12,46 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:30.550836+00:00"
             },
             "aligned_relations": [
                 {
-                    "subject": "RULE-0-01",
+                    "subject": "RULE-01",
                     "predicate": "rdf:type",
-                    "object": "ThresholdRule",
+                    "object": "MaintenanceRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-0-01",
+                    "subject": "RULE-01",
                     "predicate": "applies_to_station",
-                    "object": "ST01_PRODUCTION",
+                    "object": "Production Line A",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "unaligned",
-                    "_raw_object": "ST01_PRODUCTION"
+                    "_raw_object": "Production Line A"
                 },
                 {
-                    "subject": "RULE-0-01",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-0-01",
+                    "subject": "RULE-01",
                     "predicate": "has_condition",
-                    "object": "Temperature exceeds 85.0 degrees Celsius",
+                    "object": "VIB DRIFT >0.05 mm/s over 60 min",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-0-01",
+                    "subject": "RULE-01",
                     "predicate": "triggers_action",
-                    "object": "Initiate predictive maintenance for ST01_PRODUCTION",
+                    "object": "Inspect and lubricate bearing",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-0-01",
+                    "subject": "RULE-01",
                     "predicate": "has_severity",
-                    "object": "WARNING",
+                    "object": "HIGH",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
-                },
-                {
-                    "subject": "ST01_PRODUCTION",
-                    "predicate": "monitors",
-                    "object": "S01_PRODUCTION_TEMP",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "S01_PRODUCTION_TEMP"
                 }
             ]
         },
@@ -77,9 +64,48 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:30.550836+00:00"
             },
-            "aligned_relations": []
+            "aligned_relations": [
+                {
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "MaintenanceRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "PROD-LINE-A",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "PROD-LINE-A"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_condition",
+                    "object": "VIB DRIFT >0.05 mm/s over 60 min",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and lubricate bearing",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_severity",
+                    "object": "HIGH",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                }
+            ]
         },
         {
             "chunk_id": 2,
@@ -90,18 +116,20 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:30.550836+00:00"
             },
             "aligned_relations": [
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
                     "predicate": "applies_to_station",
                     "object": "ST04_PACKAGING",
                     "_subject_alignment": "rule_node",
@@ -109,50 +137,57 @@
                     "_raw_object": "ST04_PACKAGING"
                 },
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST04_PACKAGING_VIB",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "VIB"
+                },
+                {
+                    "subject": "MAINT-01",
                     "predicate": "has_sensor_type",
                     "object": "VIB",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
                     "predicate": "has_condition",
-                    "object": "VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH",
+                    "object": "VIB DRIFT >0.05 mm/s over 60 min",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
                     "predicate": "triggers_action",
                     "object": "Inspect and lubricate bearing",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
                     "predicate": "has_severity",
                     "object": "HIGH",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "ST04_PACKAGING",
-                    "predicate": "monitors",
-                    "object": "ST04_PACKAGING_VIB",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "llm_aligned",
-                    "_raw_object": "VIB. MAINT-01"
+                    "subject": "MAINT-01",
+                    "predicate": "has_unit",
+                    "object": "mm/s",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
                     "predicate": "applies_to_station",
                     "object": "ST02_SEALING",
                     "_subject_alignment": "rule_node",
@@ -160,50 +195,50 @@
                     "_raw_object": "ST02_SEALING"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST04_PACKAGING_CUR",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "CUR"
+                },
+                {
+                    "subject": "MAINT-02",
                     "predicate": "has_sensor_type",
                     "object": "CUR",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
                     "predicate": "has_condition",
-                    "object": "CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw",
+                    "object": "CUR DRIFT >1.0 A for 30+ min",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
                     "predicate": "triggers_action",
                     "object": "Inspect sealing jaw",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
                     "predicate": "has_severity",
                     "object": "HIGH",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "ST02_SEALING",
-                    "predicate": "monitors",
-                    "object": "ST02_SEALING_CUR",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "llm_aligned",
-                    "_raw_object": "CUR. MAINT-02"
-                },
-                {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
                     "predicate": "applies_to_station",
                     "object": "ST03_LABELLING",
                     "_subject_alignment": "rule_node",
@@ -211,50 +246,50 @@
                     "_raw_object": "ST03_LABELLING"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST03_LABELLING_TEN",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "TEN"
+                },
+                {
+                    "subject": "MAINT-03",
                     "predicate": "has_sensor_type",
                     "object": "TEN",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
                     "predicate": "has_condition",
-                    "object": "TEN STUCK >10 samples Replace sensor",
+                    "object": "TEN STUCK >10 samples",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
                     "predicate": "triggers_action",
                     "object": "Replace sensor",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
                     "predicate": "has_severity",
                     "object": "MEDIUM",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "ST03_LABELLING",
-                    "predicate": "monitors",
-                    "object": "ST03_LABELLING_TEN",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "llm_aligned",
-                    "_raw_object": "TEN. MAINT-03"
-                },
-                {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
                     "predicate": "applies_to_station",
                     "object": "ST01_FILLING",
                     "_subject_alignment": "rule_node",
@@ -262,50 +297,50 @@
                     "_raw_object": "ST01_FILLING"
                 },
                 {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST01_FILLING_PRS",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "PRS"
+                },
+                {
+                    "subject": "MAINT-04",
                     "predicate": "has_sensor_type",
                     "object": "PRS",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
                     "predicate": "has_condition",
-                    "object": "PRS <3.3 bar for >15 min Inspect filter and pump",
+                    "object": "PRS <3.3 bar for >15 min",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
                     "predicate": "triggers_action",
                     "object": "Inspect filter and pump",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
                     "predicate": "has_severity",
                     "object": "MEDIUM",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "ST01_FILLING",
-                    "predicate": "monitors",
-                    "object": "PRS. MAINT-04",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "PRS. MAINT-04"
-                },
-                {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
                     "predicate": "applies_to_station",
                     "object": "SRV01_SERVERROOM",
                     "_subject_alignment": "rule_node",
@@ -313,50 +348,50 @@
                     "_raw_object": "SRV01_SERVERROOM"
                 },
                 {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST04_PACKAGING_TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "TMP"
+                },
+                {
+                    "subject": "MAINT-05",
                     "predicate": "has_sensor_type",
                     "object": "TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
                     "predicate": "has_condition",
-                    "object": "TMP >25°C for >5 min Activate secondary cooling",
+                    "object": "TMP >25°C for >5 min",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
                     "predicate": "triggers_action",
                     "object": "Activate secondary cooling",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
                     "predicate": "has_severity",
                     "object": "CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "SRV01_SERVERROOM",
-                    "predicate": "monitors",
-                    "object": "TMP. MAINT-05",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "TMP. MAINT-05"
-                },
-                {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
                     "predicate": "applies_to_station",
                     "object": "WRH01_WAREHOUSE",
                     "_subject_alignment": "rule_node",
@@ -364,50 +399,50 @@
                     "_raw_object": "WRH01_WAREHOUSE"
                 },
                 {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST04_PACKAGING_TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "TMP"
+                },
+                {
+                    "subject": "MAINT-06",
                     "predicate": "has_sensor_type",
                     "object": "TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
                     "predicate": "has_condition",
-                    "object": "TMP DRIFT >2°C over 2 h Inspect compressor; notify",
+                    "object": "TMP DRIFT >2°C over 2 h",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
                     "predicate": "triggers_action",
                     "object": "Inspect compressor; notify",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
                     "predicate": "has_severity",
                     "object": "QC CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "WRH01_WAREHOUSE",
-                    "predicate": "monitors",
-                    "object": "TMP. MAINT-06",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "TMP. MAINT-06"
-                },
-                {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
                     "predicate": "applies_to_station",
                     "object": "CHM01_CHEMICALSTORAGE",
                     "_subject_alignment": "rule_node",
@@ -415,50 +450,50 @@
                     "_raw_object": "CHM01_CHEMICALSTORAGE"
                 },
                 {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST04_PACKAGING_TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "TMP"
+                },
+                {
+                    "subject": "MAINT-07",
                     "predicate": "has_sensor_type",
                     "object": "TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
                     "predicate": "has_condition",
-                    "object": "TMP >20°C for >10 min Emergency ventilation; notify",
+                    "object": "TMP >20°C for >10 min",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
                     "predicate": "triggers_action",
                     "object": "Emergency ventilation; notify",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
                     "predicate": "has_severity",
                     "object": "safety officer CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "CHM01_CHEMICALSTORAGE",
-                    "predicate": "monitors",
-                    "object": "TMP. MAINT-07",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "TMP. MAINT-07"
-                },
-                {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
                     "predicate": "applies_to_station",
                     "object": "RND01_RDLAB",
                     "_subject_alignment": "rule_node",
@@ -466,40 +501,40 @@
                     "_raw_object": "RND01_RDLAB"
                 },
                 {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
+                    "predicate": "applies_to_sensor",
+                    "object": "SRV01_SERVERROOM_HUM",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "HUM"
+                },
+                {
+                    "subject": "MAINT-08",
                     "predicate": "has_sensor_type",
                     "object": "HUM",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
                     "predicate": "has_condition",
-                    "object": "HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH",
+                    "object": "HUM DRIFT >10%RH over 60 min",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
                     "predicate": "triggers_action",
                     "object": "Activate dehumidifier; check HVAC drain",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
                     "predicate": "has_severity",
                     "object": "HIGH",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RND01_RDLAB",
-                    "predicate": "monitors",
-                    "object": "HUM. MAINT-08",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "HUM. MAINT-08"
                 }
             ]
         },
@@ -512,45 +547,26 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:30.550836+00:00"
             },
             "aligned_relations": [
                 {
-                    "subject": "RULE-3-01",
-                    "predicate": "rdf:type",
-                    "object": "OperationalRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-3-01",
-                    "predicate": "applies_to_station",
-                    "object": "ST02_SEALING",
-                    "_subject_alignment": "rule_node",
+                    "subject": "ST02_SEALING",
+                    "predicate": "monitors",
+                    "object": "ST02_SEALING_CUR",
+                    "_subject_alignment": "fuzzy",
                     "_object_alignment": "fuzzy",
                     "_raw_object": "ST02_SEALING-CUR"
                 },
                 {
-                    "subject": "RULE-3-01",
-                    "predicate": "triggers_action",
-                    "object": "1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee.",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-3-01",
-                    "predicate": "has_severity",
-                    "object": "WARNING",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
                     "subject": "ST02_SEALING",
-                    "predicate": "monitors",
-                    "object": "ST04_PACKAGING_SPD",
+                    "predicate": "feeds_into",
+                    "object": "ST04_PACKAGING",
                     "_subject_alignment": "fuzzy",
                     "_object_alignment": "fuzzy",
-                    "_raw_object": "fi ST04_PACKAGING-SPDfl"
+                    "_raw_object": "ST04_PACKAGING-SPDfl"
                 }
             ]
         }

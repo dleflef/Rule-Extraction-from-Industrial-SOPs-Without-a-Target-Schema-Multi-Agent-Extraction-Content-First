@@ -12,9 +12,55 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
-            "aligned_relations": []
+            "aligned_relations": [
+                {
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_zone",
+                    "object": "Chemical Storage",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "Chemical Lab A"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_condition",
+                    "object": "Occupancy WARNING above 4 persons; CRITICAL at max 5",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Alert safety officer; enforce evacuation if CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_severity",
+                    "object": "WARNING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "persons",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                }
+            ]
         },
         {
             "chunk_id": 1,
@@ -25,56 +71,218 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "aligned_relations": [
                 {
-                    "subject": "RULE-1-01",
+                    "subject": "operator",
                     "predicate": "authorized_for",
-                    "object": "operator",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "operator"
+                    "object": "Production Area",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "Prod. Area"
                 },
                 {
-                    "subject": "RULE-1-02",
+                    "subject": "operator",
                     "predicate": "authorized_for",
-                    "object": "technician",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "technician"
+                    "object": "General Warehouse",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "Gen. Warehouse"
                 },
                 {
-                    "subject": "RULE-1-03",
+                    "subject": "operator",
                     "predicate": "authorized_for",
-                    "object": "supervisor",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "supervisor"
+                    "object": "Main Entrance",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Main Entrance"
                 },
                 {
-                    "subject": "RULE-1-04",
+                    "subject": "operator",
                     "predicate": "authorized_for",
-                    "object": "manager",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "manager"
+                    "object": "Cafeteria",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Cafeteria"
                 },
                 {
-                    "subject": "RULE-1-05",
+                    "subject": "technician",
                     "predicate": "authorized_for",
-                    "object": "security",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "security"
+                    "object": "Production Area",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "Prod. Area"
                 },
                 {
-                    "subject": "RULE-1-06",
+                    "subject": "technician",
                     "predicate": "authorized_for",
-                    "object": "visitor",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "visitor"
+                    "object": "Server Room",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Server Room"
+                },
+                {
+                    "subject": "technician",
+                    "predicate": "authorized_for",
+                    "object": "General Warehouse",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "Gen. Warehouse"
+                },
+                {
+                    "subject": "technician",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Main Entrance"
+                },
+                {
+                    "subject": "technician",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Cafeteria"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
+                    "object": "Production Area",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "Prod. Area"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
+                    "object": "Server Room",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Server Room"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
+                    "object": "General Warehouse",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "Gen. Warehouse"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Main Entrance"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Cafeteria"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
+                    "object": "Production Area",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "Prod. Area"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
+                    "object": "Server Room",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Server Room"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
+                    "object": "General Warehouse",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "Gen. Warehouse"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Main Entrance"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Cafeteria"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "Production Area",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "Prod. Area"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "Server Room",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Server Room"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "General Warehouse",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "Gen. Warehouse"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Main Entrance"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Cafeteria"
+                },
+                {
+                    "subject": "visitor",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Main Entrance"
+                },
+                {
+                    "subject": "visitor",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria",
+                    "_subject_alignment": "exact",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Cafeteria"
                 }
             ]
         },
@@ -87,269 +295,11 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
-            "aligned_relations": [
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "applies_to_zone",
-                    "object": "Production Area",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "Production Area"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "has_crit_hi",
-                    "object": "12",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "has_warn_hi",
-                    "object": "10",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "Production Area",
-                    "predicate": "monitors",
-                    "object": "None",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "None"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "applies_to_zone",
-                    "object": "Server Room",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "Server Room"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "has_crit_hi",
-                    "object": "2",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "has_warn_hi",
-                    "object": "None",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "SRV01_SERVERROOM",
-                    "predicate": "monitors",
-                    "object": "None",
-                    "_subject_alignment": "llm_aligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "None"
-                },
-                {
-                    "subject": "RULE-2-03",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-03",
-                    "predicate": "applies_to_zone",
-                    "object": "General Warehouse",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "General Warehouse"
-                },
-                {
-                    "subject": "RULE-2-03",
-                    "predicate": "has_crit_hi",
-                    "object": "4",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-03",
-                    "predicate": "has_warn_hi",
-                    "object": "3",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "WRH01_WAREHOUSE",
-                    "predicate": "monitors",
-                    "object": "None",
-                    "_subject_alignment": "llm_aligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "None"
-                },
-                {
-                    "subject": "RULE-2-04",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-04",
-                    "predicate": "applies_to_zone",
-                    "object": "Main Entrance",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "Main Entrance"
-                },
-                {
-                    "subject": "RULE-2-04",
-                    "predicate": "has_crit_hi",
-                    "object": "8",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-04",
-                    "predicate": "has_warn_hi",
-                    "object": "None",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "Main Entrance",
-                    "predicate": "monitors",
-                    "object": "None",
-                    "_subject_alignment": "unaligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "None"
-                },
-                {
-                    "subject": "RULE-2-05",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-05",
-                    "predicate": "applies_to_zone",
-                    "object": "Chemical Storage",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "Chemical Storage"
-                },
-                {
-                    "subject": "RULE-2-05",
-                    "predicate": "has_crit_hi",
-                    "object": "4",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-05",
-                    "predicate": "has_warn_hi",
-                    "object": "None",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "CHM01_CHEMICALSTORAGE",
-                    "predicate": "monitors",
-                    "object": "None",
-                    "_subject_alignment": "llm_aligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "None"
-                },
-                {
-                    "subject": "RULE-2-06",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-06",
-                    "predicate": "applies_to_zone",
-                    "object": "R&D Lab",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "R&D Lab"
-                },
-                {
-                    "subject": "RULE-2-06",
-                    "predicate": "has_crit_hi",
-                    "object": "6",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-06",
-                    "predicate": "has_warn_hi",
-                    "object": "5",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RND01_RDLAB",
-                    "predicate": "monitors",
-                    "object": "None",
-                    "_subject_alignment": "llm_aligned",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "None"
-                },
-                {
-                    "subject": "RULE-2-07",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-07",
-                    "predicate": "applies_to_zone",
-                    "object": "Cafeteria",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "Cafeteria"
-                },
-                {
-                    "subject": "RULE-2-07",
-                    "predicate": "has_crit_hi",
-                    "object": "None",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-2-07",
-                    "predicate": "has_warn_hi",
-                    "object": "None",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "CAF01_CAFETERIA",
-                    "predicate": "monitors",
-                    "object": "None",
-                    "_subject_alignment": "fuzzy",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "None"
-                }
-            ]
+            "aligned_relations": []
         },
         {
             "chunk_id": 3,
@@ -360,146 +310,148 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "aligned_relations": [
                 {
-                    "subject": "RULE-3-01",
-                    "predicate": "has_severity",
-                    "object": "WARNING",
+                    "subject": "RULE-01",
+                    "predicate": "has_condition",
+                    "object": "operator, Max Ack -WARNING (min) = 15.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-01",
-                    "predicate": "has_crit_hi",
-                    "object": "15",
+                    "subject": "RULE-02",
+                    "predicate": "has_condition",
+                    "object": "operator, Max Ack -CRITICAL (min) = 3.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-02",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL",
+                    "subject": "RULE-03",
+                    "predicate": "has_condition",
+                    "object": "technician, Max Ack -WARNING (min) = 10.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-02",
-                    "predicate": "has_crit_hi",
-                    "object": "3",
+                    "subject": "RULE-04",
+                    "predicate": "has_condition",
+                    "object": "technician, Max Ack -CRITICAL (min) = 2.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-03",
-                    "predicate": "has_severity",
-                    "object": "WARNING",
+                    "subject": "RULE-05",
+                    "predicate": "has_condition",
+                    "object": "supervisor, Max Ack -WARNING (min) = 5.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-03",
-                    "predicate": "has_crit_hi",
-                    "object": "10",
+                    "subject": "RULE-06",
+                    "predicate": "has_condition",
+                    "object": "supervisor, Max Ack -CRITICAL (min) = 1.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-04",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL",
+                    "subject": "RULE-07",
+                    "predicate": "has_condition",
+                    "object": "manager, Max Ack -WARNING (min) = 15.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-04",
-                    "predicate": "has_crit_hi",
-                    "object": "2",
+                    "subject": "RULE-08",
+                    "predicate": "has_condition",
+                    "object": "manager, Max Ack -CRITICAL (min) = 5.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-05",
-                    "predicate": "has_severity",
-                    "object": "WARNING",
+                    "subject": "RULE-09",
+                    "predicate": "has_condition",
+                    "object": "security, Max Ack -WARNING (min) = 20.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-05",
-                    "predicate": "has_crit_hi",
-                    "object": "5",
+                    "subject": "RULE-10",
+                    "predicate": "has_condition",
+                    "object": "security, Max Ack -CRITICAL (min) = 5.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-06",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL",
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-06",
-                    "predicate": "has_crit_hi",
-                    "object": "1",
+                    "subject": "RULE-02",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-07",
-                    "predicate": "has_severity",
-                    "object": "WARNING",
+                    "subject": "RULE-03",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-07",
-                    "predicate": "has_crit_hi",
-                    "object": "15",
+                    "subject": "RULE-04",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-08",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL",
+                    "subject": "RULE-05",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-08",
-                    "predicate": "has_crit_hi",
-                    "object": "5",
+                    "subject": "RULE-06",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-09",
-                    "predicate": "has_severity",
-                    "object": "WARNING",
+                    "subject": "RULE-07",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-09",
-                    "predicate": "has_crit_hi",
-                    "object": "20",
+                    "subject": "RULE-08",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-10",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL",
+                    "subject": "RULE-09",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-3-10",
-                    "predicate": "has_crit_hi",
-                    "object": "5",
+                    "subject": "RULE-10",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -514,7 +466,9 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "aligned_relations": [
                 {
@@ -527,15 +481,15 @@
                 {
                     "subject": "RULE-ACCESS-01",
                     "predicate": "applies_to_zone",
-                    "object": "zone",
+                    "object": "unauthorised role",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "unaligned",
-                    "_raw_object": "zone"
+                    "_raw_object": "unauthorised role"
                 },
                 {
                     "subject": "RULE-ACCESS-01",
-                    "predicate": "triggers_action",
-                    "object": "OccupancyEvent::UnauthorisedAccess with person_id, zone, and timestamp",
+                    "predicate": "has_condition",
+                    "object": "Any entry by an unauthorised role MUST be logged as OccupancyEvent::UnauthorisedAccess with person_id, zone, and timestamp.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -550,7 +504,9 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "aligned_relations": [
                 {
@@ -562,16 +518,22 @@
                 },
                 {
                     "subject": "RULE-ACCESS-02",
-                    "predicate": "applies_to_zone",
-                    "object": "Security personnel",
+                    "predicate": "has_condition",
+                    "object": "Security personnel MUST be notified within 2 minutes of detection",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "Security personnel"
+                    "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-ACCESS-02",
                     "predicate": "triggers_action",
-                    "object": "Security personnel MUST be notified within 2 minutes of detection.",
+                    "object": "Notify security personnel",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ACCESS-02",
+                    "predicate": "has_unit",
+                    "object": "min",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -586,7 +548,9 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "aligned_relations": [
                 {
@@ -597,32 +561,24 @@
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-ACCESS-04",
-                    "predicate": "rdf:type",
-                    "object": "AccessRule",
+                    "subject": "RULE-ACCESS-03",
+                    "predicate": "applies_to_zone",
+                    "object": "Chemical Storage",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "Chemical Storage"
+                },
+                {
+                    "subject": "RULE-ACCESS-03",
+                    "predicate": "has_condition",
+                    "object": "UNAUTHORIZED_ACCESS",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "CHM01_CHEMICALSTORAGE",
-                    "predicate": "monitors",
-                    "object": "ST01_FILLING_TMP",
-                    "_subject_alignment": "llm_aligned",
-                    "_object_alignment": "exact",
-                    "_raw_object": "ST01_FILLING_TMP"
-                },
-                {
-                    "subject": "RULE-ACCESS-04",
-                    "predicate": "applies_to_station",
-                    "object": "CHM01_CHEMICALSTORAGE",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "llm_aligned",
-                    "_raw_object": "Chemical Storage"
-                },
-                {
-                    "subject": "RULE-ACCESS-04",
+                    "subject": "RULE-ACCESS-03",
                     "predicate": "triggers_action",
-                    "object": "immediate escalation to the Safety Officer regardless of role",
+                    "object": "Immediate escalation to the Safety Officer",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }

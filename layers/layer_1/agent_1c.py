@@ -24,7 +24,7 @@ from .agent_1c_tools import extract_log_sample, standardize_logs_with_regex
 # ─────────────────────────────────────────────────────────────────────────────
 
 _llm = ChatOpenAI(
-    model="qwen2.5-coder-7b-instruct",
+    model="Qwen2.5-7B-Instruct-GGUF",
     temperature=0.0,
     api_key="lm-studio-local",
     base_url="http://127.0.0.1:1234/v1",

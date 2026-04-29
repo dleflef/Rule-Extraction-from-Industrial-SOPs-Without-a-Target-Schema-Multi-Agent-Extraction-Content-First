@@ -1,8 +1,8 @@
 {
     "source_file": "SOP_004_PersonnelZoneAccess.pdf",
-    "model_used": "qwen2.5-coder-7b-instruct",
+    "model_used": "qwen2.5-7b-instruct",
     "temperature": 0.0,
-    "prompt_mode": "graph_informed",
+    "prompt_strategy": "Unified Ontology Relation Extraction",
     "strategy": "Rule Reification — (subject, predicate, object) triples",
     "results": [
         {
@@ -14,41 +14,52 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "entities": [
                 {
-                    "span": "Personnel Zone Access and Alarm Response Procedures",
-                    "category": "Zone",
-                    "source_chunk_id": 0,
-                    "source_page": 1
-                },
-                {
-                    "span": "SOP-004",
-                    "category": "Component",
-                    "source_chunk_id": 0,
-                    "source_page": 1
-                },
-                {
-                    "span": "Rev: 1.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 0,
-                    "source_page": 1
-                },
-                {
-                    "span": "Date: 2025-12-01",
-                    "category": "Parameter",
-                    "source_chunk_id": 0,
-                    "source_page": 1
-                },
-                {
-                    "span": "Author: Ing. F. Ferrari - Safety & Compliance",
+                    "span": "Ing. F. Ferrari - Safety & Compliance",
                     "category": "Role",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 0,
                     "source_page": 1
                 }
             ],
-            "relations": []
+            "relations": [
+                {
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_zone",
+                    "object": "Chemical Lab A"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_condition",
+                    "object": "Occupancy WARNING above 4 persons; CRITICAL at max 5"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Alert safety officer; enforce evacuation if CRITICAL"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_severity",
+                    "object": "WARNING"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "persons"
+                }
+            ]
         },
         {
             "chunk_id": 1,
@@ -59,118 +70,246 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "entities": [
                 {
                     "span": "operator",
                     "category": "Role",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "Prod. Area",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "Server Room",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "Gen. Warehouse",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "Main Entrance",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "Chem. Storage",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "R&D Lab",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "Cafeteria",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "technician",
                     "category": "Role",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "supervisor",
                     "category": "Role",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "manager",
                     "category": "Role",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "security",
                     "category": "Role",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "visitor",
                     "category": "Role",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-1-01",
+                    "subject": "operator",
                     "predicate": "authorized_for",
-                    "object": "operator"
+                    "object": "Prod. Area"
                 },
                 {
-                    "subject": "RULE-1-02",
+                    "subject": "operator",
                     "predicate": "authorized_for",
-                    "object": "technician"
+                    "object": "Gen. Warehouse"
                 },
                 {
-                    "subject": "RULE-1-03",
+                    "subject": "operator",
                     "predicate": "authorized_for",
-                    "object": "supervisor"
+                    "object": "Main Entrance"
                 },
                 {
-                    "subject": "RULE-1-04",
+                    "subject": "operator",
                     "predicate": "authorized_for",
-                    "object": "manager"
+                    "object": "Cafeteria"
                 },
                 {
-                    "subject": "RULE-1-05",
+                    "subject": "technician",
                     "predicate": "authorized_for",
-                    "object": "security"
+                    "object": "Prod. Area"
                 },
                 {
-                    "subject": "RULE-1-06",
+                    "subject": "technician",
                     "predicate": "authorized_for",
-                    "object": "visitor"
+                    "object": "Server Room"
+                },
+                {
+                    "subject": "technician",
+                    "predicate": "authorized_for",
+                    "object": "Gen. Warehouse"
+                },
+                {
+                    "subject": "technician",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance"
+                },
+                {
+                    "subject": "technician",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
+                    "object": "Prod. Area"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
+                    "object": "Server Room"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
+                    "object": "Gen. Warehouse"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
+                    "object": "Prod. Area"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
+                    "object": "Server Room"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
+                    "object": "Gen. Warehouse"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "Prod. Area"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "Server Room"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "Gen. Warehouse"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria"
+                },
+                {
+                    "subject": "visitor",
+                    "predicate": "authorized_for",
+                    "object": "Main Entrance"
+                },
+                {
+                    "subject": "visitor",
+                    "predicate": "authorized_for",
+                    "object": "Cafeteria"
                 }
             ]
         },
@@ -183,229 +322,133 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "entities": [
                 {
                     "span": "Production Area",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "Server Room",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "General Warehouse",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "Main Entrance",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "Chemical Storage",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "R&D Lab",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "Cafeteria",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARNING above 10",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 10,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL above 12",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 12,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL above 2",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 2,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARNING above 3",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 3,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "Monitoring only",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL above 4",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 4,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "hazmat training required -see RULE-CHM01-03",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "WARNING above 5",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 5,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 }
             ],
-            "relations": [
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "applies_to_zone",
-                    "object": "Production Area"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "has_crit_hi",
-                    "object": "12"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "has_warn_hi",
-                    "object": "10"
-                },
-                {
-                    "subject": "Production Area",
-                    "predicate": "monitors",
-                    "object": "None"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "applies_to_zone",
-                    "object": "Server Room"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "has_crit_hi",
-                    "object": "2"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "has_warn_hi",
-                    "object": "None"
-                },
-                {
-                    "subject": "Server Room",
-                    "predicate": "monitors",
-                    "object": "None"
-                },
-                {
-                    "subject": "RULE-2-03",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-2-03",
-                    "predicate": "applies_to_zone",
-                    "object": "General Warehouse"
-                },
-                {
-                    "subject": "RULE-2-03",
-                    "predicate": "has_crit_hi",
-                    "object": "4"
-                },
-                {
-                    "subject": "RULE-2-03",
-                    "predicate": "has_warn_hi",
-                    "object": "3"
-                },
-                {
-                    "subject": "General Warehouse",
-                    "predicate": "monitors",
-                    "object": "None"
-                },
-                {
-                    "subject": "RULE-2-04",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-2-04",
-                    "predicate": "applies_to_zone",
-                    "object": "Main Entrance"
-                },
-                {
-                    "subject": "RULE-2-04",
-                    "predicate": "has_crit_hi",
-                    "object": "8"
-                },
-                {
-                    "subject": "RULE-2-04",
-                    "predicate": "has_warn_hi",
-                    "object": "None"
-                },
-                {
-                    "subject": "Main Entrance",
-                    "predicate": "monitors",
-                    "object": "None"
-                },
-                {
-                    "subject": "RULE-2-05",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-2-05",
-                    "predicate": "applies_to_zone",
-                    "object": "Chemical Storage"
-                },
-                {
-                    "subject": "RULE-2-05",
-                    "predicate": "has_crit_hi",
-                    "object": "4"
-                },
-                {
-                    "subject": "RULE-2-05",
-                    "predicate": "has_warn_hi",
-                    "object": "None"
-                },
-                {
-                    "subject": "Chemical Storage",
-                    "predicate": "monitors",
-                    "object": "None"
-                },
-                {
-                    "subject": "RULE-2-06",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-2-06",
-                    "predicate": "applies_to_zone",
-                    "object": "R&D Lab"
-                },
-                {
-                    "subject": "RULE-2-06",
-                    "predicate": "has_crit_hi",
-                    "object": "6"
-                },
-                {
-                    "subject": "RULE-2-06",
-                    "predicate": "has_warn_hi",
-                    "object": "5"
-                },
-                {
-                    "subject": "R&D Lab",
-                    "predicate": "monitors",
-                    "object": "None"
-                },
-                {
-                    "subject": "RULE-2-07",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-2-07",
-                    "predicate": "applies_to_zone",
-                    "object": "Cafeteria"
-                },
-                {
-                    "subject": "RULE-2-07",
-                    "predicate": "has_crit_hi",
-                    "object": "None"
-                },
-                {
-                    "subject": "RULE-2-07",
-                    "predicate": "has_warn_hi",
-                    "object": "None"
-                },
-                {
-                    "subject": "Cafeteria",
-                    "predicate": "monitors",
-                    "object": "None"
-                }
-            ]
+            "relations": []
         },
         {
             "chunk_id": 3,
@@ -416,182 +459,152 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "entities": [
                 {
                     "span": "operator",
                     "category": "Role",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "Max Ack -WARNING (min)",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "3",
-                    "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "technician",
                     "category": "Role",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "Max Ack -CRITICAL (min)",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "2",
-                    "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "supervisor",
                     "category": "Role",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "5",
-                    "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "manager",
                     "category": "Role",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "15",
-                    "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "security",
                     "category": "Role",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "20",
-                    "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-3-01",
-                    "predicate": "has_severity",
-                    "object": "WARNING"
+                    "subject": "RULE-01",
+                    "predicate": "has_condition",
+                    "object": "operator, Max Ack -WARNING (min) = 15."
                 },
                 {
-                    "subject": "RULE-3-01",
-                    "predicate": "has_crit_hi",
-                    "object": "15"
+                    "subject": "RULE-02",
+                    "predicate": "has_condition",
+                    "object": "operator, Max Ack -CRITICAL (min) = 3."
                 },
                 {
-                    "subject": "RULE-3-02",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL"
+                    "subject": "RULE-03",
+                    "predicate": "has_condition",
+                    "object": "technician, Max Ack -WARNING (min) = 10."
                 },
                 {
-                    "subject": "RULE-3-02",
-                    "predicate": "has_crit_hi",
-                    "object": "3"
+                    "subject": "RULE-04",
+                    "predicate": "has_condition",
+                    "object": "technician, Max Ack -CRITICAL (min) = 2."
                 },
                 {
-                    "subject": "RULE-3-03",
-                    "predicate": "has_severity",
-                    "object": "WARNING"
+                    "subject": "RULE-05",
+                    "predicate": "has_condition",
+                    "object": "supervisor, Max Ack -WARNING (min) = 5."
                 },
                 {
-                    "subject": "RULE-3-03",
-                    "predicate": "has_crit_hi",
-                    "object": "10"
+                    "subject": "RULE-06",
+                    "predicate": "has_condition",
+                    "object": "supervisor, Max Ack -CRITICAL (min) = 1."
                 },
                 {
-                    "subject": "RULE-3-04",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL"
+                    "subject": "RULE-07",
+                    "predicate": "has_condition",
+                    "object": "manager, Max Ack -WARNING (min) = 15."
                 },
                 {
-                    "subject": "RULE-3-04",
-                    "predicate": "has_crit_hi",
-                    "object": "2"
+                    "subject": "RULE-08",
+                    "predicate": "has_condition",
+                    "object": "manager, Max Ack -CRITICAL (min) = 5."
                 },
                 {
-                    "subject": "RULE-3-05",
-                    "predicate": "has_severity",
-                    "object": "WARNING"
+                    "subject": "RULE-09",
+                    "predicate": "has_condition",
+                    "object": "security, Max Ack -WARNING (min) = 20."
                 },
                 {
-                    "subject": "RULE-3-05",
-                    "predicate": "has_crit_hi",
-                    "object": "5"
+                    "subject": "RULE-10",
+                    "predicate": "has_condition",
+                    "object": "security, Max Ack -CRITICAL (min) = 5."
                 },
                 {
-                    "subject": "RULE-3-06",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL"
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-3-06",
-                    "predicate": "has_crit_hi",
-                    "object": "1"
+                    "subject": "RULE-02",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-3-07",
-                    "predicate": "has_severity",
-                    "object": "WARNING"
+                    "subject": "RULE-03",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-3-07",
-                    "predicate": "has_crit_hi",
-                    "object": "15"
+                    "subject": "RULE-04",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-3-08",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL"
+                    "subject": "RULE-05",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-3-08",
-                    "predicate": "has_crit_hi",
-                    "object": "5"
+                    "subject": "RULE-06",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-3-09",
-                    "predicate": "has_severity",
-                    "object": "WARNING"
+                    "subject": "RULE-07",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-3-09",
-                    "predicate": "has_crit_hi",
-                    "object": "20"
+                    "subject": "RULE-08",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-3-10",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL"
+                    "subject": "RULE-09",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-3-10",
-                    "predicate": "has_crit_hi",
-                    "object": "5"
+                    "subject": "RULE-10",
+                    "predicate": "rdf:type",
+                    "object": "AccessRule"
                 }
             ]
         },
@@ -604,18 +617,16 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "entities": [
                 {
-                    "span": "Unauthorised Access Rules",
-                    "category": "Zone",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "OccupancyEvent::UnauthorisedAccess",
-                    "category": "AnomalyEvent",
+                    "span": "unauthorised role",
+                    "category": "Role",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 }
@@ -629,12 +640,12 @@
                 {
                     "subject": "RULE-ACCESS-01",
                     "predicate": "applies_to_zone",
-                    "object": "zone"
+                    "object": "unauthorised role"
                 },
                 {
                     "subject": "RULE-ACCESS-01",
-                    "predicate": "triggers_action",
-                    "object": "OccupancyEvent::UnauthorisedAccess with person_id, zone, and timestamp"
+                    "predicate": "has_condition",
+                    "object": "Any entry by an unauthorised role MUST be logged as OccupancyEvent::UnauthorisedAccess with person_id, zone, and timestamp."
                 }
             ]
         },
@@ -647,12 +658,16 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "entities": [
                 {
                     "span": "Security personnel",
                     "category": "Role",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 }
@@ -665,13 +680,18 @@
                 },
                 {
                     "subject": "RULE-ACCESS-02",
-                    "predicate": "applies_to_zone",
-                    "object": "Security personnel"
+                    "predicate": "has_condition",
+                    "object": "Security personnel MUST be notified within 2 minutes of detection"
                 },
                 {
                     "subject": "RULE-ACCESS-02",
                     "predicate": "triggers_action",
-                    "object": "Security personnel MUST be notified within 2 minutes of detection."
+                    "object": "Notify security personnel"
+                },
+                {
+                    "subject": "RULE-ACCESS-02",
+                    "predicate": "has_unit",
+                    "object": "min"
                 }
             ]
         },
@@ -684,18 +704,16 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "entities": [
                 {
-                    "span": "Chemical Storage",
-                    "category": "Zone",
-                    "source_chunk_id": 6,
-                    "source_page": 2
-                },
-                {
-                    "span": "Safety Officer",
-                    "category": "Role",
+                    "span": "UNAUTHORIZED_ACCESS",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 6,
                     "source_page": 2
                 }
@@ -707,24 +725,19 @@
                     "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-ACCESS-04",
-                    "predicate": "rdf:type",
-                    "object": "AccessRule"
-                },
-                {
-                    "subject": "Chemical Storage",
-                    "predicate": "monitors",
-                    "object": "ST01_FILLING_TMP"
-                },
-                {
-                    "subject": "RULE-ACCESS-04",
-                    "predicate": "applies_to_station",
+                    "subject": "RULE-ACCESS-03",
+                    "predicate": "applies_to_zone",
                     "object": "Chemical Storage"
                 },
                 {
-                    "subject": "RULE-ACCESS-04",
+                    "subject": "RULE-ACCESS-03",
+                    "predicate": "has_condition",
+                    "object": "UNAUTHORIZED_ACCESS"
+                },
+                {
+                    "subject": "RULE-ACCESS-03",
                     "predicate": "triggers_action",
-                    "object": "immediate escalation to the Safety Officer regardless of role"
+                    "object": "Immediate escalation to the Safety Officer"
                 }
             ]
         }

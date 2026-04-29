@@ -1,8 +1,7 @@
 {
     "source_file": "SOP_001_OperatingProcedures.pdf",
-    "model_used": "qwen2.5-coder-7b-instruct",
+    "model_used": "qwen2.5-7b-instruct",
     "temperature": 0.0,
-    "prompt_mode": "graph_informed",
     "results": [
         {
             "chunk_id": 0,
@@ -13,10 +12,21 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: Standard Operating Procedures - Production Line A]\nDocument: SOP-001 | Rev: 2.3 | Date: 2025-11-15 | Author:",
-            "entities": []
+            "entities": [
+                {
+                    "span": "Production Line A",
+                    "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 0,
+                    "source_page": 1
+                }
+            ]
         },
         {
             "chunk_id": 1,
@@ -27,19 +37,17 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: Standard Operating Procedures - Production Line A]\nIng. M. Bianchi - Process Engineering",
             "entities": [
                 {
-                    "span": "Ing. M. Bianchi",
+                    "span": "Ing. M. Bianchi - Process Engineering",
                     "category": "Role",
-                    "source_chunk_id": 1,
-                    "source_page": 1
-                },
-                {
-                    "span": "Process Engineering",
-                    "category": "Role",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 }
@@ -54,31 +62,41 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 1. Station Dependencies]\nST01_FILLING fi ST02_SEALING fi ST03_LABELLING fi ST04_PACKAGING. A fault at any station propagates downstream unless the line is halted.",
             "entities": [
                 {
                     "span": "ST01_FILLING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "ST02_SEALING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "ST03_LABELLING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "ST04_PACKAGING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 }
@@ -93,133 +111,225 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 1. Station Dependencies]\nST01_FILLING, Zone = Production Area. ST01_FILLING, Depends On = -. ST01_FILLING, Downstream Effect = Feeds ST02_SEALING. ST02_SEALING, Zone = Production Area. ST02_SEALING, Depends On = ST01. ST02_SEALING, Downstream Effect = Feeds ST03; thermal fault fi ST04 speed reduction. ST03_LABELLING, Zone = Production Area. ST03_LABELLING, Depends On = ST02. ST03_LABELLING, Downstream Effect = Feeds ST04_PACKAGING. ST04_PACKAGING, Zone = Production Area. ST04_PACKAGING, Depends On = ST03. ST04_PACKAGING, Downstream Effect = Final output. SRV01_SERVERROOM, Zone = Server Room. SRV01_SERVERROOM, Depends On = HVAC. SRV01_SERVERROOM, Downstream Effect = SCADA control; failure fi line halt. WRH01_WAREHOUSE, Zone = General Warehouse. WRH01_WAREHOUSE, Depends On = COMPRESSOR. WRH01_WAREHOUSE, Downstream Effect = Cold storage -product quality. CHM01_CHEMICALSTORAGE Chemical, Zone = Storage. CHM01_CHEMICALSTORAGE Chemical, Depends On = HVAC. CHM01_CHEMICALSTORAGE Chemical, Downstream Effect = Hazardous materials -safety critical. RND01_RDLAB, Zone = R&D Lab. RND01_RDLAB, Depends On = HVAC. RND01_RDLAB, Downstream Effect = Precision experiments -climate sensitive. CAF01_CAFETERIA, Zone = Cafeteria. CAF01_CAFETERIA, Depends On = HVAC. CAF01_CAFETERIA, Downstream Effect = Occupant comfort -food safety",
             "entities": [
                 {
                     "span": "ST01_FILLING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "Production Area",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "ST02_SEALING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Production Area",
+                    "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "ST03_LABELLING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Production Area",
+                    "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "ST04_PACKAGING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Production Area",
+                    "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "SRV01_SERVERROOM",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "Server Room",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "HVAC",
+                    "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "SCADA control; failure fi line halt",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "WRH01_WAREHOUSE",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "General Warehouse",
                     "category": "Zone",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "CHM01_CHEMICALSTORAGE",
-                    "category": "Component",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "Storage",
-                    "category": "Zone",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "RND01_RDLAB",
-                    "category": "Component",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "R&D Lab",
-                    "category": "Zone",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "CAF01_CAFETERIA",
-                    "category": "Component",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "Cafeteria",
-                    "category": "Zone",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "HVAC",
-                    "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "COMPRESSOR",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "Cold storage -product quality",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "CHM01_CHEMICALSTORAGE Chemical",
+                    "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Storage",
+                    "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "Hazardous materials -safety critical",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "RND01_RDLAB",
+                    "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "R&D Lab",
+                    "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "HVAC",
+                    "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "Precision experiments -climate sensitive",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "CAF01_CAFETERIA",
+                    "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "Cafeteria",
+                    "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 3,
+                    "source_page": 1
+                },
+                {
+                    "span": "HVAC",
+                    "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "Occupant comfort -food safety",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 }
@@ -234,19 +344,25 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.1 ST01_FILLING]\nRULE-ST01-01: FLW MUST be maintained between 112 and 128 L/min.",
             "entities": [
                 {
                     "span": "FLW",
                     "category": "Parameter",
+                    "numeric_value": 112,
+                    "unit": "L/min",
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "ST01_FILLING",
-                    "category": "Component",
+                    "span": "FLW",
+                    "category": "Parameter",
+                    "numeric_value": 128,
+                    "unit": "L/min",
                     "source_chunk_id": 4,
                     "source_page": 1
                 }
@@ -261,19 +377,33 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.1 ST01_FILLING]\nRULE-ST01-02: If TMP exceeds 26°C, reduce speed by 10% and notify QC.",
             "entities": [
                 {
-                    "span": "TMP",
-                    "category": "Parameter",
+                    "span": "TMP exceeds 26°C",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 26.0,
+                    "unit": "°C",
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "ST01_FILLING",
-                    "category": "Component",
+                    "span": "reduce speed by 10%",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 5,
+                    "source_page": 1
+                },
+                {
+                    "span": "notify QC",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 }
@@ -288,25 +418,17 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.1 ST01_FILLING]\nRULE-ST01-03: PRS drop below 3.3 bar - inspect inlet valve within 5 min.",
             "entities": [
                 {
-                    "span": "ST01_FILLING",
-                    "category": "Component",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "PRS",
-                    "category": "Parameter",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "inlet valve",
-                    "category": "Sensor",
+                    "span": "PRS drop below 3.3 bar - inspect inlet valve within 5 min.",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 3.3,
+                    "unit": "bar",
                     "source_chunk_id": 6,
                     "source_page": 1
                 }
@@ -321,19 +443,25 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-01: TMP MUST remain between 175°C and 195°C.",
             "entities": [
                 {
                     "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 175.0,
+                    "unit": "°C",
                     "source_chunk_id": 7,
                     "source_page": 1
                 },
                 {
-                    "span": "ST02_SEALING",
-                    "category": "Component",
+                    "span": "TMP",
+                    "category": "Parameter",
+                    "numeric_value": 195.0,
+                    "unit": "°C",
                     "source_chunk_id": 7,
                     "source_page": 1
                 }
@@ -348,31 +476,25 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-02: TMP > 210°C (CRITICAL) - emergency stop ST02, ST03, ST04.",
             "entities": [
                 {
-                    "span": "TMP",
-                    "category": "Parameter",
+                    "span": "TMP > 210°C (CRITICAL)",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 210.0,
+                    "unit": "°C",
                     "source_chunk_id": 8,
                     "source_page": 1
                 },
                 {
-                    "span": "ST02",
-                    "category": "Component",
-                    "source_chunk_id": 8,
-                    "source_page": 1
-                },
-                {
-                    "span": "ST03",
-                    "category": "Component",
-                    "source_chunk_id": 8,
-                    "source_page": 1
-                },
-                {
-                    "span": "ST04",
-                    "category": "Component",
+                    "span": "emergency stop ST02, ST03, ST04.",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 8,
                     "source_page": 1
                 }
@@ -387,19 +509,17 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-03: CUR increase >1.5 A above nominal sustained >5 min - schedule maintenance.",
             "entities": [
                 {
-                    "span": "ST02_SEALING",
-                    "category": "Component",
-                    "source_chunk_id": 9,
-                    "source_page": 1
-                },
-                {
-                    "span": "CUR increase >1.5 A above nominal sustained >5 min",
+                    "span": "CUR increase >1.5 A above nominal sustained >5 min - schedule maintenance.",
                     "category": "AnomalyEvent",
+                    "numeric_value": 1.5,
+                    "unit": "A",
                     "source_chunk_id": 9,
                     "source_page": 1
                 }
@@ -414,37 +534,41 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.2 ST02_SEALING]\nRULE-ST02-04: CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling. Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING.",
             "entities": [
                 {
                     "span": "ST02_SEALING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 10,
                     "source_page": 1
                 },
                 {
                     "span": "ST04_PACKAGING",
                     "category": "Component",
-                    "source_chunk_id": 10,
-                    "source_page": 1
-                },
-                {
-                    "span": "ST02_SEALING-CUR",
-                    "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 10,
                     "source_page": 1
                 },
                 {
                     "span": "ST04_PACKAGING-SPD",
                     "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 10,
                     "source_page": 1
                 },
                 {
                     "span": "WARNING",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 10,
                     "source_page": 1
                 }
@@ -459,31 +583,25 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.3 ST03_LABELLING]\nRULE-ST03-01: TEN MUST be between 1.8 and 2.6 N.",
             "entities": [
                 {
                     "span": "TEN",
                     "category": "Parameter",
+                    "numeric_value": 1.8,
+                    "unit": null,
                     "source_chunk_id": 11,
                     "source_page": 1
                 },
                 {
-                    "span": "1.8",
+                    "span": "2.6 N",
                     "category": "Parameter",
-                    "source_chunk_id": 11,
-                    "source_page": 1
-                },
-                {
-                    "span": "2.6",
-                    "category": "Parameter",
-                    "source_chunk_id": 11,
-                    "source_page": 1
-                },
-                {
-                    "span": "N",
-                    "category": "Parameter",
+                    "numeric_value": 2.6,
+                    "unit": "N",
                     "source_chunk_id": 11,
                     "source_page": 1
                 }
@@ -498,25 +616,25 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.3 ST03_LABELLING]\nRULE-ST03-02: CNT below 110 pcs/min - check for label jam. Below 100 (CRITICAL): halt.",
             "entities": [
                 {
-                    "span": "ST03_LABELLING",
-                    "category": "Component",
-                    "source_chunk_id": 12,
-                    "source_page": 1
-                },
-                {
-                    "span": "CNT",
-                    "category": "Parameter",
-                    "source_chunk_id": 12,
-                    "source_page": 1
-                },
-                {
-                    "span": "label jam",
+                    "span": "CNT below 110 pcs/min - check for label jam",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 12,
+                    "source_page": 1
+                },
+                {
+                    "span": "Below 100 (CRITICAL): halt",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 100.0,
+                    "unit": null,
                     "source_chunk_id": 12,
                     "source_page": 1
                 }
@@ -531,19 +649,17 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.3 ST03_LABELLING]\nRULE-ST03-03: TEN STUCK >10 consecutive samples - sensor failure.",
             "entities": [
                 {
-                    "span": "TEN STUCK",
+                    "span": "TEN STUCK >10 consecutive samples - sensor failure",
                     "category": "AnomalyEvent",
-                    "source_chunk_id": 13,
-                    "source_page": 1
-                },
-                {
-                    "span": "10 consecutive samples",
-                    "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 13,
                     "source_page": 1
                 }
@@ -558,25 +674,25 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-ST04-01: VIB > 0.20 mm/s (WARNING) - schedule maintenance within 24 h.",
             "entities": [
                 {
-                    "span": "ST04_PACKAGING",
-                    "category": "Component",
+                    "span": "VIB > 0.20 mm/s (WARNING)",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 0.2,
+                    "unit": "mm/s",
                     "source_chunk_id": 14,
                     "source_page": 1
                 },
                 {
-                    "span": "VIB",
-                    "category": "Sensor",
-                    "source_chunk_id": 14,
-                    "source_page": 1
-                },
-                {
-                    "span": "mm/s",
-                    "category": "Parameter",
+                    "span": "schedule maintenance within 24 h.",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 14,
                     "source_page": 1
                 }
@@ -591,31 +707,33 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-ST04-02: VIB > 0.35 mm/s (CRITICAL) - emergency stop; inspect bearings.",
             "entities": [
                 {
-                    "span": "ST04_PACKAGING",
-                    "category": "Component",
-                    "source_chunk_id": 15,
-                    "source_page": 1
-                },
-                {
-                    "span": "VIB",
-                    "category": "Sensor",
-                    "source_chunk_id": 15,
-                    "source_page": 1
-                },
-                {
-                    "span": "mm/s",
+                    "span": "VIB > 0.35 mm/s",
                     "category": "Parameter",
+                    "numeric_value": 0.35,
+                    "unit": "mm/s",
                     "source_chunk_id": 15,
                     "source_page": 1
                 },
                 {
                     "span": "emergency stop",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 15,
+                    "source_page": 1
+                },
+                {
+                    "span": "inspect bearings",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 15,
                     "source_page": 1
                 }
@@ -630,19 +748,17 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-ST04-03: SPD drops below 1.00 m/s without operator command - verify RULE-ST02-04.",
             "entities": [
                 {
-                    "span": "ST04_PACKAGING",
-                    "category": "Component",
-                    "source_chunk_id": 16,
-                    "source_page": 1
-                },
-                {
-                    "span": "SPD",
-                    "category": "Parameter",
+                    "span": "SPD drops below 1.00 m/s without operator command - verify RULE-ST02-04.",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 16,
                     "source_page": 1
                 }
@@ -657,19 +773,25 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.5 SRV01_SERVERROOM",
             "entities": [
                 {
                     "span": "ST04_PACKAGING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 17,
                     "source_page": 2
                 },
                 {
                     "span": "SRV01_SERVERROOM",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 17,
                     "source_page": 2
                 }
@@ -684,19 +806,25 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-SRV01-01: TMP MUST NOT exceed 25°C. RULE-SRV01-02: TMP > 28°C (CRITICAL) - automatic controlled shutdown of all PLC nodes.",
             "entities": [
                 {
-                    "span": "TMP",
+                    "span": "TMP MUST NOT exceed 25°C",
                     "category": "Parameter",
+                    "numeric_value": 25.0,
+                    "unit": "°C",
                     "source_chunk_id": 18,
                     "source_page": 2
                 },
                 {
-                    "span": "ST04_PACKAGING",
-                    "category": "Component",
+                    "span": "TMP > 28°C (CRITICAL) - automatic controlled shutdown of all PLC nodes",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 18,
                     "source_page": 2
                 }
@@ -711,19 +839,25 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.6 WRH01_WAREHOUSE (General Warehouse)",
             "entities": [
                 {
                     "span": "ST04_PACKAGING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 19,
                     "source_page": 2
                 },
                 {
                     "span": "WRH01_WAREHOUSE",
                     "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 19,
                     "source_page": 2
                 }
@@ -738,19 +872,33 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-WRH01-01: TMP MUST remain between 0.5°C and 8°C. CRITICAL above 12°C - notify QC and quarantine batch. RULE-WRH01-02: HUM above 85%RH - inspect door seals and activate dehumidifier.",
             "entities": [
                 {
                     "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 0.5,
+                    "unit": "°C",
+                    "source_chunk_id": 20,
+                    "source_page": 2
+                },
+                {
+                    "span": "TMP",
+                    "category": "Parameter",
+                    "numeric_value": 8,
+                    "unit": "°C",
                     "source_chunk_id": 20,
                     "source_page": 2
                 },
                 {
                     "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 85,
+                    "unit": "%RH",
                     "source_chunk_id": 20,
                     "source_page": 2
                 }
@@ -765,19 +913,25 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.7 CHM01_CHEMICALSTORAGE (Chemical Storage)",
             "entities": [
                 {
                     "span": "ST04_PACKAGING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 21,
                     "source_page": 2
                 },
                 {
                     "span": "CHM01_CHEMICALSTORAGE",
-                    "category": "Sensor",
+                    "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 21,
                     "source_page": 2
                 }
@@ -792,31 +946,49 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-CHM01-01: TMP MUST remain between 10°C and 20°C. CRITICAL above 25°C - activate emergency ventilation and notify safety officer immediately. RULE-CHM01-02: HUM MUST NOT exceed 50%RH. Elevated humidity accelerates degradation of hygroscopic reagents. Activate desiccant system if HUM >45%RH. RULE-CHM01-03: Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage. UNAUTHORIZED_ACCESS must be escalated within 2 minutes.",
             "entities": [
                 {
                     "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 10.0,
+                    "unit": "°C",
+                    "source_chunk_id": 22,
+                    "source_page": 2
+                },
+                {
+                    "span": "TMP",
+                    "category": "Parameter",
+                    "numeric_value": 20.0,
+                    "unit": "°C",
+                    "source_chunk_id": 22,
+                    "source_page": 2
+                },
+                {
+                    "span": "CRITICAL above 25°C - activate emergency ventilation and notify safety officer immediately.",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 22,
                     "source_page": 2
                 },
                 {
                     "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 45.0,
+                    "unit": "%RH",
                     "source_chunk_id": 22,
                     "source_page": 2
                 },
                 {
-                    "span": "Chemical Storage",
-                    "category": "Zone",
-                    "source_chunk_id": 22,
-                    "source_page": 2
-                },
-                {
-                    "span": "technician/supervisor/manager role",
-                    "category": "Role",
+                    "span": "UNAUTHORIZED_ACCESS",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 22,
                     "source_page": 2
                 }
@@ -831,19 +1003,25 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.8 RND01_RDLAB (R&D; Lab)",
             "entities": [
                 {
                     "span": "ST04_PACKAGING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 23,
                     "source_page": 2
                 },
                 {
                     "span": "RND01_RDLAB",
-                    "category": "Sensor",
+                    "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 23,
                     "source_page": 2
                 }
@@ -858,19 +1036,41 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-RND01-01: TMP MUST remain between 18°C and 26°C for experimental validity. RULE-RND01-02: HUM drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system.",
             "entities": [
                 {
                     "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 18.0,
+                    "unit": "°C",
+                    "source_chunk_id": 24,
+                    "source_page": 2
+                },
+                {
+                    "span": "TMP",
+                    "category": "Parameter",
+                    "numeric_value": 26.0,
+                    "unit": "°C",
                     "source_chunk_id": 24,
                     "source_page": 2
                 },
                 {
                     "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 65.0,
+                    "unit": "%RH",
+                    "source_chunk_id": 24,
+                    "source_page": 2
+                },
+                {
+                    "span": "HUM",
+                    "category": "Parameter",
+                    "numeric_value": 75.0,
+                    "unit": "%RH",
                     "source_chunk_id": 24,
                     "source_page": 2
                 }
@@ -885,19 +1085,25 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\n- 2.9 CAF01_CAFETERIA",
             "entities": [
                 {
                     "span": "ST04_PACKAGING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 25,
                     "source_page": 2
                 },
                 {
                     "span": "CAF01_CAFETERIA",
-                    "category": "Zone",
+                    "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 25,
                     "source_page": 2
                 }
@@ -912,25 +1118,25 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:09.088096+00:00"
             },
             "content": "[Context: 2.4 ST04_PACKAGING]\nRULE-CAF01-01: TMP above 26°C - check ventilation system. Occupant comfort is the primary criterion. RULE-CAF01-02: HUM above 70%RH - inspect drainage and activate ventilation.",
             "entities": [
                 {
-                    "span": "TMP",
-                    "category": "Parameter",
+                    "span": "TMP above 26°C - check ventilation system.",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 26.0,
+                    "unit": "°C",
                     "source_chunk_id": 26,
                     "source_page": 2
                 },
                 {
-                    "span": "ST04_PACKAGING",
-                    "category": "Component",
-                    "source_chunk_id": 26,
-                    "source_page": 2
-                },
-                {
-                    "span": "HUM",
-                    "category": "Parameter",
+                    "span": "HUM above 70%RH - inspect drainage and activate ventilation.",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 70.0,
+                    "unit": "%RH",
                     "source_chunk_id": 26,
                     "source_page": 2
                 }

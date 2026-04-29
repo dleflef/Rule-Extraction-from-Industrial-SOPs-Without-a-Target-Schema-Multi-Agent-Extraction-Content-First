@@ -1,20 +1,32 @@
 """
 layer_1/agent_1b.py — Agent 1B: Unstructured Text Parser (LangGraph)
+
+Two-node StateGraph:
+    parse  → Converts raw document into a Docling Pydantic model dict.
+    chunk  → Splits the model into hierarchical semantic chunks.
+
+The Orchestrator receives the final state and reads markdown_chunks,
+where every chunk carries full provenance metadata for the construction log.
 """
+
+from datetime import datetime, timezone
 
 from langgraph.graph import END, StateGraph
 
 from .agent_1b_state import Agent1BState
 from .agent_1b_tools import chunk_docling_document, parse_pdf_to_docling
 
+_AGENT_ID = "agent_1b"
+
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Node 1 — Document Parser (Docling, Stage 1)
+# Node 1 — Document Parser (Stage 1)
 # ─────────────────────────────────────────────────────────────────────────────
 
 def parse_node(state: Agent1BState) -> dict:
     """
-    Parses the document into a hierarchical Docling Pydantic model.
+    Calls Docling to convert the source file into a serialized DoclingDocument.
+    Sets status to 'parsed' on success or 'error' on failure.
     """
     print(f"[Agent 1B | parse_node] Parsing: {state['file_path']}")
 
@@ -42,11 +54,21 @@ def parse_node(state: Agent1BState) -> dict:
 
 def chunk_node(state: Agent1BState) -> dict:
     """
-    Splits the DoclingDocument into chunks using its native hierarchy tree.
+    Splits the DoclingDocument into hierarchical semantic chunks.
+    Injects agent_id and processed_at into every chunk's metadata
+    so the Orchestrator construction log can track provenance.
+    Drops docling_document_dict from state once done to free memory.
     """
-    print(f"[Agent 1B | chunk_node] Applying native hierarchical chunking.")
+    print("[Agent 1B | chunk_node] Applying native hierarchical chunking.")
 
-    chunks = chunk_docling_document(state["docling_document_dict"])
+    processed_at = datetime.now(timezone.utc).isoformat()
+
+    chunks = chunk_docling_document(
+        docling_dict  = state["docling_document_dict"],
+        source_file   = state["file_path"],
+        agent_id      = _AGENT_ID,
+        processed_at  = processed_at,
+    )
 
     if chunks and "chunking_error" in chunks[0].get("metadata", {}):
         err = chunks[0]["metadata"]["chunking_error"]
@@ -60,18 +82,16 @@ def chunk_node(state: Agent1BState) -> dict:
         }
 
     print(f"[Agent 1B | chunk_node] {len(chunks)} chunks produced.")
-
     return {
-        "markdown_chunks": chunks,
-        "chunk_count":     len(chunks),
-        "status":          "complete",
-        # Optional memory optimization: drop the massive dict once chunked
-        "docling_document_dict": None,
+        "markdown_chunks":       chunks,
+        "chunk_count":           len(chunks),
+        "status":                "complete",
+        "docling_document_dict": None,   # free memory once chunked
     }
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Conditional Edge — Error Short-Circuit after parse_node
+# Conditional Edge — skip chunk_node if parse_node failed
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _route_after_parse(state: Agent1BState) -> str:

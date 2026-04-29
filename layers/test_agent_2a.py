@@ -6,8 +6,6 @@ import json
 import glob
 from layers.layer_2.agent_2a import agent_2a_app
 
-
-
 INPUT_DIR = "outputs/layer_1"
 OUTPUT_DIR = "outputs/layer_2"
 
@@ -22,11 +20,10 @@ def process_file(file_path: str):
         print(f"Testing Agent 2A on chunks from: {source_file}")
         print(f"{'='*60}")
 
-        prompt_mode = os.getenv("PROMPT_MODE", "graph_informed")
+        # Removed prompt_mode since we now use a unified prompt
         initial_state = {
             "source_file":  source_file,
             "chunks":       layer_1_data.get("chunks", []),
-            "prompt_mode":  prompt_mode,
             "extracted_entities": None,
             "status":       "pending",
             "error_message": None,
@@ -44,9 +41,8 @@ def process_file(file_path: str):
         
         output_data = {
             "source_file": final_state["source_file"],
-            "model_used":  "qwen2.5-coder-7b-instruct",
+            "model_used":  "qwen2.5-7b-instruct",
             "temperature": 0.0,
-            "prompt_mode": prompt_mode,
             "results":     final_state["extracted_entities"],
         }
         

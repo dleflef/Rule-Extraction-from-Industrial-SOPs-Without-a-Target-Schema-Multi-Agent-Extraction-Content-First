@@ -1,8 +1,8 @@
 {
     "source_file": "SOP_002_AlarmThresholds.pdf",
-    "model_used": "qwen2.5-coder-7b-instruct",
+    "model_used": "qwen2.5-7b-instruct",
     "temperature": 0.0,
-    "prompt_mode": "graph_informed",
+    "prompt_strategy": "Unified Ontology Relation Extraction",
     "strategy": "Rule Reification — (subject, predicate, object) triples",
     "results": [
         {
@@ -14,10 +14,57 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
-            "entities": [],
-            "relations": []
+            "entities": [
+                {
+                    "span": "Production Line A",
+                    "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 0,
+                    "source_page": 1
+                }
+            ],
+            "relations": [
+                {
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "Production Line A"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "FLW"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_condition",
+                    "object": "CRIT_HI=25 L/min, WARN_HI=30 L/min, CRIT_LO=15 L/min, WARN_LO=20 L/min"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Alert operator; reduce flow rate if necessary"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "L/min"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule"
+                }
+            ]
         },
         {
             "chunk_id": 1,
@@ -28,62 +75,53 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
             "entities": [
                 {
                     "span": "CRIT_LO",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "WARN_LO",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "NOMINAL",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "WARN_HI",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 },
                 {
                     "span": "CRIT_HI",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 }
             ],
-            "relations": [
-                {
-                    "subject": "RULE-1-01",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-1-01",
-                    "predicate": "has_crit_lo",
-                    "object": "CRIT_LO"
-                },
-                {
-                    "subject": "RULE-1-01",
-                    "predicate": "has_warn_lo",
-                    "object": "WARN_LO"
-                },
-                {
-                    "subject": "RULE-1-01",
-                    "predicate": "has_unit",
-                    "object": ""
-                }
-            ]
+            "relations": []
         },
         {
             "chunk_id": 2,
@@ -94,235 +132,230 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
             "entities": [
                 {
-                    "span": "TMP",
+                    "span": "TMP, Unit = °C",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": "°C",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "Unit",
+                    "span": "TMP, CRIT_LO = 15.0",
                     "category": "Parameter",
+                    "numeric_value": 15.0,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "TMP,  = 18.0",
                     "category": "Parameter",
+                    "numeric_value": 18.0,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "TMP, WARN_LONominal = 22.0 ± 0.4",
                     "category": "Parameter",
+                    "numeric_value": 22.0,
+                    "unit": "°C",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_LONominal",
+                    "span": "TMP, WARN_HI = 26.0",
                     "category": "Parameter",
+                    "numeric_value": 26.0,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_HI",
+                    "span": "TMP, CRIT_HI = 30.0",
                     "category": "Parameter",
+                    "numeric_value": 30.0,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 2,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRITICAL Response",
+                    "span": "TMP, CRITICAL Response = Inspect and notify maintenance",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "PRS",
+                    "span": "PRS, Unit = bar",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": "bar",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "PRS, CRIT_LO = 3.0",
                     "category": "Parameter",
+                    "numeric_value": 3.0,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_LONominal",
+                    "span": "PRS,  = 3.3",
                     "category": "Parameter",
+                    "numeric_value": 3.3,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_HI",
+                    "span": "PRS, WARN_LONominal = 3.8 ± 0.05",
                     "category": "Parameter",
+                    "numeric_value": 3.8,
+                    "unit": "bar",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_HI",
+                    "span": "PRS, WARN_HI = 4.2",
                     "category": "Parameter",
+                    "numeric_value": 4.2,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "CRITICAL Response",
+                    "span": "PRS, CRIT_HI = 4.8",
+                    "category": "Parameter",
+                    "numeric_value": 4.8,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "PRS, CRITICAL Response = Inspect and notify maintenance",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "FLW",
+                    "span": "FLW, Unit = L/min",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": "L/min",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "FLW, CRIT_LO = 105.0",
                     "category": "Parameter",
+                    "numeric_value": 105.0,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_LONominal",
+                    "span": "FLW,  = 112.0",
                     "category": "Parameter",
+                    "numeric_value": 112.0,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_HI",
+                    "span": "FLW, WARN_LONominal = 120.0 ± 1.5",
                     "category": "Parameter",
+                    "numeric_value": 120.0,
+                    "unit": "L/min",
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_HI",
+                    "span": "FLW, WARN_HI = 128.0",
                     "category": "Parameter",
+                    "numeric_value": 128.0,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "CRITICAL Response",
+                    "span": "FLW, CRIT_HI = 135.0",
+                    "category": "Parameter",
+                    "numeric_value": 135.0,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "FLW, CRITICAL Response = Inspect and notify maintenance",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "RULE-03",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-2-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "TMP"
+                    "subject": "RULE-03",
+                    "predicate": "applies_to_station",
+                    "object": "ST01_FILLING"
                 },
                 {
-                    "subject": "RULE-2-01",
-                    "predicate": "has_unit",
-                    "object": "°C"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "has_crit_lo",
-                    "object": "15.0"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "has_warn_hi",
-                    "object": "26.0"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "has_crit_hi",
-                    "object": "30.0"
-                },
-                {
-                    "subject": "RULE-2-01",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "PRS"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "has_unit",
-                    "object": "bar"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "has_crit_lo",
-                    "object": "3.0"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "has_warn_hi",
-                    "object": "4.2"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "has_crit_hi",
-                    "object": "4.8"
-                },
-                {
-                    "subject": "RULE-2-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
-                },
-                {
-                    "subject": "RULE-2-03",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-2-03",
+                    "subject": "RULE-03",
                     "predicate": "applies_to_sensor",
                     "object": "FLW"
                 },
                 {
-                    "subject": "RULE-2-03",
-                    "predicate": "has_unit",
-                    "object": "L/min"
+                    "subject": "RULE-03",
+                    "predicate": "has_sensor_type",
+                    "object": "FLW"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "RULE-03",
                     "predicate": "has_crit_lo",
                     "object": "105.0"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "RULE-03",
+                    "predicate": "has_warn_lo",
+                    "object": "120.0"
+                },
+                {
+                    "subject": "RULE-03",
                     "predicate": "has_warn_hi",
                     "object": "128.0"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "RULE-03",
                     "predicate": "has_crit_hi",
                     "object": "135.0"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "RULE-03",
+                    "predicate": "has_unit",
+                    "object": "L/min"
+                },
+                {
+                    "subject": "RULE-03",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
+                    "object": "Inspect and notify maintenance"
                 }
             ]
         },
@@ -335,334 +368,230 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
             "entities": [
                 {
-                    "span": "TMP",
+                    "span": "TMP, Unit = °C",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": "°C",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "Unit = °C.",
+                    "span": "TMP, CRIT_LO = 165.0",
                     "category": "Parameter",
+                    "numeric_value": 165.0,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "TMP,  = 175.0",
                     "category": "Parameter",
+                    "numeric_value": 175.0,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "165.0",
+                    "span": "TMP, WARN_LONominal = 185.0 ± 1.2",
                     "category": "Parameter",
+                    "numeric_value": 185.0,
+                    "unit": "± 1.2",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "TMP, WARN_HI = 195.0",
                     "category": "Parameter",
+                    "numeric_value": 195.0,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "175.0",
+                    "span": "TMP, CRIT_HI = 210.0",
                     "category": "Parameter",
+                    "numeric_value": 210.0,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "185.0 ± 1.2",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "195.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "210.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "TMP, CRITICAL Response = E-STOP ST02/ST03/ST04; inspect element.",
+                    "span": "TMP, CRITICAL Response = E-STOP ST02/ST03/ST04; inspect element",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "PRS",
+                    "span": "PRS, Unit = bar",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": "bar",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "Unit = bar.",
+                    "span": "PRS, CRIT_LO = 4.2",
                     "category": "Parameter",
+                    "numeric_value": 4.2,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "PRS,  = 4.6",
                     "category": "Parameter",
+                    "numeric_value": 4.6,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "4.2",
+                    "span": "PRS, WARN_LONominal = 5.2 ± 0.08",
                     "category": "Parameter",
+                    "numeric_value": 5.2,
+                    "unit": "± 0.08",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "PRS, WARN_HI = 5.7",
                     "category": "Parameter",
+                    "numeric_value": 5.7,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "4.6",
+                    "span": "PRS, CRIT_HI = 6.2",
                     "category": "Parameter",
+                    "numeric_value": 6.2,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "5.2 ± 0.08",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "5.7",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "6.2",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "PRS, CRITICAL Response = Inspect and notify maintenance.",
+                    "span": "PRS, CRITICAL Response = Inspect and notify maintenance",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "CUR",
+                    "span": "CUR, Unit = A",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": "A",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "Unit = A.",
+                    "span": "CUR, CRIT_LO = 9.5",
                     "category": "Parameter",
+                    "numeric_value": 9.5,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "CUR,  = 11.0",
                     "category": "Parameter",
+                    "numeric_value": 11.0,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "9.5",
+                    "span": "CUR, WARN_LONominal = 12.4 ± 0.3",
                     "category": "Parameter",
+                    "numeric_value": 12.4,
+                    "unit": "± 0.3",
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "CUR, WARN_HI = 13.5",
                     "category": "Parameter",
+                    "numeric_value": 13.5,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "11.0",
+                    "span": "CUR, CRIT_HI = 15.0",
                     "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "12.4 ± 0.3",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "13.5",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "15.0",
-                    "category": "Parameter",
+                    "numeric_value": 15.0,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
                     "span": "CUR, CRITICAL Response = E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04)",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-3-01",
+                    "subject": "RULE-ST02-01",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-3-01",
+                    "subject": "RULE-ST02-01",
+                    "predicate": "applies_to_station",
+                    "object": "ST02_SEALING"
+                },
+                {
+                    "subject": "RULE-ST02-01",
+                    "predicate": "applies_to_sensor",
+                    "object": "TMP"
+                },
+                {
+                    "subject": "RULE-ST02-01",
                     "predicate": "has_sensor_type",
                     "object": "TMP"
                 },
                 {
-                    "subject": "RULE-3-01",
+                    "subject": "RULE-ST02-01",
                     "predicate": "has_crit_lo",
                     "object": "165.0"
                 },
                 {
-                    "subject": "RULE-3-01",
-                    "predicate": "has_warn_hi",
-                    "object": "195.0"
+                    "subject": "RULE-ST02-01",
+                    "predicate": "has_warn_lo",
+                    "object": "175.0"
                 },
                 {
-                    "subject": "RULE-3-01",
+                    "subject": "RULE-ST02-01",
                     "predicate": "has_crit_hi",
                     "object": "210.0"
                 },
                 {
-                    "subject": "RULE-3-01",
-                    "predicate": "triggers_action",
-                    "object": "E-STOP ST02/ST03/ST04; inspect element."
-                },
-                {
-                    "subject": "RULE-3-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-02",
-                    "predicate": "has_sensor_type",
-                    "object": "PRS"
-                },
-                {
-                    "subject": "RULE-3-02",
-                    "predicate": "has_crit_lo",
-                    "object": "4.2"
-                },
-                {
-                    "subject": "RULE-3-02",
+                    "subject": "RULE-ST02-01",
                     "predicate": "has_warn_hi",
-                    "object": "5.7"
+                    "object": "195.0"
                 },
                 {
-                    "subject": "RULE-3-02",
-                    "predicate": "has_crit_hi",
-                    "object": "6.2"
+                    "subject": "RULE-ST02-01",
+                    "predicate": "has_unit",
+                    "object": "°C"
                 },
                 {
-                    "subject": "RULE-3-02",
+                    "subject": "RULE-ST02-01",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "has_sensor_type",
-                    "object": "CUR"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "has_crit_lo",
-                    "object": "9.5"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "has_warn_hi",
-                    "object": "13.5"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "has_crit_hi",
-                    "object": "15.0"
-                },
-                {
-                    "subject": "RULE-3-03",
-                    "predicate": "triggers_action",
-                    "object": "E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04)"
+                    "object": "E-STOP ST02/ST03/ST04; inspect element"
                 }
             ]
         },
@@ -675,340 +604,282 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
             "entities": [
                 {
                     "span": "SPD",
                     "category": "Parameter",
+                    "numeric_value": 0.65,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "Unit = m/s.",
+                    "span": "SPD",
                     "category": "Parameter",
+                    "numeric_value": 0.75,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "SPD",
                     "category": "Parameter",
+                    "numeric_value": 0.85,
+                    "unit": "± 0.01",
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "0.65",
+                    "span": "SPD",
                     "category": "Parameter",
+                    "numeric_value": 0.95,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "SPD",
                     "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "0.75",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "0.85 ± 0.01",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "0.95",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "1.05",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "Inspect and notify maintenance.",
-                    "category": "AnomalyEvent",
+                    "numeric_value": 1.05,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
                     "span": "TEN",
                     "category": "Parameter",
+                    "numeric_value": 1.5,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "Unit = N.",
+                    "span": "TEN",
                     "category": "Parameter",
+                    "numeric_value": 1.8,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "TEN",
                     "category": "Parameter",
+                    "numeric_value": 2.2,
+                    "unit": "± 0.05",
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "1.5",
+                    "span": "TEN",
                     "category": "Parameter",
+                    "numeric_value": 2.6,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "TEN",
                     "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "1.8",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "2.2 ± 0.05",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "2.6",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "3.0",
-                    "category": "Parameter",
+                    "numeric_value": 3.0,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
                     "span": "CNT",
                     "category": "Parameter",
+                    "numeric_value": 100,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "Unit = pcs/min.",
+                    "span": "CNT",
                     "category": "Parameter",
+                    "numeric_value": 110,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "CNT",
                     "category": "Parameter",
+                    "numeric_value": 120,
+                    "unit": "± 2.0",
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "100",
+                    "span": "CNT",
                     "category": "Parameter",
+                    "numeric_value": 130,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "CNT",
                     "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "110",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "120 ± 2.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "130",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "140",
-                    "category": "Parameter",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 4,
-                    "source_page": 1
-                },
-                {
-                    "span": "E-STOP labelling; inspect label path",
-                    "category": "AnomalyEvent",
+                    "numeric_value": 140,
+                    "unit": null,
                     "source_chunk_id": 4,
                     "source_page": 1
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-4-01",
+                    "subject": "RULE-01",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-4-01",
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "ST03_LABELLING"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_sensor",
+                    "object": "SPD"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_sensor_type",
                     "object": "SPD"
                 },
                 {
-                    "subject": "RULE-4-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_lo",
                     "object": "0.65"
                 },
                 {
-                    "subject": "RULE-4-01",
+                    "subject": "RULE-01",
+                    "predicate": "has_warn_lo",
+                    "object": "0.75"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_warn_hi",
                     "object": "0.95"
                 },
                 {
-                    "subject": "RULE-4-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_hi",
                     "object": "1.05"
                 },
                 {
-                    "subject": "RULE-4-01",
+                    "subject": "RULE-01",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
+                    "object": "Inspect and notify maintenance"
                 },
                 {
-                    "subject": "RULE-4-02",
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "m/s"
+                },
+                {
+                    "subject": "RULE-02",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-4-02",
+                    "subject": "RULE-02",
+                    "predicate": "applies_to_station",
+                    "object": "ST03_LABELLING"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "applies_to_sensor",
+                    "object": "TEN"
+                },
+                {
+                    "subject": "RULE-02",
                     "predicate": "has_sensor_type",
                     "object": "TEN"
                 },
                 {
-                    "subject": "RULE-4-02",
+                    "subject": "RULE-02",
                     "predicate": "has_crit_lo",
                     "object": "1.5"
                 },
                 {
-                    "subject": "RULE-4-02",
+                    "subject": "RULE-02",
+                    "predicate": "has_warn_lo",
+                    "object": "1.8"
+                },
+                {
+                    "subject": "RULE-02",
                     "predicate": "has_warn_hi",
                     "object": "2.6"
                 },
                 {
-                    "subject": "RULE-4-02",
+                    "subject": "RULE-02",
                     "predicate": "has_crit_hi",
                     "object": "3.0"
                 },
                 {
-                    "subject": "RULE-4-02",
+                    "subject": "RULE-02",
                     "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
+                    "object": "Inspect and notify maintenance"
                 },
                 {
-                    "subject": "RULE-4-03",
+                    "subject": "RULE-02",
+                    "predicate": "has_unit",
+                    "object": "N"
+                },
+                {
+                    "subject": "RULE-03",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-4-03",
+                    "subject": "RULE-03",
+                    "predicate": "applies_to_station",
+                    "object": "ST03_LABELLING"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "applies_to_sensor",
+                    "object": "CNT"
+                },
+                {
+                    "subject": "RULE-03",
                     "predicate": "has_sensor_type",
                     "object": "CNT"
                 },
                 {
-                    "subject": "RULE-4-03",
+                    "subject": "RULE-03",
                     "predicate": "has_crit_lo",
                     "object": "100"
                 },
                 {
-                    "subject": "RULE-4-03",
+                    "subject": "RULE-03",
+                    "predicate": "has_warn_lo",
+                    "object": "110"
+                },
+                {
+                    "subject": "RULE-03",
                     "predicate": "has_warn_hi",
                     "object": "130"
                 },
                 {
-                    "subject": "RULE-4-03",
+                    "subject": "RULE-03",
                     "predicate": "has_crit_hi",
                     "object": "140"
                 },
                 {
-                    "subject": "RULE-4-03",
+                    "subject": "RULE-03",
                     "predicate": "triggers_action",
                     "object": "E-STOP labelling; inspect label path"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "has_unit",
+                    "object": "pcs/min"
                 }
             ]
         },
@@ -1021,352 +892,198 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
             "entities": [
                 {
                     "span": "VIB",
-                    "category": "Sensor",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "mm/s",
                     "category": "Parameter",
+                    "numeric_value": 0.01,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "VIB",
                     "category": "Parameter",
+                    "numeric_value": 0.02,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "0.01",
+                    "span": "VIB",
                     "category": "Parameter",
+                    "numeric_value": 0.12,
+                    "unit": "± 0.005",
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "VIB",
                     "category": "Parameter",
+                    "numeric_value": 0.2,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "0.02",
+                    "span": "VIB",
                     "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "0.12 ± 0.005",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "0.2",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "0.35",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "E-STOP; inspect main bearing.",
-                    "category": "AnomalyEvent",
+                    "numeric_value": 0.35,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
                     "span": "CUR",
-                    "category": "Sensor",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "A",
                     "category": "Parameter",
+                    "numeric_value": 6.5,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "CUR",
                     "category": "Parameter",
+                    "numeric_value": 7.5,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "6.5",
+                    "span": "CUR",
                     "category": "Parameter",
+                    "numeric_value": 8.7,
+                    "unit": "± 0.2",
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "CUR",
                     "category": "Parameter",
+                    "numeric_value": 9.8,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "7.5",
+                    "span": "CUR",
                     "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "8.7 ± 0.2",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "9.8",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "11.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "Inspect and notify maintenance.",
-                    "category": "AnomalyEvent",
+                    "numeric_value": 11.0,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
                     "span": "SPD",
-                    "category": "Sensor",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "m/s",
                     "category": "Parameter",
+                    "numeric_value": 0.85,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "SPD",
                     "category": "Parameter",
+                    "numeric_value": 1.0,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "0.85",
+                    "span": "SPD",
                     "category": "Parameter",
+                    "numeric_value": 1.2,
+                    "unit": "± 0.02",
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "SPD",
                     "category": "Parameter",
+                    "numeric_value": 1.4,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "1.0",
+                    "span": "SPD",
                     "category": "Parameter",
+                    "numeric_value": 1.6,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "1.2 ± 0.02",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "1.4",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "1.6",
-                    "category": "Parameter",
-                    "source_chunk_id": 5,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRITICAL Response",
+                    "span": "CRITICAL Response = E-STOP; inspect main bearing.",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 },
                 {
-                    "span": "Inspect and notify maintenance",
+                    "span": "CRITICAL Response = Inspect and notify maintenance.",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 5,
                     "source_page": 1
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-5-01",
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "ST04_PACKAGING"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_sensor",
+                    "object": "VIB"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_sensor_type",
                     "object": "VIB"
                 },
                 {
-                    "subject": "RULE-5-01",
-                    "predicate": "has_unit",
-                    "object": "mm/s"
-                },
-                {
-                    "subject": "RULE-5-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_lo",
                     "object": "0.01"
                 },
                 {
-                    "subject": "RULE-5-01",
-                    "predicate": "has_warn_hi",
-                    "object": "0.2"
+                    "subject": "RULE-01",
+                    "predicate": "has_warn_lo",
+                    "object": "0.02"
                 },
                 {
-                    "subject": "RULE-5-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_hi",
                     "object": "0.35"
                 },
                 {
-                    "subject": "RULE-5-01",
+                    "subject": "RULE-01",
+                    "predicate": "has_warn_hi",
+                    "object": "0.2"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "mm/s"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "triggers_action",
                     "object": "E-STOP; inspect main bearing."
-                },
-                {
-                    "subject": "RULE-5-02",
-                    "predicate": "has_sensor_type",
-                    "object": "CUR"
-                },
-                {
-                    "subject": "RULE-5-02",
-                    "predicate": "has_unit",
-                    "object": "A"
-                },
-                {
-                    "subject": "RULE-5-02",
-                    "predicate": "has_crit_lo",
-                    "object": "6.5"
-                },
-                {
-                    "subject": "RULE-5-02",
-                    "predicate": "has_warn_hi",
-                    "object": "9.8"
-                },
-                {
-                    "subject": "RULE-5-02",
-                    "predicate": "has_crit_hi",
-                    "object": "11.0"
-                },
-                {
-                    "subject": "RULE-5-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
-                },
-                {
-                    "subject": "RULE-5-03",
-                    "predicate": "has_sensor_type",
-                    "object": "SPD"
-                },
-                {
-                    "subject": "RULE-5-03",
-                    "predicate": "has_unit",
-                    "object": "m/s"
-                },
-                {
-                    "subject": "RULE-5-03",
-                    "predicate": "has_crit_lo",
-                    "object": "0.85"
-                },
-                {
-                    "subject": "RULE-5-03",
-                    "predicate": "has_warn_hi",
-                    "object": "1.4"
-                },
-                {
-                    "subject": "RULE-5-03",
-                    "predicate": "has_crit_hi",
-                    "object": "1.6"
-                },
-                {
-                    "subject": "RULE-5-03",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
                 }
             ]
         },
@@ -1379,206 +1096,174 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
             "entities": [
                 {
-                    "span": "TMP",
-                    "category": "Sensor",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "Unit = °C.",
+                    "span": "TMP, Unit = °C",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": "°C",
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "TMP, CRIT_LO = 16.0",
                     "category": "Parameter",
+                    "numeric_value": 16.0,
+                    "unit": null,
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "16.0",
+                    "span": "TMP,  = 18.0",
                     "category": "Parameter",
+                    "numeric_value": 18.0,
+                    "unit": null,
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "TMP, WARN_LONominal = 21.0 ± 0.3",
                     "category": "Parameter",
+                    "numeric_value": 21.0,
+                    "unit": "°C",
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "18.0",
+                    "span": "TMP, WARN_HI = 25.0",
                     "category": "Parameter",
+                    "numeric_value": 25.0,
+                    "unit": null,
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_LONominal",
+                    "span": "TMP, CRIT_HI = 28.0",
                     "category": "Parameter",
+                    "numeric_value": 28.0,
+                    "unit": null,
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "21.0 ± 0.3",
-                    "category": "Parameter",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "25.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "28.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "TMP, CRITICAL Response = Activate backup cooling; prepare controlled PLC shutdown.",
+                    "span": "TMP, CRITICAL Response = Activate backup cooling; prepare controlled PLC shutdown",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "HUM",
-                    "category": "Sensor",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "Unit = %RH.",
+                    "span": "HUM, Unit = %RH",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": "%RH",
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "HUM, CRIT_LO = 25.0",
                     "category": "Parameter",
+                    "numeric_value": 25.0,
+                    "unit": null,
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "25.0",
+                    "span": "HUM,  = 30.0",
                     "category": "Parameter",
+                    "numeric_value": 30.0,
+                    "unit": null,
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "",
+                    "span": "HUM, WARN_LONominal = 45.0 ± 1.0",
                     "category": "Parameter",
+                    "numeric_value": 45.0,
+                    "unit": "°C",
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "30.0",
+                    "span": "HUM, WARN_HI = 60.0",
                     "category": "Parameter",
+                    "numeric_value": 60.0,
+                    "unit": null,
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
-                    "span": "WARN_LONominal",
+                    "span": "HUM, CRIT_HI = 70.0",
                     "category": "Parameter",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "45.0 ± 1.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "60.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 6,
-                    "source_page": 1
-                },
-                {
-                    "span": "70.0",
-                    "category": "Parameter",
+                    "numeric_value": 70.0,
+                    "unit": null,
                     "source_chunk_id": 6,
                     "source_page": 1
                 },
                 {
                     "span": "HUM, CRITICAL Response = Inspect and notify maintenance",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 6,
                     "source_page": 1
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-6-01",
+                    "subject": "RULE-01",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-6-01",
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "SRV01_SERVERROOM"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "applies_to_sensor",
                     "object": "TMP"
                 },
                 {
-                    "subject": "RULE-6-01",
-                    "predicate": "has_unit",
-                    "object": "°C."
+                    "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP"
                 },
                 {
-                    "subject": "RULE-6-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_lo",
                     "object": "16.0"
                 },
                 {
-                    "subject": "RULE-6-01",
+                    "subject": "RULE-01",
+                    "predicate": "has_warn_lo",
+                    "object": "18.0"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_warn_hi",
                     "object": "25.0"
                 },
                 {
-                    "subject": "RULE-6-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_hi",
                     "object": "28.0"
                 },
                 {
-                    "subject": "RULE-6-01",
-                    "predicate": "triggers_action",
-                    "object": "Activate backup cooling; prepare controlled PLC shutdown."
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "°C"
                 },
                 {
-                    "subject": "SRV01_SERVERROOM",
-                    "predicate": "monitors",
-                    "object": "TMP"
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Activate backup cooling; prepare controlled PLC shutdown"
                 }
             ]
         },
@@ -1591,218 +1276,192 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
             "entities": [
                 {
-                    "span": "TMP",
-                    "category": "Sensor",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "Unit = °C.",
-                    "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
                     "span": "-1.0",
                     "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "",
-                    "category": "Parameter",
+                    "numeric_value": -1.0,
+                    "unit": "°C",
                     "source_chunk_id": 7,
                     "source_page": 2
                 },
                 {
                     "span": "0.5",
                     "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
+                    "numeric_value": 0.5,
+                    "unit": null,
                     "source_chunk_id": 7,
                     "source_page": 2
                 },
                 {
                     "span": "4.0 ± 0.5",
                     "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
+                    "numeric_value": 4.0,
+                    "unit": null,
                     "source_chunk_id": 7,
                     "source_page": 2
                 },
                 {
                     "span": "8.0",
                     "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
+                    "numeric_value": 8.0,
+                    "unit": null,
                     "source_chunk_id": 7,
                     "source_page": 2
                 },
                 {
                     "span": "12.0",
                     "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "Activate backup refrigeration; notify QC.",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "HUM",
-                    "category": "Sensor",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "Unit = %RH.",
-                    "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRIT_LO",
-                    "category": "Parameter",
+                    "numeric_value": 12.0,
+                    "unit": null,
                     "source_chunk_id": 7,
                     "source_page": 2
                 },
                 {
                     "span": "55.0",
                     "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "",
-                    "category": "Parameter",
+                    "numeric_value": 55.0,
+                    "unit": "%RH",
                     "source_chunk_id": 7,
                     "source_page": 2
                 },
                 {
                     "span": "60.0",
                     "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
+                    "numeric_value": 60.0,
+                    "unit": null,
                     "source_chunk_id": 7,
                     "source_page": 2
                 },
                 {
                     "span": "75.0 ± 1.5",
                     "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
+                    "numeric_value": 75.0,
+                    "unit": null,
                     "source_chunk_id": 7,
                     "source_page": 2
                 },
                 {
                     "span": "85.0",
                     "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
+                    "numeric_value": 85.0,
+                    "unit": null,
                     "source_chunk_id": 7,
                     "source_page": 2
                 },
                 {
                     "span": "90.0",
                     "category": "Parameter",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRITICAL Response",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 7,
-                    "source_page": 2
-                },
-                {
-                    "span": "Inspect and notify maintenance",
-                    "category": "AnomalyEvent",
+                    "numeric_value": 90.0,
+                    "unit": null,
                     "source_chunk_id": 7,
                     "source_page": 2
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-7-01",
+                    "subject": "RULE-01",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-7-01",
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "WRH01_WAREHOUSE"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "applies_to_sensor",
                     "object": "TMP"
                 },
                 {
-                    "subject": "RULE-7-01",
-                    "predicate": "has_unit",
-                    "object": "°C."
+                    "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP"
                 },
                 {
-                    "subject": "RULE-7-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_lo",
                     "object": "-1.0"
                 },
                 {
-                    "subject": "RULE-7-01",
+                    "subject": "RULE-01",
+                    "predicate": "has_warn_lo",
+                    "object": "4.0"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_warn_hi",
                     "object": "8.0"
                 },
                 {
-                    "subject": "RULE-7-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_hi",
                     "object": "12.0"
                 },
                 {
-                    "subject": "RULE-7-01",
-                    "predicate": "triggers_action",
-                    "object": "Activate backup refrigeration; notify QC."
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "°C"
                 },
                 {
-                    "subject": "TMP",
-                    "predicate": "monitors",
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Activate backup refrigeration; notify QC"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "applies_to_station",
                     "object": "WRH01_WAREHOUSE"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "applies_to_sensor",
+                    "object": "HUM"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_sensor_type",
+                    "object": "HUM"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_crit_lo",
+                    "object": "55.0"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_warn_lo",
+                    "object": "60.0"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_warn_hi",
+                    "object": "85.0"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_crit_hi",
+                    "object": "90.0"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_unit",
+                    "object": "%RH"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance"
                 }
             ]
         },
@@ -1815,163 +1474,142 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
             "entities": [
                 {
                     "span": "TMP",
-                    "category": "Sensor",
-                    "source_chunk_id": 8,
-                    "source_page": 2
-                },
-                {
-                    "span": "Unit = °C.",
                     "category": "Parameter",
+                    "numeric_value": 5.0,
+                    "unit": "°C",
                     "source_chunk_id": 8,
                     "source_page": 2
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 10.0,
+                    "unit": null,
                     "source_chunk_id": 8,
                     "source_page": 2
                 },
                 {
-                    "span": "10.0",
+                    "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 15.0,
+                    "unit": "°C",
                     "source_chunk_id": 8,
                     "source_page": 2
                 },
                 {
-                    "span": "WARN_LONominal = 15.0 ± 0.3",
+                    "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 20.0,
+                    "unit": "°C",
                     "source_chunk_id": 8,
                     "source_page": 2
                 },
                 {
-                    "span": "20.0",
+                    "span": "TMP",
                     "category": "Parameter",
-                    "source_chunk_id": 8,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 8,
-                    "source_page": 2
-                },
-                {
-                    "span": "25.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 8,
-                    "source_page": 2
-                },
-                {
-                    "span": "Activate emergency ventilation; notify safety officer immediately.",
-                    "category": "AnomalyEvent",
+                    "numeric_value": 25.0,
+                    "unit": "°C",
                     "source_chunk_id": 8,
                     "source_page": 2
                 },
                 {
                     "span": "HUM",
-                    "category": "Sensor",
-                    "source_chunk_id": 8,
-                    "source_page": 2
-                },
-                {
-                    "span": "Unit = %RH.",
                     "category": "Parameter",
+                    "numeric_value": 15.0,
+                    "unit": "%RH",
                     "source_chunk_id": 8,
                     "source_page": 2
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 20.0,
+                    "unit": "%RH",
                     "source_chunk_id": 8,
                     "source_page": 2
                 },
                 {
-                    "span": "20.0",
+                    "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 35.0,
+                    "unit": "%RH",
                     "source_chunk_id": 8,
                     "source_page": 2
                 },
                 {
-                    "span": "WARN_LONominal = 35.0 ± 1.0",
+                    "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 50.0,
+                    "unit": "%RH",
                     "source_chunk_id": 8,
                     "source_page": 2
                 },
                 {
-                    "span": "50.0",
+                    "span": "HUM",
                     "category": "Parameter",
-                    "source_chunk_id": 8,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 8,
-                    "source_page": 2
-                },
-                {
-                    "span": "60.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 8,
-                    "source_page": 2
-                },
-                {
-                    "span": "Activate desiccant system; inspect storage containers for leak.",
-                    "category": "AnomalyEvent",
+                    "numeric_value": 60.0,
+                    "unit": "%RH",
                     "source_chunk_id": 8,
                     "source_page": 2
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-8-01",
+                    "subject": "RULE-01",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-8-01",
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "CHM01_CHEMICALSTORAGE"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "applies_to_sensor",
                     "object": "TMP"
                 },
                 {
-                    "subject": "RULE-8-01",
-                    "predicate": "has_unit",
-                    "object": "°C."
+                    "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP"
                 },
                 {
-                    "subject": "RULE-8-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_lo",
                     "object": "5.0"
                 },
                 {
-                    "subject": "RULE-8-01",
+                    "subject": "RULE-01",
                     "predicate": "has_warn_lo",
                     "object": "10.0"
                 },
                 {
-                    "subject": "RULE-8-01",
-                    "predicate": "has_crit_hi",
-                    "object": "25.0"
-                },
-                {
-                    "subject": "RULE-8-01",
+                    "subject": "RULE-01",
                     "predicate": "has_warn_hi",
                     "object": "20.0"
                 },
                 {
-                    "subject": "RULE-8-01",
-                    "predicate": "triggers_action",
-                    "object": "Activate emergency ventilation; notify safety officer immediately."
+                    "subject": "RULE-01",
+                    "predicate": "has_crit_hi",
+                    "object": "25.0"
                 },
                 {
-                    "subject": "CHM01_CHEMICALSTORAGE",
-                    "predicate": "monitors",
-                    "object": "TMP"
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "°C"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Activate emergency ventilation; notify safety officer immediately"
                 }
             ]
         },
@@ -1984,226 +1622,158 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
             "entities": [
                 {
                     "span": "TMP",
-                    "category": "Sensor",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "Unit = °C.",
                     "category": "Parameter",
+                    "numeric_value": 15.0,
+                    "unit": "°C",
                     "source_chunk_id": 9,
                     "source_page": 2
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 18.0,
+                    "unit": null,
                     "source_chunk_id": 9,
                     "source_page": 2
                 },
                 {
-                    "span": "15.0",
+                    "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 22.0,
+                    "unit": "± 0.2",
                     "source_chunk_id": 9,
                     "source_page": 2
                 },
                 {
-                    "span": "",
+                    "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 26.0,
+                    "unit": null,
                     "source_chunk_id": 9,
                     "source_page": 2
                 },
                 {
-                    "span": "18.0",
+                    "span": "TMP",
                     "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "22.0 ± 0.2",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "26.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "30.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "TMP, CRITICAL Response = Inspect and notify maintenance.",
-                    "category": "AnomalyEvent",
+                    "numeric_value": 30.0,
+                    "unit": null,
                     "source_chunk_id": 9,
                     "source_page": 2
                 },
                 {
                     "span": "HUM",
-                    "category": "Sensor",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "Unit = %RH.",
                     "category": "Parameter",
+                    "numeric_value": 25.0,
+                    "unit": "%RH",
                     "source_chunk_id": 9,
                     "source_page": 2
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 35.0,
+                    "unit": null,
                     "source_chunk_id": 9,
                     "source_page": 2
                 },
                 {
-                    "span": "25.0",
+                    "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 50.0,
+                    "unit": "± 1.0",
                     "source_chunk_id": 9,
                     "source_page": 2
                 },
                 {
-                    "span": "",
+                    "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 65.0,
+                    "unit": null,
                     "source_chunk_id": 9,
                     "source_page": 2
                 },
                 {
-                    "span": "35.0",
+                    "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 75.0,
+                    "unit": null,
                     "source_chunk_id": 9,
                     "source_page": 2
                 },
                 {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "50.0 ± 1.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "65.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "75.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 9,
-                    "source_page": 2
-                },
-                {
-                    "span": "HUM, CRITICAL Response = Suspend experiments; inspect HVAC system",
+                    "span": "Inspect and notify maintenance.",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 9,
+                    "source_page": 2
+                },
+                {
+                    "span": "Suspend experiments; inspect HVAC system",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 9,
                     "source_page": 2
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-9-01",
+                    "subject": "RULE-01",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-9-01",
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "RND01_RDLAB"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_sensor",
+                    "object": "TMP"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_sensor_type",
                     "object": "TMP"
                 },
                 {
-                    "subject": "RULE-9-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_lo",
                     "object": "15.0"
                 },
                 {
-                    "subject": "RULE-9-01",
+                    "subject": "RULE-01",
+                    "predicate": "has_warn_lo",
+                    "object": "22.0"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_warn_hi",
                     "object": "26.0"
                 },
                 {
-                    "subject": "RULE-9-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_hi",
                     "object": "30.0"
                 },
                 {
-                    "subject": "RULE-9-01",
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "°C"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "triggers_action",
                     "object": "Inspect and notify maintenance."
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_sensor_type",
-                    "object": "HUM"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_crit_lo",
-                    "object": "25.0"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_warn_hi",
-                    "object": "65.0"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "has_crit_hi",
-                    "object": "75.0"
-                },
-                {
-                    "subject": "RULE-9-02",
-                    "predicate": "triggers_action",
-                    "object": "Suspend experiments; inspect HVAC system."
                 }
             ]
         },
@@ -2216,206 +1786,192 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
             "entities": [
                 {
                     "span": "TMP",
-                    "category": "Sensor",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "Unit = °C.",
                     "category": "Parameter",
+                    "numeric_value": 14.0,
+                    "unit": "°C",
                     "source_chunk_id": 10,
                     "source_page": 2
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 10,
                     "source_page": 2
                 },
                 {
-                    "span": "14.0",
+                    "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 21.0,
+                    "unit": "°C",
                     "source_chunk_id": 10,
                     "source_page": 2
                 },
                 {
-                    "span": "",
+                    "span": "TMP",
                     "category": "Parameter",
+                    "numeric_value": 26.0,
+                    "unit": "°C",
                     "source_chunk_id": 10,
                     "source_page": 2
                 },
                 {
-                    "span": "17.0",
+                    "span": "TMP",
                     "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "21.0 ± 0.4",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "26.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "30.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "TMP, CRITICAL Response = Inspect and notify maintenance.",
-                    "category": "AnomalyEvent",
+                    "numeric_value": 30.0,
+                    "unit": "°C",
                     "source_chunk_id": 10,
                     "source_page": 2
                 },
                 {
                     "span": "HUM",
-                    "category": "Sensor",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "Unit = %RH.",
                     "category": "Parameter",
+                    "numeric_value": 25.0,
+                    "unit": "%RH",
                     "source_chunk_id": 10,
                     "source_page": 2
                 },
                 {
-                    "span": "CRIT_LO",
+                    "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 10,
                     "source_page": 2
                 },
                 {
-                    "span": "25.0",
+                    "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 55.0,
+                    "unit": "%RH",
                     "source_chunk_id": 10,
                     "source_page": 2
                 },
                 {
-                    "span": "",
+                    "span": "HUM",
                     "category": "Parameter",
+                    "numeric_value": 70.0,
+                    "unit": "%RH",
                     "source_chunk_id": 10,
                     "source_page": 2
                 },
                 {
-                    "span": "35.0",
+                    "span": "HUM",
                     "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "WARN_LONominal",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "55.0 ± 1.5",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "WARN_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "70.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "CRIT_HI",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "80.0",
-                    "category": "Parameter",
-                    "source_chunk_id": 10,
-                    "source_page": 2
-                },
-                {
-                    "span": "HUM, CRITICAL Response = Inspect and notify maintenance.",
-                    "category": "AnomalyEvent",
+                    "numeric_value": 80.0,
+                    "unit": "%RH",
                     "source_chunk_id": 10,
                     "source_page": 2
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-10-01",
+                    "subject": "RULE-01",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule"
                 },
                 {
-                    "subject": "RULE-10-01",
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "CAF01_CAFETERIA"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "applies_to_sensor",
                     "object": "TMP"
                 },
                 {
-                    "subject": "RULE-10-01",
-                    "predicate": "has_unit",
-                    "object": "°C."
+                    "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP"
                 },
                 {
-                    "subject": "RULE-10-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_lo",
                     "object": "14.0"
                 },
                 {
-                    "subject": "RULE-10-01",
+                    "subject": "RULE-01",
+                    "predicate": "has_warn_lo",
+                    "object": "21.0"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_warn_hi",
                     "object": "26.0"
                 },
                 {
-                    "subject": "RULE-10-01",
+                    "subject": "RULE-01",
                     "predicate": "has_crit_hi",
                     "object": "30.0"
                 },
                 {
-                    "subject": "RULE-10-01",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance."
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "°C"
                 },
                 {
-                    "subject": "CAF01_CAFETERIA",
-                    "predicate": "monitors",
-                    "object": "TMP"
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "applies_to_station",
+                    "object": "CAF01_CAFETERIA"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "applies_to_sensor",
+                    "object": "HUM"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_sensor_type",
+                    "object": "HUM"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_crit_lo",
+                    "object": "25.0"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_warn_lo",
+                    "object": "55.0"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_warn_hi",
+                    "object": "70.0"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_crit_hi",
+                    "object": "80.0"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_unit",
+                    "object": "%RH"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance"
                 }
             ]
         },
@@ -2428,320 +1984,53 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:24.447452+00:00"
             },
             "entities": [
                 {
                     "span": "SPIKE",
                     "category": "AnomalyEvent",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "Definition",
-                    "category": "Parameter",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "Transient deviation >3 s , <5 minSingle",
-                    "category": "Parameter",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "Detection Criterion",
-                    "category": "Parameter",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "reading >CRIT",
-                    "category": "Parameter",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "Ontology Class",
-                    "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 11,
                     "source_page": 2
                 },
                 {
                     "span": "DRIFT",
                     "category": "AnomalyEvent",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "Monotonic deviation >15 min",
-                    "category": "Parameter",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift.",
-                    "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 11,
                     "source_page": 2
                 },
                 {
                     "span": "STUCK",
                     "category": "AnomalyEvent",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "Unchanged >10 consecutive",
-                    "category": "Parameter",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "readings std(last 10)<0.001×nominal",
-                    "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 11,
                     "source_page": 2
                 },
                 {
                     "span": "OUT_OF_RANGE",
                     "category": "AnomalyEvent",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "Sustained WARN violation >10 min >WARN for 20+",
-                    "category": "Parameter",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "readings",
-                    "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 11,
                     "source_page": 2
                 },
                 {
                     "span": "CORRELATED",
                     "category": "AnomalyEvent",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "Causally linked to another station Onset within.",
-                    "category": "Parameter",
-                    "source_chunk_id": 11,
-                    "source_page": 2
-                },
-                {
-                    "span": "90 min of cause",
-                    "category": "Parameter",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 11,
                     "source_page": 2
                 }
             ],
-            "relations": [
-                {
-                    "subject": "RULE-11-01",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-11-01",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP"
-                },
-                {
-                    "subject": "RULE-11-01",
-                    "predicate": "has_condition",
-                    "object": "Transient deviation >3 s , <5 minSingle"
-                },
-                {
-                    "subject": "RULE-11-01",
-                    "predicate": "triggers_action",
-                    "object": "Trigger alert for transient spike"
-                },
-                {
-                    "subject": "RULE-11-01",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL"
-                },
-                {
-                    "subject": "SPIKE",
-                    "predicate": "Definition",
-                    "object": "Transient deviation >3 s , <5 minSingle"
-                },
-                {
-                    "subject": "SPIKE",
-                    "predicate": "Detection Criterion",
-                    "object": "reading >CRIT"
-                },
-                {
-                    "subject": "SPIKE",
-                    "predicate": "Ontology Class",
-                    "object": "AnomalyEvent::Spike"
-                },
-                {
-                    "subject": "RULE-11-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-11-02",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP"
-                },
-                {
-                    "subject": "RULE-11-02",
-                    "predicate": "has_condition",
-                    "object": "Monotonic deviation >15 min"
-                },
-                {
-                    "subject": "RULE-11-02",
-                    "predicate": "triggers_action",
-                    "object": "Trigger alert for drift"
-                },
-                {
-                    "subject": "RULE-11-02",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL"
-                },
-                {
-                    "subject": "DRIFT",
-                    "predicate": "Definition",
-                    "object": "Monotonic deviation >15 min"
-                },
-                {
-                    "subject": "DRIFT",
-                    "predicate": "Detection Criterion",
-                    "object": "Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift."
-                },
-                {
-                    "subject": "DRIFT",
-                    "predicate": "Ontology Class",
-                    "object": "Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift."
-                },
-                {
-                    "subject": "RULE-11-03",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-11-03",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP"
-                },
-                {
-                    "subject": "RULE-11-03",
-                    "predicate": "has_condition",
-                    "object": "Unchanged >10 consecutive readings std(last 10)<0.001×nominal"
-                },
-                {
-                    "subject": "RULE-11-03",
-                    "predicate": "triggers_action",
-                    "object": "Trigger alert for stuck sensor"
-                },
-                {
-                    "subject": "RULE-11-03",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL"
-                },
-                {
-                    "subject": "STUCK",
-                    "predicate": "Definition",
-                    "object": "Unchanged >10 consecutive readings std(last 10)<0.001×nominal"
-                },
-                {
-                    "subject": "STUCK",
-                    "predicate": "Detection Criterion",
-                    "object": "readings std(last 10)<0.001×nominal"
-                },
-                {
-                    "subject": "STUCK",
-                    "predicate": "Ontology Class",
-                    "object": "AnomalyEvent::StuckSensor"
-                },
-                {
-                    "subject": "RULE-11-04",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-11-04",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP"
-                },
-                {
-                    "subject": "RULE-11-04",
-                    "predicate": "has_condition",
-                    "object": "Sustained WARN violation >10 min >WARN for 20+ readings"
-                },
-                {
-                    "subject": "RULE-11-04",
-                    "predicate": "triggers_action",
-                    "object": "Trigger alert for out of range condition"
-                },
-                {
-                    "subject": "RULE-11-04",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL"
-                },
-                {
-                    "subject": "OUT_OF_RANGE",
-                    "predicate": "Definition",
-                    "object": "Sustained WARN violation >10 min >WARN for 20+ readings"
-                },
-                {
-                    "subject": "OUT_OF_RANGE",
-                    "predicate": "Detection Criterion",
-                    "object": "readings"
-                },
-                {
-                    "subject": "OUT_OF_RANGE",
-                    "predicate": "Ontology Class",
-                    "object": "AnomalyEvent::OutOfRange"
-                },
-                {
-                    "subject": "RULE-11-05",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule"
-                },
-                {
-                    "subject": "RULE-11-05",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP"
-                },
-                {
-                    "subject": "RULE-11-05",
-                    "predicate": "has_condition",
-                    "object": "Causally linked to another station Onset within 90 min of cause"
-                },
-                {
-                    "subject": "RULE-11-05",
-                    "predicate": "triggers_action",
-                    "object": "Trigger alert for correlated anomaly"
-                },
-                {
-                    "subject": "RULE-11-05",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL"
-                },
-                {
-                    "subject": "CORRELATED",
-                    "predicate": "Definition",
-                    "object": "Causally linked to another station Onset within 90 min of cause"
-                },
-                {
-                    "subject": "CORRELATED",
-                    "predicate": "Detection Criterion",
-                    "object": "90 min of cause"
-                },
-                {
-                    "subject": "CORRELATED",
-                    "predicate": "Ontology Class",
-                    "object": "AnomalyEvent::Correlated"
-                }
-            ]
+            "relations": []
         }
     ]
 }

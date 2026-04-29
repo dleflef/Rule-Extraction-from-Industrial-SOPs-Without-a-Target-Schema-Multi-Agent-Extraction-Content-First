@@ -1,8 +1,8 @@
 {
     "source_file": "SOP_003_MaintenanceRules.pdf",
-    "model_used": "qwen2.5-coder-7b-instruct",
+    "model_used": "qwen2.5-7b-instruct",
     "temperature": 0.0,
-    "prompt_mode": "graph_informed",
+    "prompt_strategy": "Unified Ontology Relation Extraction",
     "strategy": "Rule Reification — (subject, predicate, object) triples",
     "results": [
         {
@@ -14,63 +14,45 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:30.550836+00:00"
             },
             "entities": [
                 {
-                    "span": "ST01_PRODUCTION",
-                    "category": "Component",
-                    "source_chunk_id": 0,
-                    "source_page": 1
-                },
-                {
-                    "span": "S01_PRODUCTION_TEMP",
-                    "category": "Sensor",
-                    "source_chunk_id": 0,
-                    "source_page": 1
-                },
-                {
-                    "span": "Temperature",
-                    "category": "Parameter",
+                    "span": "Production Line A",
+                    "category": "Zone",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 0,
                     "source_page": 1
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-0-01",
+                    "subject": "RULE-01",
                     "predicate": "rdf:type",
-                    "object": "ThresholdRule"
+                    "object": "MaintenanceRule"
                 },
                 {
-                    "subject": "RULE-0-01",
+                    "subject": "RULE-01",
                     "predicate": "applies_to_station",
-                    "object": "ST01_PRODUCTION"
+                    "object": "Production Line A"
                 },
                 {
-                    "subject": "RULE-0-01",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP"
-                },
-                {
-                    "subject": "RULE-0-01",
+                    "subject": "RULE-01",
                     "predicate": "has_condition",
-                    "object": "Temperature exceeds 85.0 degrees Celsius"
+                    "object": "VIB DRIFT >0.05 mm/s over 60 min"
                 },
                 {
-                    "subject": "RULE-0-01",
+                    "subject": "RULE-01",
                     "predicate": "triggers_action",
-                    "object": "Initiate predictive maintenance for ST01_PRODUCTION"
+                    "object": "Inspect and lubricate bearing"
                 },
                 {
-                    "subject": "RULE-0-01",
+                    "subject": "RULE-01",
                     "predicate": "has_severity",
-                    "object": "WARNING"
-                },
-                {
-                    "subject": "ST01_PRODUCTION",
-                    "predicate": "monitors",
-                    "object": "S01_PRODUCTION_TEMP"
+                    "object": "HIGH"
                 }
             ]
         },
@@ -83,29 +65,47 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:30.550836+00:00"
             },
             "entities": [
                 {
-                    "span": "Production Line A",
-                    "category": "Zone",
-                    "source_chunk_id": 1,
-                    "source_page": 1
-                },
-                {
-                    "span": "ST1_<FUNCTION>",
-                    "category": "Component",
-                    "source_chunk_id": 1,
-                    "source_page": 1
-                },
-                {
-                    "span": "<STATION>_<SENSORTYPE>",
-                    "category": "Sensor",
+                    "span": "Ing. A. Conti - Maintenance Engineering",
+                    "category": "Role",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 1,
                     "source_page": 1
                 }
             ],
-            "relations": []
+            "relations": [
+                {
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "MaintenanceRule"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "PROD-LINE-A"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_condition",
+                    "object": "VIB DRIFT >0.05 mm/s over 60 min"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and lubricate bearing"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_severity",
+                    "object": "HIGH"
+                }
+            ]
         },
         {
             "chunk_id": 2,
@@ -116,470 +116,617 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:30.550836+00:00"
             },
             "entities": [
                 {
                     "span": "MAINT-01",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 2,
-                    "source_page": 1
-                },
-                {
-                    "span": "VIB. MAINT-01",
                     "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "ST04_PACKAGING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH",
-                    "category": "Parameter",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-02",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 2,
-                    "source_page": 1
-                },
-                {
-                    "span": "CUR. MAINT-02",
                     "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "ST02_SEALING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw",
-                    "category": "Parameter",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "HIGH",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-03",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 2,
-                    "source_page": 1
-                },
-                {
-                    "span": "TEN. MAINT-03",
                     "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "ST03_LABELLING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "TEN STUCK >10 samples Replace sensor",
-                    "category": "Parameter",
+                    "span": "TEN STUCK >10 samples",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "Replace sensor",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "MEDIUM",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-04",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 2,
-                    "source_page": 1
-                },
-                {
-                    "span": "PRS. MAINT-04",
                     "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "ST01_FILLING",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "PRS <3.3 bar for >15 min Inspect filter and pump",
-                    "category": "Parameter",
+                    "span": "PRS <3.3 bar for >15 min",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 3.3,
+                    "unit": "bar",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "Inspect filter and pump",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "MEDIUM",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-05",
-                    "category": "AnomalyEvent",
-                    "source_chunk_id": 2,
-                    "source_page": 1
-                },
-                {
-                    "span": "TMP. MAINT-05",
                     "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "SRV01_SERVERROOM",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "TMP >25°C for >5 min Activate secondary cooling",
-                    "category": "Parameter",
+                    "span": "TMP >25°C for >5 min",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 25.0,
+                    "unit": "°C",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "Activate secondary cooling",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "CRITICAL",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-06",
-                    "category": "AnomalyEvent",
+                    "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "WRH01_WAREHOUSE",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "TMP DRIFT >2°C over 2 h Inspect compressor; notify",
-                    "category": "Parameter",
+                    "span": "TMP DRIFT >2°C over 2 h",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 2.0,
+                    "unit": "°C",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "Inspect compressor; notify",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "QC CRITICAL",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-07",
-                    "category": "AnomalyEvent",
+                    "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "CHM01_CHEMICALSTORAGE",
                     "category": "Component",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
-                    "span": "TMP >20°C for >10 min Emergency ventilation; notify",
-                    "category": "Parameter",
+                    "span": "TMP >20°C for >10 min",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 20.0,
+                    "unit": "°C",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "Emergency ventilation; notify",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "safety officer CRITICAL",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "MAINT-08",
-                    "category": "AnomalyEvent",
+                    "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "RND01_RDLAB",
                     "category": "Component",
-                    "source_chunk_id": 2,
-                    "source_page": 1
-                },
-                {
-                    "span": "HUM. MAINT-08",
-                    "category": "Sensor",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 },
                 {
                     "span": "HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH",
-                    "category": "Parameter",
+                    "category": "AnomalyEvent",
+                    "numeric_value": 10.0,
+                    "unit": "%RH",
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
+                    "source_chunk_id": 2,
+                    "source_page": 1
+                },
+                {
+                    "span": "HIGH",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule"
                 },
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
                     "predicate": "applies_to_station",
                     "object": "ST04_PACKAGING"
                 },
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
+                    "predicate": "applies_to_sensor",
+                    "object": "VIB"
+                },
+                {
+                    "subject": "MAINT-01",
                     "predicate": "has_sensor_type",
                     "object": "VIB"
                 },
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
                     "predicate": "has_condition",
-                    "object": "VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH"
+                    "object": "VIB DRIFT >0.05 mm/s over 60 min"
                 },
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
                     "predicate": "triggers_action",
                     "object": "Inspect and lubricate bearing"
                 },
                 {
-                    "subject": "RULE-2-01",
+                    "subject": "MAINT-01",
                     "predicate": "has_severity",
                     "object": "HIGH"
                 },
                 {
-                    "subject": "ST04_PACKAGING",
-                    "predicate": "monitors",
-                    "object": "VIB. MAINT-01"
+                    "subject": "MAINT-01",
+                    "predicate": "has_unit",
+                    "object": "mm/s"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
                     "predicate": "applies_to_station",
                     "object": "ST02_SEALING"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
+                    "predicate": "applies_to_sensor",
+                    "object": "CUR"
+                },
+                {
+                    "subject": "MAINT-02",
                     "predicate": "has_sensor_type",
                     "object": "CUR"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
                     "predicate": "has_condition",
-                    "object": "CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw"
+                    "object": "CUR DRIFT >1.0 A for 30+ min"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
                     "predicate": "triggers_action",
                     "object": "Inspect sealing jaw"
                 },
                 {
-                    "subject": "RULE-2-02",
+                    "subject": "MAINT-02",
                     "predicate": "has_severity",
                     "object": "HIGH"
                 },
                 {
-                    "subject": "ST02_SEALING",
-                    "predicate": "monitors",
-                    "object": "CUR. MAINT-02"
-                },
-                {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
                     "predicate": "applies_to_station",
                     "object": "ST03_LABELLING"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
+                    "predicate": "applies_to_sensor",
+                    "object": "TEN"
+                },
+                {
+                    "subject": "MAINT-03",
                     "predicate": "has_sensor_type",
                     "object": "TEN"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
                     "predicate": "has_condition",
-                    "object": "TEN STUCK >10 samples Replace sensor"
+                    "object": "TEN STUCK >10 samples"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
                     "predicate": "triggers_action",
                     "object": "Replace sensor"
                 },
                 {
-                    "subject": "RULE-2-03",
+                    "subject": "MAINT-03",
                     "predicate": "has_severity",
                     "object": "MEDIUM"
                 },
                 {
-                    "subject": "ST03_LABELLING",
-                    "predicate": "monitors",
-                    "object": "TEN. MAINT-03"
-                },
-                {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule"
                 },
                 {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
                     "predicate": "applies_to_station",
                     "object": "ST01_FILLING"
                 },
                 {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
+                    "predicate": "applies_to_sensor",
+                    "object": "PRS"
+                },
+                {
+                    "subject": "MAINT-04",
                     "predicate": "has_sensor_type",
                     "object": "PRS"
                 },
                 {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
                     "predicate": "has_condition",
-                    "object": "PRS <3.3 bar for >15 min Inspect filter and pump"
+                    "object": "PRS <3.3 bar for >15 min"
                 },
                 {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
                     "predicate": "triggers_action",
                     "object": "Inspect filter and pump"
                 },
                 {
-                    "subject": "RULE-2-04",
+                    "subject": "MAINT-04",
                     "predicate": "has_severity",
                     "object": "MEDIUM"
                 },
                 {
-                    "subject": "ST01_FILLING",
-                    "predicate": "monitors",
-                    "object": "PRS. MAINT-04"
-                },
-                {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule"
                 },
                 {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
                     "predicate": "applies_to_station",
                     "object": "SRV01_SERVERROOM"
                 },
                 {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
+                    "predicate": "applies_to_sensor",
+                    "object": "TMP"
+                },
+                {
+                    "subject": "MAINT-05",
                     "predicate": "has_sensor_type",
                     "object": "TMP"
                 },
                 {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
                     "predicate": "has_condition",
-                    "object": "TMP >25°C for >5 min Activate secondary cooling"
+                    "object": "TMP >25°C for >5 min"
                 },
                 {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
                     "predicate": "triggers_action",
                     "object": "Activate secondary cooling"
                 },
                 {
-                    "subject": "RULE-2-05",
+                    "subject": "MAINT-05",
                     "predicate": "has_severity",
                     "object": "CRITICAL"
                 },
                 {
-                    "subject": "SRV01_SERVERROOM",
-                    "predicate": "monitors",
-                    "object": "TMP. MAINT-05"
-                },
-                {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule"
                 },
                 {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
                     "predicate": "applies_to_station",
                     "object": "WRH01_WAREHOUSE"
                 },
                 {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
+                    "predicate": "applies_to_sensor",
+                    "object": "TMP"
+                },
+                {
+                    "subject": "MAINT-06",
                     "predicate": "has_sensor_type",
                     "object": "TMP"
                 },
                 {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
                     "predicate": "has_condition",
-                    "object": "TMP DRIFT >2°C over 2 h Inspect compressor; notify"
+                    "object": "TMP DRIFT >2°C over 2 h"
                 },
                 {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
                     "predicate": "triggers_action",
                     "object": "Inspect compressor; notify"
                 },
                 {
-                    "subject": "RULE-2-06",
+                    "subject": "MAINT-06",
                     "predicate": "has_severity",
                     "object": "QC CRITICAL"
                 },
                 {
-                    "subject": "WRH01_WAREHOUSE",
-                    "predicate": "monitors",
-                    "object": "TMP. MAINT-06"
-                },
-                {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule"
                 },
                 {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
                     "predicate": "applies_to_station",
                     "object": "CHM01_CHEMICALSTORAGE"
                 },
                 {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
+                    "predicate": "applies_to_sensor",
+                    "object": "TMP"
+                },
+                {
+                    "subject": "MAINT-07",
                     "predicate": "has_sensor_type",
                     "object": "TMP"
                 },
                 {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
                     "predicate": "has_condition",
-                    "object": "TMP >20°C for >10 min Emergency ventilation; notify"
+                    "object": "TMP >20°C for >10 min"
                 },
                 {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
                     "predicate": "triggers_action",
                     "object": "Emergency ventilation; notify"
                 },
                 {
-                    "subject": "RULE-2-07",
+                    "subject": "MAINT-07",
                     "predicate": "has_severity",
                     "object": "safety officer CRITICAL"
                 },
                 {
-                    "subject": "CHM01_CHEMICALSTORAGE",
-                    "predicate": "monitors",
-                    "object": "TMP. MAINT-07"
-                },
-                {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule"
                 },
                 {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
                     "predicate": "applies_to_station",
                     "object": "RND01_RDLAB"
                 },
                 {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
+                    "predicate": "applies_to_sensor",
+                    "object": "HUM"
+                },
+                {
+                    "subject": "MAINT-08",
                     "predicate": "has_sensor_type",
                     "object": "HUM"
                 },
                 {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
                     "predicate": "has_condition",
-                    "object": "HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH"
+                    "object": "HUM DRIFT >10%RH over 60 min"
                 },
                 {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
                     "predicate": "triggers_action",
                     "object": "Activate dehumidifier; check HVAC drain"
                 },
                 {
-                    "subject": "RULE-2-08",
+                    "subject": "MAINT-08",
                     "predicate": "has_severity",
                     "object": "HIGH"
-                },
-                {
-                    "subject": "RND01_RDLAB",
-                    "predicate": "monitors",
-                    "object": "HUM. MAINT-08"
                 }
             ]
         },
@@ -592,137 +739,86 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:30.550836+00:00"
             },
             "entities": [
                 {
-                    "span": "ST02_SEALING-CUR",
-                    "category": "Component",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "fi ST04_PACKAGING-SPDfl",
-                    "category": "Component",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "Sealing motor overload",
+                    "span": "ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "Conveyor speed drop via electrical coupling",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "ST02-CUR trend",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "sealing jaw",
-                    "category": "Component",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "Primary Fault",
+                    "span": "Primary Fault = ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "Secondary Effect",
+                    "span": "Secondary Effect = ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "Resolution",
-                    "category": "Parameter",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "WRH01-TMP",
-                    "category": "Component",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "QC HOLD",
-                    "category": "Zone",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "Cold warehouse",
-                    "category": "Zone",
-                    "source_chunk_id": 3,
-                    "source_page": 1
-                },
-                {
-                    "span": "drift",
+                    "span": "Resolution = ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "Product quality risk",
+                    "span": "WRH01-TMP › fi QC HOLD Cold warehouse",
                     "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "Restore WRH01-TMP <8°C",
-                    "category": "Parameter",
+                    "span": "Primary Fault = drift",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "Notify QC",
-                    "category": "Role",
+                    "span": "Secondary Effect = Product quality risk",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 },
                 {
-                    "span": "Place batch on HOLD",
-                    "category": "Action",
+                    "span": "Resolution = 1.Restore WRH01-TMP <8°C. 2.Notify QC. 3.Place batch on HOLD",
+                    "category": "AnomalyEvent",
+                    "numeric_value": null,
+                    "unit": null,
                     "source_chunk_id": 3,
                     "source_page": 1
                 }
             ],
             "relations": [
                 {
-                    "subject": "RULE-3-01",
-                    "predicate": "rdf:type",
-                    "object": "OperationalRule"
-                },
-                {
-                    "subject": "RULE-3-01",
-                    "predicate": "applies_to_station",
+                    "subject": "ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling",
+                    "predicate": "monitors",
                     "object": "ST02_SEALING-CUR"
                 },
                 {
-                    "subject": "RULE-3-01",
-                    "predicate": "triggers_action",
-                    "object": "1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee."
-                },
-                {
-                    "subject": "RULE-3-01",
-                    "predicate": "has_severity",
-                    "object": "WARNING"
-                },
-                {
-                    "subject": "ST02_SEALING-CUR",
-                    "predicate": "monitors",
-                    "object": "fi ST04_PACKAGING-SPDfl"
+                    "subject": "ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling",
+                    "predicate": "feeds_into",
+                    "object": "ST04_PACKAGING-SPDfl"
                 }
             ]
         }

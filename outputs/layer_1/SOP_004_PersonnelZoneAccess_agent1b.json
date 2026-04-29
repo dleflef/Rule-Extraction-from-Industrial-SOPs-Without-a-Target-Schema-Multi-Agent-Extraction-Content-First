@@ -22,7 +22,9 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "char_count": 158
         },
@@ -36,7 +38,9 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "char_count": 1268
         },
@@ -50,7 +54,9 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "char_count": 729
         },
@@ -64,7 +70,9 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": true
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "char_count": 457
         },
@@ -78,7 +86,9 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "char_count": 179
         },
@@ -92,7 +102,9 @@
                 "page_numbers": [
                     1
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "char_count": 122
         },
@@ -106,7 +118,9 @@
                 "page_numbers": [
                     2
                 ],
-                "is_table": false
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "agent_id": "agent_1b",
+                "processed_at": "2026-04-28T08:00:38.984261+00:00"
             },
             "char_count": 280
         }

@@ -1,9 +1,9 @@
 import os
 import json
 import sys
+import glob
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import glob
 from layers.layer_2.agent_2b import agent_2b_app
 
 LAYER_1_DIR = "outputs/layer_1"
@@ -40,10 +40,9 @@ def process_file(agent2a_file: str):
         print(f"Testing Agent 2B on chunks from: {source_file}")
         print(f"{'='*60}")
 
-        prompt_mode = os.getenv("PROMPT_MODE", "graph_informed")
+        # CLEANED: Removed prompt_mode from initial state
         initial_state = {
             "source_file":          source_file,
-            "prompt_mode":          prompt_mode,
             "chunks_with_entities": chunks_with_entities,
             "extracted_relations":  None,
             "status":               "pending",
@@ -58,11 +57,12 @@ def process_file(agent2a_file: str):
 
         output_path = os.path.join(OUTPUT_DIR, f"{base_name}_agent2b_triples.json")
 
+        # CLEANED: Removed prompt_mode from the final output JSON tracking
         output_data = {
             "source_file": final_state["source_file"],
-            "model_used":  "qwen2.5-coder-7b-instruct",
+            "model_used":  "qwen2.5-7b-instruct",
             "temperature": 0.0,
-            "prompt_mode": prompt_mode,
+            "prompt_strategy": "Unified Ontology Relation Extraction",
             "strategy":    "Rule Reification — (subject, predicate, object) triples",
             "results":     final_state["extracted_relations"],
         }
@@ -86,7 +86,7 @@ def main():
     json_files = glob.glob(os.path.join(LAYER_2_DIR, "*_agent2a_entities.json"))
 
     if not json_files:
-        print(f"No input files found in {LAYER_2_DIR}")
+        print(f"No input files found in {LAYER_2_DIR}")  
         return
 
     print(f"Found {len(json_files)} files to process. Starting batch job...")

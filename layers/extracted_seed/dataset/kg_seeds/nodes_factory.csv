@@ -1,5 +1,5 @@
 nodeId,label,name,type,zone
-N0001,System,Production Line A,LineaA,-
+N0001,System,iMAKS,LineaA,-
 N0002,Zone,Production Area,-,Production Area
 N0003,Zone,Server Room,-,Server Room
 N0004,Zone,General Warehouse,-,General Warehouse
@@ -16,31 +16,35 @@ N0014,Sensor,ST02_SEALING_TMP,TMP,Production Area
 N0015,Sensor,ST02_SEALING_PRS,PRS,Production Area
 N0016,Sensor,ST02_SEALING_CUR,CUR,Production Area
 N0017,Component,ST03_LABELLING,LABELLING,Production Area
-N0018,Sensor,ST03_LABELLING_SPD,SPD,Production Area
-N0019,Sensor,ST03_LABELLING_TEN,TEN,Production Area
-N0020,Sensor,ST03_LABELLING_CNT,CNT,Production Area
-N0021,Component,ST04_PACKAGING,PACKAGING,Production Area
-N0022,Sensor,ST04_PACKAGING_VIB,VIB,Production Area
-N0023,Sensor,ST04_PACKAGING_CUR,CUR,Production Area
-N0024,Sensor,ST04_PACKAGING_SPD,SPD,Production Area
-N0025,Component,SRV01_SERVERROOM,SERVERROOM,Server Room
-N0026,Sensor,SRV01_SERVERROOM_TMP,TMP,Server Room
-N0027,Sensor,SRV01_SERVERROOM_HUM,HUM,Server Room
-N0028,Component,WRH01_WAREHOUSE,WAREHOUSE,General Warehouse
-N0029,Sensor,WRH01_WAREHOUSE_TMP,TMP,General Warehouse
-N0030,Sensor,WRH01_WAREHOUSE_HUM,HUM,General Warehouse
-N0031,Component,CHM01_CHEMICALSTORAGE,CHEMICALSTORAGE,Chemical Storage
-N0032,Sensor,CHM01_CHEMICALSTORAGE_TMP,TMP,Chemical Storage
-N0033,Sensor,CHM01_CHEMICALSTORAGE_HUM,HUM,Chemical Storage
-N0034,Component,RND01_RDLAB,RDLAB,R&D Lab
-N0035,Sensor,RND01_RDLAB_TMP,TMP,R&D Lab
-N0036,Sensor,RND01_RDLAB_HUM,HUM,R&D Lab
-N0037,Component,CAF01_CAFETERIA,CAFETERIA,Cafeteria
-N0038,Sensor,CAF01_CAFETERIA_TMP,TMP,Cafeteria
-N0039,Sensor,CAF01_CAFETERIA_HUM,HUM,Cafeteria
-N0040,Role,operator,-,-
-N0041,Role,technician,-,-
-N0042,Role,supervisor,-,-
-N0043,Role,manager,-,-
-N0044,Role,security,-,-
-N0045,Role,visitor,-,-
+N0018,Sensor,ST03_LABELLING_TMP,TMP,Production Area
+N0019,Sensor,ST03_LABELLING_SPD,SPD,Production Area
+N0020,Sensor,ST03_LABELLING_POS,POS,Production Area
+N0021,Sensor,ST03_LABELLING_TEN,TEN,Production Area
+N0022,Sensor,ST03_LABELLING_CNT,CNT,Production Area
+N0023,Component,ST04_PACKAGING,PACKAGING,Production Area
+N0024,Sensor,ST04_PACKAGING_TMP,TMP,Production Area
+N0025,Sensor,ST04_PACKAGING_SPD,SPD,Production Area
+N0026,Sensor,ST04_PACKAGING_CNT,CNT,Production Area
+N0027,Sensor,ST04_PACKAGING_VIB,VIB,Production Area
+N0028,Sensor,ST04_PACKAGING_CUR,CUR,Production Area
+N0029,Component,SRV01_SERVERROOM,SERVERROOM,Server Room
+N0030,Sensor,SRV01_SERVERROOM_TMP,TMP,Server Room
+N0031,Sensor,SRV01_SERVERROOM_HUM,HUM,Server Room
+N0032,Component,WRH01_WAREHOUSE,WAREHOUSE,General Warehouse
+N0033,Sensor,WRH01_WAREHOUSE_TMP,TMP,General Warehouse
+N0034,Sensor,WRH01_WAREHOUSE_HUM,HUM,General Warehouse
+N0035,Component,CHM01_CHEMICALSTORAGE,CHEMICALSTORAGE,Chemical Storage
+N0036,Sensor,CHM01_CHEMICALSTORAGE_TMP,TMP,Chemical Storage
+N0037,Sensor,CHM01_CHEMICALSTORAGE_HUM,HUM,Chemical Storage
+N0038,Component,RND01_RDLAB,RDLAB,R&D Lab
+N0039,Sensor,RND01_RDLAB_TMP,TMP,R&D Lab
+N0040,Sensor,RND01_RDLAB_HUM,HUM,R&D Lab
+N0041,Component,CAF01_CAFETERIA,CAFETERIA,Cafeteria
+N0042,Sensor,CAF01_CAFETERIA_TMP,TMP,Cafeteria
+N0043,Sensor,CAF01_CAFETERIA_HUM,HUM,Cafeteria
+N0044,Role,operator,-,-
+N0045,Role,technician,-,-
+N0046,Role,supervisor,-,-
+N0047,Role,manager,-,-
+N0048,Role,security,-,-
+N0049,Role,visitor,-,-

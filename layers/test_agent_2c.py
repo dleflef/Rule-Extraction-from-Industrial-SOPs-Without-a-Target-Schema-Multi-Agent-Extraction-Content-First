@@ -15,6 +15,7 @@ NODES_CSV_PATH = os.path.join("layers", "extracted_seed", "dataset", "kg_seeds",
 def load_official_nodes() -> dict:
     nodes = {}
     if not os.path.exists(NODES_CSV_PATH):
+        
         print(f"WARNING: Official nodes CSV not found at {NODES_CSV_PATH}.")
         print("Agent 2C will run but entity alignment will be skipped.")
         return nodes
