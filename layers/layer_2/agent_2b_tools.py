@@ -58,11 +58,12 @@ For applies_to_station, applies_to_sensor, applies_to_zone, authorized_for, and 
   - Do NOT invent, normalise, or look up official identifiers. A downstream Ontology Alignment Agent will map these spans to the correct graph node IDs.
 
 ━━━ STRICT RULE REIFICATION (CRITICAL) ━━━
-You MUST NOT use physical entities (like a sensor type abbreviation or a station name) as the subject for rule conditions or thresholds.
-Use existing rule IDs from the text verbatim when they are present (e.g., "MAINT-01", "RULE-ST03-01", "RULE-CORR-01").
-Only invent a new Rule ID (e.g., "RULE-01", "RULE-02") when the text contains no existing structured rule identifier.
-BAD : (temperature sensor, has_crit_hi, 30.0)
-GOOD: (RULE-01, has_crit_hi, 30.0), (RULE-01, applies_to_sensor, temperature sensor)
+You MUST NOT use physical entities as the subject for rules.
+Use existing rule IDs from the text verbatim (e.g., "MAINT-01", "RULE-ST03-01").
+If the text contains NO existing rule ID:
+  - For standard rules, invent a unique ID (e.g., "RULE-01").
+  - For alarm acknowledgment rules, invent an ID formatted as RULE-ACK-[ROLE]-[SEVERITY] (e.g., "RULE-ACK-TECH-WARN", "RULE-ACK-OP-CRIT").
+  - For zone occupancy rules, invent an ID formatted as RULE-OCC-[ZONE_ABBREV] (e.g., "RULE-OCC-CHM", "RULE-OCC-WRH").
 
 ━━━ MANDATORY FIELDS — Every rule MUST have ALL applicable triples ━━━
 For EVERY rule you detect, generate ALL of the following triples (omit only if truly absent from text):
@@ -72,8 +73,14 @@ For EVERY rule you detect, generate ALL of the following triples (omit only if t
   4. (RULE-XX, has_sensor_type,    <TMP|PRS|FLW|VIB|CUR|SPD|HUM|TEN|CNT|POS>)  [sensor abbrev.]
   5. (RULE-XX, has_condition,      <exact trigger condition or restriction text from document>)
   6. (RULE-XX, triggers_action,    <exact required response/action text from document>)
-  7. (RULE-XX, has_severity,       <CRITICAL|WARNING|MANDATORY>)
-     IMPORTANT: DO NOT guess or infer severity based on the action (e.g., do not assume an emergency stop is CRITICAL unless the word CRITICAL explicitly appears in the text). If the exact severity word is not present in the text chunk, omit the has_severity triple entirely.
+ 7. (RULE-XX, has_severity,       <CRITICAL|WARNING|MANDATORY>)
+     Evaluate in this EXACT order — use the FIRST rule that matches:
+     Step 1 — CRITICAL: action text contains "emergency stop", "e-stop", "halt", "shutdown", or "evacuation".
+     Step 2 — MANDATORY: condition defines a strict operating boundary using "MUST be maintained",
+              "MUST remain", "MUST NOT exceed", "required", or any "MUST" obligation.
+     Step 3 — WARNING: condition describes a deviation, drift, or anomaly — keywords such as
+              "drop below", "increase >", "exceeds", "drift", "frozen", "above limit".
+     Do NOT default to WARNING for rules that use "MUST" — those are MANDATORY.
   8. (RULE-XX, has_unit,           <unit string e.g. "°C", "L/min", "bar", "A", "mm/s", "%RH", "N", "pcs/min", "m/s", "persons", "min">)
   9. Threshold triples (numeric only — see below)
 NOTE: For MaintenanceRule, has_severity accepts: CRITICAL, HIGH, MEDIUM, WARNING, MANDATORY.
@@ -86,7 +93,7 @@ A rule with fewer than 4 triples is INCOMPLETE — do not skip required fields.
     For AccessRules: has_condition = the occupancy limit, access restriction, or acknowledgment requirement.
   - applies_to_sensor MUST be included whenever a specific sensor code is mentioned or can be inferred
     from the section heading (e.g., section "UNIT_01_TEMP" → applies_to_sensor = UNIT_01_TEMP, copy verbatim).
-
+  - CRITICAL: Do NOT include the response action inside the has_condition text. The condition must ONLY contain the trigger limit or state (e.g., 'TMP > 26°C'). The action (e.g., 'check ventilation') belongs strictly in triggers_action.
 ━━━ RULE TYPE GUIDE ━━━
   OperationalRule  — If/then behaviour based on sensor readings (monitoring, speed reduction, notification).
   ThresholdRule    — Declares numeric limit values (critHi, warnHi, critLo, warnLo) for a sensor.
@@ -153,6 +160,29 @@ EXAMPLE E — Tabular repeated-field format (MAINT-XX or similar IDs):
   separate them: Trigger → has_condition, Action → triggers_action, Priority → has_severity.
   Extract ONE triple set per unique rule ID — do not merge multiple rules into one.
 
+EXAMPLE F — Tabular alarm acknowledgment table (dense multi-row format):
+  Source: "Maximum Acknowledgment Times
+           | Role       | Max Ack -WARNING (min) | Max Ack -CRITICAL (min) |
+           | operator   | 15                     | 3                       |
+           | technician | 10                     | 2                       |"
+  Generate ONE AccessRule per role × severity combination. For each row-cell:
+    SPLIT the table value into THREE fields — do NOT dump the raw cell into has_condition.
+    (RULE-ACK-OPER-WARN, rdf:type, AccessRule)
+    (RULE-ACK-OPER-WARN, has_condition, operator role — WARNING alarm acknowledgment)
+    (RULE-ACK-OPER-WARN, triggers_action, Must acknowledge within 15 minutes)
+    (RULE-ACK-OPER-WARN, has_severity, MANDATORY)
+    (RULE-ACK-OPER-WARN, has_unit, min)
+    (RULE-ACK-OPER-CRIT, rdf:type, AccessRule)
+    (RULE-ACK-OPER-CRIT, has_condition, operator role — CRITICAL alarm acknowledgment)
+    (RULE-ACK-OPER-CRIT, triggers_action, Must acknowledge within 3 minutes)
+    (RULE-ACK-OPER-CRIT, has_severity, MANDATORY)
+    (RULE-ACK-OPER-CRIT, has_unit, min)
+  RULES: has_condition = "<role> role — <SEVERITY> alarm acknowledgment"
+         triggers_action = "Must acknowledge within <N> minutes"
+         has_severity = MANDATORY (always for acknowledgment duties)
+         has_unit = min
+  NEVER output "Max Ack -WARNING (min) = 15" as a has_condition value.
+
 KEY RULES FOR ThresholdRule:
   - Use rdf:type=ThresholdRule whenever the chunk defines CRIT_LO/WARN_LO/WARN_HI/CRIT_HI values.
   - Create ONE separate ThresholdRule with a unique RULE-XX ID for EACH distinct (station, sensor) pair.
@@ -160,6 +190,10 @@ KEY RULES FOR ThresholdRule:
   - applies_to_sensor is MANDATORY for every ThresholdRule. Infer it directly from the section heading.
   - Extract ALL FOUR numeric bounds: has_crit_lo, has_warn_lo, has_warn_hi, has_crit_hi.
     Do NOT confuse WARN_LO with WARN_HI or CRIT_LO with CRIT_HI.
+  CAUTION — has_warn_lo: This is the value strictly BETWEEN crit_lo and the nominal/normal
+    operating value. PDF tables often merge the "Nominal" and "Warning Low" columns, or label
+    them confusingly. If the table shows a numeric value between crit_lo and warn_hi that has no
+    explicit label, treat it as has_warn_lo. Do NOT substitute the nominal value for warn_lo.
   - Always include has_unit for the measurement unit.
   - has_condition should summarise all four threshold bounds as they appear in the text.
 
@@ -173,6 +207,10 @@ KEY RULES FOR AccessRule:
   - Always extract has_condition describing the specific restriction or acknowledgment requirement.
   - Use applies_to_zone (not applies_to_station) to identify the restricted area.
   - Use has_unit=persons for occupancy rules; has_unit=min for time-based acknowledgment rules.
+
+  KEY RULES FOR OperationalRule & has_condition formatting:
+  - When writing the `has_condition` text, ALWAYS replace words like "Temperature", "Pressure", or "Flow" with their official 3-letter abbreviations (TMP, PRS, FLW, VIB, CUR, SPD, HUM, TEN, CNT, POS) if known.
+  - Keep conditions concise (e.g., "TMP > 210°C (CRITICAL)"). Do not write long conversational sentences.
 
 ━━━ THRESHOLD VALUES AND UNITS ━━━
 For threshold predicates (has_crit_hi, has_warn_hi, has_crit_lo, has_warn_lo):
@@ -243,12 +281,102 @@ _HALLUCINATED_ACTIONS = {
     "no specific action mentioned", "not specified in text", "not specified",
     "no action specified", "action not specified", "no action", "none",
     "no specific action", "action not mentioned",
+    "no explicit action mentioned",
 }
 _HALLUCINATED_CONDITIONS = {
     "no specific condition mentioned", "not specified in text", "not specified",
     "condition not specified", "no condition specified", "none",
     "no specific condition", "condition not mentioned",
 }
+
+# ---------------------------------------------------------------------------
+# ACK rule rewriting constants
+# ---------------------------------------------------------------------------
+# Matches the raw table-cell format the LLM dumps into has_condition:
+#   "Max Ack -WARNING (min) = 15"  or  "Max Ack -CRITICAL (min) = 3"
+_ACK_ROW_RE = re.compile(
+    r'Max\s+Ack\s*-?(WARNING|CRITICAL)\s*\(min\)\s*=\s*(\d+)', re.IGNORECASE
+)
+
+_ACK_ROLE_MAP: Dict[str, str] = {
+    "OPER": "operator", "OP": "operator",
+    "TECH": "technician",
+    "SUP": "supervisor",
+    "MAN": "manager",
+    "SEC": "security",
+}
+
+
+def _role_from_ack_id(rule_id: str) -> str:
+    """Extract the role name from a RULE-ACK-ROLE-SEVERITY ID."""
+    for part in rule_id.upper().split("-"):
+        if part in _ACK_ROLE_MAP:
+            return _ACK_ROLE_MAP[part]
+    return "unknown role"
+
+
+def _rewrite_ack_rules(triples: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    """
+    Post-processing fix for the dense ACK acknowledgment table.
+
+    The LLM dumps the raw table cell into has_condition:
+        "Max Ack -WARNING (min) = 15"
+    We rewrite this into the three separate fields the GT expects:
+        has_condition  → "<role> role — WARNING alarm acknowledgment"
+        triggers_action→ "Must acknowledge within 15 minutes"
+        has_severity   → MANDATORY
+        has_unit       → min
+    """
+    # Identify which rule IDs have the raw ACK pattern in their condition
+    ack_info: Dict[str, Dict] = {}
+    for t in triples:
+        if t["predicate"] == "has_condition":
+            m = _ACK_ROW_RE.search(t["object"])
+            if m:
+                ack_info[t["subject"]] = {
+                    "severity": m.group(1).upper(),
+                    "minutes":  m.group(2),
+                }
+
+    if not ack_info:
+        return triples
+
+    # Collect existing predicates per rule so we know what to add
+    existing_preds: Dict[str, set] = {}
+    for t in triples:
+        existing_preds.setdefault(t["subject"], set()).add(t["predicate"])
+
+    result: List[Dict[str, str]] = []
+    for t in triples:
+        rule_id = t["subject"]
+        if rule_id in ack_info and t["predicate"] == "has_condition":
+            info = ack_info[rule_id]
+            role = _role_from_ack_id(rule_id)
+            result.append({
+                "subject":   rule_id,
+                "predicate": "has_condition",
+                "object":    f"{role} role — {info['severity']} alarm acknowledgment",
+            })
+            print(f"[Agent 2B ACK-Fix] Rewrote has_condition for {rule_id} "
+                  f"({info['severity']}, {info['minutes']} min)")
+        else:
+            result.append(t)
+
+    # Inject missing action/severity/unit triples
+    additions: List[Dict[str, str]] = []
+    for rule_id, info in ack_info.items():
+        preds = existing_preds.get(rule_id, set())
+        if "triggers_action" not in preds:
+            additions.append({"subject": rule_id, "predicate": "triggers_action",
+                               "object": f"Must acknowledge within {info['minutes']} minutes"})
+        if "has_severity" not in preds:
+            additions.append({"subject": rule_id, "predicate": "has_severity",
+                               "object": "MANDATORY"})
+        if "has_unit" not in preds:
+            additions.append({"subject": rule_id, "predicate": "has_unit",
+                               "object": "min"})
+
+    return result + additions
 
 
 def _fix_json_str(s: str) -> str:
@@ -504,6 +632,20 @@ def _entity_threshold_fallback(
 
     triples: List[Dict[str, str]] = []
     for stype, fields in sensor_data.items():
+        # Mathematical warnLo inference: if we have CRIT_LO, WARN_HI, and CRIT_HI
+        # but are missing WARN_LO, estimate it as the midpoint between CRIT_LO and WARN_HI.
+        # This recovers the merged "Nominal/WARN_LO" column that Agent 1B often drops.
+        if "WARN_LO" not in fields and all(k in fields for k in ("CRIT_LO", "WARN_HI", "CRIT_HI")):
+            try:
+                inferred_warn_lo = round(
+                    (float(fields["CRIT_LO"]) + float(fields["WARN_HI"])) / 2.0, 2
+                )
+                fields["WARN_LO"] = str(inferred_warn_lo)
+                print(f"[Agent 2B Fallback] Inferred WARN_LO={inferred_warn_lo} for {station}_{stype} "
+                      f"(midpoint of CRIT_LO={fields['CRIT_LO']} and WARN_HI={fields['WARN_HI']})")
+            except (ValueError, TypeError):
+                pass
+
         # Only emit a rule if we have at least two threshold bounds
         threshold_count = sum(1 for k in _THRESHOLD_FIELD_MAP if k in fields)
         if threshold_count < 2:
@@ -576,6 +718,7 @@ def extract_relations_from_chunk(
             raw_triples = result if isinstance(result, list) else (result.get("triples") or [])
 
         formatted = _format_and_apply_guardrails(raw_triples, chunk_id)
+        formatted = _rewrite_ack_rules(formatted)
 
         # Fallback: if the LLM returned nothing for a chunk that has entity data,
         # attempt to reconstruct threshold triples deterministically from entity spans.
@@ -594,6 +737,6 @@ def extract_relations_from_chunk(
         if repaired is not None:
             print(f"[Agent 2B] Repaired malformed JSON for chunk {chunk_id} "
                   f"({len(repaired)} raw triples recovered).")
-            return _format_and_apply_guardrails(repaired, chunk_id)
+            return _rewrite_ack_rules(_format_and_apply_guardrails(repaired, chunk_id))
         print(f"[Agent 2B Error] Relation extraction failed for chunk {chunk_id}: {e}")
         return []

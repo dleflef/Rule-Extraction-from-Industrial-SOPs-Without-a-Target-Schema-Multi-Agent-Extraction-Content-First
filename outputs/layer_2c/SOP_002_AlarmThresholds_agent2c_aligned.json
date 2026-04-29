@@ -12,9 +12,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
             "aligned_relations": [
                 {
@@ -28,21 +28,21 @@
                 {
                     "subject": "RULE-01",
                     "predicate": "has_sensor_type",
-                    "object": "FLW",
+                    "object": "TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-01",
                     "predicate": "has_condition",
-                    "object": "CRIT_HI=25 L/min, WARN_HI=30 L/min, CRIT_LO=15 L/min, WARN_LO=20 L/min",
+                    "object": "Temperature > 85°C (CRITICAL)",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-01",
                     "predicate": "triggers_action",
-                    "object": "Alert operator; reduce flow rate if necessary",
+                    "object": "Alert safety officer; evacuate personnel",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -50,13 +50,6 @@
                     "subject": "RULE-01",
                     "predicate": "has_severity",
                     "object": "CRITICAL",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "has_unit",
-                    "object": "L/min",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -78,11 +71,69 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
-            "aligned_relations": []
+            "aligned_relations": [
+                {
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "Production Line A",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "Production Line A"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_crit_lo",
+                    "object": "210",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_warn_lo",
+                    "object": "205",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "°C",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Inspect temperature sensor",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                }
+            ]
         },
         {
             "chunk_id": 2,
@@ -93,20 +144,20 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
             "aligned_relations": [
                 {
-                    "subject": "RULE-03",
+                    "subject": "RULE-01",
                     "predicate": "rdf:type",
                     "object": "ThresholdRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-03",
+                    "subject": "RULE-01",
                     "predicate": "applies_to_station",
                     "object": "ST01_FILLING",
                     "_subject_alignment": "rule_node",
@@ -114,52 +165,108 @@
                     "_raw_object": "ST01_FILLING"
                 },
                 {
-                    "subject": "RULE-03",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST01_FILLING_FLW",
+                    "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_crit_lo",
+                    "object": "15.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_warn_lo",
+                    "object": "18.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_crit_hi",
+                    "object": "30.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_warn_hi",
+                    "object": "26.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "°C",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "applies_to_station",
+                    "object": "ST01_FILLING",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "exact",
-                    "_raw_object": "FLW"
+                    "_raw_object": "ST01_FILLING"
                 },
                 {
-                    "subject": "RULE-03",
+                    "subject": "RULE-02",
                     "predicate": "has_sensor_type",
-                    "object": "FLW",
+                    "object": "PRS",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-03",
+                    "subject": "RULE-02",
                     "predicate": "has_crit_lo",
-                    "object": "105.0",
+                    "object": "3.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-03",
+                    "subject": "RULE-02",
                     "predicate": "has_warn_lo",
-                    "object": "120.0",
+                    "object": "3.3",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-03",
-                    "predicate": "has_warn_hi",
-                    "object": "128.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-03",
+                    "subject": "RULE-02",
                     "predicate": "has_crit_hi",
-                    "object": "135.0",
+                    "object": "4.8",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-03",
+                    "subject": "RULE-02",
+                    "predicate": "has_warn_hi",
+                    "object": "4.2",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
                     "predicate": "has_unit",
-                    "object": "L/min",
+                    "object": "bar",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -167,6 +274,70 @@
                     "subject": "RULE-03",
                     "predicate": "triggers_action",
                     "object": "Inspect and notify maintenance",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-04",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-04",
+                    "predicate": "applies_to_station",
+                    "object": "ST01_FILLING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST01_FILLING"
+                },
+                {
+                    "subject": "RULE-04",
+                    "predicate": "has_sensor_type",
+                    "object": "FLW",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-04",
+                    "predicate": "has_crit_lo",
+                    "object": "105.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-04",
+                    "predicate": "has_warn_lo",
+                    "object": "112.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-04",
+                    "predicate": "has_crit_hi",
+                    "object": "135.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-04",
+                    "predicate": "has_warn_hi",
+                    "object": "128.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-04",
+                    "predicate": "has_unit",
+                    "object": "L/min",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -181,9 +352,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
             "aligned_relations": [
                 {
@@ -203,14 +374,6 @@
                 },
                 {
                     "subject": "RULE-ST02-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST02_SEALING_TMP",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "TMP"
-                },
-                {
-                    "subject": "RULE-ST02-01",
                     "predicate": "has_sensor_type",
                     "object": "TMP",
                     "_subject_alignment": "rule_node",
@@ -226,14 +389,7 @@
                 {
                     "subject": "RULE-ST02-01",
                     "predicate": "has_warn_lo",
-                    "object": "175.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST02-01",
-                    "predicate": "has_crit_hi",
-                    "object": "210.0",
+                    "object": "185.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -246,8 +402,8 @@
                 },
                 {
                     "subject": "RULE-ST02-01",
-                    "predicate": "has_unit",
-                    "object": "°C",
+                    "predicate": "has_crit_hi",
+                    "object": "210.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -255,6 +411,13 @@
                     "subject": "RULE-ST02-01",
                     "predicate": "triggers_action",
                     "object": "E-STOP ST02/ST03/ST04; inspect element",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-01",
+                    "predicate": "has_unit",
+                    "object": "°C",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -269,9 +432,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
             "aligned_relations": [
                 {
@@ -288,14 +451,6 @@
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "exact",
                     "_raw_object": "ST03_LABELLING"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST03_LABELLING_SPD",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "SPD"
                 },
                 {
                     "subject": "RULE-01",
@@ -363,14 +518,6 @@
                 },
                 {
                     "subject": "RULE-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST03_LABELLING_TEN",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "TEN"
-                },
-                {
-                    "subject": "RULE-02",
                     "predicate": "has_sensor_type",
                     "object": "TEN",
                     "_subject_alignment": "rule_node",
@@ -435,14 +582,6 @@
                 },
                 {
                     "subject": "RULE-03",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST03_LABELLING_CNT",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "CNT"
-                },
-                {
-                    "subject": "RULE-03",
                     "predicate": "has_sensor_type",
                     "object": "CNT",
                     "_subject_alignment": "rule_node",
@@ -482,13 +621,6 @@
                     "object": "E-STOP labelling; inspect label path",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-03",
-                    "predicate": "has_unit",
-                    "object": "pcs/min",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -501,9 +633,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
             "aligned_relations": [
                 {
@@ -566,15 +698,173 @@
                 },
                 {
                     "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "E-STOP; inspect main bearing.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_unit",
                     "object": "mm/s",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-01",
+                    "subject": "RULE-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "applies_to_station",
+                    "object": "ST04_PACKAGING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST04_PACKAGING"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST04_PACKAGING_CUR",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "CUR"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_sensor_type",
+                    "object": "CUR",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_crit_lo",
+                    "object": "6.5",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_warn_lo",
+                    "object": "7.5",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_crit_hi",
+                    "object": "11.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_warn_hi",
+                    "object": "9.8",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
                     "predicate": "triggers_action",
-                    "object": "E-STOP; inspect main bearing.",
+                    "object": "Inspect and notify maintenance.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "applies_to_station",
+                    "object": "ST04_PACKAGING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST04_PACKAGING"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "applies_to_sensor",
+                    "object": "ST04_PACKAGING_SPD",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "SPD"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "has_sensor_type",
+                    "object": "SPD",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "has_crit_lo",
+                    "object": "0.85",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "has_warn_lo",
+                    "object": "1.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "has_crit_hi",
+                    "object": "1.6",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "has_warn_hi",
+                    "object": "1.4",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-03",
+                    "predicate": "has_unit",
+                    "object": "m/s",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -589,9 +879,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
             "aligned_relations": [
                 {
@@ -611,14 +901,6 @@
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "SRV01_SERVERROOM_TMP",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "TMP"
-                },
-                {
-                    "subject": "RULE-01",
                     "predicate": "has_sensor_type",
                     "object": "TMP",
                     "_subject_alignment": "rule_node",
@@ -634,7 +916,7 @@
                 {
                     "subject": "RULE-01",
                     "predicate": "has_warn_lo",
-                    "object": "18.0",
+                    "object": "21.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -654,15 +936,15 @@
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "has_unit",
-                    "object": "°C",
+                    "predicate": "triggers_action",
+                    "object": "Activate backup cooling; prepare controlled PLC shutdown",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "triggers_action",
-                    "object": "Activate backup cooling; prepare controlled PLC shutdown",
+                    "predicate": "has_unit",
+                    "object": "°C",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -677,9 +959,9 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
             "aligned_relations": [
                 {
@@ -696,14 +978,6 @@
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "exact",
                     "_raw_object": "WRH01_WAREHOUSE"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "WRH01_WAREHOUSE_TMP",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "TMP"
                 },
                 {
                     "subject": "RULE-01",
@@ -742,87 +1016,22 @@
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "has_unit",
-                    "object": "°C",
+                    "predicate": "triggers_action",
+                    "object": "Activate backup refrigeration; notify QC.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "triggers_action",
-                    "object": "Activate backup refrigeration; notify QC",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-02",
-                    "predicate": "applies_to_station",
-                    "object": "WRH01_WAREHOUSE",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "WRH01_WAREHOUSE"
-                },
-                {
-                    "subject": "RULE-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "WRH01_WAREHOUSE_HUM",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "HUM"
-                },
-                {
-                    "subject": "RULE-02",
-                    "predicate": "has_sensor_type",
-                    "object": "HUM",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-02",
-                    "predicate": "has_crit_lo",
-                    "object": "55.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-02",
-                    "predicate": "has_warn_lo",
-                    "object": "60.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-02",
-                    "predicate": "has_warn_hi",
-                    "object": "85.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-02",
-                    "predicate": "has_crit_hi",
-                    "object": "90.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-02",
+                    "subject": "RULE-01",
                     "predicate": "has_unit",
-                    "object": "%RH",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance",
+                    "object": "°C",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -837,9 +1046,9 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
             "aligned_relations": [
                 {
@@ -856,14 +1065,6 @@
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "exact",
                     "_raw_object": "CHM01_CHEMICALSTORAGE"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "CHM01_CHEMICALSTORAGE_TMP",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "TMP"
                 },
                 {
                     "subject": "RULE-01",
@@ -902,15 +1103,15 @@
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "has_unit",
-                    "object": "°C",
+                    "predicate": "triggers_action",
+                    "object": "Activate emergency ventilation; notify safety officer immediately",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "triggers_action",
-                    "object": "Activate emergency ventilation; notify safety officer immediately",
+                    "predicate": "has_unit",
+                    "object": "°C",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -925,9 +1126,9 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
             "aligned_relations": [
                 {
@@ -947,14 +1148,6 @@
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "RND01_RDLAB_TMP",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "TMP"
-                },
-                {
-                    "subject": "RULE-01",
                     "predicate": "has_sensor_type",
                     "object": "TMP",
                     "_subject_alignment": "rule_node",
@@ -970,14 +1163,7 @@
                 {
                     "subject": "RULE-01",
                     "predicate": "has_warn_lo",
-                    "object": "22.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "has_warn_hi",
-                    "object": "26.0",
+                    "object": "18.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -990,8 +1176,8 @@
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "has_unit",
-                    "object": "°C",
+                    "predicate": "has_warn_hi",
+                    "object": "26.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -999,6 +1185,77 @@
                     "subject": "RULE-01",
                     "predicate": "triggers_action",
                     "object": "Inspect and notify maintenance.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_unit",
+                    "object": "°C",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "applies_to_station",
+                    "object": "RND01_RDLAB",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "RND01_RDLAB"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_sensor_type",
+                    "object": "HUM",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_crit_lo",
+                    "object": "25.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_warn_lo",
+                    "object": "35.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_crit_hi",
+                    "object": "75.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_warn_hi",
+                    "object": "65.0",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "triggers_action",
+                    "object": "Suspend experiments; inspect HVAC system",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-02",
+                    "predicate": "has_unit",
+                    "object": "%RH",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -1013,9 +1270,9 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
             "aligned_relations": [
                 {
@@ -1032,14 +1289,6 @@
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "exact",
                     "_raw_object": "CAF01_CAFETERIA"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "CAF01_CAFETERIA_TMP",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "TMP"
                 },
                 {
                     "subject": "RULE-01",
@@ -1078,15 +1327,15 @@
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "has_unit",
-                    "object": "°C",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance",
+                    "predicate": "has_unit",
+                    "object": "°C",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1104,14 +1353,6 @@
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "exact",
                     "_raw_object": "CAF01_CAFETERIA"
-                },
-                {
-                    "subject": "RULE-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "CAF01_CAFETERIA_HUM",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "HUM"
                 },
                 {
                     "subject": "RULE-02",
@@ -1150,15 +1391,15 @@
                 },
                 {
                     "subject": "RULE-02",
-                    "predicate": "has_unit",
-                    "object": "%RH",
+                    "predicate": "triggers_action",
+                    "object": "Inspect and notify maintenance",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-02",
-                    "predicate": "triggers_action",
-                    "object": "Inspect and notify maintenance",
+                    "predicate": "has_unit",
+                    "object": "%RH",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -1173,9 +1414,9 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_002_AlarmThresholds.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_002_AlarmThresholds.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:24.447452+00:00"
+                "processed_at": "2026-04-29T12:46:18.718075+00:00"
             },
             "aligned_relations": []
         }

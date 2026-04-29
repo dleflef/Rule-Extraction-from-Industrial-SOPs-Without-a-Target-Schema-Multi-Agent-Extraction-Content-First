@@ -1,107 +1,107 @@
 {
     "summary": {
         "ground_truth_rules": 86,
-        "reconstructed_rules": 68,
+        "reconstructed_rules": 65,
         "metrics": {
-            "precision": 0.7353,
-            "recall": 0.5814,
-            "f1_score": 0.6494
+            "precision": 0.7538,
+            "recall": 0.5698,
+            "f1_score": 0.649
         },
         "counts": {
-            "TP": 50,
-            "FP": 18,
-            "FN": 36
+            "TP": 49,
+            "FP": 16,
+            "FN": 37
         },
         "per_rule_class": {
             "OperationalRule": {
-                "TP": 19,
-                "FP": 5,
-                "FN": 9,
-                "precision": 0.792,
-                "recall": 0.679
+                "TP": 14,
+                "FP": 10,
+                "FN": 14,
+                "precision": 0.583,
+                "recall": 0.5
             },
             "MaintenanceRule": {
                 "TP": 8,
-                "FP": 3,
+                "FP": 0,
                 "FN": 3,
-                "precision": 0.727,
+                "precision": 1.0,
                 "recall": 0.727
             },
-            "ThresholdRule": {
-                "TP": 15,
-                "FP": 2,
-                "FN": 12,
-                "precision": 0.882,
-                "recall": 0.556
-            },
             "AccessRule": {
-                "TP": 8,
-                "FP": 8,
-                "FN": 12,
-                "precision": 0.5,
-                "recall": 0.4
+                "TP": 10,
+                "FP": 3,
+                "FN": 10,
+                "precision": 0.769,
+                "recall": 0.5
+            },
+            "ThresholdRule": {
+                "TP": 17,
+                "FP": 3,
+                "FN": 10,
+                "precision": 0.85,
+                "recall": 0.63
             }
         },
         "field_accuracy": {
             "rule_class": {
-                "hits": 38,
-                "possible": 50,
-                "accuracy": 0.76
+                "hits": 40,
+                "possible": 49,
+                "accuracy": 0.816
             },
             "station": {
+                "hits": 36,
+                "possible": 40,
+                "accuracy": 0.9
+            },
+            "sensor": {
                 "hits": 31,
                 "possible": 39,
                 "accuracy": 0.795
             },
-            "sensor": {
-                "hits": 24,
-                "possible": 30,
-                "accuracy": 0.8
-            },
             "sensorType": {
-                "hits": 35,
-                "possible": 35,
-                "accuracy": 1.0
+                "hits": 38,
+                "possible": 39,
+                "accuracy": 0.974
             },
             "condition": {
-                "hits": 29,
-                "possible": 32,
-                "accuracy": 0.906
+                "hits": 31,
+                "possible": 49,
+                "accuracy": 0.633
             },
             "action": {
-                "hits": 42,
-                "possible": 44,
-                "accuracy": 0.955
+                "hits": 44,
+                "possible": 49,
+                "accuracy": 0.898
             },
             "severity": {
-                "hits": 11,
-                "possible": 16,
-                "accuracy": 0.688
+                "hits": 30,
+                "possible": 49,
+                "accuracy": 0.612
             },
             "unit": {
-                "hits": 30,
-                "possible": 30,
-                "accuracy": 1.0
+                "hits": 42,
+                "possible": 48,
+                "accuracy": 0.875
             },
             "critHi": {
-                "hits": 24,
-                "possible": 25,
-                "accuracy": 0.96
+                "hits": 29,
+                "possible": 31,
+                "accuracy": 0.935
             },
             "warnHi": {
-                "hits": 13,
-                "possible": 14,
-                "accuracy": 0.929
+                "hits": 26,
+                "possible": 31,
+                "accuracy": 0.839
             },
             "critLo": {
-                "hits": 14,
-                "possible": 17,
-                "accuracy": 0.824
+                "hits": 23,
+                "possible": 31,
+                "accuracy": 0.742
             },
             "warnLo": {
-                "hits": 9,
-                "possible": 15,
-                "accuracy": 0.6
+                "hits": 22,
+                "possible": 31,
+                "accuracy": 0.71
             }
         }
     },
@@ -112,7 +112,7 @@
                 "rule_class": "ThresholdRule",
                 "station": "ST01_FILLING",
                 "sensorType": "FLW",
-                "condition": "FLW MUST be maintained between 112 and 128 L/min.",
+                "condition": "FLW MUST be maintained between 112 and 128 L/min",
                 "severity": "MANDATORY",
                 "critLo": 112.0,
                 "warnLo": 112.0,
@@ -136,7 +136,7 @@
                 "warnLo": "112.0",
                 "unit": "L/min"
             },
-            "match_score": 0.932
+            "match_score": 0.778
         },
         {
             "extracted": {
@@ -146,7 +146,13 @@
                 "sensorType": "TMP",
                 "condition": "TMP exceeds 26°C",
                 "action": "reduce speed by 10% and notify QC",
-                "sensor": "ST01_FILLING_TMP"
+                "severity": "WARNING",
+                "sensor": "ST01_FILLING_TMP",
+                "critHi": 30.0,
+                "warnHi": 26.0,
+                "critLo": 15.0,
+                "warnLo": 18.0,
+                "unit": "°C"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-ST01-02",
@@ -171,9 +177,15 @@
                 "rule_class": "OperationalRule",
                 "station": "ST01_FILLING",
                 "sensorType": "PRS",
-                "condition": "PRS drop below 3.3 bar - inspect inlet valve within 5 min.",
+                "condition": "PRS drop below 3.3 bar",
                 "action": "inspect inlet valve within 5 min",
-                "sensor": "ST01_FILLING_PRS"
+                "severity": "WARNING",
+                "unit": "bar",
+                "sensor": "ST01_FILLING_PRS",
+                "critHi": 4.8,
+                "warnHi": 4.2,
+                "critLo": 3.0,
+                "warnLo": 3.3
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-ST01-03",
@@ -190,22 +202,22 @@
                 "warnLo": "3.3",
                 "unit": "bar"
             },
-            "match_score": 0.932
+            "match_score": 1.0
         },
         {
             "extracted": {
                 "ruleId": "SOP001_C7_RULE-ST02-01",
-                "rule_class": "ThresholdRule",
+                "rule_class": "OperationalRule",
                 "station": "ST02_SEALING",
                 "sensorType": "TMP",
-                "condition": "TMP MUST remain between 175°C and 195°C.",
-                "severity": "WARNING",
-                "critHi": 195.0,
+                "condition": "TMP MUST remain between 175°C and 195°C",
+                "severity": "MANDATORY",
+                "sensor": "ST02_SEALING_TMP",
+                "critHi": 210.0,
                 "warnHi": 195.0,
-                "critLo": 175.0,
-                "warnLo": 175.0,
-                "unit": "°C",
-                "sensor": "ST02_SEALING_TMP"
+                "critLo": 165.0,
+                "warnLo": 185.0,
+                "unit": "°C"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-ST02-01",
@@ -222,18 +234,22 @@
                 "warnLo": "175.0",
                 "unit": "°C"
             },
-            "match_score": 0.864
+            "match_score": 0.833
         },
         {
             "extracted": {
                 "ruleId": "SOP001_C8_RULE-ST02-02",
                 "rule_class": "OperationalRule",
-                "station": "ST02, ST03, ST04",
+                "station": "ST02_SEALING",
                 "sensorType": "TMP",
                 "condition": "TMP > 210°C (CRITICAL)",
-                "action": "emergency stop ST02, ST03, ST04",
+                "action": "emergency stop ST02, ST03, ST04.",
                 "severity": "CRITICAL",
+                "sensor": "ST02_SEALING_TMP",
                 "critHi": 210.0,
+                "warnHi": 195.0,
+                "critLo": 165.0,
+                "warnLo": 185.0,
                 "unit": "°C"
             },
             "matched_ground_truth": {
@@ -251,7 +267,7 @@
                 "warnLo": "175.0",
                 "unit": "°C"
             },
-            "match_score": 0.846
+            "match_score": 0.997
         },
         {
             "extracted": {
@@ -261,6 +277,7 @@
                 "sensorType": "CUR",
                 "condition": "CUR increase >1.5 A above nominal sustained >5 min",
                 "action": "schedule maintenance",
+                "severity": "MANDATORY",
                 "sensor": "ST02_SEALING_CUR"
             },
             "matched_ground_truth": {
@@ -278,87 +295,72 @@
                 "warnLo": "11.0",
                 "unit": "A"
             },
-            "match_score": 0.917
+            "match_score": 0.611
         },
         {
             "extracted": {
-                "ruleId": "SOP001_C10_RULE-ST02-04",
-                "sensor": "ST02_SEALING_CUR",
-                "action": "Monitor ST04_PACKAGING-SPD",
-                "condition": "CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling",
-                "station": "ST02_SEALING",
-                "rule_class": "OperationalRule"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-ST02-04",
-                "rule_class": "OperationalRule",
-                "station": "ST02_SEALING",
-                "sensor": "ST02_SEALING_CUR",
-                "sensorType": "CUR",
-                "condition": "CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING",
-                "action": "Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers WARNING",
+                "ruleId": "SOP001_C11_RULE-ST03-01",
+                "rule_class": "ThresholdRule",
+                "station": "ST03_LABELLING",
+                "sensorType": "TEN",
+                "condition": "TEN MUST be between 1.8 and 2.6 N",
                 "severity": "WARNING",
-                "critHi": "15.0",
-                "warnHi": "13.5",
-                "critLo": "9.5",
-                "warnLo": "11.0",
-                "unit": "A"
-            },
-            "match_score": 0.916
-        },
-        {
-            "extracted": {
-                "ruleId": "SOP001_C12_RULE-ST03-02",
-                "rule_class": "OperationalRule",
-                "station": "ST01_FILLING",
-                "sensorType": "CNT",
-                "condition": "CNT below 110 pcs/min - check for label jam",
-                "action": "check for label jam; halt if Below 100 (CRITICAL)",
-                "severity": "CRITICAL",
-                "critLo": 100.0,
-                "unit": "pcs/min"
+                "critLo": 1.8,
+                "warnLo": 1.8,
+                "critHi": 2.6,
+                "warnHi": 2.6,
+                "unit": "N",
+                "sensor": "ST03_LABELLING_TEN"
             },
             "matched_ground_truth": {
-                "ruleId": "RULE-ST03-02b",
+                "ruleId": "RULE-ST03-01",
                 "rule_class": "OperationalRule",
                 "station": "ST03_LABELLING",
-                "sensor": "ST03_LABELLING_CNT",
-                "sensorType": "CNT",
-                "condition": "CNT below 100 pcs/min (CRITICAL)",
-                "action": "Halt labelling; inspect label path",
-                "severity": "CRITICAL",
-                "critHi": "140",
-                "warnHi": "130",
-                "critLo": "100",
-                "warnLo": "110",
-                "unit": "pcs/min"
+                "sensor": "ST03_LABELLING_TEN",
+                "sensorType": "TEN",
+                "condition": "TEN MUST be between 1.8 and 2.6 N",
+                "action": "Inspect and notify maintenance",
+                "severity": "MANDATORY",
+                "critHi": "3.0",
+                "warnHi": "2.6",
+                "critLo": "1.5",
+                "warnLo": "1.8",
+                "unit": "N"
             },
-            "match_score": 0.668
+            "match_score": 0.667
         },
         {
             "extracted": {
                 "ruleId": "SOP001_C13_RULE-ST03-03",
-                "rule_class": "MaintenanceRule",
-                "sensor": "ST03_LABELLING_TEN",
+                "rule_class": "ThresholdRule",
+                "station": "ST03_LABELLING",
+                "sensorType": "TEN",
                 "condition": "TEN STUCK >10 consecutive samples - sensor failure",
-                "action": "sensor failure"
+                "action": "sensor failure",
+                "severity": "CRITICAL",
+                "sensor": "ST03_LABELLING_TEN",
+                "critHi": 2.6,
+                "warnHi": 2.6,
+                "critLo": 1.8,
+                "warnLo": 1.8,
+                "unit": "N"
             },
             "matched_ground_truth": {
-                "ruleId": "MAINT-03",
-                "rule_class": "MaintenanceRule",
+                "ruleId": "RULE-ST03-03",
+                "rule_class": "OperationalRule",
                 "station": "ST03_LABELLING",
                 "sensor": "ST03_LABELLING_TEN",
                 "sensorType": "TEN",
                 "condition": "TEN STUCK >10 consecutive samples",
-                "action": "Replace TEN sensor",
-                "severity": "MEDIUM",
-                "critHi": null,
-                "warnHi": null,
-                "critLo": null,
-                "warnLo": null,
+                "action": "Sensor failure — replace sensor",
+                "severity": "CRITICAL",
+                "critHi": "3.0",
+                "warnHi": "2.6",
+                "critLo": "1.5",
+                "warnLo": "1.8",
                 "unit": "N"
             },
-            "match_score": 0.795
+            "match_score": 0.836
         },
         {
             "extracted": {
@@ -369,7 +371,12 @@
                 "condition": "VIB > 0.20 mm/s (WARNING)",
                 "action": "schedule maintenance within 24 h.",
                 "severity": "WARNING",
-                "sensor": "ST04_PACKAGING_VIB"
+                "sensor": "ST04_PACKAGING_VIB",
+                "critHi": 0.35,
+                "warnHi": 0.2,
+                "critLo": 0.01,
+                "warnLo": 0.02,
+                "unit": "mm/s"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-ST04-01",
@@ -386,19 +393,23 @@
                 "warnLo": "0.02",
                 "unit": "mm/s"
             },
-            "match_score": 0.919
+            "match_score": 0.942
         },
         {
             "extracted": {
                 "ruleId": "SOP001_C15_RULE-ST04-02",
                 "rule_class": "ThresholdRule",
                 "station": "ST04_PACKAGING",
-                "sensor": "ST04_PACKAGING_VIB",
                 "sensorType": "VIB",
                 "condition": "VIB > 0.35 mm/s",
                 "action": "emergency stop; inspect bearings",
+                "severity": "CRITICAL",
                 "critHi": 0.35,
-                "unit": "mm/s"
+                "unit": "mm/s",
+                "sensor": "ST04_PACKAGING_VIB",
+                "warnHi": 0.2,
+                "critLo": 0.01,
+                "warnLo": 0.02
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-ST04-02",
@@ -415,107 +426,7 @@
                 "warnLo": "0.02",
                 "unit": "mm/s"
             },
-            "match_score": 0.914
-        },
-        {
-            "extracted": {
-                "ruleId": "SOP001_C16_RULE-ST04-03",
-                "condition": "SPD drops below 1.00 m/s without operator command - verify RULE-ST02-04.",
-                "action": "verify RULE-ST02-04",
-                "rule_class": "OperationalRule"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-ST04-03",
-                "rule_class": "OperationalRule",
-                "station": "ST04_PACKAGING",
-                "sensor": "ST04_PACKAGING_SPD",
-                "sensorType": "SPD",
-                "condition": "SPD drops below 1.00 m/s without operator command",
-                "action": "Verify RULE-ST02-04 (electrical coupling with ST02_SEALING_CUR)",
-                "severity": "WARNING",
-                "critHi": "1.6",
-                "warnHi": "1.4",
-                "critLo": "1.25",
-                "warnLo": "1.0",
-                "unit": "m/s"
-            },
-            "match_score": 0.785
-        },
-        {
-            "extracted": {
-                "ruleId": "SOP001_C17_RULE-01",
-                "station": "ST04_PACKAGING",
-                "rule_class": "OperationalRule",
-                "condition": "Server room temperature exceeds 35°C for more than 2 hours.",
-                "action": "Alert maintenance team; initiate cooling system.",
-                "severity": "CRITICAL"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-THR-ST04-CUR-CRIT",
-                "rule_class": "ThresholdRule",
-                "station": "ST04_PACKAGING",
-                "sensor": "ST04_PACKAGING_CUR",
-                "sensorType": "CUR",
-                "condition": "Current critical thresholds: 6.5 A (CRIT_LO), 7.5 A (WARN_LO), 8.7±0.2 A (NOMINAL), 9.8 A (WARN_HI), 11.0 A (CRIT_HI)",
-                "action": "Inspect and notify maintenance",
-                "severity": "CRITICAL",
-                "critHi": "11.0",
-                "warnHi": "9.8",
-                "critLo": "6.5",
-                "warnLo": "7.5",
-                "unit": "A"
-            },
-            "match_score": 0.506
-        },
-        {
-            "extracted": {
-                "ruleId": "SOP001_C18_RULE-SRV01-01",
-                "critHi": 25.0,
-                "unit": "°C",
-                "action": "automatic controlled shutdown of all PLC nodes",
-                "rule_class": "OperationalRule"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-SRV01-02",
-                "rule_class": "OperationalRule",
-                "station": "SRV01_SERVERROOM",
-                "sensor": "SRV01_SERVERROOM_TMP",
-                "sensorType": "TMP",
-                "condition": "TMP > 28°C (CRITICAL)",
-                "action": "Automatic controlled shutdown of all PLC nodes",
-                "severity": "CRITICAL",
-                "critHi": "28.0",
-                "warnHi": "25.0",
-                "critLo": "16.0",
-                "warnLo": "18.0",
-                "unit": "°C"
-            },
-            "match_score": 1.0
-        },
-        {
-            "extracted": {
-                "ruleId": "SOP001_C18_RULE-SRV01-02",
-                "critHi": 28.0,
-                "unit": "°C",
-                "action": "automatic controlled shutdown of all PLC nodes",
-                "rule_class": "OperationalRule"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-THR-SRV01-TMP-CRIT",
-                "rule_class": "ThresholdRule",
-                "station": "SRV01_SERVERROOM",
-                "sensor": "SRV01_SERVERROOM_TMP",
-                "sensorType": "TMP",
-                "condition": "Temperature critical thresholds: 16.0°C (CRIT_LO), 18.0°C (WARN_LO), 21.0±0.3°C (NOMINAL), 25.0°C (WARN_HI), 28.0°C (CRIT_HI)",
-                "action": "Activate backup cooling; prepare controlled PLC shutdown",
-                "severity": "CRITICAL",
-                "critHi": "28.0",
-                "warnHi": "25.0",
-                "critLo": "16.0",
-                "warnLo": "18.0",
-                "unit": "°C"
-            },
-            "match_score": 0.667
+            "match_score": 0.933
         },
         {
             "extracted": {
@@ -523,11 +434,13 @@
                 "rule_class": "ThresholdRule",
                 "station": "ST04_PACKAGING",
                 "sensorType": "TMP",
+                "condition": "TMP MUST remain between 0.5°C and 8°C; CRITICAL above 12°C - notify QC and quarantine batch",
+                "action": "notify QC and quarantine batch",
+                "severity": "CRITICAL",
                 "critHi": 12.0,
                 "unit": "°C",
-                "action": "notify QC and quarantine batch",
-                "condition": "TMP MUST remain between 0.5°C and 8°C",
-                "sensor": "ST04_PACKAGING_TMP"
+                "sensor": "ST04_PACKAGING_TMP",
+                "critLo": 25.0
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-WRH01-01b",
@@ -544,84 +457,31 @@
                 "warnLo": "0.5",
                 "unit": "°C"
             },
-            "match_score": 0.594
-        },
-        {
-            "extracted": {
-                "ruleId": "SOP001_C20_RULE-WRH01-02",
-                "rule_class": "ThresholdRule",
-                "station": "ST04_PACKAGING",
-                "sensorType": "HUM",
-                "critHi": 85.0,
-                "unit": "%RH",
-                "action": "inspect door seals and activate dehumidifier",
-                "condition": "HUM above 85%RH"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-WRH01-02",
-                "rule_class": "OperationalRule",
-                "station": "WRH01_WAREHOUSE",
-                "sensor": "WRH01_WAREHOUSE_HUM",
-                "sensorType": "HUM",
-                "condition": "HUM above 85%RH",
-                "action": "Inspect door seals and activate dehumidifier",
-                "severity": "WARNING",
-                "critHi": "90.0",
-                "warnHi": "85.0",
-                "critLo": "55.0",
-                "warnLo": "60.0",
-                "unit": "%RH"
-            },
-            "match_score": 0.75
+            "match_score": 0.515
         },
         {
             "extracted": {
                 "ruleId": "SOP001_C21_RULE-01",
+                "rule_class": "OperationalRule",
                 "station": "ST04_PACKAGING",
-                "condition": "Occupancy WARNING above 3 persons; CRITICAL at max 5",
+                "sensor": "CHM01_CHEMICALSTORAGE_TMP",
+                "sensorType": "CNT",
+                "condition": "Count WARNING above 5; CRITICAL at max 10",
                 "action": "Alert safety officer; enforce evacuation if CRITICAL",
                 "severity": "WARNING",
-                "unit": "persons",
-                "rule_class": "AccessRule"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-OCC-PROD",
-                "rule_class": "AccessRule",
-                "station": "Production Area",
-                "sensor": null,
-                "sensorType": null,
-                "condition": "Occupancy WARNING above 10 persons; CRITICAL above 12 (max)",
-                "action": "Alert security; enforce evacuation if CRITICAL",
-                "severity": "WARNING",
-                "critHi": null,
-                "warnHi": null,
-                "critLo": null,
-                "warnLo": null,
-                "unit": "persons"
-            },
-            "match_score": 0.756
-        },
-        {
-            "extracted": {
-                "ruleId": "SOP001_C22_RULE-CHM01-01",
-                "sensorType": "TMP",
-                "station": "ST04_PACKAGING",
                 "critHi": 25.0,
-                "unit": "°C",
-                "action": "activate emergency ventilation and notify safety officer immediately",
-                "severity": "CRITICAL",
-                "critLo": 10.0,
-                "warnLo": 20.0,
-                "rule_class": "ThresholdRule",
-                "sensor": "ST04_PACKAGING_TMP"
+                "warnHi": 20.0,
+                "critLo": 5.0,
+                "warnLo": 10.0,
+                "unit": "°C"
             },
             "matched_ground_truth": {
-                "ruleId": "RULE-THR-CHM01-TMP-CRIT",
-                "rule_class": "ThresholdRule",
+                "ruleId": "RULE-CHM01-01b",
+                "rule_class": "OperationalRule",
                 "station": "CHM01_CHEMICALSTORAGE",
                 "sensor": "CHM01_CHEMICALSTORAGE_TMP",
                 "sensorType": "TMP",
-                "condition": "Temperature critical thresholds: CRIT_LO=5.0°C, WARN_LOW=10.0°C, nominal=15.0±0.3°C, WARN_HI=20.0°C, CRIT_HI=25.0°C",
+                "condition": "TMP CRITICAL above 25°C",
                 "action": "Activate emergency ventilation; notify safety officer immediately",
                 "severity": "CRITICAL",
                 "critHi": "25.0",
@@ -630,42 +490,47 @@
                 "warnLo": "10.0",
                 "unit": "°C"
             },
-            "match_score": 0.57
+            "match_score": 0.63
         },
         {
             "extracted": {
-                "ruleId": "SOP001_C22_RULE-CHM01-02",
-                "sensorType": "HUM",
+                "ruleId": "SOP001_C22_RULE-CHM01-01",
+                "rule_class": "OperationalRule",
                 "station": "ST04_PACKAGING",
-                "critHi": 50.0,
-                "unit": "%RH",
-                "action": "Activate desiccant system if HUM >45%RH",
-                "rule_class": "OperationalRule"
+                "sensorType": "TMP",
+                "condition": "TMP MUST remain between 10°C and 20°C",
+                "action": "CRITICAL above 25°C - activate emergency ventilation and notify safety officer immediately.",
+                "severity": "CRITICAL",
+                "unit": "°C",
+                "sensor": "ST04_PACKAGING_TMP",
+                "critHi": 12.0,
+                "critLo": 25.0
             },
             "matched_ground_truth": {
-                "ruleId": "RULE-CHM01-02a",
-                "rule_class": "OperationalRule",
+                "ruleId": "MAINT-07",
+                "rule_class": "MaintenanceRule",
                 "station": "CHM01_CHEMICALSTORAGE",
-                "sensor": "CHM01_CHEMICALSTORAGE_HUM",
-                "sensorType": "HUM",
-                "condition": "HUM MUST NOT exceed 50%RH",
-                "action": "Activate desiccant system if HUM >45%RH",
-                "severity": "MANDATORY",
-                "critHi": "60.0",
-                "warnHi": "50.0",
-                "critLo": "15.0",
-                "warnLo": "20.0",
-                "unit": "%RH"
+                "sensor": "CHM01_CHEMICALSTORAGE_TMP",
+                "sensorType": "TMP",
+                "condition": "TMP >20°C for >10 min",
+                "action": "Emergency ventilation; notify safety officer",
+                "severity": "CRITICAL",
+                "critHi": null,
+                "warnHi": null,
+                "critLo": null,
+                "warnLo": null,
+                "unit": "°C"
             },
-            "match_score": 0.667
+            "match_score": 0.564
         },
         {
             "extracted": {
                 "ruleId": "SOP001_C22_RULE-CHM01-03",
                 "rule_class": "AccessRule",
                 "station": "Chemical Storage",
-                "condition": "Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage",
-                "action": "UNAUTHORIZED_ACCESS must be escalated within 2 minutes"
+                "condition": "Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage.",
+                "action": "UNAUTHORIZED_ACCESS must be escalated within 2 minutes.",
+                "severity": "MANDATORY"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-CHM01-03",
@@ -682,43 +547,17 @@
                 "warnLo": null,
                 "unit": null
             },
-            "match_score": 0.999
-        },
-        {
-            "extracted": {
-                "ruleId": "SOP001_C24_RULE-RND01-02",
-                "sensorType": "HUM",
-                "critLo": 65.0,
-                "critHi": 75.0,
-                "unit": "%RH",
-                "action": "activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system.",
-                "rule_class": "ThresholdRule"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-THR-RND01-HUM-CRIT",
-                "rule_class": "ThresholdRule",
-                "station": "RND01_RDLAB",
-                "sensor": "RND01_RDLAB_HUM",
-                "sensorType": "HUM",
-                "condition": "Humidity critical thresholds: CRIT_LO=25.0%RH, WARN_LOW=35.0%RH, nominal=50.0±1.0%RH, WARN_HI=65.0%RH, CRIT_HI=75.0%RH",
-                "action": "Suspend experiments; inspect HVAC system",
-                "severity": "CRITICAL",
-                "critHi": "75.0",
-                "warnHi": "65.0",
-                "critLo": "25.0",
-                "warnLo": "35.0",
-                "unit": "%RH"
-            },
-            "match_score": 0.774
+            "match_score": 0.883
         },
         {
             "extracted": {
                 "ruleId": "SOP001_C26_RULE-CAF01-01",
-                "condition": "TMP above 26°C - check ventilation system.",
+                "condition": "TMP > 26°C - check ventilation system",
+                "action": "check ventilation system",
+                "severity": "WARNING",
                 "sensorType": "TMP",
                 "critHi": 26.0,
                 "unit": "°C",
-                "action": "check ventilation system.",
                 "rule_class": "OperationalRule"
             },
             "matched_ground_truth": {
@@ -736,47 +575,81 @@
                 "warnLo": "17.0",
                 "unit": "°C"
             },
-            "match_score": 0.83
+            "match_score": 0.501
         },
         {
             "extracted": {
-                "ruleId": "SOP001_C26_RULE-CAF01-02",
-                "condition": "HUM above 70%RH - inspect drainage and activate ventilation.",
-                "sensorType": "HUM",
-                "critHi": 70.0,
-                "unit": "%RH",
-                "rule_class": "OperationalRule"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-CAF01-02",
-                "rule_class": "OperationalRule",
-                "station": "CAF01_CAFETERIA",
-                "sensor": "CAF01_CAFETERIA_HUM",
-                "sensorType": "HUM",
-                "condition": "HUM above 70%RH",
-                "action": "Inspect drainage and activate ventilation",
-                "severity": "WARNING",
-                "critHi": "80.0",
-                "warnHi": "70.0",
-                "critLo": "25.0",
-                "warnLo": "35.0",
-                "unit": "%RH"
-            },
-            "match_score": 0.878
-        },
-        {
-            "extracted": {
-                "ruleId": "SOP002_C2_RULE-03",
+                "ruleId": "SOP002_C2_RULE-01",
                 "rule_class": "ThresholdRule",
                 "station": "ST01_FILLING",
-                "sensor": "ST01_FILLING_FLW",
+                "sensorType": "TMP",
+                "critLo": 15.0,
+                "warnLo": 18.0,
+                "critHi": 30.0,
+                "warnHi": 26.0,
+                "unit": "°C",
+                "action": "Inspect and notify maintenance",
+                "sensor": "ST01_FILLING_TMP"
+            },
+            "matched_ground_truth": {
+                "ruleId": "RULE-THR-ST01-TMP-CRIT",
+                "rule_class": "ThresholdRule",
+                "station": "ST01_FILLING",
+                "sensor": "ST01_FILLING_TMP",
+                "sensorType": "TMP",
+                "condition": "Temperature critical thresholds: 15.0°C (CRIT_LO), 18.0°C (WARN_LO), 22.0±0.4°C (NOMINAL), 26.0°C (WARN_HI), 30.0°C (CRIT_HI)",
+                "action": "Inspect and notify maintenance",
+                "severity": "CRITICAL",
+                "critHi": "30.0",
+                "warnHi": "26.0",
+                "critLo": "15.0",
+                "warnLo": "18.0",
+                "unit": "°C"
+            },
+            "match_score": 0.778
+        },
+        {
+            "extracted": {
+                "ruleId": "SOP002_C2_RULE-02",
+                "rule_class": "ThresholdRule",
+                "station": "ST01_FILLING",
+                "sensorType": "PRS",
+                "critLo": 3.0,
+                "warnLo": 3.3,
+                "critHi": 4.8,
+                "warnHi": 4.2,
+                "unit": "bar",
+                "sensor": "ST01_FILLING_PRS"
+            },
+            "matched_ground_truth": {
+                "ruleId": "RULE-THR-ST01-PRS-CRIT",
+                "rule_class": "ThresholdRule",
+                "station": "ST01_FILLING",
+                "sensor": "ST01_FILLING_PRS",
+                "sensorType": "PRS",
+                "condition": "Pressure critical thresholds: 3.0 bar (CRIT_LO), 3.3 bar (WARN_LO), 3.8±0.05 bar (NOMINAL), 4.2 bar (WARN_HI), 4.8 bar (CRIT_HI)",
+                "action": "Inspect and notify maintenance",
+                "severity": "CRITICAL",
+                "critHi": "4.8",
+                "warnHi": "4.2",
+                "critLo": "3.0",
+                "warnLo": "3.3",
+                "unit": "bar"
+            },
+            "match_score": 0.611
+        },
+        {
+            "extracted": {
+                "ruleId": "SOP002_C2_RULE-04",
+                "rule_class": "ThresholdRule",
+                "station": "ST01_FILLING",
                 "sensorType": "FLW",
                 "critLo": 105.0,
-                "warnLo": 120.0,
-                "warnHi": 128.0,
+                "warnLo": 112.0,
                 "critHi": 135.0,
+                "warnHi": 128.0,
                 "unit": "L/min",
-                "action": "Inspect and notify maintenance"
+                "sensor": "ST01_FILLING_FLW"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-THR-ST01-FLW-CRIT",
@@ -793,21 +666,21 @@
                 "warnLo": "112.0",
                 "unit": "L/min"
             },
-            "match_score": 1.0
+            "match_score": 0.611
         },
         {
             "extracted": {
                 "ruleId": "SOP002_C3_RULE-ST02-01",
                 "rule_class": "ThresholdRule",
                 "station": "ST02_SEALING",
-                "sensor": "ST02_SEALING_TMP",
                 "sensorType": "TMP",
                 "critLo": 165.0,
-                "warnLo": 175.0,
-                "critHi": 210.0,
+                "warnLo": 185.0,
                 "warnHi": 195.0,
+                "critHi": 210.0,
+                "action": "E-STOP ST02/ST03/ST04; inspect element",
                 "unit": "°C",
-                "action": "E-STOP ST02/ST03/ST04; inspect element"
+                "sensor": "ST02_SEALING_TMP"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-THR-ST02-TMP-CRIT",
@@ -824,21 +697,21 @@
                 "warnLo": "175.0",
                 "unit": "°C"
             },
-            "match_score": 1.0
+            "match_score": 0.778
         },
         {
             "extracted": {
                 "ruleId": "SOP002_C4_RULE-01",
                 "rule_class": "ThresholdRule",
                 "station": "ST03_LABELLING",
-                "sensor": "ST03_LABELLING_SPD",
                 "sensorType": "SPD",
                 "critLo": 0.65,
                 "warnLo": 0.75,
                 "warnHi": 0.95,
                 "critHi": 1.05,
                 "action": "Inspect and notify maintenance",
-                "unit": "m/s"
+                "unit": "m/s",
+                "sensor": "ST03_LABELLING_SPD"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-THR-ST03-SPD-CRIT",
@@ -855,21 +728,21 @@
                 "warnLo": "1.15",
                 "unit": "m/s"
             },
-            "match_score": 0.786
+            "match_score": 0.611
         },
         {
             "extracted": {
                 "ruleId": "SOP002_C4_RULE-02",
                 "rule_class": "ThresholdRule",
                 "station": "ST03_LABELLING",
-                "sensor": "ST03_LABELLING_TEN",
                 "sensorType": "TEN",
                 "critLo": 1.5,
                 "warnLo": 1.8,
                 "warnHi": 2.6,
                 "critHi": 3.0,
                 "action": "Inspect and notify maintenance",
-                "unit": "N"
+                "unit": "N",
+                "sensor": "ST03_LABELLING_TEN"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-THR-ST03-TEN-CRIT",
@@ -886,21 +759,20 @@
                 "warnLo": "1.8",
                 "unit": "N"
             },
-            "match_score": 1.0
+            "match_score": 0.778
         },
         {
             "extracted": {
                 "ruleId": "SOP002_C4_RULE-03",
                 "rule_class": "ThresholdRule",
                 "station": "ST03_LABELLING",
-                "sensor": "ST03_LABELLING_CNT",
                 "sensorType": "CNT",
                 "critLo": 100.0,
                 "warnLo": 110.0,
                 "warnHi": 130.0,
                 "critHi": 140.0,
                 "action": "E-STOP labelling; inspect label path",
-                "unit": "pcs/min"
+                "sensor": "ST03_LABELLING_CNT"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-THR-ST03-CNT-CRIT",
@@ -917,7 +789,7 @@
                 "warnLo": "110",
                 "unit": "pcs/min"
             },
-            "match_score": 1.0
+            "match_score": 0.722
         },
         {
             "extracted": {
@@ -930,8 +802,9 @@
                 "warnLo": 0.02,
                 "critHi": 0.35,
                 "warnHi": 0.2,
-                "unit": "mm/s",
-                "action": "E-STOP; inspect main bearing."
+                "action": "E-STOP; inspect main bearing.",
+                "severity": "CRITICAL",
+                "unit": "mm/s"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-THR-ST04-VIB-CRIT",
@@ -948,52 +821,116 @@
                 "warnLo": "0.02",
                 "unit": "mm/s"
             },
-            "match_score": 0.995
+            "match_score": 0.83
+        },
+        {
+            "extracted": {
+                "ruleId": "SOP002_C5_RULE-02",
+                "rule_class": "ThresholdRule",
+                "station": "ST04_PACKAGING",
+                "sensor": "ST04_PACKAGING_CUR",
+                "sensorType": "CUR",
+                "critLo": 6.5,
+                "warnLo": 7.5,
+                "critHi": 11.0,
+                "warnHi": 9.8,
+                "action": "Inspect and notify maintenance.",
+                "severity": "CRITICAL"
+            },
+            "matched_ground_truth": {
+                "ruleId": "RULE-THR-ST04-CUR-CRIT",
+                "rule_class": "ThresholdRule",
+                "station": "ST04_PACKAGING",
+                "sensor": "ST04_PACKAGING_CUR",
+                "sensorType": "CUR",
+                "condition": "Current critical thresholds: 6.5 A (CRIT_LO), 7.5 A (WARN_LO), 8.7±0.2 A (NOMINAL), 9.8 A (WARN_HI), 11.0 A (CRIT_HI)",
+                "action": "Inspect and notify maintenance",
+                "severity": "CRITICAL",
+                "critHi": "11.0",
+                "warnHi": "9.8",
+                "critLo": "6.5",
+                "warnLo": "7.5",
+                "unit": "A"
+            },
+            "match_score": 0.766
+        },
+        {
+            "extracted": {
+                "ruleId": "SOP002_C5_RULE-03",
+                "rule_class": "ThresholdRule",
+                "station": "ST04_PACKAGING",
+                "sensor": "ST04_PACKAGING_SPD",
+                "sensorType": "SPD",
+                "critLo": 0.85,
+                "warnLo": 1.0,
+                "critHi": 1.6,
+                "warnHi": 1.4,
+                "action": "Inspect and notify maintenance.",
+                "severity": "CRITICAL",
+                "unit": "m/s"
+            },
+            "matched_ground_truth": {
+                "ruleId": "RULE-THR-ST04-SPD-CRIT",
+                "rule_class": "ThresholdRule",
+                "station": "ST04_PACKAGING",
+                "sensor": "ST04_PACKAGING_SPD",
+                "sensorType": "SPD",
+                "condition": "Speed critical thresholds: 0.85 m/s (CRIT_LO), 1.0 m/s (WARN_LO), 1.2±0.02 m/s (NOMINAL), 1.4 m/s (WARN_HI), 1.6 m/s (CRIT_HI)",
+                "action": "Inspect and notify maintenance",
+                "severity": "CRITICAL",
+                "critHi": "1.6",
+                "warnHi": "1.4",
+                "critLo": "1.25",
+                "warnLo": "1.0",
+                "unit": "m/s"
+            },
+            "match_score": 0.766
         },
         {
             "extracted": {
                 "ruleId": "SOP002_C6_RULE-01",
                 "rule_class": "ThresholdRule",
                 "station": "SRV01_SERVERROOM",
-                "sensor": "SRV01_SERVERROOM_TMP",
                 "sensorType": "TMP",
                 "critLo": 16.0,
-                "warnLo": 18.0,
+                "warnLo": 21.0,
                 "warnHi": 25.0,
                 "critHi": 28.0,
+                "action": "Activate backup cooling; prepare controlled PLC shutdown",
                 "unit": "°C",
-                "action": "Activate backup cooling; prepare controlled PLC shutdown"
+                "sensor": "SRV01_SERVERROOM_TMP"
             },
             "matched_ground_truth": {
-                "ruleId": "MAINT-05",
-                "rule_class": "MaintenanceRule",
+                "ruleId": "RULE-THR-SRV01-TMP-CRIT",
+                "rule_class": "ThresholdRule",
                 "station": "SRV01_SERVERROOM",
                 "sensor": "SRV01_SERVERROOM_TMP",
                 "sensorType": "TMP",
-                "condition": "TMP >25°C for >5 min",
-                "action": "Activate secondary cooling",
+                "condition": "Temperature critical thresholds: 16.0°C (CRIT_LO), 18.0°C (WARN_LO), 21.0±0.3°C (NOMINAL), 25.0°C (WARN_HI), 28.0°C (CRIT_HI)",
+                "action": "Activate backup cooling; prepare controlled PLC shutdown",
                 "severity": "CRITICAL",
-                "critHi": null,
-                "warnHi": null,
-                "critLo": null,
-                "warnLo": null,
+                "critHi": "28.0",
+                "warnHi": "25.0",
+                "critLo": "16.0",
+                "warnLo": "18.0",
                 "unit": "°C"
             },
-            "match_score": 0.748
+            "match_score": 0.722
         },
         {
             "extracted": {
                 "ruleId": "SOP002_C7_RULE-01",
                 "rule_class": "ThresholdRule",
                 "station": "WRH01_WAREHOUSE",
-                "sensor": "WRH01_WAREHOUSE_TMP",
                 "sensorType": "TMP",
                 "critLo": -1.0,
                 "warnLo": 4.0,
                 "warnHi": 8.0,
                 "critHi": 12.0,
+                "action": "Activate backup refrigeration; notify QC.",
+                "severity": "CRITICAL",
                 "unit": "°C",
-                "action": "Activate backup refrigeration; notify QC"
+                "sensor": "WRH01_WAREHOUSE_TMP"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-THR-WRH01-TMP-CRIT",
@@ -1010,60 +947,29 @@
                 "warnLo": "0.5",
                 "unit": "°C"
             },
-            "match_score": 0.929
-        },
-        {
-            "extracted": {
-                "ruleId": "SOP002_C7_RULE-02",
-                "rule_class": "ThresholdRule",
-                "station": "WRH01_WAREHOUSE",
-                "sensor": "WRH01_WAREHOUSE_HUM",
-                "sensorType": "HUM",
-                "critLo": 55.0,
-                "warnLo": 60.0,
-                "warnHi": 85.0,
-                "critHi": 90.0,
-                "unit": "%RH",
-                "action": "Inspect and notify maintenance"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-THR-WRH01-HUM-CRIT",
-                "rule_class": "ThresholdRule",
-                "station": "WRH01_WAREHOUSE",
-                "sensor": "WRH01_WAREHOUSE_HUM",
-                "sensorType": "HUM",
-                "condition": "Humidity critical thresholds: CRIT_LO=55.0%RH, WARN_LOW=60.0%RH, nominal=75.0±1.5%RH, WARN_HI=85.0%RH, CRIT_HI=90.0%RH",
-                "action": "Inspect and notify maintenance",
-                "severity": "CRITICAL",
-                "critHi": "90.0",
-                "warnHi": "85.0",
-                "critLo": "55.0",
-                "warnLo": "60.0",
-                "unit": "%RH"
-            },
-            "match_score": 1.0
+            "match_score": 0.769
         },
         {
             "extracted": {
                 "ruleId": "SOP002_C8_RULE-01",
                 "rule_class": "ThresholdRule",
                 "station": "CHM01_CHEMICALSTORAGE",
-                "sensor": "CHM01_CHEMICALSTORAGE_TMP",
                 "sensorType": "TMP",
                 "critLo": 5.0,
                 "warnLo": 10.0,
                 "warnHi": 20.0,
                 "critHi": 25.0,
+                "action": "Activate emergency ventilation; notify safety officer immediately",
                 "unit": "°C",
-                "action": "Activate emergency ventilation; notify safety officer immediately"
+                "sensor": "CHM01_CHEMICALSTORAGE_TMP"
             },
             "matched_ground_truth": {
-                "ruleId": "RULE-CHM01-01b",
-                "rule_class": "OperationalRule",
+                "ruleId": "RULE-THR-CHM01-TMP-CRIT",
+                "rule_class": "ThresholdRule",
                 "station": "CHM01_CHEMICALSTORAGE",
                 "sensor": "CHM01_CHEMICALSTORAGE_TMP",
                 "sensorType": "TMP",
-                "condition": "TMP CRITICAL above 25°C",
+                "condition": "Temperature critical thresholds: CRIT_LO=5.0°C, WARN_LOW=10.0°C, nominal=15.0±0.3°C, WARN_HI=20.0°C, CRIT_HI=25.0°C",
                 "action": "Activate emergency ventilation; notify safety officer immediately",
                 "severity": "CRITICAL",
                 "critHi": "25.0",
@@ -1072,21 +978,21 @@
                 "warnLo": "10.0",
                 "unit": "°C"
             },
-            "match_score": 0.929
+            "match_score": 0.778
         },
         {
             "extracted": {
                 "ruleId": "SOP002_C9_RULE-01",
                 "rule_class": "ThresholdRule",
                 "station": "RND01_RDLAB",
-                "sensor": "RND01_RDLAB_TMP",
                 "sensorType": "TMP",
                 "critLo": 15.0,
-                "warnLo": 22.0,
-                "warnHi": 26.0,
+                "warnLo": 18.0,
                 "critHi": 30.0,
+                "warnHi": 26.0,
+                "action": "Inspect and notify maintenance.",
                 "unit": "°C",
-                "action": "Inspect and notify maintenance."
+                "sensor": "RND01_RDLAB_TMP"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-THR-RND01-TMP-CRIT",
@@ -1103,21 +1009,52 @@
                 "warnLo": "18.0",
                 "unit": "°C"
             },
-            "match_score": 0.913
+            "match_score": 0.766
+        },
+        {
+            "extracted": {
+                "ruleId": "SOP002_C9_RULE-02",
+                "rule_class": "ThresholdRule",
+                "station": "RND01_RDLAB",
+                "sensorType": "HUM",
+                "critLo": 25.0,
+                "warnLo": 35.0,
+                "critHi": 75.0,
+                "warnHi": 65.0,
+                "action": "Suspend experiments; inspect HVAC system",
+                "unit": "%RH",
+                "sensor": "RND01_RDLAB_HUM"
+            },
+            "matched_ground_truth": {
+                "ruleId": "RULE-THR-RND01-HUM-CRIT",
+                "rule_class": "ThresholdRule",
+                "station": "RND01_RDLAB",
+                "sensor": "RND01_RDLAB_HUM",
+                "sensorType": "HUM",
+                "condition": "Humidity critical thresholds: CRIT_LO=25.0%RH, WARN_LOW=35.0%RH, nominal=50.0±1.0%RH, WARN_HI=65.0%RH, CRIT_HI=75.0%RH",
+                "action": "Suspend experiments; inspect HVAC system",
+                "severity": "CRITICAL",
+                "critHi": "75.0",
+                "warnHi": "65.0",
+                "critLo": "25.0",
+                "warnLo": "35.0",
+                "unit": "%RH"
+            },
+            "match_score": 0.778
         },
         {
             "extracted": {
                 "ruleId": "SOP002_C10_RULE-01",
                 "rule_class": "ThresholdRule",
                 "station": "CAF01_CAFETERIA",
-                "sensor": "CAF01_CAFETERIA_TMP",
                 "sensorType": "TMP",
                 "critLo": 14.0,
                 "warnLo": 21.0,
                 "warnHi": 26.0,
                 "critHi": 30.0,
+                "action": "Inspect and notify maintenance",
                 "unit": "°C",
-                "action": "Inspect and notify maintenance"
+                "sensor": "CAF01_CAFETERIA_TMP"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-THR-CAF01-TMP-CRIT",
@@ -1134,21 +1071,21 @@
                 "warnLo": "17.0",
                 "unit": "°C"
             },
-            "match_score": 0.929
+            "match_score": 0.722
         },
         {
             "extracted": {
                 "ruleId": "SOP002_C10_RULE-02",
                 "rule_class": "ThresholdRule",
                 "station": "CAF01_CAFETERIA",
-                "sensor": "CAF01_CAFETERIA_HUM",
                 "sensorType": "HUM",
                 "critLo": 25.0,
                 "warnLo": 55.0,
                 "warnHi": 70.0,
                 "critHi": 80.0,
+                "action": "Inspect and notify maintenance",
                 "unit": "%RH",
-                "action": "Inspect and notify maintenance"
+                "sensor": "CAF01_CAFETERIA_HUM"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-THR-CAF01-HUM-CRIT",
@@ -1165,16 +1102,23 @@
                 "warnLo": "35.0",
                 "unit": "%RH"
             },
-            "match_score": 0.929
+            "match_score": 0.722
         },
         {
             "extracted": {
-                "ruleId": "SOP003_C0_RULE-01",
+                "ruleId": "SOP003_C2_MAINT-01",
                 "rule_class": "MaintenanceRule",
-                "station": "Production Line A",
+                "station": "ST04_PACKAGING",
+                "sensor": "ST04_PACKAGING_VIB",
+                "sensorType": "VIB",
                 "condition": "VIB DRIFT >0.05 mm/s over 60 min",
                 "action": "Inspect and lubricate bearing",
-                "severity": "HIGH"
+                "severity": "HIGH",
+                "critHi": 0.35,
+                "warnHi": 0.2,
+                "critLo": 0.01,
+                "warnLo": 0.02,
+                "unit": "mm/s"
             },
             "matched_ground_truth": {
                 "ruleId": "MAINT-01",
@@ -1191,7 +1135,7 @@
                 "warnLo": null,
                 "unit": "mm/s"
             },
-            "match_score": 0.782
+            "match_score": 0.987
         },
         {
             "extracted": {
@@ -1202,7 +1146,11 @@
                 "sensorType": "CUR",
                 "condition": "CUR DRIFT >1.0 A for 30+ min",
                 "action": "Inspect sealing jaw",
-                "severity": "HIGH"
+                "severity": "HIGH",
+                "critHi": 11.0,
+                "warnHi": 9.8,
+                "critLo": 6.5,
+                "warnLo": 7.5
             },
             "matched_ground_truth": {
                 "ruleId": "MAINT-02",
@@ -1219,7 +1167,7 @@
                 "warnLo": null,
                 "unit": "A"
             },
-            "match_score": 0.825
+            "match_score": 0.766
         },
         {
             "extracted": {
@@ -1230,24 +1178,29 @@
                 "sensorType": "TEN",
                 "condition": "TEN STUCK >10 samples",
                 "action": "Replace sensor",
-                "severity": "MEDIUM"
+                "severity": "MEDIUM",
+                "critHi": 2.6,
+                "warnHi": 2.6,
+                "critLo": 1.8,
+                "warnLo": 1.8,
+                "unit": "N"
             },
             "matched_ground_truth": {
-                "ruleId": "RULE-ST03-03",
-                "rule_class": "OperationalRule",
+                "ruleId": "MAINT-03",
+                "rule_class": "MaintenanceRule",
                 "station": "ST03_LABELLING",
                 "sensor": "ST03_LABELLING_TEN",
                 "sensorType": "TEN",
                 "condition": "TEN STUCK >10 consecutive samples",
-                "action": "Sensor failure — replace sensor",
-                "severity": "CRITICAL",
-                "critHi": "3.0",
-                "warnHi": "2.6",
-                "critLo": "1.5",
-                "warnLo": "1.8",
+                "action": "Replace TEN sensor",
+                "severity": "MEDIUM",
+                "critHi": null,
+                "warnHi": null,
+                "critLo": null,
+                "warnLo": null,
                 "unit": "N"
             },
-            "match_score": 0.794
+            "match_score": 0.943
         },
         {
             "extracted": {
@@ -1258,7 +1211,12 @@
                 "sensorType": "PRS",
                 "condition": "PRS <3.3 bar for >15 min",
                 "action": "Inspect filter and pump",
-                "severity": "MEDIUM"
+                "severity": "MEDIUM",
+                "critHi": 4.8,
+                "warnHi": 4.2,
+                "critLo": 3.0,
+                "warnLo": 3.3,
+                "unit": "bar"
             },
             "matched_ground_truth": {
                 "ruleId": "MAINT-04",
@@ -1275,7 +1233,38 @@
                 "warnLo": null,
                 "unit": "bar"
             },
-            "match_score": 0.974
+            "match_score": 0.976
+        },
+        {
+            "extracted": {
+                "ruleId": "SOP003_C2_MAINT-05",
+                "rule_class": "MaintenanceRule",
+                "station": "SRV01_SERVERROOM",
+                "sensor": "ST04_PACKAGING_TMP",
+                "sensorType": "TMP",
+                "condition": "TMP >25°C for >5 min",
+                "action": "Activate secondary cooling",
+                "severity": "CRITICAL",
+                "critHi": 12.0,
+                "critLo": 25.0,
+                "unit": "°C"
+            },
+            "matched_ground_truth": {
+                "ruleId": "MAINT-05",
+                "rule_class": "MaintenanceRule",
+                "station": "SRV01_SERVERROOM",
+                "sensor": "SRV01_SERVERROOM_TMP",
+                "sensorType": "TMP",
+                "condition": "TMP >25°C for >5 min",
+                "action": "Activate secondary cooling",
+                "severity": "CRITICAL",
+                "critHi": null,
+                "warnHi": null,
+                "critLo": null,
+                "warnLo": null,
+                "unit": "°C"
+            },
+            "match_score": 0.857
         },
         {
             "extracted": {
@@ -1286,7 +1275,10 @@
                 "sensorType": "TMP",
                 "condition": "TMP DRIFT >2°C over 2 h",
                 "action": "Inspect compressor; notify",
-                "severity": "QC CRITICAL"
+                "severity": "QC CRITICAL",
+                "critHi": 12.0,
+                "critLo": 25.0,
+                "unit": "°C"
             },
             "matched_ground_truth": {
                 "ruleId": "MAINT-06",
@@ -1303,7 +1295,7 @@
                 "warnLo": null,
                 "unit": "°C"
             },
-            "match_score": 0.739
+            "match_score": 0.758
         },
         {
             "extracted": {
@@ -1314,24 +1306,27 @@
                 "sensorType": "TMP",
                 "condition": "TMP >20°C for >10 min",
                 "action": "Emergency ventilation; notify",
-                "severity": "safety officer CRITICAL"
+                "severity": "safety officer CRITICAL",
+                "critHi": 12.0,
+                "critLo": 25.0,
+                "unit": "°C"
             },
             "matched_ground_truth": {
-                "ruleId": "MAINT-07",
-                "rule_class": "MaintenanceRule",
+                "ruleId": "RULE-CHM01-01a",
+                "rule_class": "OperationalRule",
                 "station": "CHM01_CHEMICALSTORAGE",
                 "sensor": "CHM01_CHEMICALSTORAGE_TMP",
                 "sensorType": "TMP",
-                "condition": "TMP >20°C for >10 min",
-                "action": "Emergency ventilation; notify safety officer",
-                "severity": "CRITICAL",
-                "critHi": null,
-                "warnHi": null,
-                "critLo": null,
-                "warnLo": null,
+                "condition": "TMP MUST remain between 10°C and 20°C",
+                "action": "Activate emergency ventilation and notify safety officer",
+                "severity": "MANDATORY",
+                "critHi": "25.0",
+                "warnHi": "20.0",
+                "critLo": "5.0",
+                "warnLo": "10.0",
                 "unit": "°C"
             },
-            "match_score": 0.755
+            "match_score": 0.511
         },
         {
             "extracted": {
@@ -1359,40 +1354,16 @@
                 "warnLo": null,
                 "unit": "%RH"
             },
-            "match_score": 0.846
+            "match_score": 0.786
         },
         {
             "extracted": {
-                "ruleId": "SOP004_C0_RULE-01",
+                "ruleId": "SOP004_C0_RULE-ACK-TECH-WARN",
                 "rule_class": "AccessRule",
-                "station": "Chemical Storage",
-                "condition": "Occupancy WARNING above 4 persons; CRITICAL at max 5",
-                "action": "Alert safety officer; enforce evacuation if CRITICAL",
-                "severity": "WARNING",
-                "unit": "persons"
-            },
-            "matched_ground_truth": {
-                "ruleId": "RULE-OCC-CHM",
-                "rule_class": "AccessRule",
-                "station": "Chemical Storage",
-                "sensor": null,
-                "sensorType": null,
-                "condition": "CRITICAL above 4 persons; hazmat training required",
-                "action": "Alert safety officer; enforce hazmat policy",
-                "severity": "CRITICAL",
-                "critHi": null,
-                "warnHi": null,
-                "critLo": null,
-                "warnLo": null,
-                "unit": "persons"
-            },
-            "match_score": 0.673
-        },
-        {
-            "extracted": {
-                "ruleId": "SOP004_C3_RULE-03",
-                "condition": "technician, Max Ack -WARNING (min) = 10.",
-                "rule_class": "AccessRule"
+                "condition": "technician role — WARNING alarm acknowledgment",
+                "action": "Must acknowledge within 20 minutes",
+                "severity": "MANDATORY",
+                "unit": "min"
             },
             "matched_ground_truth": {
                 "ruleId": "RULE-ACK-TECH-CRIT",
@@ -1409,22 +1380,25 @@
                 "warnLo": null,
                 "unit": "min"
             },
-            "match_score": 0.65
+            "match_score": 0.956
         },
         {
             "extracted": {
-                "ruleId": "SOP004_C3_RULE-05",
-                "condition": "supervisor, Max Ack -WARNING (min) = 5.",
-                "rule_class": "AccessRule"
+                "ruleId": "SOP004_C3_RULE-ACK-OPER-WARN",
+                "rule_class": "AccessRule",
+                "condition": "operator role — WARNING alarm acknowledgment",
+                "action": "Must acknowledge within 15 minutes",
+                "severity": "MANDATORY",
+                "unit": "min"
             },
             "matched_ground_truth": {
-                "ruleId": "RULE-ACK-SUP-WARN",
+                "ruleId": "RULE-ACK-OP-WARN",
                 "rule_class": "AccessRule",
                 "station": null,
                 "sensor": null,
                 "sensorType": null,
-                "condition": "supervisor role — WARNING alarm acknowledgment",
-                "action": "Must acknowledge within 5 minutes",
+                "condition": "operator role — WARNING alarm acknowledgment",
+                "action": "Must acknowledge within 15 minutes",
                 "severity": "MANDATORY",
                 "critHi": null,
                 "warnHi": null,
@@ -1432,38 +1406,41 @@
                 "warnLo": null,
                 "unit": "min"
             },
-            "match_score": 0.689
+            "match_score": 1.0
         },
         {
             "extracted": {
-                "ruleId": "SOP004_C4_RULE-ACCESS-01",
+                "ruleId": "SOP004_C3_RULE-ACK-OPER-CRIT",
                 "rule_class": "AccessRule",
-                "station": "unauthorised role",
-                "condition": "Any entry by an unauthorised role MUST be logged as OccupancyEvent::UnauthorisedAccess with person_id, zone, and timestamp."
+                "condition": "operator role — CRITICAL alarm acknowledgment",
+                "action": "Must acknowledge within 3 minutes",
+                "severity": "MANDATORY",
+                "unit": "min"
             },
             "matched_ground_truth": {
-                "ruleId": "RULE-ACCESS-01",
+                "ruleId": "RULE-ACK-OP-CRIT",
                 "rule_class": "AccessRule",
                 "station": null,
                 "sensor": null,
                 "sensorType": null,
-                "condition": "Any entry by an unauthorised role",
-                "action": "Log as OccupancyEvent::UnauthorisedAccess with person_id, zone, timestamp",
+                "condition": "operator role — CRITICAL alarm acknowledgment",
+                "action": "Must acknowledge within 3 minutes",
                 "severity": "MANDATORY",
                 "critHi": null,
                 "warnHi": null,
                 "critLo": null,
                 "warnLo": null,
-                "unit": null
+                "unit": "min"
             },
-            "match_score": 0.725
+            "match_score": 1.0
         },
         {
             "extracted": {
-                "ruleId": "SOP004_C5_RULE-ACCESS-02",
+                "ruleId": "SOP004_C3_RULE-ACK-TECH-WARN",
                 "rule_class": "AccessRule",
-                "condition": "Security personnel MUST be notified within 2 minutes of detection",
-                "action": "Notify security personnel",
+                "condition": "technician role — WARNING alarm acknowledgment",
+                "action": "Must acknowledge within 10 minutes",
+                "severity": "MANDATORY",
                 "unit": "min"
             },
             "matched_ground_truth": {
@@ -1481,172 +1458,283 @@
                 "warnLo": null,
                 "unit": "min"
             },
-            "match_score": 0.597
+            "match_score": 0.912
         },
         {
             "extracted": {
-                "ruleId": "SOP004_C6_RULE-ACCESS-03",
+                "ruleId": "SOP004_C3_RULE-ACK-TECH-CRIT",
                 "rule_class": "AccessRule",
-                "station": "Chemical Storage",
-                "condition": "UNAUTHORIZED_ACCESS",
-                "action": "Immediate escalation to the Safety Officer"
+                "condition": "technician role — CRITICAL alarm acknowledgment",
+                "action": "Must acknowledge within 2 minutes",
+                "severity": "MANDATORY"
             },
             "matched_ground_truth": {
-                "ruleId": "RULE-ACCESS-04",
+                "ruleId": "RULE-ACK-SEC-CRIT",
                 "rule_class": "AccessRule",
-                "station": "Chemical Storage",
+                "station": null,
                 "sensor": null,
                 "sensorType": null,
-                "condition": "Any UNAUTHORIZED_ACCESS to Chemical Storage — zero-tolerance policy",
-                "action": "Immediate escalation to Safety Officer regardless of role",
-                "severity": "CRITICAL",
+                "condition": "security role — CRITICAL alarm acknowledgment",
+                "action": "Must acknowledge within 5 minutes",
+                "severity": "MANDATORY",
                 "critHi": null,
                 "warnHi": null,
                 "critLo": null,
                 "warnLo": null,
-                "unit": null
+                "unit": "min"
             },
-            "match_score": 0.764
+            "match_score": 0.767
+        },
+        {
+            "extracted": {
+                "ruleId": "SOP004_C3_RULE-ACK-SUP-WARN",
+                "rule_class": "AccessRule",
+                "condition": "supervisor role — WARNING alarm acknowledgment",
+                "action": "Must acknowledge within 5 minutes",
+                "severity": "MANDATORY",
+                "unit": "min"
+            },
+            "matched_ground_truth": {
+                "ruleId": "RULE-ACK-SUP-WARN",
+                "rule_class": "AccessRule",
+                "station": null,
+                "sensor": null,
+                "sensorType": null,
+                "condition": "supervisor role — WARNING alarm acknowledgment",
+                "action": "Must acknowledge within 5 minutes",
+                "severity": "MANDATORY",
+                "critHi": null,
+                "warnHi": null,
+                "critLo": null,
+                "warnLo": null,
+                "unit": "min"
+            },
+            "match_score": 1.0
+        },
+        {
+            "extracted": {
+                "ruleId": "SOP004_C3_RULE-ACK-SUP-CRIT",
+                "rule_class": "AccessRule",
+                "condition": "supervisor role — CRITICAL alarm acknowledgment",
+                "action": "Must acknowledge within 1 minute",
+                "severity": "MANDATORY",
+                "unit": "min"
+            },
+            "matched_ground_truth": {
+                "ruleId": "RULE-ACK-SUP-CRIT",
+                "rule_class": "AccessRule",
+                "station": null,
+                "sensor": null,
+                "sensorType": null,
+                "condition": "supervisor role — CRITICAL alarm acknowledgment",
+                "action": "Must acknowledge within 1 minute",
+                "severity": "MANDATORY",
+                "critHi": null,
+                "warnHi": null,
+                "critLo": null,
+                "warnLo": null,
+                "unit": "min"
+            },
+            "match_score": 1.0
+        },
+        {
+            "extracted": {
+                "ruleId": "SOP004_C3_RULE-ACK-MAN-WARN",
+                "rule_class": "AccessRule",
+                "condition": "manager role — WARNING alarm acknowledgment",
+                "action": "Must acknowledge within 15 minutes",
+                "severity": "MANDATORY",
+                "unit": "min"
+            },
+            "matched_ground_truth": {
+                "ruleId": "RULE-ACK-MAN-WARN",
+                "rule_class": "AccessRule",
+                "station": null,
+                "sensor": null,
+                "sensorType": null,
+                "condition": "manager role — WARNING alarm acknowledgment",
+                "action": "Must acknowledge within 15 minutes",
+                "severity": "MANDATORY",
+                "critHi": null,
+                "warnHi": null,
+                "critLo": null,
+                "warnLo": null,
+                "unit": "min"
+            },
+            "match_score": 1.0
+        },
+        {
+            "extracted": {
+                "ruleId": "SOP004_C3_RULE-ACK-MAN-CRIT",
+                "rule_class": "AccessRule",
+                "condition": "manager role — CRITICAL alarm acknowledgment",
+                "action": "Must acknowledge within 5 minutes",
+                "severity": "MANDATORY",
+                "unit": "min"
+            },
+            "matched_ground_truth": {
+                "ruleId": "RULE-ACK-MAN-CRIT",
+                "rule_class": "AccessRule",
+                "station": null,
+                "sensor": null,
+                "sensorType": null,
+                "condition": "manager role — CRITICAL alarm acknowledgment",
+                "action": "Must acknowledge within 5 minutes",
+                "severity": "MANDATORY",
+                "critHi": null,
+                "warnHi": null,
+                "critLo": null,
+                "warnLo": null,
+                "unit": "min"
+            },
+            "match_score": 1.0
         }
     ],
     "false_positives": [
         {
-            "ruleId": "SOP001_C0_RULE-01",
-            "station": "Production Line A",
+            "ruleId": "SOP001_C10_RULE-ST02-04",
+            "station": "ST02_SEALING",
+            "condition": "CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling.",
+            "action": "Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING",
             "rule_class": "OperationalRule"
         },
         {
-            "ruleId": "SOP001_C11_RULE-ST03-01",
-            "critLo": 1.8,
-            "critHi": 2.6,
-            "unit": "N",
+            "ruleId": "SOP001_C16_RULE-ST04-03",
+            "condition": "SPD drops below 1.00 m/s without operator command - verify RULE-ST02-04.",
+            "action": "verify RULE-ST02-04",
+            "rule_class": "OperationalRule"
+        },
+        {
+            "ruleId": "SOP001_C17_RULE-ST04-01",
+            "station": "ST04_PACKAGING",
+            "condition": "MUST remain within normal operating range",
+            "action": "Monitor system status",
+            "severity": "MANDATORY",
+            "rule_class": "OperationalRule"
+        },
+        {
+            "ruleId": "SOP001_C18_RULE-SRV01-01",
             "rule_class": "ThresholdRule",
-            "sensor": "ST03_LABELLING_TEN"
+            "station": "ST04_PACKAGING",
+            "sensorType": "TMP",
+            "condition": "TMP MUST NOT exceed 25°C",
+            "action": "automatic controlled shutdown of all PLC nodes",
+            "severity": "CRITICAL",
+            "critLo": 25.0,
+            "unit": "°C",
+            "sensor": "ST04_PACKAGING_TMP",
+            "critHi": 12.0
         },
         {
             "ruleId": "SOP001_C19_RULE-01",
+            "rule_class": "OperationalRule",
+            "station": "General Warehouse",
+            "sensorType": "POS",
+            "condition": "Position frozen > 3 consecutive samples",
+            "action": "Alert security; initiate evacuation",
+            "severity": "CRITICAL"
+        },
+        {
+            "ruleId": "SOP001_C22_RULE-CHM01-02",
+            "rule_class": "OperationalRule",
             "station": "ST04_PACKAGING",
-            "rule_class": "OperationalRule"
+            "sensorType": "HUM",
+            "condition": "HUM MUST NOT exceed 50%RH",
+            "action": "Activate desiccant system if HUM >45%RH.",
+            "severity": "CRITICAL",
+            "unit": "%RH"
         },
         {
             "ruleId": "SOP001_C23_RULE-01",
+            "rule_class": "OperationalRule",
             "station": "ST04_PACKAGING",
-            "sensor": "RND01_RDLAB_TMP",
-            "rule_class": "OperationalRule"
+            "sensorType": "CNT",
+            "condition": "Count WARNING above 50 pcs/min; CRITICAL at max 60",
+            "action": "Alert quality control",
+            "severity": "WARNING",
+            "sensor": "ST04_PACKAGING_CNT"
         },
         {
             "ruleId": "SOP001_C24_RULE-RND01-01",
+            "condition": "TMP MUST remain between 18°C and 26°C",
+            "rule_class": "ThresholdRule",
+            "station": "ST04_PACKAGING",
             "sensorType": "TMP",
             "critLo": 18.0,
             "critHi": 26.0,
             "unit": "°C",
-            "action": "MUST remain between 18°C and 26°C for experimental validity.",
-            "rule_class": "ThresholdRule"
+            "sensor": "ST04_PACKAGING_TMP"
         },
         {
-            "ruleId": "SOP001_C25_RULE-01",
+            "ruleId": "SOP001_C24_RULE-RND01-02",
+            "condition": "HUM drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system",
+            "rule_class": "ThresholdRule",
             "station": "ST04_PACKAGING",
-            "sensorType": "POS",
-            "action": "Inspect packaging machine",
-            "condition": "Position sensor failure detected",
+            "sensorType": "HUM",
+            "warnLo": 65.0,
+            "critHi": 75.0,
+            "unit": "%RH"
+        },
+        {
+            "ruleId": "SOP001_C25_RULE-ST04-01",
+            "station": "ST04_PACKAGING",
+            "condition": "TMP > 25°C (CRITICAL)",
+            "action": "Inspect packaging machinery",
             "severity": "CRITICAL",
             "rule_class": "OperationalRule"
         },
         {
-            "ruleId": "SOP002_C0_RULE-01",
-            "station": "Production Line A",
-            "sensorType": "FLW",
-            "condition": "CRIT_HI=25 L/min, WARN_HI=30 L/min, CRIT_LO=15 L/min, WARN_LO=20 L/min",
-            "action": "Alert operator; reduce flow rate if necessary",
-            "severity": "CRITICAL",
-            "unit": "L/min",
+            "ruleId": "SOP002_C2_RULE-03",
+            "action": "Inspect and notify maintenance",
             "rule_class": "OperationalRule"
         },
         {
-            "ruleId": "SOP003_C1_RULE-01",
-            "rule_class": "MaintenanceRule",
-            "station": "PROD-LINE-A",
-            "condition": "VIB DRIFT >0.05 mm/s over 60 min",
-            "action": "Inspect and lubricate bearing",
-            "severity": "HIGH"
+            "ruleId": "SOP004_C3_RULE-ACK-SEC-WARN",
+            "rule_class": "AccessRule",
+            "condition": "security role — WARNING alarm acknowledgment",
+            "action": "Must acknowledge within 20 minutes",
+            "severity": "MANDATORY",
+            "unit": "min"
         },
         {
-            "ruleId": "SOP003_C2_MAINT-01",
-            "rule_class": "MaintenanceRule",
-            "station": "ST04_PACKAGING",
-            "sensor": "ST04_PACKAGING_VIB",
-            "sensorType": "VIB",
-            "condition": "VIB DRIFT >0.05 mm/s over 60 min",
-            "action": "Inspect and lubricate bearing",
-            "severity": "HIGH",
-            "unit": "mm/s"
+            "ruleId": "SOP004_C3_RULE-ACK-SEC-CRIT",
+            "rule_class": "AccessRule",
+            "condition": "security role — CRITICAL alarm acknowledgment",
+            "action": "Must acknowledge within 5 minutes",
+            "severity": "MANDATORY",
+            "unit": "min"
         },
         {
-            "ruleId": "SOP003_C2_MAINT-05",
-            "rule_class": "MaintenanceRule",
-            "station": "SRV01_SERVERROOM",
-            "sensor": "ST04_PACKAGING_TMP",
-            "sensorType": "TMP",
-            "condition": "TMP >25°C for >5 min",
-            "action": "Activate secondary cooling",
-            "severity": "CRITICAL"
+            "ruleId": "SOP004_C5_RULE-ACCESS-02",
+            "rule_class": "AccessRule",
+            "condition": "Security personnel MUST be notified within 2 minutes of detection",
+            "action": "Must acknowledge within 2 minutes",
+            "severity": "MANDATORY"
         },
         {
-            "ruleId": "SOP004_C3_RULE-01",
-            "condition": "operator, Max Ack -WARNING (min) = 15.",
-            "rule_class": "AccessRule"
+            "ruleId": "SOP004_C6_RULE-ACCESS-03",
+            "rule_class": "OperationalRule"
         },
         {
-            "ruleId": "SOP004_C3_RULE-02",
-            "condition": "operator, Max Ack -CRITICAL (min) = 3.",
-            "rule_class": "AccessRule"
-        },
-        {
-            "ruleId": "SOP004_C3_RULE-04",
-            "condition": "technician, Max Ack -CRITICAL (min) = 2.",
-            "rule_class": "AccessRule"
-        },
-        {
-            "ruleId": "SOP004_C3_RULE-06",
-            "condition": "supervisor, Max Ack -CRITICAL (min) = 1.",
-            "rule_class": "AccessRule"
-        },
-        {
-            "ruleId": "SOP004_C3_RULE-07",
-            "condition": "manager, Max Ack -WARNING (min) = 15.",
-            "rule_class": "AccessRule"
-        },
-        {
-            "ruleId": "SOP004_C3_RULE-08",
-            "condition": "manager, Max Ack -CRITICAL (min) = 5.",
-            "rule_class": "AccessRule"
-        },
-        {
-            "ruleId": "SOP004_C3_RULE-09",
-            "condition": "security, Max Ack -WARNING (min) = 20.",
-            "rule_class": "AccessRule"
-        },
-        {
-            "ruleId": "SOP004_C3_RULE-10",
-            "condition": "security, Max Ack -CRITICAL (min) = 5.",
-            "rule_class": "AccessRule"
+            "ruleId": "SOP004_C6_RULE-ACCESS-04",
+            "rule_class": "OperationalRule"
         }
     ],
     "false_negatives": [
         {
-            "ruleId": "RULE-ST03-01",
+            "ruleId": "RULE-ST02-04",
             "rule_class": "OperationalRule",
-            "station": "ST03_LABELLING",
-            "sensor": "ST03_LABELLING_TEN",
-            "sensorType": "TEN",
-            "condition": "TEN MUST be between 1.8 and 2.6 N",
-            "action": "Inspect and notify maintenance",
-            "severity": "MANDATORY",
-            "critHi": "3.0",
-            "warnHi": "2.6",
-            "critLo": "1.5",
-            "warnLo": "1.8",
-            "unit": "N"
+            "station": "ST02_SEALING",
+            "sensor": "ST02_SEALING_CUR",
+            "sensorType": "CUR",
+            "condition": "CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING",
+            "action": "Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers WARNING",
+            "severity": "WARNING",
+            "critHi": "15.0",
+            "warnHi": "13.5",
+            "critLo": "9.5",
+            "warnLo": "11.0",
+            "unit": "A"
         },
         {
             "ruleId": "RULE-ST03-02a",
@@ -1664,6 +1752,36 @@
             "unit": "pcs/min"
         },
         {
+            "ruleId": "RULE-ST03-02b",
+            "rule_class": "OperationalRule",
+            "station": "ST03_LABELLING",
+            "sensor": "ST03_LABELLING_CNT",
+            "sensorType": "CNT",
+            "condition": "CNT below 100 pcs/min (CRITICAL)",
+            "action": "Halt labelling; inspect label path",
+            "severity": "CRITICAL",
+            "critHi": "140",
+            "warnHi": "130",
+            "critLo": "100",
+            "warnLo": "110",
+            "unit": "pcs/min"
+        },
+        {
+            "ruleId": "RULE-ST04-03",
+            "rule_class": "OperationalRule",
+            "station": "ST04_PACKAGING",
+            "sensor": "ST04_PACKAGING_SPD",
+            "sensorType": "SPD",
+            "condition": "SPD drops below 1.00 m/s without operator command",
+            "action": "Verify RULE-ST02-04 (electrical coupling with ST02_SEALING_CUR)",
+            "severity": "WARNING",
+            "critHi": "1.6",
+            "warnHi": "1.4",
+            "critLo": "1.25",
+            "warnLo": "1.0",
+            "unit": "m/s"
+        },
+        {
             "ruleId": "RULE-SRV01-01",
             "rule_class": "OperationalRule",
             "station": "SRV01_SERVERROOM",
@@ -1672,6 +1790,21 @@
             "condition": "TMP MUST NOT exceed 25°C",
             "action": "Inspect and notify maintenance",
             "severity": "MANDATORY",
+            "critHi": "28.0",
+            "warnHi": "25.0",
+            "critLo": "16.0",
+            "warnLo": "18.0",
+            "unit": "°C"
+        },
+        {
+            "ruleId": "RULE-SRV01-02",
+            "rule_class": "OperationalRule",
+            "station": "SRV01_SERVERROOM",
+            "sensor": "SRV01_SERVERROOM_TMP",
+            "sensorType": "TMP",
+            "condition": "TMP > 28°C (CRITICAL)",
+            "action": "Automatic controlled shutdown of all PLC nodes",
+            "severity": "CRITICAL",
             "critHi": "28.0",
             "warnHi": "25.0",
             "critLo": "16.0",
@@ -1694,19 +1827,34 @@
             "unit": "°C"
         },
         {
-            "ruleId": "RULE-CHM01-01a",
+            "ruleId": "RULE-WRH01-02",
+            "rule_class": "OperationalRule",
+            "station": "WRH01_WAREHOUSE",
+            "sensor": "WRH01_WAREHOUSE_HUM",
+            "sensorType": "HUM",
+            "condition": "HUM above 85%RH",
+            "action": "Inspect door seals and activate dehumidifier",
+            "severity": "WARNING",
+            "critHi": "90.0",
+            "warnHi": "85.0",
+            "critLo": "55.0",
+            "warnLo": "60.0",
+            "unit": "%RH"
+        },
+        {
+            "ruleId": "RULE-CHM01-02a",
             "rule_class": "OperationalRule",
             "station": "CHM01_CHEMICALSTORAGE",
-            "sensor": "CHM01_CHEMICALSTORAGE_TMP",
-            "sensorType": "TMP",
-            "condition": "TMP MUST remain between 10°C and 20°C",
-            "action": "Activate emergency ventilation and notify safety officer",
+            "sensor": "CHM01_CHEMICALSTORAGE_HUM",
+            "sensorType": "HUM",
+            "condition": "HUM MUST NOT exceed 50%RH",
+            "action": "Activate desiccant system if HUM >45%RH",
             "severity": "MANDATORY",
-            "critHi": "25.0",
-            "warnHi": "20.0",
-            "critLo": "5.0",
-            "warnLo": "10.0",
-            "unit": "°C"
+            "critHi": "60.0",
+            "warnHi": "50.0",
+            "critLo": "15.0",
+            "warnLo": "20.0",
+            "unit": "%RH"
         },
         {
             "ruleId": "RULE-CHM01-02b",
@@ -1769,34 +1917,19 @@
             "unit": "%RH"
         },
         {
-            "ruleId": "RULE-THR-ST01-TMP-CRIT",
-            "rule_class": "ThresholdRule",
-            "station": "ST01_FILLING",
-            "sensor": "ST01_FILLING_TMP",
-            "sensorType": "TMP",
-            "condition": "Temperature critical thresholds: 15.0°C (CRIT_LO), 18.0°C (WARN_LO), 22.0±0.4°C (NOMINAL), 26.0°C (WARN_HI), 30.0°C (CRIT_HI)",
-            "action": "Inspect and notify maintenance",
-            "severity": "CRITICAL",
-            "critHi": "30.0",
-            "warnHi": "26.0",
-            "critLo": "15.0",
-            "warnLo": "18.0",
-            "unit": "°C"
-        },
-        {
-            "ruleId": "RULE-THR-ST01-PRS-CRIT",
-            "rule_class": "ThresholdRule",
-            "station": "ST01_FILLING",
-            "sensor": "ST01_FILLING_PRS",
-            "sensorType": "PRS",
-            "condition": "Pressure critical thresholds: 3.0 bar (CRIT_LO), 3.3 bar (WARN_LO), 3.8±0.05 bar (NOMINAL), 4.2 bar (WARN_HI), 4.8 bar (CRIT_HI)",
-            "action": "Inspect and notify maintenance",
-            "severity": "CRITICAL",
-            "critHi": "4.8",
-            "warnHi": "4.2",
-            "critLo": "3.0",
-            "warnLo": "3.3",
-            "unit": "bar"
+            "ruleId": "RULE-CAF01-02",
+            "rule_class": "OperationalRule",
+            "station": "CAF01_CAFETERIA",
+            "sensor": "CAF01_CAFETERIA_HUM",
+            "sensorType": "HUM",
+            "condition": "HUM above 70%RH",
+            "action": "Inspect drainage and activate ventilation",
+            "severity": "WARNING",
+            "critHi": "80.0",
+            "warnHi": "70.0",
+            "critLo": "25.0",
+            "warnLo": "35.0",
+            "unit": "%RH"
         },
         {
             "ruleId": "RULE-THR-ST02-PRS-CRIT",
@@ -1829,21 +1962,6 @@
             "unit": "A"
         },
         {
-            "ruleId": "RULE-THR-ST04-SPD-CRIT",
-            "rule_class": "ThresholdRule",
-            "station": "ST04_PACKAGING",
-            "sensor": "ST04_PACKAGING_SPD",
-            "sensorType": "SPD",
-            "condition": "Speed critical thresholds: 0.85 m/s (CRIT_LO), 1.0 m/s (WARN_LO), 1.2±0.02 m/s (NOMINAL), 1.4 m/s (WARN_HI), 1.6 m/s (CRIT_HI)",
-            "action": "Inspect and notify maintenance",
-            "severity": "CRITICAL",
-            "critHi": "1.6",
-            "warnHi": "1.4",
-            "critLo": "1.25",
-            "warnLo": "1.0",
-            "unit": "m/s"
-        },
-        {
             "ruleId": "RULE-THR-SRV01-HUM-CRIT",
             "rule_class": "ThresholdRule",
             "station": "SRV01_SERVERROOM",
@@ -1856,6 +1974,21 @@
             "warnHi": "60.0",
             "critLo": "25.0",
             "warnLo": "30.0",
+            "unit": "%RH"
+        },
+        {
+            "ruleId": "RULE-THR-WRH01-HUM-CRIT",
+            "rule_class": "ThresholdRule",
+            "station": "WRH01_WAREHOUSE",
+            "sensor": "WRH01_WAREHOUSE_HUM",
+            "sensorType": "HUM",
+            "condition": "Humidity critical thresholds: CRIT_LO=55.0%RH, WARN_LOW=60.0%RH, nominal=75.0±1.5%RH, WARN_HI=85.0%RH, CRIT_HI=90.0%RH",
+            "action": "Inspect and notify maintenance",
+            "severity": "CRITICAL",
+            "critHi": "90.0",
+            "warnHi": "85.0",
+            "critLo": "55.0",
+            "warnLo": "60.0",
             "unit": "%RH"
         },
         {
@@ -1994,6 +2127,21 @@
             "unit": "°C"
         },
         {
+            "ruleId": "RULE-OCC-PROD",
+            "rule_class": "AccessRule",
+            "station": "Production Area",
+            "sensor": null,
+            "sensorType": null,
+            "condition": "Occupancy WARNING above 10 persons; CRITICAL above 12 (max)",
+            "action": "Alert security; enforce evacuation if CRITICAL",
+            "severity": "WARNING",
+            "critHi": null,
+            "warnHi": null,
+            "critLo": null,
+            "warnLo": null,
+            "unit": "persons"
+        },
+        {
             "ruleId": "RULE-OCC-SRV",
             "rule_class": "AccessRule",
             "station": "Server Room",
@@ -2017,6 +2165,21 @@
             "condition": "WARNING above 3 persons (max 4)",
             "action": "Alert supervisor",
             "severity": "WARNING",
+            "critHi": null,
+            "warnHi": null,
+            "critLo": null,
+            "warnLo": null,
+            "unit": "persons"
+        },
+        {
+            "ruleId": "RULE-OCC-CHM",
+            "rule_class": "AccessRule",
+            "station": "Chemical Storage",
+            "sensor": null,
+            "sensorType": null,
+            "condition": "CRITICAL above 4 persons; hazmat training required",
+            "action": "Alert safety officer; enforce hazmat policy",
+            "severity": "CRITICAL",
             "critHi": null,
             "warnHi": null,
             "critLo": null,
@@ -2054,6 +2217,21 @@
             "unit": "persons"
         },
         {
+            "ruleId": "RULE-ACCESS-01",
+            "rule_class": "AccessRule",
+            "station": null,
+            "sensor": null,
+            "sensorType": null,
+            "condition": "Any entry by an unauthorised role",
+            "action": "Log as OccupancyEvent::UnauthorisedAccess with person_id, zone, timestamp",
+            "severity": "MANDATORY",
+            "critHi": null,
+            "warnHi": null,
+            "critLo": null,
+            "warnLo": null,
+            "unit": null
+        },
+        {
             "ruleId": "RULE-ACCESS-02",
             "rule_class": "AccessRule",
             "station": null,
@@ -2084,94 +2262,19 @@
             "unit": null
         },
         {
-            "ruleId": "RULE-ACK-OP-WARN",
+            "ruleId": "RULE-ACCESS-04",
             "rule_class": "AccessRule",
-            "station": null,
+            "station": "Chemical Storage",
             "sensor": null,
             "sensorType": null,
-            "condition": "operator role — WARNING alarm acknowledgment",
-            "action": "Must acknowledge within 15 minutes",
-            "severity": "MANDATORY",
+            "condition": "Any UNAUTHORIZED_ACCESS to Chemical Storage — zero-tolerance policy",
+            "action": "Immediate escalation to Safety Officer regardless of role",
+            "severity": "CRITICAL",
             "critHi": null,
             "warnHi": null,
             "critLo": null,
             "warnLo": null,
-            "unit": "min"
-        },
-        {
-            "ruleId": "RULE-ACK-OP-CRIT",
-            "rule_class": "AccessRule",
-            "station": null,
-            "sensor": null,
-            "sensorType": null,
-            "condition": "operator role — CRITICAL alarm acknowledgment",
-            "action": "Must acknowledge within 3 minutes",
-            "severity": "MANDATORY",
-            "critHi": null,
-            "warnHi": null,
-            "critLo": null,
-            "warnLo": null,
-            "unit": "min"
-        },
-        {
-            "ruleId": "RULE-ACK-SUP-CRIT",
-            "rule_class": "AccessRule",
-            "station": null,
-            "sensor": null,
-            "sensorType": null,
-            "condition": "supervisor role — CRITICAL alarm acknowledgment",
-            "action": "Must acknowledge within 1 minute",
-            "severity": "MANDATORY",
-            "critHi": null,
-            "warnHi": null,
-            "critLo": null,
-            "warnLo": null,
-            "unit": "min"
-        },
-        {
-            "ruleId": "RULE-ACK-MAN-WARN",
-            "rule_class": "AccessRule",
-            "station": null,
-            "sensor": null,
-            "sensorType": null,
-            "condition": "manager role — WARNING alarm acknowledgment",
-            "action": "Must acknowledge within 15 minutes",
-            "severity": "MANDATORY",
-            "critHi": null,
-            "warnHi": null,
-            "critLo": null,
-            "warnLo": null,
-            "unit": "min"
-        },
-        {
-            "ruleId": "RULE-ACK-MAN-CRIT",
-            "rule_class": "AccessRule",
-            "station": null,
-            "sensor": null,
-            "sensorType": null,
-            "condition": "manager role — CRITICAL alarm acknowledgment",
-            "action": "Must acknowledge within 5 minutes",
-            "severity": "MANDATORY",
-            "critHi": null,
-            "warnHi": null,
-            "critLo": null,
-            "warnLo": null,
-            "unit": "min"
-        },
-        {
-            "ruleId": "RULE-ACK-SEC-CRIT",
-            "rule_class": "AccessRule",
-            "station": null,
-            "sensor": null,
-            "sensorType": null,
-            "condition": "security role — CRITICAL alarm acknowledgment",
-            "action": "Must acknowledge within 5 minutes",
-            "severity": "MANDATORY",
-            "critHi": null,
-            "warnHi": null,
-            "critLo": null,
-            "warnLo": null,
-            "unit": "min"
+            "unit": null
         }
     ]
 }

@@ -12,9 +12,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "aligned_relations": [
                 {
@@ -64,9 +64,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "aligned_relations": [
                 {
@@ -86,22 +86,29 @@
                 },
                 {
                     "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "VIB",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_condition",
-                    "object": "VIB DRIFT >0.05 mm/s over 60 min",
+                    "object": "Vibration reading frozen >12 consecutive samples",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-01",
                     "predicate": "triggers_action",
-                    "object": "Inspect and lubricate bearing",
+                    "object": "Replace vibration sensor",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-01",
                     "predicate": "has_severity",
-                    "object": "HIGH",
+                    "object": "CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -116,9 +123,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "aligned_relations": [
                 {
@@ -169,13 +176,6 @@
                     "subject": "MAINT-01",
                     "predicate": "has_severity",
                     "object": "HIGH",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "MAINT-01",
-                    "predicate": "has_unit",
-                    "object": "mm/s",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -547,26 +547,38 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "aligned_relations": [
                 {
-                    "subject": "ST02_SEALING",
-                    "predicate": "monitors",
-                    "object": "ST02_SEALING_CUR",
-                    "_subject_alignment": "fuzzy",
-                    "_object_alignment": "fuzzy",
-                    "_raw_object": "ST02_SEALING-CUR"
+                    "subject": "WRH01-TMP",
+                    "predicate": "has_condition",
+                    "object": "drift",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
                 },
                 {
-                    "subject": "ST02_SEALING",
-                    "predicate": "feeds_into",
-                    "object": "ST04_PACKAGING",
-                    "_subject_alignment": "fuzzy",
-                    "_object_alignment": "fuzzy",
-                    "_raw_object": "ST04_PACKAGING-SPDfl"
+                    "subject": "WRH01-TMP",
+                    "predicate": "triggers_action",
+                    "object": "Restore WRH01-TMP <8°C. Notify QC. Place batch on HOLD",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "WRH01-TMP",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "WRH01-TMP",
+                    "predicate": "has_unit",
+                    "object": "°C",
+                    "_subject_alignment": "n/a",
+                    "_object_alignment": "literal"
                 }
             ]
         }

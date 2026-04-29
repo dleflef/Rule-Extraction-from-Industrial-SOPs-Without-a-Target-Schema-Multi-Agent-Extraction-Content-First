@@ -53,6 +53,7 @@ Instructions:
 - Use the surrounding context to disambiguate.
 - If no reasonable semantic match exists, return exactly: None
 - Do NOT explain your reasoning. Do NOT add quotes or punctuation.
+-If the raw term is a generic area like 'Production Line A' or 'PROD_LINE_A', map it to the overarching 'Production Area' zone or the specific 'ST0X' station if contextually obvious.
 Answer:""",
     input_variables=["node_list", "raw_term", "context"],
 )

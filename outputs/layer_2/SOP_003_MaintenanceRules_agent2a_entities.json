@@ -12,9 +12,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "content": "[Context: Predictive & Corrective Maintenance Rules - Production Line A]\nDocument: SOP-003 | Rev: 1.5 | Date: 2025-09-01 |",
             "entities": [
@@ -37,9 +37,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "content": "[Context: Predictive & Corrective Maintenance Rules - Production Line A]\nAuthor: Ing. A. Conti - Maintenance Engineering",
             "entities": [
@@ -62,9 +62,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "content": "[Context: 1. Predictive Maintenance Rules]\nMAINT-01, Sensor = VIB. MAINT-01, Station = ST04_PACKAGING. MAINT-01, Trigger = VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH. MAINT-01, Action = VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH. MAINT-01, Priority = VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH. MAINT-02, Sensor = CUR. MAINT-02, Station = ST02_SEALING. MAINT-02, Trigger = CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw. MAINT-02, Action = CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw. MAINT-02, Priority = HIGH. MAINT-03, Sensor = TEN. MAINT-03, Station = ST03_LABELLING. MAINT-03, Trigger = TEN STUCK >10 samples. MAINT-03, Action = Replace sensor. MAINT-03, Priority = MEDIUM. MAINT-04, Sensor = PRS. MAINT-04, Station = ST01_FILLING. MAINT-04, Trigger = PRS <3.3 bar for >15 min. MAINT-04, Action = Inspect filter and pump. MAINT-04, Priority = MEDIUM. MAINT-05, Sensor = TMP. MAINT-05, Station = SRV01_SERVERROOM. MAINT-05, Trigger = TMP >25°C for >5 min. MAINT-05, Action = Activate secondary cooling. MAINT-05, Priority = CRITICAL. MAINT-06, Sensor = TMP. MAINT-06, Station = WRH01_WAREHOUSE. MAINT-06, Trigger = TMP DRIFT >2°C over 2 h. MAINT-06, Action = Inspect compressor; notify. MAINT-06, Priority = QC CRITICAL. MAINT-07, Sensor = TMP. MAINT-07, Station = CHM01_CHEMICALSTORAGE. MAINT-07, Trigger = TMP >20°C for >10 min. MAINT-07, Action = Emergency ventilation; notify. MAINT-07, Priority = safety officer CRITICAL. MAINT-08, Sensor = HUM. MAINT-08, Station = RND01_RDLAB. MAINT-08, Trigger = HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH. MAINT-08, Action = HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH. MAINT-08, Priority = HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH",
             "entities": [
@@ -399,9 +399,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "content": "[Context: 2. Correlated Fault Resolution]\nST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee, Primary Fault = ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee. ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee, Secondary Effect = ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee. ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee, Resolution = ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee. WRH01-TMP › fi QC HOLD Cold warehouse, Primary Fault = drift. WRH01-TMP › fi QC HOLD Cold warehouse, Secondary Effect = Product quality risk. WRH01-TMP › fi QC HOLD Cold warehouse, Resolution = 1.Restore WRH01-TMP <8°C. 2.Notify QC. 3.Place batch on HOLD",
             "entities": [

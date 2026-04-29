@@ -12,11 +12,18 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
+                {
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
                 {
                     "subject": "RULE-01",
                     "predicate": "applies_to_station",
@@ -27,8 +34,29 @@
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "rdf:type",
-                    "object": "OperationalRule",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_condition",
+                    "object": "Temperature > 250°C (CRITICAL)",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Alert safety officer; evacuate personnel",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -43,11 +71,55 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
-            "aligned_relations": []
+            "aligned_relations": [
+                {
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "applies_to_station",
+                    "object": "Production Line A",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "unaligned",
+                    "_raw_object": "Production Line A"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_condition",
+                    "object": "Temperature > 250°C (CRITICAL)",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Alert safety officer; evacuate personnel",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                }
+            ]
         },
         {
             "chunk_id": 2,
@@ -58,9 +130,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
@@ -98,76 +170,11 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
-            "aligned_relations": [
-                {
-                    "subject": "ST01_FILLING",
-                    "predicate": "feeds_into",
-                    "object": "ST02_SEALING",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "exact",
-                    "_raw_object": "ST02_SEALING"
-                },
-                {
-                    "subject": "ST02_SEALING",
-                    "predicate": "feeds_into",
-                    "object": "ST03_LABELLING",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "exact",
-                    "_raw_object": "ST03_LABELLING"
-                },
-                {
-                    "subject": "ST03_LABELLING",
-                    "predicate": "feeds_into",
-                    "object": "ST04_PACKAGING",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "exact",
-                    "_raw_object": "ST04_PACKAGING"
-                },
-                {
-                    "subject": "SRV01_SERVERROOM",
-                    "predicate": "feeds_into",
-                    "object": "SCADA control; failure fi line halt",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "SCADA control; failure fi line halt"
-                },
-                {
-                    "subject": "WRH01_WAREHOUSE",
-                    "predicate": "feeds_into",
-                    "object": "Cold storage -product quality",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "Cold storage -product quality"
-                },
-                {
-                    "subject": "CHM01_CHEMICALSTORAGE",
-                    "predicate": "feeds_into",
-                    "object": "CHM01_CHEMICALSTORAGE",
-                    "_subject_alignment": "fuzzy",
-                    "_object_alignment": "llm_aligned",
-                    "_raw_object": "Hazardous materials -safety critical"
-                },
-                {
-                    "subject": "RND01_RDLAB",
-                    "predicate": "feeds_into",
-                    "object": "Precision experiments -climate sensitive",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "Precision experiments -climate sensitive"
-                },
-                {
-                    "subject": "CAF01_CAFETERIA",
-                    "predicate": "feeds_into",
-                    "object": "Occupant comfort -food safety",
-                    "_subject_alignment": "exact",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "Occupant comfort -food safety"
-                }
-            ]
+            "aligned_relations": []
         },
         {
             "chunk_id": 4,
@@ -178,9 +185,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
@@ -208,7 +215,7 @@
                 {
                     "subject": "RULE-ST01-01",
                     "predicate": "has_condition",
-                    "object": "FLW MUST be maintained between 112 and 128 L/min.",
+                    "object": "FLW MUST be maintained between 112 and 128 L/min",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -265,9 +272,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
@@ -305,6 +312,13 @@
                     "object": "reduce speed by 10% and notify QC",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST01-02",
+                    "predicate": "has_severity",
+                    "object": "WARNING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -317,9 +331,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
@@ -347,7 +361,7 @@
                 {
                     "subject": "RULE-ST01-03",
                     "predicate": "has_condition",
-                    "object": "PRS drop below 3.3 bar - inspect inlet valve within 5 min.",
+                    "object": "PRS drop below 3.3 bar",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -355,6 +369,20 @@
                     "subject": "RULE-ST01-03",
                     "predicate": "triggers_action",
                     "object": "inspect inlet valve within 5 min",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST01-03",
+                    "predicate": "has_severity",
+                    "object": "WARNING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST01-03",
+                    "predicate": "has_unit",
+                    "object": "bar",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -369,15 +397,15 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
                     "subject": "RULE-ST02-01",
                     "predicate": "rdf:type",
-                    "object": "ThresholdRule",
+                    "object": "OperationalRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -399,49 +427,14 @@
                 {
                     "subject": "RULE-ST02-01",
                     "predicate": "has_condition",
-                    "object": "TMP MUST remain between 175°C and 195°C.",
+                    "object": "TMP MUST remain between 175°C and 195°C",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-ST02-01",
                     "predicate": "has_severity",
-                    "object": "WARNING",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST02-01",
-                    "predicate": "has_crit_hi",
-                    "object": "195.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST02-01",
-                    "predicate": "has_warn_hi",
-                    "object": "195.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST02-01",
-                    "predicate": "has_crit_lo",
-                    "object": "175.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST02-01",
-                    "predicate": "has_warn_lo",
-                    "object": "175.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST02-01",
-                    "predicate": "has_unit",
-                    "object": "°C",
+                    "object": "MANDATORY",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -456,9 +449,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
@@ -471,10 +464,10 @@
                 {
                     "subject": "RULE-ST02-02",
                     "predicate": "applies_to_station",
-                    "object": "ST02, ST03, ST04",
+                    "object": "ST02_SEALING",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "unaligned",
-                    "_raw_object": "ST02, ST03, ST04"
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "ST02"
                 },
                 {
                     "subject": "RULE-ST02-02",
@@ -493,7 +486,7 @@
                 {
                     "subject": "RULE-ST02-02",
                     "predicate": "triggers_action",
-                    "object": "emergency stop ST02, ST03, ST04",
+                    "object": "emergency stop ST02, ST03, ST04.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -501,20 +494,6 @@
                     "subject": "RULE-ST02-02",
                     "predicate": "has_severity",
                     "object": "CRITICAL",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST02-02",
-                    "predicate": "has_crit_hi",
-                    "object": "210.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST02-02",
-                    "predicate": "has_unit",
-                    "object": "°C",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -529,9 +508,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
@@ -569,6 +548,13 @@
                     "object": "schedule maintenance",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-03",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -581,33 +567,11 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
-                {
-                    "subject": "RULE-ST02-04",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST02_SEALING_CUR",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "fuzzy",
-                    "_raw_object": "ST02_SEALING-CUR"
-                },
-                {
-                    "subject": "RULE-ST02-04",
-                    "predicate": "triggers_action",
-                    "object": "Monitor ST04_PACKAGING-SPD",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST02-04",
-                    "predicate": "has_condition",
-                    "object": "CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
                 {
                     "subject": "RULE-ST02-04",
                     "predicate": "applies_to_station",
@@ -615,6 +579,28 @@
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "exact",
                     "_raw_object": "ST02_SEALING"
+                },
+                {
+                    "subject": "RULE-ST02-04",
+                    "predicate": "monitors",
+                    "object": "ST04_PACKAGING_SPD",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "ST04_PACKAGING-SPD"
+                },
+                {
+                    "subject": "RULE-ST02-04",
+                    "predicate": "has_condition",
+                    "object": "CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST02-04",
+                    "predicate": "triggers_action",
+                    "object": "Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-ST02-04",
@@ -634,14 +620,57 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
                     "subject": "RULE-ST03-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-01",
+                    "predicate": "applies_to_station",
+                    "object": "ST03_LABELLING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST03_LABELLING"
+                },
+                {
+                    "subject": "RULE-ST03-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TEN",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-01",
+                    "predicate": "has_condition",
+                    "object": "TEN MUST be between 1.8 and 2.6 N",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-01",
+                    "predicate": "has_severity",
+                    "object": "WARNING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-01",
                     "predicate": "has_crit_lo",
+                    "object": "1.8",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-01",
+                    "predicate": "has_warn_lo",
                     "object": "1.8",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
@@ -655,25 +684,17 @@
                 },
                 {
                     "subject": "RULE-ST03-01",
+                    "predicate": "has_warn_hi",
+                    "object": "2.6",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-01",
                     "predicate": "has_unit",
                     "object": "N",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST03-01",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST03-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST03_LABELLING_TEN",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "fuzzy",
-                    "_raw_object": "TEN"
                 }
             ]
         },
@@ -686,9 +707,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
@@ -701,9 +722,9 @@
                 {
                     "subject": "RULE-ST03-02",
                     "predicate": "applies_to_station",
-                    "object": "ST01_FILLING",
+                    "object": "STATION_01",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "llm_aligned",
+                    "_object_alignment": "unaligned",
                     "_raw_object": "STATION_01"
                 },
                 {
@@ -723,7 +744,7 @@
                 {
                     "subject": "RULE-ST03-02",
                     "predicate": "triggers_action",
-                    "object": "check for label jam; halt if Below 100 (CRITICAL)",
+                    "object": "check for label jam. Below 100 (CRITICAL): halt",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -731,20 +752,6 @@
                     "subject": "RULE-ST03-02",
                     "predicate": "has_severity",
                     "object": "CRITICAL",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST03-02",
-                    "predicate": "has_crit_lo",
-                    "object": "100.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-ST03-02",
-                    "predicate": "has_unit",
-                    "object": "pcs/min",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -759,25 +766,32 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
                     "subject": "RULE-ST03-03",
                     "predicate": "rdf:type",
-                    "object": "MaintenanceRule",
+                    "object": "ThresholdRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-ST03-03",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST03_LABELLING_TEN",
+                    "predicate": "applies_to_station",
+                    "object": "ST03_LABELLING",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "fuzzy",
-                    "_raw_object": "TEN"
+                    "_raw_object": "STATION_LABELLING"
+                },
+                {
+                    "subject": "RULE-ST03-03",
+                    "predicate": "has_sensor_type",
+                    "object": "TEN",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-ST03-03",
@@ -792,6 +806,13 @@
                     "object": "sensor failure",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST03-03",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -804,9 +825,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
@@ -863,9 +884,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
@@ -885,14 +906,6 @@
                 },
                 {
                     "subject": "RULE-ST04-02",
-                    "predicate": "applies_to_sensor",
-                    "object": "ST04_PACKAGING_VIB",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "VIB"
-                },
-                {
-                    "subject": "RULE-ST04-02",
                     "predicate": "has_sensor_type",
                     "object": "VIB",
                     "_subject_alignment": "rule_node",
@@ -909,6 +922,13 @@
                     "subject": "RULE-ST04-02",
                     "predicate": "triggers_action",
                     "object": "emergency stop; inspect bearings",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-02",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -937,9 +957,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
@@ -974,13 +994,13 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ST04-01",
                     "predicate": "applies_to_station",
                     "object": "ST04_PACKAGING",
                     "_subject_alignment": "rule_node",
@@ -988,30 +1008,30 @@
                     "_raw_object": "ST04_PACKAGING"
                 },
                 {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ST04-01",
+                    "predicate": "has_condition",
+                    "object": "MUST remain within normal operating range",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-01",
+                    "predicate": "triggers_action",
+                    "object": "Monitor system status",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-01",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-01",
                     "predicate": "rdf:type",
                     "object": "OperationalRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "has_condition",
-                    "object": "Server room temperature exceeds 35°C for more than 2 hours.",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "triggers_action",
-                    "object": "Alert maintenance team; initiate cooling system.",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "has_severity",
-                    "object": "CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -1026,14 +1046,57 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
                     "subject": "RULE-SRV01-01",
-                    "predicate": "has_crit_hi",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "applies_to_station",
+                    "object": "ST04_PACKAGING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST04_PACKAGING"
+                },
+                {
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "has_condition",
+                    "object": "TMP MUST NOT exceed 25°C",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "triggers_action",
+                    "object": "automatic controlled shutdown of all PLC nodes",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-SRV01-01",
+                    "predicate": "has_crit_lo",
                     "object": "25.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
@@ -1042,48 +1105,6 @@
                     "subject": "RULE-SRV01-01",
                     "predicate": "has_unit",
                     "object": "°C",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-SRV01-01",
-                    "predicate": "triggers_action",
-                    "object": "automatic controlled shutdown of all PLC nodes",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-SRV01-02",
-                    "predicate": "has_crit_hi",
-                    "object": "28.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-SRV01-02",
-                    "predicate": "has_unit",
-                    "object": "°C",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-SRV01-02",
-                    "predicate": "triggers_action",
-                    "object": "automatic controlled shutdown of all PLC nodes",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-SRV01-01",
-                    "predicate": "rdf:type",
-                    "object": "OperationalRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-SRV01-02",
-                    "predicate": "rdf:type",
-                    "object": "OperationalRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -1098,11 +1119,18 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
+                {
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
                 {
                     "subject": "RULE-01",
                     "predicate": "applies_to_station",
@@ -1113,8 +1141,37 @@
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "rdf:type",
-                    "object": "OperationalRule",
+                    "predicate": "applies_to_zone",
+                    "object": "General Warehouse",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "llm_aligned",
+                    "_raw_object": "WRH01_WAREHOUSE"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "POS",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_condition",
+                    "object": "Position frozen > 3 consecutive samples",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Alert security; initiate evacuation",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -1129,9 +1186,9 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
@@ -1153,6 +1210,27 @@
                     "subject": "RULE-WRH01-01",
                     "predicate": "has_sensor_type",
                     "object": "TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-WRH01-01",
+                    "predicate": "has_condition",
+                    "object": "TMP MUST remain between 0.5°C and 8°C; CRITICAL above 12°C - notify QC and quarantine batch",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-WRH01-01",
+                    "predicate": "triggers_action",
+                    "object": "notify QC and quarantine batch",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-WRH01-01",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1169,70 +1247,6 @@
                     "object": "°C",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-WRH01-01",
-                    "predicate": "triggers_action",
-                    "object": "notify QC and quarantine batch",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-WRH01-01",
-                    "predicate": "has_condition",
-                    "object": "TMP MUST remain between 0.5°C and 8°C",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-WRH01-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-WRH01-02",
-                    "predicate": "applies_to_station",
-                    "object": "ST04_PACKAGING",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "exact",
-                    "_raw_object": "ST04_PACKAGING"
-                },
-                {
-                    "subject": "RULE-WRH01-02",
-                    "predicate": "has_sensor_type",
-                    "object": "HUM",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-WRH01-02",
-                    "predicate": "has_crit_hi",
-                    "object": "85",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-WRH01-02",
-                    "predicate": "has_unit",
-                    "object": "%RH",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-WRH01-02",
-                    "predicate": "triggers_action",
-                    "object": "inspect door seals and activate dehumidifier",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-WRH01-02",
-                    "predicate": "has_condition",
-                    "object": "HUM above 85%RH",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -1245,11 +1259,18 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
+                {
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
                 {
                     "subject": "RULE-01",
                     "predicate": "applies_to_station",
@@ -1260,8 +1281,23 @@
                 },
                 {
                     "subject": "RULE-01",
+                    "predicate": "applies_to_sensor",
+                    "object": "CHM01_CHEMICALSTORAGE_TMP",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "fuzzy",
+                    "_raw_object": "CHM01_CHEMICALSTORAGE"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "CNT",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_condition",
-                    "object": "Occupancy WARNING above 3 persons; CRITICAL at max 5",
+                    "object": "Count WARNING above 5; CRITICAL at max 10",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1278,20 +1314,6 @@
                     "object": "WARNING",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "has_unit",
-                    "object": "persons",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "rdf:type",
-                    "object": "AccessRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -1304,15 +1326,15 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
                     "subject": "RULE-CHM01-01",
-                    "predicate": "has_sensor_type",
-                    "object": "TMP",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1326,22 +1348,22 @@
                 },
                 {
                     "subject": "RULE-CHM01-01",
-                    "predicate": "has_crit_hi",
-                    "object": "25",
+                    "predicate": "has_sensor_type",
+                    "object": "TMP",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-CHM01-01",
-                    "predicate": "has_unit",
-                    "object": "°C",
+                    "predicate": "has_condition",
+                    "object": "TMP MUST remain between 10°C and 20°C",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-CHM01-01",
                     "predicate": "triggers_action",
-                    "object": "activate emergency ventilation and notify safety officer immediately",
+                    "object": "CRITICAL above 25°C - activate emergency ventilation and notify safety officer immediately.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1354,27 +1376,6 @@
                 },
                 {
                     "subject": "RULE-CHM01-01",
-                    "predicate": "has_crit_lo",
-                    "object": "10",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-CHM01-01",
-                    "predicate": "has_unit",
-                    "object": "°C",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-CHM01-01",
-                    "predicate": "has_warn_lo",
-                    "object": "20",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-CHM01-01",
                     "predicate": "has_unit",
                     "object": "°C",
                     "_subject_alignment": "rule_node",
@@ -1382,8 +1383,8 @@
                 },
                 {
                     "subject": "RULE-CHM01-02",
-                    "predicate": "has_sensor_type",
-                    "object": "HUM",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1397,8 +1398,29 @@
                 },
                 {
                     "subject": "RULE-CHM01-02",
-                    "predicate": "has_crit_hi",
-                    "object": "50",
+                    "predicate": "has_sensor_type",
+                    "object": "HUM",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-02",
+                    "predicate": "has_condition",
+                    "object": "HUM MUST NOT exceed 50%RH",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-02",
+                    "predicate": "triggers_action",
+                    "object": "Activate desiccant system if HUM >45%RH.",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CHM01-02",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1406,13 +1428,6 @@
                     "subject": "RULE-CHM01-02",
                     "predicate": "has_unit",
                     "object": "%RH",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-CHM01-02",
-                    "predicate": "triggers_action",
-                    "object": "Activate desiccant system if HUM >45%RH",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1434,28 +1449,21 @@
                 {
                     "subject": "RULE-CHM01-03",
                     "predicate": "has_condition",
-                    "object": "Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage",
+                    "object": "Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-CHM01-03",
                     "predicate": "triggers_action",
-                    "object": "UNAUTHORIZED_ACCESS must be escalated within 2 minutes",
+                    "object": "UNAUTHORIZED_ACCESS must be escalated within 2 minutes.",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-CHM01-01",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-CHM01-02",
-                    "predicate": "rdf:type",
-                    "object": "OperationalRule",
+                    "subject": "RULE-CHM01-03",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -1470,11 +1478,18 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
+                {
+                    "subject": "RULE-01",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
                 {
                     "subject": "RULE-01",
                     "predicate": "applies_to_station",
@@ -1485,16 +1500,29 @@
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "applies_to_sensor",
-                    "object": "RND01_RDLAB_TMP",
+                    "predicate": "has_sensor_type",
+                    "object": "CNT",
                     "_subject_alignment": "rule_node",
-                    "_object_alignment": "fuzzy",
-                    "_raw_object": "RND01_RDLAB"
+                    "_object_alignment": "literal"
                 },
                 {
                     "subject": "RULE-01",
-                    "predicate": "rdf:type",
-                    "object": "OperationalRule",
+                    "predicate": "has_condition",
+                    "object": "Count WARNING above 50 pcs/min; CRITICAL at max 60",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "triggers_action",
+                    "object": "Alert quality control",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-01",
+                    "predicate": "has_severity",
+                    "object": "WARNING",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 }
@@ -1509,11 +1537,33 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
+                {
+                    "subject": "RULE-RND01-01",
+                    "predicate": "has_condition",
+                    "object": "TMP MUST remain between 18°C and 26°C",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-01",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-01",
+                    "predicate": "applies_to_station",
+                    "object": "ST04_PACKAGING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST04_PACKAGING"
+                },
                 {
                     "subject": "RULE-RND01-01",
                     "predicate": "has_sensor_type",
@@ -1543,11 +1593,26 @@
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-RND01-01",
-                    "predicate": "triggers_action",
-                    "object": "MUST remain between 18°C and 26°C for experimental validity.",
+                    "subject": "RULE-RND01-02",
+                    "predicate": "has_condition",
+                    "object": "HUM drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-02",
+                    "predicate": "rdf:type",
+                    "object": "ThresholdRule",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-RND01-02",
+                    "predicate": "applies_to_station",
+                    "object": "ST04_PACKAGING",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "exact",
+                    "_raw_object": "ST04_PACKAGING"
                 },
                 {
                     "subject": "RULE-RND01-02",
@@ -1558,7 +1623,7 @@
                 },
                 {
                     "subject": "RULE-RND01-02",
-                    "predicate": "has_crit_lo",
+                    "predicate": "has_warn_lo",
                     "object": "65.0",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
@@ -1576,27 +1641,6 @@
                     "object": "%RH",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-RND01-02",
-                    "predicate": "triggers_action",
-                    "object": "activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system.",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-RND01-01",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-RND01-02",
-                    "predicate": "rdf:type",
-                    "object": "ThresholdRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
                 }
             ]
         },
@@ -1609,13 +1653,13 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ST04-01",
                     "predicate": "applies_to_station",
                     "object": "ST04_PACKAGING",
                     "_subject_alignment": "rule_node",
@@ -1623,35 +1667,28 @@
                     "_raw_object": "ST04_PACKAGING"
                 },
                 {
-                    "subject": "RULE-01",
-                    "predicate": "has_sensor_type",
-                    "object": "POS",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-01",
-                    "predicate": "triggers_action",
-                    "object": "Inspect packaging machine",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ST04-01",
                     "predicate": "has_condition",
-                    "object": "Position sensor failure detected",
+                    "object": "TMP > 25°C (CRITICAL)",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ST04-01",
+                    "predicate": "triggers_action",
+                    "object": "Inspect packaging machinery",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-ST04-01",
                     "predicate": "has_severity",
                     "object": "CRITICAL",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
                 {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ST04-01",
                     "predicate": "rdf:type",
                     "object": "OperationalRule",
                     "_subject_alignment": "rule_node",
@@ -1668,15 +1705,29 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_001_OperatingProcedures.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_001_OperatingProcedures.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:09.088096+00:00"
+                "processed_at": "2026-04-29T12:45:59.779538+00:00"
             },
             "aligned_relations": [
                 {
                     "subject": "RULE-CAF01-01",
                     "predicate": "has_condition",
-                    "object": "TMP above 26°C - check ventilation system.",
+                    "object": "TMP > 26°C - check ventilation system",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CAF01-01",
+                    "predicate": "triggers_action",
+                    "object": "check ventilation system",
+                    "_subject_alignment": "rule_node",
+                    "_object_alignment": "literal"
+                },
+                {
+                    "subject": "RULE-CAF01-01",
+                    "predicate": "has_severity",
+                    "object": "WARNING",
                     "_subject_alignment": "rule_node",
                     "_object_alignment": "literal"
                 },
@@ -1703,48 +1754,6 @@
                 },
                 {
                     "subject": "RULE-CAF01-01",
-                    "predicate": "triggers_action",
-                    "object": "check ventilation system.",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-CAF01-02",
-                    "predicate": "has_condition",
-                    "object": "HUM above 70%RH - inspect drainage and activate ventilation.",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-CAF01-02",
-                    "predicate": "has_sensor_type",
-                    "object": "HUM",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-CAF01-02",
-                    "predicate": "has_crit_hi",
-                    "object": "70.0",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-CAF01-02",
-                    "predicate": "has_unit",
-                    "object": "%RH",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-CAF01-01",
-                    "predicate": "rdf:type",
-                    "object": "OperationalRule",
-                    "_subject_alignment": "rule_node",
-                    "_object_alignment": "literal"
-                },
-                {
-                    "subject": "RULE-CAF01-02",
                     "predicate": "rdf:type",
                     "object": "OperationalRule",
                     "_subject_alignment": "rule_node",

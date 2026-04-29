@@ -14,9 +14,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "entities": [
                 {
@@ -65,9 +65,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "entities": [
                 {
@@ -92,18 +92,23 @@
                 },
                 {
                     "subject": "RULE-01",
+                    "predicate": "has_sensor_type",
+                    "object": "VIB"
+                },
+                {
+                    "subject": "RULE-01",
                     "predicate": "has_condition",
-                    "object": "VIB DRIFT >0.05 mm/s over 60 min"
+                    "object": "Vibration reading frozen >12 consecutive samples"
                 },
                 {
                     "subject": "RULE-01",
                     "predicate": "triggers_action",
-                    "object": "Inspect and lubricate bearing"
+                    "object": "Replace vibration sensor"
                 },
                 {
                     "subject": "RULE-01",
                     "predicate": "has_severity",
-                    "object": "HIGH"
+                    "object": "CRITICAL"
                 }
             ]
         },
@@ -116,9 +121,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "entities": [
                 {
@@ -479,11 +484,6 @@
                     "object": "HIGH"
                 },
                 {
-                    "subject": "MAINT-01",
-                    "predicate": "has_unit",
-                    "object": "mm/s"
-                },
-                {
                     "subject": "MAINT-02",
                     "predicate": "rdf:type",
                     "object": "MaintenanceRule"
@@ -739,9 +739,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_003_MaintenanceRules.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_003_MaintenanceRules.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:30.550836+00:00"
+                "processed_at": "2026-04-29T12:46:25.962207+00:00"
             },
             "entities": [
                 {
@@ -811,14 +811,24 @@
             ],
             "relations": [
                 {
-                    "subject": "ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling",
-                    "predicate": "monitors",
-                    "object": "ST02_SEALING-CUR"
+                    "subject": "WRH01-TMP",
+                    "predicate": "has_condition",
+                    "object": "drift"
                 },
                 {
-                    "subject": "ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling",
-                    "predicate": "feeds_into",
-                    "object": "ST04_PACKAGING-SPDfl"
+                    "subject": "WRH01-TMP",
+                    "predicate": "triggers_action",
+                    "object": "Restore WRH01-TMP <8°C. Notify QC. Place batch on HOLD"
+                },
+                {
+                    "subject": "WRH01-TMP",
+                    "predicate": "has_severity",
+                    "object": "CRITICAL"
+                },
+                {
+                    "subject": "WRH01-TMP",
+                    "predicate": "has_unit",
+                    "object": "°C"
                 }
             ]
         }

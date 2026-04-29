@@ -17,7 +17,7 @@ import os
 from typing import Any, Dict, List, Union
 
 _MAX_CHUNK_CHARS: int = 2_500
-_CHUNK_OVERLAP:   int = 100
+_CHUNK_OVERLAP:   int = 500
 
 
 # ─────────────────────────────────────────────────────────────────────────────

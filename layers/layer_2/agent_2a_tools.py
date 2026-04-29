@@ -120,6 +120,102 @@ _extraction_chain = (
 # 5. Execution Function
 # ---------------------------------------------------------------------------
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Post-LLM entity repair helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
+_TOLERANCE_UNIT_RE = re.compile(r'^\s*±\s*[\d.]+\s*$')
+_BARE_STYPE_RE     = re.compile(r'^([A-Z]{2,3})$')
+_BARE_NUMERIC_RE   = re.compile(r'^-?[\d.]+(?:\s*±\s*[\d.]+)?$')
+
+
+def _find_structured_span(stype: str, numeric_val: float, chunk_text: str) -> Optional[str]:
+    """Find the full 'STYPE, FIELD = VALUE [± TOL]' span in chunk_text."""
+    val_str = str(numeric_val)
+    alt_str: Optional[str] = None
+    try:
+        if float(numeric_val) == int(float(numeric_val)):
+            alt_str = str(int(float(numeric_val)))
+    except (ValueError, TypeError):
+        pass
+
+    for v in ([val_str] + ([alt_str] if alt_str and alt_str != val_str else [])):
+        v_esc = re.escape(v)
+        # Named-field: "STYPE, FIELDNAME = VALUE [± TOL]"
+        m = re.search(
+            rf'\b{re.escape(stype)},\s*\w+\s*=\s*{v_esc}(?:\s*±\s*[\d.]+)?',
+            chunk_text, re.IGNORECASE
+        )
+        if m:
+            return m.group().rstrip('.')
+        # Blank-field: "STYPE,  = VALUE" (WARN_LO written without a field label)
+        m = re.search(
+            rf'\b{re.escape(stype)},\s{{0,5}}=\s*{v_esc}',
+            chunk_text
+        )
+        if m:
+            return m.group().rstrip('.')
+    return None
+
+
+def _repair_entities(entities: List[Dict], chunk_text: str) -> List[Dict]:
+    """
+    Post-LLM repair for three systematic extraction bugs:
+
+    1. Tolerance (±x.xx) parsed into the unit field — strip it.
+    2. Unit bleeding on WARN_LONominal spans (e.g. HUM gets "°C" from TMP row)
+       — override with the stype's declared unit from "STYPE, Unit = X" entities.
+    3. Bare sensor-type ("VIB") or bare-numeric ("-1.0", "4.0 ± 0.5") spans
+       — reconstruct the full "STYPE, FIELD = VALUE" span from the chunk text.
+    """
+    # Build stype→unit map from "STYPE, Unit = X" entities in this chunk
+    stype_unit: Dict[str, str] = {}
+    for ent in entities:
+        m = re.match(r'^([A-Z]{2,3}),\s*Unit\s*=\s*(.+)', ent.get("span", ""), re.IGNORECASE)
+        if m:
+            stype_unit[m.group(1).upper()] = m.group(2).strip()
+
+    repaired: List[Dict] = []
+    for ent in entities:
+        span    = ent.get("span", "")
+        num_val = ent.get("numeric_value")
+        unit    = ent.get("unit")
+
+        # Fix 1: strip tolerance-as-unit (e.g. "± 1.2" → None)
+        if unit and _TOLERANCE_UNIT_RE.match(str(unit)):
+            unit = None
+
+        # Fix 3: reconstruct bare sensor-type spans ("VIB" with numeric_value=0.12)
+        if _BARE_STYPE_RE.match(span) and num_val is not None:
+            found = _find_structured_span(span, float(num_val), chunk_text)
+            if found:
+                span = found
+
+        # Fix 3b: reconstruct bare numeric spans ("-1.0", "4.0 ± 0.5", "55.0", …)
+        elif _BARE_NUMERIC_RE.match(span):
+            primary_m = re.match(r'^(-?[\d.]+)', span.strip())
+            if primary_m:
+                v_esc = re.escape(primary_m.group(1))
+                m_found = re.search(
+                    rf'([A-Z]{{2,3}}),\s*(?:\w+\s*)?=\s*{v_esc}(?:\s*±\s*[\d.]+)?',
+                    chunk_text, re.IGNORECASE
+                )
+                if m_found:
+                    span = m_found.group().rstrip('.')
+
+        # Fix 2: for WARN_LONominal spans always use the stype's declared unit
+        if "WARN_LONominal" in span:
+            prefix_m = re.match(r'^([A-Z]{2,3}),', span)
+            if prefix_m:
+                stype = prefix_m.group(1).upper()
+                if stype in stype_unit:
+                    unit = stype_unit[stype]
+
+        repaired.append({**ent, "span": span, "unit": unit})
+
+    return repaired
+
+
 def extract_entities_from_chunk(chunk_text: str) -> List[Dict[str, Any]]:
     """Calls the LLM to extract entities using the unified prompt."""
     if not chunk_text or not chunk_text.strip():
@@ -141,7 +237,7 @@ def extract_entities_from_chunk(chunk_text: str) -> List[Dict[str, Any]]:
     for ent in raw_entities:
         if not isinstance(ent, dict):
             continue
-        
+
         span = (ent.get("span") or "").strip()
         cat  = _fix_category(ent.get("category", ""))
 
@@ -157,11 +253,11 @@ def extract_entities_from_chunk(chunk_text: str) -> List[Dict[str, Any]]:
             continue
 
         validated_entity = {
-            "span": span, 
+            "span": span,
             "category": cat,
             "numeric_value": ent.get("numeric_value"),
             "unit": ent.get("unit")
         }
         validated.append(validated_entity)
 
-    return validated
+    return _repair_entities(validated, chunk_text)

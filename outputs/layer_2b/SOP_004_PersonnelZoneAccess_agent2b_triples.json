@@ -14,9 +14,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_004_PersonnelZoneAccess.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:38.984261+00:00"
+                "processed_at": "2026-04-29T12:46:34.342094+00:00"
             },
             "entities": [
                 {
@@ -30,34 +30,29 @@
             ],
             "relations": [
                 {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ACK-TECH-WARN",
                     "predicate": "rdf:type",
                     "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-01",
-                    "predicate": "applies_to_zone",
-                    "object": "Chemical Lab A"
-                },
-                {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ACK-TECH-WARN",
                     "predicate": "has_condition",
-                    "object": "Occupancy WARNING above 4 persons; CRITICAL at max 5"
+                    "object": "technician role — WARNING alarm acknowledgment"
                 },
                 {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ACK-TECH-WARN",
                     "predicate": "triggers_action",
-                    "object": "Alert safety officer; enforce evacuation if CRITICAL"
+                    "object": "Must acknowledge within 20 minutes"
                 },
                 {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ACK-TECH-WARN",
                     "predicate": "has_severity",
-                    "object": "WARNING"
+                    "object": "MANDATORY"
                 },
                 {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ACK-TECH-WARN",
                     "predicate": "has_unit",
-                    "object": "persons"
+                    "object": "min"
                 }
             ]
         },
@@ -70,9 +65,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_004_PersonnelZoneAccess.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:38.984261+00:00"
+                "processed_at": "2026-04-29T12:46:34.342094+00:00"
             },
             "entities": [
                 {
@@ -224,6 +219,16 @@
                 {
                     "subject": "technician",
                     "predicate": "authorized_for",
+                    "object": "Chem. Storage"
+                },
+                {
+                    "subject": "technician",
+                    "predicate": "authorized_for",
+                    "object": "R&D Lab"
+                },
+                {
+                    "subject": "technician",
+                    "predicate": "authorized_for",
                     "object": "Cafeteria"
                 },
                 {
@@ -249,6 +254,16 @@
                 {
                     "subject": "supervisor",
                     "predicate": "authorized_for",
+                    "object": "Chem. Storage"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
+                    "object": "R&D Lab"
+                },
+                {
+                    "subject": "supervisor",
+                    "predicate": "authorized_for",
                     "object": "Cafeteria"
                 },
                 {
@@ -274,6 +289,16 @@
                 {
                     "subject": "manager",
                     "predicate": "authorized_for",
+                    "object": "Chem. Storage"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
+                    "object": "R&D Lab"
+                },
+                {
+                    "subject": "manager",
+                    "predicate": "authorized_for",
                     "object": "Cafeteria"
                 },
                 {
@@ -295,6 +320,16 @@
                     "subject": "security",
                     "predicate": "authorized_for",
                     "object": "Main Entrance"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "Chem. Storage"
+                },
+                {
+                    "subject": "security",
+                    "predicate": "authorized_for",
+                    "object": "R&D Lab"
                 },
                 {
                     "subject": "security",
@@ -322,9 +357,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_004_PersonnelZoneAccess.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:38.984261+00:00"
+                "processed_at": "2026-04-29T12:46:34.342094+00:00"
             },
             "entities": [
                 {
@@ -432,7 +467,7 @@
                     "source_page": 1
                 },
                 {
-                    "span": "hazmat training required -see RULE-CHM01-03",
+                    "span": "precision experiments may be disturbed",
                     "category": "AnomalyEvent",
                     "numeric_value": null,
                     "unit": null,
@@ -440,9 +475,9 @@
                     "source_page": 1
                 },
                 {
-                    "span": "WARNING above 5",
+                    "span": "Monitoring only -occupant comfort",
                     "category": "AnomalyEvent",
-                    "numeric_value": 5,
+                    "numeric_value": null,
                     "unit": null,
                     "source_chunk_id": 2,
                     "source_page": 1
@@ -459,9 +494,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_004_PersonnelZoneAccess.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:38.984261+00:00"
+                "processed_at": "2026-04-29T12:46:34.342094+00:00"
             },
             "entities": [
                 {
@@ -507,104 +542,249 @@
             ],
             "relations": [
                 {
-                    "subject": "RULE-01",
-                    "predicate": "has_condition",
-                    "object": "operator, Max Ack -WARNING (min) = 15."
-                },
-                {
-                    "subject": "RULE-02",
-                    "predicate": "has_condition",
-                    "object": "operator, Max Ack -CRITICAL (min) = 3."
-                },
-                {
-                    "subject": "RULE-03",
-                    "predicate": "has_condition",
-                    "object": "technician, Max Ack -WARNING (min) = 10."
-                },
-                {
-                    "subject": "RULE-04",
-                    "predicate": "has_condition",
-                    "object": "technician, Max Ack -CRITICAL (min) = 2."
-                },
-                {
-                    "subject": "RULE-05",
-                    "predicate": "has_condition",
-                    "object": "supervisor, Max Ack -WARNING (min) = 5."
-                },
-                {
-                    "subject": "RULE-06",
-                    "predicate": "has_condition",
-                    "object": "supervisor, Max Ack -CRITICAL (min) = 1."
-                },
-                {
-                    "subject": "RULE-07",
-                    "predicate": "has_condition",
-                    "object": "manager, Max Ack -WARNING (min) = 15."
-                },
-                {
-                    "subject": "RULE-08",
-                    "predicate": "has_condition",
-                    "object": "manager, Max Ack -CRITICAL (min) = 5."
-                },
-                {
-                    "subject": "RULE-09",
-                    "predicate": "has_condition",
-                    "object": "security, Max Ack -WARNING (min) = 20."
-                },
-                {
-                    "subject": "RULE-10",
-                    "predicate": "has_condition",
-                    "object": "security, Max Ack -CRITICAL (min) = 5."
-                },
-                {
-                    "subject": "RULE-01",
+                    "subject": "RULE-ACK-OPER-WARN",
                     "predicate": "rdf:type",
                     "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-02",
+                    "subject": "RULE-ACK-OPER-WARN",
+                    "predicate": "has_condition",
+                    "object": "operator role — WARNING alarm acknowledgment"
+                },
+                {
+                    "subject": "RULE-ACK-OPER-WARN",
+                    "predicate": "triggers_action",
+                    "object": "Must acknowledge within 15 minutes"
+                },
+                {
+                    "subject": "RULE-ACK-OPER-WARN",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY"
+                },
+                {
+                    "subject": "RULE-ACK-OPER-WARN",
+                    "predicate": "has_unit",
+                    "object": "min"
+                },
+                {
+                    "subject": "RULE-ACK-OPER-CRIT",
                     "predicate": "rdf:type",
                     "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-03",
+                    "subject": "RULE-ACK-OPER-CRIT",
+                    "predicate": "has_condition",
+                    "object": "operator role — CRITICAL alarm acknowledgment"
+                },
+                {
+                    "subject": "RULE-ACK-OPER-CRIT",
+                    "predicate": "triggers_action",
+                    "object": "Must acknowledge within 3 minutes"
+                },
+                {
+                    "subject": "RULE-ACK-OPER-CRIT",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY"
+                },
+                {
+                    "subject": "RULE-ACK-OPER-CRIT",
+                    "predicate": "has_unit",
+                    "object": "min"
+                },
+                {
+                    "subject": "RULE-ACK-TECH-WARN",
                     "predicate": "rdf:type",
                     "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-04",
+                    "subject": "RULE-ACK-TECH-WARN",
+                    "predicate": "has_condition",
+                    "object": "technician role — WARNING alarm acknowledgment"
+                },
+                {
+                    "subject": "RULE-ACK-TECH-WARN",
+                    "predicate": "triggers_action",
+                    "object": "Must acknowledge within 10 minutes"
+                },
+                {
+                    "subject": "RULE-ACK-TECH-WARN",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY"
+                },
+                {
+                    "subject": "RULE-ACK-TECH-WARN",
+                    "predicate": "has_unit",
+                    "object": "min"
+                },
+                {
+                    "subject": "RULE-ACK-TECH-CRIT",
                     "predicate": "rdf:type",
                     "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-05",
+                    "subject": "RULE-ACK-TECH-CRIT",
+                    "predicate": "has_condition",
+                    "object": "technician role — CRITICAL alarm acknowledgment"
+                },
+                {
+                    "subject": "RULE-ACK-TECH-CRIT",
+                    "predicate": "triggers_action",
+                    "object": "Must acknowledge within 2 minutes"
+                },
+                {
+                    "subject": "RULE-ACK-TECH-CRIT",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY"
+                },
+                {
+                    "subject": "RULE-ACK-SUP-WARN",
                     "predicate": "rdf:type",
                     "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-06",
+                    "subject": "RULE-ACK-SUP-WARN",
+                    "predicate": "has_condition",
+                    "object": "supervisor role — WARNING alarm acknowledgment"
+                },
+                {
+                    "subject": "RULE-ACK-SUP-WARN",
+                    "predicate": "triggers_action",
+                    "object": "Must acknowledge within 5 minutes"
+                },
+                {
+                    "subject": "RULE-ACK-SUP-WARN",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY"
+                },
+                {
+                    "subject": "RULE-ACK-SUP-WARN",
+                    "predicate": "has_unit",
+                    "object": "min"
+                },
+                {
+                    "subject": "RULE-ACK-SUP-CRIT",
                     "predicate": "rdf:type",
                     "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-07",
+                    "subject": "RULE-ACK-SUP-CRIT",
+                    "predicate": "has_condition",
+                    "object": "supervisor role — CRITICAL alarm acknowledgment"
+                },
+                {
+                    "subject": "RULE-ACK-SUP-CRIT",
+                    "predicate": "triggers_action",
+                    "object": "Must acknowledge within 1 minute"
+                },
+                {
+                    "subject": "RULE-ACK-SUP-CRIT",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY"
+                },
+                {
+                    "subject": "RULE-ACK-SUP-CRIT",
+                    "predicate": "has_unit",
+                    "object": "min"
+                },
+                {
+                    "subject": "RULE-ACK-MAN-WARN",
                     "predicate": "rdf:type",
                     "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-08",
+                    "subject": "RULE-ACK-MAN-WARN",
+                    "predicate": "has_condition",
+                    "object": "manager role — WARNING alarm acknowledgment"
+                },
+                {
+                    "subject": "RULE-ACK-MAN-WARN",
+                    "predicate": "triggers_action",
+                    "object": "Must acknowledge within 15 minutes"
+                },
+                {
+                    "subject": "RULE-ACK-MAN-WARN",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY"
+                },
+                {
+                    "subject": "RULE-ACK-MAN-WARN",
+                    "predicate": "has_unit",
+                    "object": "min"
+                },
+                {
+                    "subject": "RULE-ACK-MAN-CRIT",
                     "predicate": "rdf:type",
                     "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-09",
+                    "subject": "RULE-ACK-MAN-CRIT",
+                    "predicate": "has_condition",
+                    "object": "manager role — CRITICAL alarm acknowledgment"
+                },
+                {
+                    "subject": "RULE-ACK-MAN-CRIT",
+                    "predicate": "triggers_action",
+                    "object": "Must acknowledge within 5 minutes"
+                },
+                {
+                    "subject": "RULE-ACK-MAN-CRIT",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY"
+                },
+                {
+                    "subject": "RULE-ACK-MAN-CRIT",
+                    "predicate": "has_unit",
+                    "object": "min"
+                },
+                {
+                    "subject": "RULE-ACK-SEC-WARN",
                     "predicate": "rdf:type",
                     "object": "AccessRule"
                 },
                 {
-                    "subject": "RULE-10",
+                    "subject": "RULE-ACK-SEC-WARN",
+                    "predicate": "has_condition",
+                    "object": "security role — WARNING alarm acknowledgment"
+                },
+                {
+                    "subject": "RULE-ACK-SEC-WARN",
+                    "predicate": "triggers_action",
+                    "object": "Must acknowledge within 20 minutes"
+                },
+                {
+                    "subject": "RULE-ACK-SEC-WARN",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY"
+                },
+                {
+                    "subject": "RULE-ACK-SEC-WARN",
+                    "predicate": "has_unit",
+                    "object": "min"
+                },
+                {
+                    "subject": "RULE-ACK-SEC-CRIT",
                     "predicate": "rdf:type",
                     "object": "AccessRule"
+                },
+                {
+                    "subject": "RULE-ACK-SEC-CRIT",
+                    "predicate": "has_condition",
+                    "object": "security role — CRITICAL alarm acknowledgment"
+                },
+                {
+                    "subject": "RULE-ACK-SEC-CRIT",
+                    "predicate": "triggers_action",
+                    "object": "Must acknowledge within 5 minutes"
+                },
+                {
+                    "subject": "RULE-ACK-SEC-CRIT",
+                    "predicate": "has_severity",
+                    "object": "MANDATORY"
+                },
+                {
+                    "subject": "RULE-ACK-SEC-CRIT",
+                    "predicate": "has_unit",
+                    "object": "min"
                 }
             ]
         },
@@ -617,9 +797,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_004_PersonnelZoneAccess.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:38.984261+00:00"
+                "processed_at": "2026-04-29T12:46:34.342094+00:00"
             },
             "entities": [
                 {
@@ -658,9 +838,9 @@
                 "page_numbers": [
                     1
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_004_PersonnelZoneAccess.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:38.984261+00:00"
+                "processed_at": "2026-04-29T12:46:34.342094+00:00"
             },
             "entities": [
                 {
@@ -686,12 +866,12 @@
                 {
                     "subject": "RULE-ACCESS-02",
                     "predicate": "triggers_action",
-                    "object": "Notify security personnel"
+                    "object": "Must acknowledge within 2 minutes"
                 },
                 {
                     "subject": "RULE-ACCESS-02",
-                    "predicate": "has_unit",
-                    "object": "min"
+                    "predicate": "has_severity",
+                    "object": "MANDATORY"
                 }
             ]
         },
@@ -704,9 +884,9 @@
                 "page_numbers": [
                     2
                 ],
-                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmpvl005xsc\\SOP_004_PersonnelZoneAccess.pdf",
+                "source_file": "C:\\Users\\dagha\\AppData\\Local\\Temp\\tmp_b6tvjt_\\SOP_004_PersonnelZoneAccess.pdf",
                 "agent_id": "agent_1b",
-                "processed_at": "2026-04-28T08:00:38.984261+00:00"
+                "processed_at": "2026-04-29T12:46:34.342094+00:00"
             },
             "entities": [
                 {
@@ -721,23 +901,23 @@
             "relations": [
                 {
                     "subject": "RULE-ACCESS-03",
-                    "predicate": "rdf:type",
-                    "object": "AccessRule"
+                    "predicate": "authorized_for",
+                    "object": "Chemical Storage"
                 },
                 {
-                    "subject": "RULE-ACCESS-03",
-                    "predicate": "applies_to_zone",
+                    "subject": "RULE-ACCESS-04",
+                    "predicate": "authorized_for",
                     "object": "Chemical Storage"
                 },
                 {
                     "subject": "RULE-ACCESS-03",
-                    "predicate": "has_condition",
-                    "object": "UNAUTHORIZED_ACCESS"
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule"
                 },
                 {
-                    "subject": "RULE-ACCESS-03",
-                    "predicate": "triggers_action",
-                    "object": "Immediate escalation to the Safety Officer"
+                    "subject": "RULE-ACCESS-04",
+                    "predicate": "rdf:type",
+                    "object": "OperationalRule"
                 }
             ]
         }

@@ -1,5 +1,6 @@
 """
 Layer 3 — Field-by-Field Evaluation Against Ground Truth
+(Repaired with Entity Resolution and Strict Scoring)
 """
 
 import os
@@ -25,13 +26,19 @@ LAYER_2C_DIR  = "outputs/layer_2c"
 GT_CSV_PATH   = os.path.join("layers", "extracted_seed", "dataset", "kg_seeds", "ground_truth.csv")
 NODES_CSV_PATH = os.path.join("layers", "extracted_seed", "dataset", "kg_seeds", "nodes_factory.csv")
 
-# Official sensor names loaded once at module level — used to guard auto-inference
-_OFFICIAL_SENSORS: set = set()
+# Official nodes loaded once at module level
+_OFFICIAL_SENSORS:  set = set()
+_OFFICIAL_STATIONS: set = set()   # Components and Zones — the only valid station/zone values
+
 if os.path.exists(NODES_CSV_PATH):
     with open(NODES_CSV_PATH, "r", encoding="utf-8") as _nf:
         for _nr in csv.DictReader(_nf):
-            if _nr.get("label") == "Sensor":
-                _OFFICIAL_SENSORS.add(_nr.get("name", "").strip())
+            label = _nr.get("label", "").strip()
+            name  = _nr.get("name",  "").strip()
+            if label == "Sensor":
+                _OFFICIAL_SENSORS.add(name)
+            elif label in ("Component", "Zone"):
+                _OFFICIAL_STATIONS.add(name)
 
 # ---------------------------------------------------------------------------
 # Predicate → structured-record field
@@ -55,7 +62,6 @@ PREDICATE_TO_FIELD: Dict[str, str] = {
 NUMERIC_FIELDS = {"critHi", "warnHi", "critLo", "warnLo"}
 
 # Hallucinated placeholder phrases the LLM emits when a field is absent.
-# These should be treated as missing (None) rather than real extracted values.
 _HALLUCINATED_TEXT = {
     "no specific action mentioned", "not specified in text", "not specified",
     "no action specified", "action not specified", "no action", "none",
@@ -127,7 +133,6 @@ def reconstruct_rules_from_triples(all_triples: List[Dict]) -> List[Dict]:
         if field is None:
             continue
 
-        # Drop hallucinated placeholder values before storing
         if isinstance(obj, str) and obj.lower().strip() in _HALLUCINATED_TEXT:
             continue
 
@@ -142,11 +147,11 @@ def reconstruct_rules_from_triples(all_triples: List[Dict]) -> List[Dict]:
     _MAINTENANCE_KEYWORDS = {"maintenance", "schedule", "replace", "lubrication",
                              "calibration", "sensor failure", "preventive"}
     _THRESHOLD_PREDS = {"has_crit_hi", "has_warn_hi", "has_crit_lo", "has_warn_lo"}
+    
     for rule_id, record in groups.items():
         if record.get("rule_class"):
             continue
         preds = group_preds.get(rule_id, set())
-        # Fix 2: require >= 2 threshold bounds to avoid misclassifying single-bound rules
         if len(_THRESHOLD_PREDS & preds) >= 2:
             record["rule_class"] = "ThresholdRule"
         elif "applies_to_zone" in preds:
@@ -158,9 +163,15 @@ def reconstruct_rules_from_triples(all_triples: List[Dict]) -> List[Dict]:
             else:
                 record["rule_class"] = "OperationalRule"
 
-    # Reconstruct missing sensor IDs from station + sensorType when LLM omits them.
-    # Guard: only accept the inference when the resulting name is a known official sensor.
-    # This blocks garbage like "STATION_01_CNT" (unaligned station) from polluting results.
+        # Severity programmatic fallback based on action content
+        if not record.get("severity"):
+            act_str = str(record.get("action") or "").lower()
+            cond_str = str(record.get("condition") or "").lower()
+            if "emergency stop" in act_str or "e-stop" in act_str or "shutdown" in act_str:
+                record["severity"] = "CRITICAL"
+            elif "warning" in cond_str:
+                record["severity"] = "WARNING"
+
     _station_code_re = re.compile(r'^[A-Z0-9]+_[A-Z0-9]')
     for rule_id, record in groups.items():
         if not record.get("sensor") and record.get("station") and record.get("sensorType"):
@@ -168,12 +179,32 @@ def reconstruct_rules_from_triples(all_triples: List[Dict]) -> List[Dict]:
             if _station_code_re.match(station) and " " not in station:
                 inferred_sensor = f"{station}_{record['sensorType']}"
                 if _OFFICIAL_SENSORS and inferred_sensor not in _OFFICIAL_SENSORS:
-                    print(f"[Layer 3] Skipped auto-inference: '{inferred_sensor}' not an official sensor for {rule_id}")
                     continue
                 record["sensor"] = inferred_sensor
-                print(f"[Layer 3] Auto-inferred missing sensor: {inferred_sensor} for {rule_id}")
 
-    return list(groups.values())
+    raw_rules = list(groups.values())
+
+    # --- NEW: Entity Resolution (Cross-Document Merging) ---
+    # Broadcast numeric limits from ThresholdRules to OperationalRules that share the sensor
+    sensor_thresholds = {}
+    for r in raw_rules:
+        sensor = r.get("sensor")
+        if not sensor: continue
+        if sensor not in sensor_thresholds:
+            sensor_thresholds[sensor] = {}
+        for field in ["critHi", "warnHi", "critLo", "warnLo", "unit"]:
+            if r.get(field) is not None and field not in sensor_thresholds[sensor]:
+                sensor_thresholds[sensor][field] = r[field]
+
+    for r in raw_rules:
+        sensor = r.get("sensor")
+        if not sensor or sensor not in sensor_thresholds: continue
+        for field in ["critHi", "warnHi", "critLo", "warnLo", "unit"]:
+            if r.get(field) is None and field in sensor_thresholds[sensor]:
+                r[field] = sensor_thresholds[sensor][field]
+                print(f"[Layer 3] Backfilled missing {field} for {r['ruleId']} via shared sensor link.")
+
+    return raw_rules
 
 # ---------------------------------------------------------------------------
 # 2. Load data
@@ -227,7 +258,7 @@ def load_extracted_rules(layer_2c_dir: str) -> List[Dict]:
     return reconstruct_rules_from_triples(all_triples)
 
 # ---------------------------------------------------------------------------
-# 3. Pairwise scoring (CORRECTED WEIGHTS PER PROFESSOR NOTES)
+# 3. Pairwise scoring 
 # ---------------------------------------------------------------------------
 
 def _score_pair(ext: Dict, gt: Dict) -> float:
@@ -240,33 +271,37 @@ def _score_pair(ext: Dict, gt: Dict) -> float:
             score += weight
 
     # 1. High Weight: Condition and Action
-    if gt.get("condition") and ext.get("condition"):
+    # CHANGED: We now penalize if GT expects a field but EXT missed it completely
+    if gt.get("condition"):
         add(3.0, False)
-        score += 3.0 * _text_sim(ext["condition"], gt["condition"])
-    if gt.get("action") and ext.get("action"):
+        if ext.get("condition"):
+            score += 3.0 * _text_sim(ext["condition"], gt["condition"])
+            
+    if gt.get("action"):
         add(3.0, False)
-        score += 3.0 * _text_sim(ext["action"], gt["action"])
+        if ext.get("action"):
+            score += 3.0 * _text_sim(ext["action"], gt["action"])
 
     # 2. Medium Weight: Station and Sensor
-    if gt.get("station") and ext.get("station"):
-        add(2.0, ext["station"].strip().upper() == gt["station"].strip().upper())
-    if gt.get("sensor") and ext.get("sensor"):
-        add(2.0, ext["sensor"].strip().upper() == gt["sensor"].strip().upper())
+    if gt.get("station"):
+        add(2.0, ext.get("station") and ext["station"].strip().upper() == gt["station"].strip().upper())
+    if gt.get("sensor"):
+        add(2.0, ext.get("sensor") and ext["sensor"].strip().upper() == gt["sensor"].strip().upper())
 
     # 3. Lower Weight: Class, Severity, Unit, SensorType
-    if gt.get("rule_class") and ext.get("rule_class"):
-        add(1.0, ext["rule_class"].strip().upper() == gt["rule_class"].strip().upper())
-    if gt.get("severity") and ext.get("severity"):
-        add(1.0, ext["severity"].strip().upper() == gt["severity"].strip().upper())
-    if gt.get("sensorType") and ext.get("sensorType"):
-        add(1.0, ext["sensorType"].strip().upper() == gt["sensorType"].strip().upper())
-    if gt.get("unit") and ext.get("unit"):
-        add(1.0, _norm_unit(ext["unit"]) == _norm_unit(gt["unit"]))
+    if gt.get("rule_class"):
+        add(1.0, ext.get("rule_class") and ext["rule_class"].strip().upper() == gt["rule_class"].strip().upper())
+    if gt.get("severity"):
+        add(1.0, ext.get("severity") and ext["severity"].strip().upper() == gt["severity"].strip().upper())
+    if gt.get("sensorType"):
+        add(1.0, ext.get("sensorType") and ext["sensorType"].strip().upper() == gt["sensorType"].strip().upper())
+    if gt.get("unit"):
+        add(1.0, ext.get("unit") and _norm_unit(ext["unit"]) == _norm_unit(gt["unit"]))
 
     # 4. Numerics
     for field in ("critHi", "warnHi", "critLo", "warnLo"):
-        if gt.get(field) is not None and ext.get(field) is not None:
-            add(1.0, _numeric_within(ext[field], gt[field]))
+        if gt.get(field) is not None:
+            add(1.0, ext.get(field) is not None and _numeric_within(ext[field], gt[field]))
 
     return (score / total) if total > 0 else 0.0
 
@@ -321,6 +356,20 @@ def evaluate_pipeline():
     ground_truth = load_ground_truth(GT_CSV_PATH)
     extracted    = load_extracted_rules(LAYER_2C_DIR)
 
+    # Ghost station filter: drop rules whose station resolved to a non-official value.
+    # These originate from introductory/title page text (e.g. "Production Line A",
+    # "PROD-LINE-A") that has no matching node in the Knowledge Graph.
+    if _OFFICIAL_STATIONS:
+        before = len(extracted)
+        extracted = [
+            r for r in extracted
+            if r.get("station") is None or r["station"] in _OFFICIAL_STATIONS
+        ]
+        dropped = before - len(extracted)
+        if dropped:
+            print(f"[Layer 3] Ghost station filter: dropped {dropped} rule(s) "
+                  f"with unrecognised station values.")
+
     print(f"Ground truth rules  : {len(ground_truth)}")
     print(f"Reconstructed rules : {len(extracted)}\n")
 
@@ -369,27 +418,32 @@ def evaluate_pipeline():
     hits     = dict.fromkeys(FIELDS, 0)
     possible = dict.fromkeys(FIELDS, 0)
 
+    # CHANGED: Accuracy now accurately checks if GT requires the field vs if EXT provided it
     for record in true_positives:
         ext = record["extracted"]
         gt  = record["matched_ground_truth"]
+        
         for f in ("rule_class", "station", "sensor", "sensorType", "severity"):
-            if gt.get(f) and ext.get(f):
+            if gt.get(f):
                 possible[f] += 1
-                if ext[f].strip().upper() == gt[f].strip().upper():
+                if ext.get(f) and ext[f].strip().upper() == gt[f].strip().upper():
                     hits[f] += 1
+                    
         for f in ("condition", "action"):
-            if gt.get(f) and ext.get(f):
+            if gt.get(f):
                 possible[f] += 1
-                if _text_sim(ext[f], gt[f]) >= 0.5:
+                if ext.get(f) and _text_sim(ext[f], gt[f]) >= 0.5:
                     hits[f] += 1
-        if gt.get("unit") and ext.get("unit"):
+                    
+        if gt.get("unit"):
             possible["unit"] += 1
-            if _norm_unit(ext["unit"]) == _norm_unit(gt["unit"]):
+            if ext.get("unit") and _norm_unit(ext["unit"]) == _norm_unit(gt["unit"]):
                 hits["unit"] += 1
+                
         for f in ("critHi", "warnHi", "critLo", "warnLo"):
-            if gt.get(f) is not None and ext.get(f) is not None:
+            if gt.get(f) is not None:
                 possible[f] += 1
-                if _numeric_within(ext[f], gt[f]):
+                if ext.get(f) is not None and _numeric_within(ext[f], gt[f]):
                     hits[f] += 1
 
     print("--- OVERALL METRICS ---")
@@ -406,7 +460,7 @@ def evaluate_pipeline():
         print(f"  {rc:<22}  TP={c['TP']:<2} FP={c['FP']:<2} FN={c['FN']:<2} "
               f"P={p:.2f}  R={r:.2f}  F1={fv:.2f}")
     print()
-    print("--- FIELD ACCURACY (among TPs) ---")
+    print("--- HONEST FIELD ACCURACY (among TPs) ---")
     for f in FIELDS:
         p_ = possible[f]
         acc = hits[f] / p_ if p_ > 0 else 0.0
