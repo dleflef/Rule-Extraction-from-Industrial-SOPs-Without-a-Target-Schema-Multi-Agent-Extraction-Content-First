@@ -2,46 +2,25 @@
   "source_file": "SOP_003_MaintenanceRules.pdf",
   "status": "complete",
   "error_message": null,
-  "chunk_count": 3,
+  "chunk_count": 2,
   "chunks": [
     {
       "chunk_id": 0,
-      "content": "## Predictive & Corrective Maintenance Rules - Production Line A\n\nDocument: SOP-003 | Rev: 1.5 | Date: 2025-09-01 |\n\nAuthor: Ing. A. Conti - Maintenance Engineering",
+      "content": "## Predictive & Corrective Maintenance Rules - Production Line A\n\nDocument: SOP-003 | Rev: 1.5 | Date: 2025-09-01 |\n\nAuthor: Ing. A. Conti - Maintenance Engineering\n\n## 1. Predictive Maintenance Rules\n\n| Rule ID   | Sensor   | Station               | Trigger                                                                   | Action                                                                    | Priority                                                                  |\n|-----------|----------|-----------------------|---------------------------------------------------------------------------|---------------------------------------------------------------------------|---------------------------------------------------------------------------|\n| MAINT-01  | VIB      | ST04_PACKAGING        | VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH       | VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH       | VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH       |\n| MAINT-02  | CUR      | ST02_SEALING          | CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw                          | CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw                          | HIGH                                                                      |\n| MAINT-03  | TEN      | ST03_LABELLING        | TEN STUCK >10 samples                                                     | Replace sensor                                                            | MEDIUM                                                                    |\n| MAINT-04  | PRS      | ST01_FILLING          | PRS <3.3 bar for >15 min                                                  | Inspect filter and pump                                                   | MEDIUM                                                                    |\n| MAINT-05  | TMP      | SRV01_SERVERROOM      | TMP >25°C for >5 min                                                      | Activate secondary cooling                                                | CRITICAL                                                                  |\n| MAINT-06  | TMP      | WRH01_WAREHOUSE       | TMP DRIFT >2°C over 2 h                                                   | Inspect compressor; notify                                                | QC CRITICAL                                                               |\n| MAINT-07  | TMP      | CHM01_CHEMICALSTORAGE | TMP >20°C for >10 min                                                     | Emergency ventilation; notify                                             | safety officer CRITICAL                                                   |\n| MAINT-08  | HUM      | RND01_RDLAB           | HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH | HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH | HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH |\n\n## 2. Correlated Fault Resolution",
       "metadata": {
-        "headings": [
-          "Predictive & Corrective Maintenance Rules - Production Line A"
-        ],
-        "page_numbers": [],
-        "is_table": false,
-        "chunk_type": "prose"
+        "headings": [],
+        "page_numbers": []
       },
-      "char_count": 164
+      "char_count": 3006
     },
     {
       "chunk_id": 1,
-      "content": "## 1. Predictive Maintenance Rules\n\nRule ID | Sensor | Station | Trigger | Action | Priority\n--- | --- | --- | --- | --- | ---\nMAINT-01 | VIB | ST04_PACKAGING | VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH |  | \nMAINT-02 | CUR | ST02_SEALING | CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw | HIGH | \nMAINT-03 | TEN | ST03_LABELLING | TEN STUCK >10 samples | Replace sensor | MEDIUM\nMAINT-04 | PRS | ST01_FILLING | PRS <3.3 bar for >15 min | Inspect filter and pump | MEDIUM\nMAINT-05 | TMP | SRV01_SERVERROOM | TMP >25°C for >5 min | Activate secondary cooling | CRITICAL\nMAINT-06 | TMP | WRH01_WAREHOUSE | TMP DRIFT >2°C over 2 h | Inspect compressor; notify | QC CRITICAL\nMAINT-07 | TMP | CHM01_CHEMICALSTORAGE | TMP >20°C for >10 min | Emergency ventilation; notify | safety officer CRITICAL\nMAINT-08 | HUM | RND01_RDLAB | HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC drain HIGH |  |",
+      "content": "| Pattern                                                                                                                                                                         | Primary Fault                                                                                                                                                                   | Secondary Effect                                                                                                                                                                | Resolution                                                                                                                                                                      |\n|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n| ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee | ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee | ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee | ST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee |\n| WRH01-TMP › fi QC HOLD Cold warehouse                                                                                                                                           | drift                                                                                                                                                                           | Product quality risk                                                                                                                                                            | 1.Restore WRH01-TMP <8°C. 2.Notify QC. 3.Place batch on HOLD                                                                                                                    |",
       "metadata": {
-        "headings": [
-          "1. Predictive Maintenance Rules"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
+        "headings": [],
+        "page_numbers": []
       },
-      "char_count": 929
-    },
-    {
-      "chunk_id": 2,
-      "content": "## 2. Correlated Fault Resolution\n\nPattern | Primary Fault | Secondary Effect | Resolution\n--- | --- | --- | ---\nST02_SEALING-CUR › fi ST04_PACKAGING-SPDfl Sealing motor overload Conveyor speed drop via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 spee |  |  | \nWRH01-TMP › fi QC HOLD Cold warehouse | drift | Product quality risk | 1.Restore WRH01-TMP <8°C. 2.Notify QC. 3.Place batch on HOLD",
-      "metadata": {
-        "headings": [
-          "2. Correlated Fault Resolution"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
-      },
-      "char_count": 429
+      "char_count": 2855
     }
   ]
 }

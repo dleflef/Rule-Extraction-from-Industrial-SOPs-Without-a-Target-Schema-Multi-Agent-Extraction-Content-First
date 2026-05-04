@@ -2,150 +2,25 @@
   "source_file": "SOP_002_AlarmThresholds.pdf",
   "status": "complete",
   "error_message": null,
-  "chunk_count": 11,
+  "chunk_count": 2,
   "chunks": [
     {
       "chunk_id": 0,
-      "content": "## Alarm Thresholds and Response Matrix - Production Line A\n\nDocument: SOP-002 | Rev: 1.8 | Date: 2025-10-20 | Author: Ing. L. Greco - Automation & Control\n\nThreshold hierarchy: CRIT_LO < WARN_LO < NOMINAL < WARN_HI < CRIT_HI.",
+      "content": "## Alarm Thresholds and Response Matrix - Production Line A\n\nDocument: SOP-002 | Rev: 1.8 | Date: 2025-10-20 | Author: Ing. L. Greco - Automation & Control\n\nThreshold hierarchy: CRIT_LO < WARN_LO < NOMINAL < WARN_HI < CRIT_HI.\n\n## ST01_FILLING Thresholds\n\n| Sensor   | Unit   |   CRIT_LO |       | WARN_LONominal   |   WARN_HI |   CRIT_HI | CRITICAL Response              |\n|----------|--------|-----------|-------|------------------|-----------|-----------|--------------------------------|\n| TMP      | °C     |        15 |  18   | 22.0 ± 0.4       |      26   |      30   | Inspect and notify maintenance |\n| PRS      | bar    |         3 |   3.3 | 3.8 ± 0.05       |       4.2 |       4.8 | Inspect and notify maintenance |\n| FLW      | L/min  |       105 | 112   | 120.0 ± 1.5      |     128   |     135   | Inspect and notify maintenance |\n\n## ST02_SEALING Thresholds\n\n| Sensor   | Unit   |   CRIT_LO |       | WARN_LONominal   |   WARN_HI |   CRIT_HI | CRITICAL Response                                    |\n|----------|--------|-----------|-------|------------------|-----------|-----------|------------------------------------------------------|\n| TMP      | °C     |     165   | 175   | 185.0 ± 1.2      |     195   |     210   | E-STOP ST02/ST03/ST04; inspect element               |\n| PRS      | bar    |       4.2 |   4.6 | 5.2 ± 0.08       |       5.7 |       6.2 | Inspect and notify maintenance                       |\n| CUR      | A      |       9.5 |  11   | 12.4 ± 0.3       |      13.5 |      15   | E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04) |\n\n## ST03_LABELLING Thresholds\n\n| Sensor   | Unit    |   CRIT_LO |        | WARN_LONominal   |   WARN_HI |   CRIT_HI | CRITICAL Response                    |\n|----------|---------|-----------|--------|------------------|-----------|-----------|--------------------------------------|\n| SPD      | m/s     |      0.65 |   0.75 | 0.85 ± 0.01      |      0.95 |      1.05 | Inspect and notify maintenance       |\n| TEN      | N       |      1.5  |   1.8  | 2.2 ± 0.05       |      2.6  |      3    | Inspect and notify maintenance       |\n| CNT      | pcs/min |    100    | 110    | 120 ± 2.0        |    130    |    140    | E-STOP labelling; inspect label path |\n\n## ST04_PACKAGING Thresholds\n\n| Sensor   | Unit   |   CRIT_LO |      | WARN_LONominal   |   WARN_HI |   CRIT_HI | CRITICAL Response              |\n|----------|--------|-----------|------|------------------|-----------|-----------|--------------------------------|\n| VIB      | mm/s   |      0.01 | 0.02 | 0.12 ± 0.005     |       0.2 |      0.35 | E-STOP; inspect main bearing   |\n| CUR      | A      |      6.5  | 7.5  | 8.7 ± 0.2        |       9.8 |     11    | Inspect and notify maintenance |\n| SPD      | m/s    |      0.85 | 1    | 1.2 ± 0.02       |       1.4 |      1.6  | Inspect and notify maintenance |\n\n## SRV01_SERVERROOM Thresholds\n\n| Sensor   | Unit   |   CRIT_LO |    | WARN_LONominal   |   WARN_HI |   CRIT_HI | CRITICAL Response                                        |\n|----------|--------|-----------|----|------------------|-----------|-----------|----------------------------------------------------------|\n| TMP      | °C     |        16 | 18 | 21.0 ± 0.3       |        25 |        28 | Activate backup cooling; prepare controlled PLC shutdown |\n| HUM      | %RH    |        25 | 30 | 45.0 ± 1.0       |        60 |        70 | Inspect and notify maintenance                           |\n\n## WRH01_WAREHOUSE Thresholds\n\n| Sensor   | Unit   |   CRIT_LO |      | WARN_LONominal   |   WARN_HI |   CRIT_HI | CRITICAL Response                        |\n|----------|--------|-----------|------|------------------|-----------|-----------|------------------------------------------|\n| TMP      | °C     |        -1 |  0.5 | 4.0 ± 0.5        |         8 |        12 | Activate backup refrigeration; notify QC |\n| HUM      | %RH    |        55 | 60   | 75.0 ± 1.5       |        85 |        90 | Inspect and notify maintenance           |",
       "metadata": {
-        "headings": [
-          "Alarm Thresholds and Response Matrix - Production Line A"
-        ],
-        "page_numbers": [],
-        "is_table": false,
-        "chunk_type": "prose"
+        "headings": [],
+        "page_numbers": []
       },
-      "char_count": 226
+      "char_count": 3988
     },
     {
       "chunk_id": 1,
-      "content": "## ST01_FILLING Thresholds\n\nSensor | Unit | CRIT_LO | WARN_LO | Nominal | WARN_HI | CRIT_HI | CRITICAL Response\n--- | --- | --- | --- | --- | --- | --- | ---\nTMP | °C | 15.0 | 18.0 | 22.0 ± 0.4 | 26.0 | 30.0 | Inspect and notify maintenance\nPRS | bar | 3.0 | 3.3 | 3.8 ± 0.05 | 4.2 | 4.8 | Inspect and notify maintenance\nFLW | L/min | 105.0 | 112.0 | 120.0 ± 1.5 | 128.0 | 135.0 | Inspect and notify maintenance",
+      "content": "## CHM01_CHEMICALSTORAGE Thresholds\n\n| Sensor   | Unit   |   CRIT_LO |    | WARN_LONominal   |   WARN_HI |   CRIT_HI | CRITICAL Response                                                |\n|----------|--------|-----------|----|------------------|-----------|-----------|------------------------------------------------------------------|\n| TMP      | °C     |         5 | 10 | 15.0 ± 0.3       |        20 |        25 | Activate emergency ventilation; notify safety officer immediatel |\n| HUM      | %RH    |        15 | 20 | 35.0 ± 1.0       |        50 |        60 | Activate desiccant system; inspect storage containers for leak   |\n\n## RND01_RDLAB Thresholds\n\n| Sensor   | Unit   |   CRIT_LO |    | WARN_LONominal   |   WARN_HI |   CRIT_HI | CRITICAL Response                        |\n|----------|--------|-----------|----|------------------|-----------|-----------|------------------------------------------|\n| TMP      | °C     |        15 | 18 | 22.0 ± 0.2       |        26 |        30 | Inspect and notify maintenance           |\n| HUM      | %RH    |        25 | 35 | 50.0 ± 1.0       |        65 |        75 | Suspend experiments; inspect HVAC system |\n\n## CAF01_CAFETERIA Thresholds\n\n| Sensor   | Unit   |   CRIT_LO |    | WARN_LONominal   |   WARN_HI |   CRIT_HI | CRITICAL Response              |\n|----------|--------|-----------|----|------------------|-----------|-----------|--------------------------------|\n| TMP      | °C     |        14 | 17 | 21.0 ± 0.4       |        26 |        30 | Inspect and notify maintenance |\n| HUM      | %RH    |        25 | 35 | 55.0 ± 1.5       |        70 |        80 | Inspect and notify maintenance |\n\n## Anomaly Type Definitions for KG Mapping\n\n| Type         | Definition                                      | Detection Criterion                                  | Ontology Class                                       |\n|--------------|-------------------------------------------------|------------------------------------------------------|------------------------------------------------------|\n| SPIKE        | Transient deviation >3 s , <5 minSingle         | reading >CRIT                                        | AnomalyEvent::Spike                                  |\n| DRIFT        | Monotonic deviation >15 min                     | Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift | Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift |\n| STUCK        | Unchanged >10 consecutive                       | readings std(last 10)<0.001×nominal                  | AnomalyEvent::StuckSensor                            |\n| OUT_OF_RANGE | Sustained WARN violation >10 min >WARN for 20+  | readings                                             | AnomalyEvent::OutOfRange                             |\n| CORRELATED   | Causally linked to another station Onset within | 90 min of cause                                      | AnomalyEvent::Correlated                             |",
       "metadata": {
-        "headings": [
-          "ST01_FILLING Thresholds"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
+        "headings": [],
+        "page_numbers": []
       },
-      "char_count": 411
-    },
-    {
-      "chunk_id": 2,
-      "content": "## ST02_SEALING Thresholds\n\nSensor | Unit | CRIT_LO | WARN_LO | Nominal | WARN_HI | CRIT_HI | CRITICAL Response\n--- | --- | --- | --- | --- | --- | --- | ---\nTMP | °C | 165.0 | 175.0 | 185.0 ± 1.2 | 195.0 | 210.0 | E-STOP ST02/ST03/ST04; inspect element\nPRS | bar | 4.2 | 4.6 | 5.2 ± 0.08 | 5.7 | 6.2 | Inspect and notify maintenance\nCUR | A | 9.5 | 11.0 | 12.4 ± 0.3 | 13.5 | 15.0 | E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04)",
-      "metadata": {
-        "headings": [
-          "ST02_SEALING Thresholds"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
-      },
-      "char_count": 436
-    },
-    {
-      "chunk_id": 3,
-      "content": "## ST03_LABELLING Thresholds\n\nSensor | Unit | CRIT_LO | WARN_LO | Nominal | WARN_HI | CRIT_HI | CRITICAL Response\n--- | --- | --- | --- | --- | --- | --- | ---\nSPD | m/s | 0.65 | 0.75 | 0.85 ± 0.01 | 0.95 | 1.05 | Inspect and notify maintenance\nTEN | N | 1.5 | 1.8 | 2.2 ± 0.05 | 2.6 | 3.0 | Inspect and notify maintenance\nCNT | pcs/min | 100 | 110 | 120 ± 2.0 | 130 | 140 | E-STOP labelling; inspect label path",
-      "metadata": {
-        "headings": [
-          "ST03_LABELLING Thresholds"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
-      },
-      "char_count": 411
-    },
-    {
-      "chunk_id": 4,
-      "content": "## ST04_PACKAGING Thresholds\n\nSensor | Unit | CRIT_LO | WARN_LO | Nominal | WARN_HI | CRIT_HI | CRITICAL Response\n--- | --- | --- | --- | --- | --- | --- | ---\nVIB | mm/s | 0.01 | 0.02 | 0.12 ± 0.005 | 0.2 | 0.35 | E-STOP; inspect main bearing\nCUR | A | 6.5 | 7.5 | 8.7 ± 0.2 | 9.8 | 11.0 | Inspect and notify maintenance\nSPD | m/s | 0.85 | 1.0 | 1.2 ± 0.02 | 1.4 | 1.6 | Inspect and notify maintenance",
-      "metadata": {
-        "headings": [
-          "ST04_PACKAGING Thresholds"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
-      },
-      "char_count": 402
-    },
-    {
-      "chunk_id": 5,
-      "content": "## SRV01_SERVERROOM Thresholds\n\nSensor | Unit | CRIT_LO | WARN_LO | Nominal | WARN_HI | CRIT_HI | CRITICAL Response\n--- | --- | --- | --- | --- | --- | --- | ---\nTMP | °C | 16.0 | 18.0 | 21.0 ± 0.3 | 25.0 | 28.0 | Activate backup cooling; prepare controlled PLC shutdown\nHUM | %RH | 25.0 | 30.0 | 45.0 ± 1.0 | 60.0 | 70.0 | Inspect and notify maintenance",
-      "metadata": {
-        "headings": [
-          "SRV01_SERVERROOM Thresholds"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
-      },
-      "char_count": 354
-    },
-    {
-      "chunk_id": 6,
-      "content": "## WRH01_WAREHOUSE Thresholds\n\nSensor | Unit | CRIT_LO | WARN_LO | Nominal | WARN_HI | CRIT_HI | CRITICAL Response\n--- | --- | --- | --- | --- | --- | --- | ---\nTMP | °C | -1.0 | 0.5 | 4.0 ± 0.5 | 8.0 | 12.0 | Activate backup refrigeration; notify QC\nHUM | %RH | 55.0 | 60.0 | 75.0 ± 1.5 | 85.0 | 90.0 | Inspect and notify maintenance",
-      "metadata": {
-        "headings": [
-          "WRH01_WAREHOUSE Thresholds"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
-      },
-      "char_count": 334
-    },
-    {
-      "chunk_id": 7,
-      "content": "## CHM01_CHEMICALSTORAGE Thresholds\n\nSensor | Unit | CRIT_LO | WARN_LO | Nominal | WARN_HI | CRIT_HI | CRITICAL Response\n--- | --- | --- | --- | --- | --- | --- | ---\nTMP | °C | 5.0 | 10.0 | 15.0 ± 0.3 | 20.0 | 25.0 | Activate emergency ventilation; notify safety officer immediatel\nHUM | %RH | 15.0 | 20.0 | 35.0 ± 1.0 | 50.0 | 60.0 | Activate desiccant system; inspect storage containers for leak",
-      "metadata": {
-        "headings": [
-          "CHM01_CHEMICALSTORAGE Thresholds"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
-      },
-      "char_count": 398
-    },
-    {
-      "chunk_id": 8,
-      "content": "## RND01_RDLAB Thresholds\n\nSensor | Unit | CRIT_LO | WARN_LO | Nominal | WARN_HI | CRIT_HI | CRITICAL Response\n--- | --- | --- | --- | --- | --- | --- | ---\nTMP | °C | 15.0 | 18.0 | 22.0 ± 0.2 | 26.0 | 30.0 | Inspect and notify maintenance\nHUM | %RH | 25.0 | 35.0 | 50.0 ± 1.0 | 65.0 | 75.0 | Suspend experiments; inspect HVAC system",
-      "metadata": {
-        "headings": [
-          "RND01_RDLAB Thresholds"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
-      },
-      "char_count": 333
-    },
-    {
-      "chunk_id": 9,
-      "content": "## CAF01_CAFETERIA Thresholds\n\nSensor | Unit | CRIT_LO | WARN_LO | Nominal | WARN_HI | CRIT_HI | CRITICAL Response\n--- | --- | --- | --- | --- | --- | --- | ---\nTMP | °C | 14.0 | 17.0 | 21.0 ± 0.4 | 26.0 | 30.0 | Inspect and notify maintenance\nHUM | %RH | 25.0 | 35.0 | 55.0 ± 1.5 | 70.0 | 80.0 | Inspect and notify maintenance",
-      "metadata": {
-        "headings": [
-          "CAF01_CAFETERIA Thresholds"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
-      },
-      "char_count": 327
-    },
-    {
-      "chunk_id": 10,
-      "content": "## Anomaly Type Definitions for KG Mapping\n\nType | Definition | Detection Criterion | Ontology Class\n--- | --- | --- | ---\nSPIKE | Transient deviation >3 s , <5 minSingle | reading >CRIT | AnomalyEvent::Spike\nDRIFT | Monotonic deviation >15 min | Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift | \nSTUCK | Unchanged >10 consecutive | readings std(last 10)<0.001×nominal | AnomalyEvent::StuckSensor\nOUT_OF_RANGE | Sustained WARN violation >10 min >WARN for 20+ | readings | AnomalyEvent::OutOfRange\nCORRELATED | Causally linked to another station Onset within | 90 min of cause | AnomalyEvent::Correlated",
-      "metadata": {
-        "headings": [
-          "Anomaly Type Definitions for KG Mapping"
-        ],
-        "page_numbers": [],
-        "is_table": true,
-        "chunk_type": "table"
-      },
-      "char_count": 608
+      "char_count": 2936
     }
   ]
 }

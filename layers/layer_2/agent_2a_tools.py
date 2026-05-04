@@ -3,10 +3,10 @@
 # Purpose:
 #   This module provides the core tool for Agent 2A: calling an LLM to extract
 #   structured operational rules from a single text chunk.  The chunk comes from
-#   Agent 1B's output (clean markdown with section context).  The prompt is
-#   fully domain-agnostic; all domain knowledge is injected via the seed node
-#   table.  Rule IDs are never created by the LLM — they are assigned
-#   deterministically afterwards to avoid hallucination.
+#   Agent 1B's output (raw, un‑interpreted Markdown – no table repair, no
+#   section injection).  The prompt is fully domain-agnostic; all domain knowledge
+#   is injected via the seed node table.  Rule IDs are never created by the LLM —
+#   they are assigned deterministically afterwards to avoid hallucination.
 
 import json
 import os
@@ -52,7 +52,7 @@ def format_seed_nodes_to_string(nodes: List[Dict[str, str]]) -> str:
 
 EXTRACTION_SYSTEM_PROMPT = """
 You are an entity extractor for an industrial knowledge graph.
-Read a Markdown chunk from a technical document and extract every operational rule into a strict JSON array.
+Read a text chunk from a technical document — it may be prose, a pipe-delimited table, a bulleted list, or any other format — and extract every operational rule into a strict JSON array.
 
 Each rule MUST contain ALL 14 fields (use null for any that are missing):
   ruleId, class, station, sensor, sensorType, condition, action,
@@ -63,63 +63,43 @@ Field rules:
 - class: exactly one of: OperationalRule, ThresholdRule, AccessRule, MaintenanceRule.
   · ThresholdRule: a rule defined by numeric sensor limits (warn/crit bounds).
   · OperationalRule: a process rule with a condition and a required action but no sensor thresholds.
-  · MaintenanceRule: a rule triggered by cumulative degradation (drift, stuck sensor, wear pattern) that prescribes a maintenance action (inspect, replace, calibrate, schedule). Use this class whenever the rule describes a degradation pattern → maintenance response, even if it also contains numeric drift limits.
+  · MaintenanceRule: a rule triggered by cumulative degradation (drift, stuck sensor, wear) that prescribes a maintenance action (inspect, replace, calibrate, schedule).
   · AccessRule: a rule governing entry, authorisation, or role-based access to areas or systems.
-- station: the component or zone this rule applies to. Use the EXACT name from the Known Seed Nodes list when a match exists. If the chunk contains a "## Section:" line, use that section name as the station for all rules in this chunk unless the rule text explicitly names a different station. If the chunk heading ends with the word "Thresholds" or "Rules", the station is the text before that word (e.g. heading "XYZ_Station Thresholds" → station = "XYZ_Station"). If a rule applies globally and is not tied to any specific station or zone, set station to null.
-- sensor: the sensor involved. Use the EXACT name from the Known Seed Nodes list when a match exists. If no matching sensor is found in the seed list, construct the sensor name as '{station}_{sensorType}' using the EXACT station and sensorType values already determined for this rule (e.g. if station="ST02" and sensorType="TMP", sensor="ST02_TMP"). Never output a bare sensor type (e.g. "VIB", "TMP") when a seed-table name exists for that sensor. Never invent a sensor name that diverges from this pattern.
-- sensorType: abbreviated form of the sensor name inferred from the text (e.g., TMP for temperature, PRS for pressure). Null if uncertain.
-- condition: the trigger or condition described. For a prose rule, the text BEFORE the final colon or dash is the condition, the text AFTER is the action. Never put a maintenance statement (e.g. "inspect", "replace", "calibrate") into the condition field. action: the response or corrective measure. Never swap them.
-  For prose rules that do NOT contain a colon or dash, the entire statement is the condition; the default action is "Inspect and notify maintenance". But if the text contains a dash "–" or "—", split the sentence at that dash: text before = condition, text after = action.
-  Note: this is a heuristic; it will help but not cover every case.
-- severity: one of MANDATORY, WARNING, CRITICAL, HIGH, MEDIUM. When a severity keyword (WARNING, CRITICAL, MANDATORY, HIGH, MEDIUM) appears anywhere in the rule text, you MUST set the severity field to that keyword. Null only if no severity keyword is present.
-- Numeric thresholds (critHi, warnHi, critLo, warnLo): floats extracted from the text. Null if not present. When a prose rule states a specific numeric limit (e.g. "exceeds 26°C", "must not drop below 5 bar"), place that number in the appropriate threshold field: a value paired with "exceeds", "above", "greater than", ">" → warnHi or critHi; a value paired with "below", "less than", "drops under", "<" → warnLo or critLo. Use the severity keyword (CRITICAL/WARNING) to decide crit vs. warn. If only upper limits are given, leave lower limits as null — do NOT invent symmetric low values. If a rule states a parameter MUST remain between Lo and Hi (e.g. "must remain between 18 and 26°C"), set warnLo=Lo and warnHi=Hi; do NOT duplicate the same value into both critHi and warnHi. Only populate critHi/critLo when a SEPARATE CRITICAL threshold is explicitly stated.
-- unit: the measurement unit as it appears in the text (e.g., °C, bar, %RH, m/s, persons). Null if absent.
-- source: the document ID from the first heading of the chunk (e.g. 'SOP-001', 'SOP-002'). It must match the pattern 'SOP-NNN' or a similar document-level code. Do NOT use a section heading (e.g. "Operating Procedures"), a rule ID (e.g. "RULE-ST02-04"), or any other non-document string as the source. Scan the chunk headings and opening line; if a document-level code appears, you MUST populate source with it. Never leave source null when a document code is present.
+- station: the component or zone this rule applies to. Use the EXACT name from the Known Seed Nodes list when a match exists. Derive the station from the nearest heading, section title, or explicit name in the text. If a heading ends with "Thresholds" or "Rules", the station is the text before that word. If no station can be determined, set to null.
+- sensor: the sensor involved. Use the EXACT name from the Known Seed Nodes list when a match exists. If not found in the seed list, construct the name as '{station}_{sensorType}'. Never output a bare sensor type (e.g. "VIB", "TMP") when a seed-table name exists. Never invent a name outside this pattern.
+- sensorType: abbreviated form inferred from the text (e.g. TMP, PRS, VIB). Null if uncertain.
+- condition: the trigger described. For any rule, the text that describes WHEN the rule fires is the condition. Never put a maintenance action (inspect, replace, calibrate) into condition. action: the response or corrective measure. Never swap them.
+  Split heuristic: text before a colon ":" or em/en dash "–—" is the condition; text after is the action. If no separator, the whole statement is the condition; default action is "Inspect and notify maintenance".
+- severity: one of MANDATORY, WARNING, CRITICAL, HIGH, MEDIUM. Set to the keyword that appears in the text. Null only if none present.
+- Numeric thresholds (critHi, warnHi, critLo, warnLo): floats from the text. Null if not present. "exceeds / above / >" → warnHi or critHi. "below / less than / drops under / <" → warnLo or critLo. Use the severity keyword to decide crit vs. warn. If a parameter must remain between Lo and Hi, set warnLo=Lo and warnHi=Hi; only set critHi/critLo when a SEPARATE CRITICAL threshold is explicit.
+- unit: measurement unit as written (°C, bar, %RH, m/s, persons). Null if absent.
+- source: document-level code found anywhere in the chunk (e.g. 'SOP-001', 'SOP-002'). Must match a pattern like 'SOP-NNN'. Do NOT use section headings or rule IDs as source. Never leave null when a document code is present.
 
 RULES:
-1. Only extract rules that are explicitly written in the text. Do NOT invent conditions, actions, or numeric thresholds — only record values that are literally present (e.g., "> 210°C", "MUST be logged"). You may ONLY create a rule for a sensor if that sensor is **explicitly mentioned in the chunk text** – you must never scan the seed table to generate rules for sensors that do not appear in the chunk. If the chunk only contains a generic heading like "Alarm Thresholds", do NOT generate rules for all possible sensors. If no rules exist in the chunk, return [].
-2. If no numeric thresholds AND no explicit condition-action pair are present, return [] and DO NOT output any placeholder objects. If the chunk contains ONLY a document title, revision number, author name, or a high-level section heading without any rule text, you MUST return [].
-   For example, a chunk that contains only a document header, a revision line, and a generic statement about the threshold hierarchy with absolutely no concrete numerical values or specific sensor names must yield EXACTLY [].
-   Another example: a chunk whose only content is a structural table that merely lists station IDs, zones, and dependency descriptions without any measurable limits or actions yields exactly [] – do not invent a rule for it.
-   This rule takes precedence over any other instruction: if you cannot SEE a specific numerical value AND a condition-action pair, you MUST output [].
-3. Station assignment: if the chunk contains a "## Section:" line, use that section name for the station field of every rule in this chunk. Otherwise, if the chunk heading names a station or zone (or ends with "Thresholds"/"Rules"), derive the station from the heading. Only fall back to seed-node names when neither is present. If a rule applies to all areas with no specific station mentioned, set station to null.
-4. For threshold tables: read column headers carefully before mapping values. The typical column order is CRIT_LO | WARN_LO | Nominal | WARN_HI | CRIT_HI. If a header cell is empty, infer its role from position between its neighbours — a blank cell between CRIT_LO and WARN_LONominal holds the WARN_LO value. Never swap high and low: critLo < warnLo < Nominal < warnHi < critHi.
-   Example (made-up numbers, showing the pattern):
-     | Sensor | Unit | CRIT_LO |      | WARN_LONominal | WARN_HI | CRIT_HI |
-     | HTR    | °C   |  15.0   | 18.0 |     22.0       |  26.0   |  30.0   |
-   Correct extraction: critLo=15.0, warnLo=18.0, nominal=22.0, warnHi=26.0, critHi=30.0
-5. For prose rules (e.g. "RULE-ST02-04: CUR drift… monitor SPD" or "RULE-ACCESS-01: Entry to Zone X MUST be logged by the Supervisor role"): extract condition and action directly from the sentence. Authorisation, access, and maintenance rules follow the same extraction pattern as threshold rules. If a numeric limit appears in the prose (e.g. "if TMP exceeds 26°C"), also populate the corresponding threshold field.
-6. If a chunk contains multiple explicit rule-IDs (e.g. "RULE-ACCESS-03: …" followed by "RULE-ACCESS-04: …"), you MUST extract EACH as a separate JSON object in the array. Never merge two rule-IDs into one object.
-7. Tables that define role-based timing constraints are AccessRules. If a table has columns of the form "Role | … WARNING … (min) | … CRITICAL … (min)" (or similar severity-labelled timing columns), extract one AccessRule per data row: condition = the role and triggering event from that row, action = the required response within the time limit, warnHi = the WARNING time limit as a float, critHi = the CRITICAL time limit as a float (smaller deadline = stricter, so critHi ≤ warnHi is expected). Example with made-up values:
-     | Role    | Max Ack — WARNING (min) | Max Ack — CRITICAL (min) |
-     | TypeA   | 10                      | 5                        |
-   → condition: "TypeA role receives WARNING alarm", action: "must acknowledge within limit", warnHi=10.0, critHi=5.0
-
-8. Severity from column headers: If a table column header contains the text 'CRITICAL' (e.g. 'CRITICAL Response', 'CRITICAL Action'), treat cell values in that column as implying severity='CRITICAL'. If the cell text contains 'E-STOP' or 'EMERGENCY STOP', also set severity='CRITICAL'. If a header contains 'WARNING', set severity='WARNING'. Only apply this when no explicit severity keyword is already present in the rule text itself.
-9. Rule splitting: If a single prose sentence or table row contains two distinct numeric limits each paired with a different severity label (e.g. "below 110 … WARNING" and "below 100 … CRITICAL"), extract TWO separate rule objects — one per limit+severity pair. Each object gets its own threshold field and severity. Do NOT merge them into a single object with both threshold values.
-10. Occupancy and zone-capacity tables: If a table has columns like 'Zone'/'Area', 'Max Persons'/'Capacity', 'Enforcement'/'Action', extract one AccessRule per data row. The first column gives the zone name — you MUST use it as the station. Do NOT leave station null.
-   Example (MADE-UP):
-     | Zone             | Max Persons | Enforcement                  |
-     | Production Area  | 12          | WARNING above 10; CRITICAL … |
-   → station = "Production Area", condition = "WARNING above 10", critHi = 12.0, severity = "CRITICAL", unit = "persons".
-11. Malformed table rows: If a table row does not contain a recognisable Rule ID, sensor name, numeric value, or condition-action pair — for example a row that contains only metadata labels like 'Station ID | Zone | Depends On | Description' — skip it entirely and do not generate a rule object for it.
-12. Role-based timing constraints: If a table row lists separate time limits for WARNING and CRITICAL (e.g. columns "Max Ack – WARNING (min)" and "Max Ack – CRITICAL (min)"), produce TWO AccessRule objects per row:
-    - Rule 1: severity = "WARNING", condition = "… role receives WARNING alarm", action = "must acknowledge within limit", warnHi = WARNING time (float).
-    - Rule 2: severity = "CRITICAL", condition = "… role receives CRITICAL alarm", action = "must acknowledge within limit", critHi = CRITICAL time (float).
-    Do NOT merge the two time limits into one object.
+1. Only extract rules explicitly written in the text. Do NOT invent anything. Only create a rule for a sensor explicitly mentioned in the chunk — never scan the seed table to generate rules for sensors absent from the text. Return [] if no rules exist.
+2. If no numeric thresholds AND no explicit condition-action pair are present, return []. Chunks containing only a document title, revision line, author, or high-level section heading with no concrete values must yield exactly []. A structural table that lists only station IDs, zones, and dependency descriptions (no measurable limits, no actions) also yields []. This rule overrides all others: no specific value + no condition-action = [].
+3. Station assignment: derive the station from the nearest heading or section title above the rule in the text. If the heading names a station or zone, use it. If no heading is present, infer the station from the rule text itself or from the seed node list. Set to null only when genuinely not determinable.
+4. For threshold tables: read column headers carefully. Typical order: CRIT_LO | WARN_LO | Nominal | WARN_HI | CRIT_HI. Never swap high and low. If a header cell appears merged (e.g. "WARN_LONominal"), infer the intended column names from the surrounding headers and the numeric ordering. Never invent values; only extract numbers literally present.
+5. For prose rules in any format (free text, bullets, numbered lists, labelled lines): extract condition and action directly. If a numeric limit appears (e.g. "if TMP exceeds 26°C"), also populate the corresponding threshold field.
+6. If a chunk contains multiple explicit rule-IDs, extract EACH as a separate JSON object. Never merge two rule-IDs into one object.
+7. Tables with role-based timing columns (e.g. "Role | Max Ack WARNING (min) | Max Ack CRITICAL (min)") are AccessRules. Extract one AccessRule per data row: condition = role + triggering event, action = required response, warnHi = WARNING time limit (float), critHi = CRITICAL time limit (float).
+8. Severity from column headers: a column header containing 'CRITICAL' implies severity='CRITICAL' for cells in that column; 'WARNING' implies severity='WARNING'. 'E-STOP' or 'EMERGENCY STOP' in a cell → severity='CRITICAL'. Apply only when no explicit severity keyword is already in the rule text.
+9. Rule splitting: a sentence or row with two numeric limits paired with different severity labels → extract TWO separate objects, one per limit+severity pair.
+10. Occupancy/zone-capacity tables (columns: Zone/Area, Max Persons/Capacity, Enforcement/Action): extract one AccessRule per data row; use the zone name as station; never leave station null.
+11. Skip table rows that contain only metadata labels with no Rule ID, sensor, numeric value, or condition-action pair.
+12. Role-based timing: separate WARNING and CRITICAL time limits in one row → produce TWO AccessRule objects (one per severity). Do NOT merge them.
 
 Return ONLY a valid JSON array. No markdown fences, no commentary.
-""".strip()   # strip leading/trailing whitespace so it fits cleanly into the API call
+""".strip()
 
 def build_user_prompt(chunk_content: str, headings: list, seed_table: str) -> str:
-    # Build the user message: seed table, chunk headings, and the chunk text itself.
-    heading_str = ", ".join(headings) if headings else "none"
-    return (
-        f"## Known Seed Nodes\n{seed_table}\n\n"
-        f"## Chunk Headings\n{heading_str}\n\n"
-        f"## Chunk Text\n{chunk_content}\n\n"
-        f"Extract all rules as a JSON array."
-    )
+    # Build the user message. Headings are included when available, otherwise omitted.
+    parts = [f"## Known Seed Nodes\n{seed_table}"]
+    if headings:
+        parts.append(f"## Chunk Headings\n{', '.join(headings)}")
+    parts.append(f"## Chunk Text\n{chunk_content}")
+    parts.append("Extract all rules as a JSON array.")
+    return "\n\n".join(parts)
 
 # ── Deterministic ruleId post-processor ──────────────────────────────────────
 # After the LLM returns rules with ruleId=null (or an explicit ID from text),
