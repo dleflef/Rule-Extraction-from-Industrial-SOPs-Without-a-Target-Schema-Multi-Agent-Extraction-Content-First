@@ -1,57 +1,57 @@
+"""
+layer_2/agent_2a.py — Agent 2A: Entity Extractor (LangGraph)
+
+Processes one chunk at a time. The Orchestrator iterates over chunks,
+calls this agent, and aggregates the extracted rules.
+"""
+
 from langgraph.graph import END, StateGraph
+
 from .agent_2a_state import Agent2AState
-from .agent_2a_tools import extract_entities_from_chunk
+from .agent_2a_tools import extract_rules_from_chunk
 
-def extraction_node(state: Agent2AState) -> dict:
-    """Iterates over text chunks and extracts entities synchronously."""
-    print(f"\n[Agent 2A] Entity Extraction starting for: {state['source_file']}")
 
-    chunks = state.get("chunks", [])
-    if not chunks:
-        return {"status": "error", "error_message": "No chunks provided to Agent 2A."}
+def extract_node(state: Agent2AState) -> dict:
+    """
+    Runs entity extraction on a single chunk.
+    """
+    chunk = state["chunk"]
+    content = chunk.get("content", "")
+    headings = chunk.get("metadata", {}).get("headings", [])
 
-    extracted_data = []
-    total_chunks = len(chunks)
+    seed_path = state.get("seed_nodes_csv_path", "layers/data/seed_rules/dataset/kg_seeds/nodes_factory.csv")
+    model = "qwen2.5-7b-instruct"
 
-    for i, chunk in enumerate(chunks):
-        chunk_text = chunk.get("content") or ""
-        metadata   = chunk.get("metadata", {})
+    print(f"[Agent 2A] Extracting rules from chunk {chunk.get('chunk_id')} "
+          f"(head: {headings})")
 
-        if not chunk_text.strip():
-            continue
+    rules = extract_rules_from_chunk(
+        chunk_content=content,
+        headings=headings,
+        seed_nodes_csv=seed_path,
+        model_name=model,
+        temperature=0.0,
+    )
 
-        print(f"  -> Processing Chunk {i+1}/{total_chunks} (ID: {chunk['chunk_id']})...")
-        
-        # Execute unified extraction
-        entities = extract_entities_from_chunk(chunk_text)
+    if rules:
+        print(f"[Agent 2A] Extracted {len(rules)} rule(s).")
+        return {
+            "extracted_rules": rules,
+            "extraction_status": "complete",
+            "extraction_model": model,
+        }
+    else:
+        return {
+            "extracted_rules": None,
+            "extraction_status": "error",
+            "extraction_error": "LLM returned no rules or parsing failed.",
+            "extraction_model": model,
+        }
 
-        # Attach provenance to each entity so Layer 2B (Relation Extractor) can trace back
-        pages = metadata.get("page_numbers", [])
-        for ent in entities:
-            ent["source_chunk_id"] = chunk["chunk_id"]
-            if pages:
-                ent["source_page"] = pages[0]
 
-        extracted_data.append({
-            "chunk_id": chunk["chunk_id"],
-            "metadata": metadata,
-            "content":  chunk_text,
-            "entities": entities,
-        })
-
-    print(f"[Agent 2A] Done. {total_chunks} chunks processed.")
-
-    return {
-        "extracted_entities": extracted_data,
-        "status": "complete",
-    }
-
-# ---------------------------------------------------------------------------
-# Graph Compilation
-# ---------------------------------------------------------------------------
-
+# ── Graph compilation (single node) ──────────────────────────────────────────
 _workflow = StateGraph(Agent2AState)
-_workflow.add_node("extract", extraction_node)
+_workflow.add_node("extract", extract_node)
 _workflow.set_entry_point("extract")
 _workflow.add_edge("extract", END)
 
