@@ -16,12 +16,10 @@ class Agent1BState(TypedDict, total=False):
     """Each chunk dict:
         {
             "chunk_id" : int,
-            "content"  : str,               # clean text (prose or pipe-delimited table)
+            "content"  : str,               # clean text
             "metadata" : {
-                "headings"     : list[str],  # e.g., ["2.1 ST01_FILLING"]
-                "page_numbers" : list[int],  # (empty for now)
-                "is_table"     : bool,
-                "chunk_type"   : str,        # "table" or "prose"
+                "headings"     : list[str],  # always empty — LLM interprets headings
+                "page_numbers" : list[int],  # always empty — not extracted by Docling
             },
             "char_count": int,
         }
@@ -29,5 +27,5 @@ class Agent1BState(TypedDict, total=False):
     chunk_count: Optional[int]
 
     # Control flow
-    status: str               # "pending" → "parsed" → "complete" or "error"
+    status: str               # "pending" → "complete" or "error"
     error_message: Optional[str]

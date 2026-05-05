@@ -20,7 +20,7 @@ def extract_node(state: Agent2AState) -> dict:
     headings = chunk.get("metadata", {}).get("headings", [])
 
     seed_path = state.get("seed_nodes_csv_path", "layers/data/seed_rules/dataset/kg_seeds/nodes_factory.csv")
-    model = "qwen2.5-7b-instruct"
+    model = "qwen2.5-coder-7b-instruct"
 
     print(f"[Agent 2A] Extracting rules from chunk {chunk.get('chunk_id')} "
           f"(head: {headings})")
@@ -33,20 +33,12 @@ def extract_node(state: Agent2AState) -> dict:
         temperature=0.0,
     )
 
-    if rules:
-        print(f"[Agent 2A] Extracted {len(rules)} rule(s).")
-        return {
-            "extracted_rules": rules,
-            "extraction_status": "complete",
-            "extraction_model": model,
-        }
-    else:
-        return {
-            "extracted_rules": None,
-            "extraction_status": "error",
-            "extraction_error": "LLM returned no rules or parsing failed.",
-            "extraction_model": model,
-        }
+    print(f"[Agent 2A] Extracted {len(rules)} rule(s).")
+    return {
+        "extracted_rules": rules,
+        "extraction_status": "complete",
+        "extraction_model": model,
+    }
 
 
 # ── Graph compilation (single node) ──────────────────────────────────────────

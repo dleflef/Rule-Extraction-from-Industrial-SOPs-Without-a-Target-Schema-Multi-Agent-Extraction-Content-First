@@ -18,7 +18,6 @@ class Agent2AState(TypedDict, total=False):
             "metadata" : {
                 "headings"     : list[str],
                 "page_numbers" : list[int],
-                "is_table"     : bool,
             },
         }
     """

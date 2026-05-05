@@ -124,11 +124,10 @@ def text_similarity(t1: str, t2: str, model: SentenceTransformer) -> float:
     """
     if not t1 or not t2:
         return 0.0
-    # Encode both strings into 384‑dimensional vectors.
+    from sentence_transformers import util
     emb = model.encode([t1, t2], show_progress_bar=False)
-    # Cosine similarity = dot product of two normalised vectors.
-    sim = float(emb[0] @ emb[1])
-    # Clamp to non‑negative (though cosine should already be in [-1,1], rarely negative).
+    # util.cos_sim handles normalization explicitly, making this model-agnostic.
+    sim = float(util.cos_sim(emb[0], emb[1]))
     return max(0.0, sim)
 
 def rule_similarity(gt_dict: Dict, ex_dict: Dict, model: SentenceTransformer) -> float:
@@ -207,8 +206,8 @@ def evaluate_source(gt_source: List, ex_source: List, model: SentenceTransformer
         "tp": tp,
         "num_gt": len(gt_source),
         "num_ex": len(ex_source),
-        "unmatched_gt": [gt_source[i]["ruleId"] for i in unm_gt],  # IDs for humans to inspect
-        "unmatched_ex": [ex_source[i].get("ruleId") for i in unm_ex],
+        "unmatched_gt": [gt_source[i]["ruleId"] for i in unm_gt],
+        "unmatched_ex": [(ex_source[i].get("condition") or "")[:80] for i in unm_ex],
         "avg_similarity": avg_sim,
     }
     return metrics, matched

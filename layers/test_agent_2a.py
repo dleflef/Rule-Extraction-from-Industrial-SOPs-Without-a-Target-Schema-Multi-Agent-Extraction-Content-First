@@ -29,7 +29,6 @@ def test_agent_2a(agent1b_json_path: str):
         return
 
     all_rules = []
-    global_counters: dict = {}
     for chunk in chunks:
         content = chunk.get("content", "")
         headings = chunk.get("metadata", {}).get("headings", [])
@@ -39,7 +38,6 @@ def test_agent_2a(agent1b_json_path: str):
             chunk_content=content,
             headings=headings,
             seed_nodes_csv="layers/data/seed_rules/dataset/kg_seeds/nodes_factory.csv",
-            global_counters=global_counters,
         )
         if rules:
             all_rules.extend(rules)
