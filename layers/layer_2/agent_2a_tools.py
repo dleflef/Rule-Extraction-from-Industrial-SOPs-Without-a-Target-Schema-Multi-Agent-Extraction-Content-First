@@ -19,8 +19,10 @@ from typing import Any, Dict, List
 # is handled downstream by Agent 2C.
 
 def load_seed_nodes(csv_path: str) -> List[Dict[str, str]]:
+    """Read the nodes_factory.csv file and return a list of dictionaries, one per node."""
     import csv
     nodes = []
+    # Open the CSV with UTF-8 encoding; csv.DictReader automatically uses the first row as headers
     with open(csv_path, newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -29,14 +31,19 @@ def load_seed_nodes(csv_path: str) -> List[Dict[str, str]]:
 
 
 def format_seed_nodes_to_string(nodes: List[Dict[str, str]]) -> str:
+    """Convert the list of seed node dictionaries into a Markdown table string."""
     header = "| nodeId | label | name | type | zone |"
     sep    = "|--------|-------|------|------|------|"
+    # Build each row by extracting the relevant fields from the dictionary
     rows   = [f"| {n['nodeId']} | {n['label']} | {n['name']} | {n['type']} | {n['zone']} |"
               for n in nodes]
+    # Join everything with newlines to form a complete table
     return "\n".join([header, sep] + rows)
 
 
 # ── System prompt (domain‑agnostic, fully schema‑driven) ─────────────────────
+# This prompt defines the extraction task, the ontology schema, and the behavioral rules.
+# It deliberately avoids mentioning any factory-specific formatting or content.
 
 EXTRACTION_SYSTEM_PROMPT = """
 You are an entity extractor for an industrial knowledge graph.
@@ -103,26 +110,30 @@ Field definitions:
 
 
 def build_user_prompt(chunk_content: str, headings: List[str], seed_table: str) -> str:
-    parts = [f"## Known Seed Nodes\n{seed_table}"]
+    """Assemble the user message: seed node table, optional chunk headings, then the raw chunk text."""
+    parts = [f"## Known Seed Nodes\n{seed_table}"]       # Provide vocabulary reference first
     if headings:
-        parts.append(f"## Chunk Headings\n{', '.join(headings)}")
-    parts.append(f"## Chunk Text\n{chunk_content}")
-    parts.append("Extract all rules as a JSON array.")
+        parts.append(f"## Chunk Headings\n{', '.join(headings)}")  # hints about document section
+    parts.append(f"## Chunk Text\n{chunk_content}")      # the actual text to extract from
+    parts.append("Extract all rules as a JSON array.")   # final instruction
     return "\n\n".join(parts)
 
 
 # ── JSON parsing utilities ────────────────────────────────────────────────────
 
 def _strip_fences(text: str) -> str:
+    """Remove Markdown code fences (```json ... ```) that the LLM may add around its JSON output."""
     text = text.strip()
     if text.startswith("```"):
+        # Remove opening fence (optionally followed by language identifier)
         text = re.sub(r"^```(?:json)?", "", text)
+        # Remove closing fence
         text = re.sub(r"```$", "", text)
     return text.strip()
 
 
 def _repair_json(raw: str) -> str:
-    # Remove trailing commas before } or ] — the most common LLM JSON mistake.
+    """Remove trailing commas before } or ], a common LLM JSON syntax error."""
     return re.sub(r',\s*([\}\]])', r'\1', raw)
 
 
@@ -131,11 +142,17 @@ def _repair_json(raw: str) -> str:
 def extract_rules_from_chunk(
     chunk_content: str,
     headings: List[str],
-    seed_nodes_csv: str = "layers/data/seed_rules/dataset/kg_seeds/nodes_factory.csv",
-    model_name: str = "qwen2.5-7b-instruct",
-    temperature: float = 0.0,
+    seed_nodes_csv: str = "layers/data/seed_rules/dataset/kg_seeds/nodes_factory.csv",  # default seed file path
+    model_name: str = "qwen2.5-7b-instruct",  # LLM model to use
+    temperature: float = 0.0,  # deterministic output
 ) -> List[Dict[str, Any]]:
+    """
+    Extract rules from a single text chunk using an LLM.
+    Returns a list of rule dictionaries, each with 14 fields.
+    """
     # Load seed nodes for entity linking reference in the prompt.
+    # If the file exists, build a Markdown table of known stations/sensors;
+    # otherwise provide an empty table so the prompt still works (zero-shot).
     if os.path.exists(seed_nodes_csv):
         nodes = load_seed_nodes(seed_nodes_csv)
         seed_table = format_seed_nodes_to_string(nodes)
@@ -143,11 +160,15 @@ def extract_rules_from_chunk(
         nodes = []
         seed_table = "| nodeId | label | name | type | zone |\n|--------|-------|------|------|------|"
 
+    # Construct the full user prompt: seed table + chunk text + headings
     user_prompt = build_user_prompt(chunk_content, headings, seed_table)
 
     try:
+        # Import OpenAI client (lazy import to keep dependency optional at module level)
         import openai
+        # Connect to the local LLM server (adjust base_url as needed)
         client = openai.OpenAI(base_url="http://127.0.0.1:1234/v1", api_key="not-needed")
+        # Call the chat model with system prompt, user prompt, and zero temperature
         completion = client.chat.completions.create(
             model=model_name,
             messages=[
@@ -156,10 +177,12 @@ def extract_rules_from_chunk(
             ],
             temperature=temperature,
         )
+        # Extract the text response from the API result
         raw = completion.choices[0].message.content
+        # Clean up Markdown code fences that may surround the JSON
         cleaned = _strip_fences(raw)
 
-        # Attempt direct parse, then trailing-comma repair.
+        # Attempt direct JSON parsing; if it fails, try again after repairing trailing commas
         parsed = None
         for candidate in [cleaned, _repair_json(cleaned)]:
             try:
@@ -168,12 +191,15 @@ def extract_rules_from_chunk(
             except json.JSONDecodeError:
                 continue
 
+        # The LLM might return a flat list, or sometimes wrap it in a dict with a "rules" key
         if isinstance(parsed, list):
             return parsed
         if isinstance(parsed, dict) and "rules" in parsed:
             return parsed["rules"]
+        # If we can't parse a valid structure, return empty list
         return []
 
     except Exception as e:
+        # In case of any error (network, API, etc.), log it and return empty list
         print(f"[Agent 2A] Extraction error: {e}")
         return []
