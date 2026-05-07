@@ -1,0 +1,11 @@
+run_id,base_exp_id,model,paradigm,run_n,level,reasoning_native,total_rules,sop_files,errors,duration_sec,avg_rule_sec,avg_llm_turns,temperature,prompt_tokens,completion_tokens,total_tokens,tokens_per_rule
+qwen2_5-7b-instruct_naive_run1,qwen2_5-7b-instruct_naive,qwen2.5-7b-instruct,naive,1,0,False,30,4,0,101.66,3.3887,1.0,0,4943,3440,8383,279.4
+qwen2_5-7b-instruct_few_shot_static_run1,qwen2_5-7b-instruct_few_shot_static,qwen2.5-7b-instruct,few_shot_static,1,0,False,26,4,0,98.6,3.7923,1.0,0,6027,3413,9440,363.1
+qwen2_5-7b-instruct_graph_informed_run1,qwen2_5-7b-instruct_graph_informed,qwen2.5-7b-instruct,graph_informed,1,0,False,28,4,0,114.44,4.0872,1.0,0,5435,3346,8781,313.6
+qwen2_5-7b-instruct_cot_basic_run1,qwen2_5-7b-instruct_cot_basic,qwen2.5-7b-instruct,cot_basic,1,1,False,30,4,0,102.65,3.4215,1.0,0,4995,3449,8444,281.5
+qwen2_5-7b-instruct_cot_structured_run1,qwen2_5-7b-instruct_cot_structured,qwen2.5-7b-instruct,cot_structured,1,1,False,35,4,0,115.54,3.301,1.0,0,5255,3923,9178,262.2
+qwen2_5-7b-instruct_pre_act_run1,qwen2_5-7b-instruct_pre_act,qwen2.5-7b-instruct,pre_act,1,1,False,30,4,0,117.28,3.9093,1.0,0,5091,3808,8899,296.6
+qwen2_5-7b-instruct_self_consistency_run1,qwen2_5-7b-instruct_self_consistency,qwen2.5-7b-instruct,self_consistency,1,2,False,25,4,0,261.56,10.4623,3.0,0.3,14829,9539,24368,974.7
+qwen2_5-7b-instruct_reflexion_run1,qwen2_5-7b-instruct_reflexion,qwen2.5-7b-instruct,reflexion,1,2,False,31,4,0,228.38,7.3671,2.0,0,17665,7442,25107,809.9
+qwen2_5-7b-instruct_reflexion_guided_run1,qwen2_5-7b-instruct_reflexion_guided,qwen2.5-7b-instruct,reflexion_guided,1,2,False,30,4,0,326.4,10.8801,3.0,0,28551,11496,40047,1334.9
+qwen2_5-7b-instruct_react_abox_run1,qwen2_5-7b-instruct_react_abox,qwen2.5-7b-instruct,react_abox,1,3,False,20,4,0,109.26,5.4632,1.2,0,7044,3558,10602,530.1

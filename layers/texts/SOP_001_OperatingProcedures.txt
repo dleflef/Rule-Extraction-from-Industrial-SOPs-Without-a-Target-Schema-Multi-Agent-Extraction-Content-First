@@ -1,0 +1,77 @@
+## Standard Operating Procedures - Production Line A
+
+Document: SOP-001 | Rev: 2.3 | Date: 2025-11-15 | Author:
+
+Ing. M. Bianchi - Process Engineering
+
+## 1. Station Dependencies
+
+ST01_FILLING → ST02_SEALING → ST03_LABELLING → ST04_PACKAGING. A fault at any station propagates downstream unless the line is halted.
+
+| Station ID | Zone | Depends On | Downstream Effect |
+| -------------------------------- | ------------------- | -------------- | --------------------------------------------------- |
+| ST01_FILLING | Production Area | - | Feeds ST02_SEALING |
+| ST02_SEALING | Production Area | ST01 | Feeds ST03; thermal fault → ST04 speed reduction |
+| ST03_LABELLING | Production Area | ST02 | Feeds ST04_PACKAGING |
+| ST04_PACKAGING | Production Area | ST03 | Final output |
+| SRV01_SERVERROOM | Server Room | HVAC | SCADA control; failure → line halt |
+| WRH01_WAREHOUSE | General Warehouse | COMPRESSOR | Cold storage -product quality |
+| CHM01_CHEMICALSTORAGE Chemical | Storage | HVAC | Hazardous materials -safety critical |
+| RND01_RDLAB | R&D Lab | HVAC | Precision experiments -climate sensitive |
+| CAF01_CAFETERIA | Cafeteria | HVAC | Occupant comfort -food safety |
+
+## 2. Station-Level Operating Rules
+
+## 2.1 ST01_FILLING
+
+RULE-ST01-01: FLW MUST be maintained between 112 and 128 L/min.
+
+RULE-ST01-02: If TMP exceeds 26°C, reduce speed by 10% and notify QC.
+
+RULE-ST01-03: PRS drop below 3.3 bar - inspect inlet valve within 5 min.
+
+## 2.2 ST02_SEALING
+
+RULE-ST02-01: TMP MUST remain between 175°C and 195°C.
+
+RULE-ST02-02: TMP > 210°C (CRITICAL) - emergency stop ST02, ST03, ST04.
+
+RULE-ST02-03: CUR increase >1.5 A above nominal sustained >5 min - schedule maintenance.
+
+RULE-ST02-04: CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling. Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING.
+
+## 2.3 ST03_LABELLING
+
+RULE-ST03-01: TEN MUST be between 1.8 and 2.6 N.
+
+RULE-ST03-02: CNT below 110 pcs/min - check for label jam. Below 100 (CRITICAL): halt.
+
+RULE-ST03-03: TEN STUCK >10 consecutive samples - sensor failure.
+
+## 2.4 ST04_PACKAGING
+
+RULE-ST04-01: VIB > 0.20 mm/s (WARNING) - schedule maintenance within 24 h.
+
+RULE-ST04-02: VIB > 0.35 mm/s (CRITICAL) - emergency stop; inspect bearings.
+
+RULE-ST04-03: SPD drops below 1.00 m/s without operator command - verify RULE-ST02-04.
+
+- 2.5 SRV01_SERVERROOM
+
+RULE-SRV01-01: TMP MUST NOT exceed 25°C. RULE-SRV01-02: TMP > 28°C (CRITICAL) - automatic controlled shutdown of all PLC nodes.
+
+- 2.6 WRH01_WAREHOUSE (General Warehouse)
+
+RULE-WRH01-01: TMP MUST remain between 0.5°C and 8°C. CRITICAL above 12°C - notify QC and quarantine batch. RULE-WRH01-02: HUM above 85%RH - inspect door seals and activate dehumidifier.
+
+- 2.7 CHM01_CHEMICALSTORAGE (Chemical Storage)
+
+RULE-CHM01-01: TMP MUST remain between 10°C and 20°C. CRITICAL above 25°C - activate emergency ventilation and notify safety officer immediately. RULE-CHM01-02: HUM MUST NOT exceed 50%RH. Elevated humidity accelerates degradation of hygroscopic reagents. Activate desiccant system if HUM >45%RH. RULE-CHM01-03: Only personnel with hazmat training (technician/supervisor/manager role) are authorised to enter Chemical Storage. UNAUTHORIZED_ACCESS must be escalated within 2 minutes.
+
+- 2.8 RND01_RDLAB (R&D; Lab)
+
+RULE-RND01-01: TMP MUST remain between 18°C and 26°C for experimental validity. RULE-RND01-02: HUM drift above 65%RH - activate dehumidifier. Above 75%RH (CRITICAL) - suspend sensitive experiments and inspect HVAC system.
+
+- 2.9 CAF01_CAFETERIA
+
+RULE-CAF01-01: TMP above 26°C - check ventilation system. Occupant comfort is the primary criterion. RULE-CAF01-02: HUM above 70%RH - inspect drainage and activate ventilation.

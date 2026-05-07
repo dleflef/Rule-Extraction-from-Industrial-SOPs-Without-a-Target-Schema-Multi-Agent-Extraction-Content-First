@@ -1,0 +1,82 @@
+## Alarm Thresholds and Response Matrix - Production Line A
+
+Document: SOP-002 | Rev: 1.8 | Date: 2025-10-20 | Author: Ing. L. Greco - Automation & Control
+
+Threshold hierarchy: CRIT_LO < WARN_LO < NOMINAL < WARN_HI < CRIT_HI.
+
+## ST01_FILLING Thresholds
+
+| Sensor | Unit | CRIT_LO || WARN_LONominal | WARN_HI | CRIT_HI | CRITICAL Response |
+| ---------- | -------- | ----------- | ------- | ------------------ | ----------- | ----------- | -------------------------------- |
+| TMP | °C | 15 | 18 | 22.0 ± 0.4 | 26 | 30 | Inspect and notify maintenance |
+| PRS | bar | 3 | 3.3 | 3.8 ± 0.05 | 4.2 | 4.8 | Inspect and notify maintenance |
+| FLW | L/min | 105 | 112 | 120.0 ± 1.5 | 128 | 135 | Inspect and notify maintenance |
+
+## ST02_SEALING Thresholds
+
+| Sensor | Unit | CRIT_LO || WARN_LONominal | WARN_HI | CRIT_HI | CRITICAL Response |
+| ---------- | -------- | ----------- | ------- | ------------------ | ----------- | ----------- | ------------------------------------------------------ |
+| TMP | °C | 165 | 175 | 185.0 ± 1.2 | 195 | 210 | E-STOP ST02/ST03/ST04; inspect element |
+| PRS | bar | 4.2 | 4.6 | 5.2 ± 0.08 | 5.7 | 6.2 | Inspect and notify maintenance |
+| CUR | A | 9.5 | 11 | 12.4 ± 0.3 | 13.5 | 15 | E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04) |
+
+## ST03_LABELLING Thresholds
+
+| Sensor | Unit | CRIT_LO || WARN_LONominal | WARN_HI | CRIT_HI | CRITICAL Response |
+| ---------- | --------- | ----------- | -------- | ------------------ | ----------- | ----------- | -------------------------------------- |
+| SPD | m/s | 0.65 | 0.75 | 0.85 ± 0.01 | 0.95 | 1.05 | Inspect and notify maintenance |
+| TEN | N | 1.5 | 1.8 | 2.2 ± 0.05 | 2.6 | 3 | Inspect and notify maintenance |
+| CNT | pcs/min | 100 | 110 | 120 ± 2.0 | 130 | 140 | E-STOP labelling; inspect label path |
+
+## ST04_PACKAGING Thresholds
+
+| Sensor | Unit | CRIT_LO || WARN_LONominal | WARN_HI | CRIT_HI | CRITICAL Response |
+| ---------- | -------- | ----------- | ------ | ------------------ | ----------- | ----------- | -------------------------------- |
+| VIB | mm/s | 0.01 | 0.02 | 0.12 ± 0.005 | 0.2 | 0.35 | E-STOP; inspect main bearing |
+| CUR | A | 6.5 | 7.5 | 8.7 ± 0.2 | 9.8 | 11 | Inspect and notify maintenance |
+| SPD | m/s | 0.85 | 1 | 1.2 ± 0.02 | 1.4 | 1.6 | Inspect and notify maintenance |
+
+## SRV01_SERVERROOM Thresholds
+
+| Sensor | Unit | CRIT_LO || WARN_LONominal | WARN_HI | CRIT_HI | CRITICAL Response |
+| ---------- | -------- | ----------- | ---- | ------------------ | ----------- | ----------- | ---------------------------------------------------------- |
+| TMP | °C | 16 | 18 | 21.0 ± 0.3 | 25 | 28 | Activate backup cooling; prepare controlled PLC shutdown |
+| HUM | %RH | 25 | 30 | 45.0 ± 1.0 | 60 | 70 | Inspect and notify maintenance |
+
+## WRH01_WAREHOUSE Thresholds
+
+| Sensor | Unit | CRIT_LO || WARN_LONominal | WARN_HI | CRIT_HI | CRITICAL Response |
+| ---------- | -------- | ----------- | ------ | ------------------ | ----------- | ----------- | ------------------------------------------ |
+| TMP | °C | -1 | 0.5 | 4.0 ± 0.5 | 8 | 12 | Activate backup refrigeration; notify QC |
+| HUM | %RH | 55 | 60 | 75.0 ± 1.5 | 85 | 90 | Inspect and notify maintenance |
+
+## CHM01_CHEMICALSTORAGE Thresholds
+
+| Sensor | Unit | CRIT_LO || WARN_LONominal | WARN_HI | CRIT_HI | CRITICAL Response |
+| ---------- | -------- | ----------- | ---- | ------------------ | ----------- | ----------- | ------------------------------------------------------------------ |
+| TMP | °C | 5 | 10 | 15.0 ± 0.3 | 20 | 25 | Activatemergency ventilation; notify safety officer immediatel |
+| HUM | %RH | 15 | 20 | 35.0 ± 1.0 | 50 | 60 | Activate desiccant system; inspect storage containers for leak |
+
+## RND01_RDLAB Thresholds
+
+| Sensor | Unit | CRIT_LO || WARN_LONominal | WARN_HI | CRIT_HI | CRITICAL Response |
+| ---------- | -------- | ----------- | ---- | ------------------ | ----------- | ----------- | ------------------------------------------ |
+| TMP | °C | 15 | 18 | 22.0 ± 0.2 | 26 | 30 | Inspect and notify maintenance |
+| HUM | %RH | 25 | 35 | 50.0 ± 1.0 | 65 | 75 | Suspend experiments; inspect HVAC system |
+
+## CAF01_CAFETERIA Thresholds
+
+| Sensor | Unit | CRIT_LO || WARN_LONominal | WARN_HI | CRIT_HI | CRITICAL Response |
+| ---------- | -------- | ----------- | ---- | ------------------ | ----------- | ----------- | -------------------------------- |
+| TMP | °C | 14 | 17 | 21.0 ± 0.4 | 26 | 30 | Inspect and notify maintenance |
+| HUM | %RH | 25 | 35 | 55.0 ± 1.5 | 70 | 80 | Inspect and notify maintenance |
+
+## Anomaly Type Definitions for KG Mapping
+
+| Type | Definition | Detection Criterion | Ontology Class |
+| -------------- | ------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------ |
+| SPIKE | Transient deviation >3 s , <5 minSingle | reading >CRIT | AnomalyEvent::Spike |
+| DRIFT | Monotonic deviation >15 min | Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift | Slope >0.1 s /min for 5+ readingsAnomalyEvent::Drift |
+| STUCK | Unchanged >10 consecutive | readingstd(last 10)<0.001×nominal | AnomalyEvent::StuckSensor |
+| OUT_OF_RANGE | Sustained WARN violation >10 min >WARN for 20+ | readings | AnomalyEvent::OutOfRange |
+| CORRELATED | Causally linked to another station Onset within | 90 min of cause | AnomalyEvent::Correlated |

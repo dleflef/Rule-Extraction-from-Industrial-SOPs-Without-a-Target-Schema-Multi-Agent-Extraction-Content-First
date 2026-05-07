@@ -1,0 +1,36 @@
+ruleId,class,station,sensor,sensorType,condition,action,severity,critHi,warnHi,warnLo,critLo,unit,source_file,model_name,paradigm,level,run_id,llm_turns,text_truncated
+RULE-ST01-01,,ST01_FILLING,,,,FLW MUST be maintained between 112 and 128 L/min.,,,,,,,SOP_001_OperatingProcedures.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+RULE-ST01-02,,ST01_FILLING,,,TMP exceeds 26°C,reduce speed by 10% and notify QC.,,,,,,,SOP_001_OperatingProcedures.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+RULE-ST01-03,,ST01_FILLING,,,PRS drop below 3.3 bar,inspect inlet valve within 5 min.,,,,,,,SOP_001_OperatingProcedures.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+RULE-ST02-01,,ST02_SEALING,,,TMP MUST remain between 175°C and 195°C.,,,,,,,,SOP_001_OperatingProcedures.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+RULE-ST02-02,,ST02_SEALING,,,TMP > 210°C (CRITICAL),"emergency stop ST02, ST03, ST04.",CRITICAL,,,,,,SOP_001_OperatingProcedures.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+RULE-ST02-03,,ST02_SEALING,,,CUR increase >1.5 A above nominal sustained >5 min,schedule maintenance.,,,,,,,SOP_001_OperatingProcedures.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+RULE-ST02-04,,ST02_SEALING,,,CUR STICKS at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling.,Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING.,,,,,,,SOP_001_OperatingProcedures.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+RULE-ST03-01,,ST03_LABELLING,,,TEN MUST be between 1.8 and 2.6 N.,,,,,,,,SOP_001_OperatingProcedures.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+ST01_FILLING_TMP,,ST01_FILLING,TMP,Temperature,,Inspect and notify maintenance,CRITICAL,30,22.0,18,15,°C,SOP_002_AlarmThresholds.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+ST01_FILLING_PRS,,ST01_FILLING,PRS,Pressure,,Inspect and notify maintenance,CRITICAL,4.8,3.8,3.3,3,bar,SOP_002_AlarmThresholds.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+ST01_FILLING_FLW,,ST01_FILLING,FLW,Flow,,Inspect and notify maintenance,CRITICAL,135,120.0,112,105,L/min,SOP_002_AlarmThresholds.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+ST02_SEALING_TMP,,ST02_SEALING,TMP,Temperature,,E-STOP ST02/ST03/ST04; inspect element,CRITICAL,210,185.0,175,165,°C,SOP_002_AlarmThresholds.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+ST02_SEALING_PRS,,ST02_SEALING,PRS,Pressure,,Inspect and notify maintenance,CRITICAL,6.2,5.2,4.6,4.2,bar,SOP_002_AlarmThresholds.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+ST02_SEALING_CUR,,ST02_SEALING,CUR,Current,,E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04),CRITICAL,15,13.5,11,9.5,A,SOP_002_AlarmThresholds.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+ST03_LABELLING_SPD,,ST03_LABELLING,SPD,Speed,,Inspect and notify maintenance,CRITICAL,1.05,0.95,0.85,0.65,m/s,SOP_002_AlarmThresholds.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+ST03_LABELLING_TEN,,ST03_LABELLING,TEN,Force,,Inspect and notify maintenance,CRITICAL,3,2.6,2.2,1.5,N,SOP_002_AlarmThresholds.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+MAINT-01,,ST04_PACKAGING,VIB,,VIB DRIFT >0.05 mm/s over 60 min,Inspect and lubricate bearing HIGH,HIGH,,,,,,SOP_003_MaintenanceRules.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+MAINT-02,,ST02_SEALING,CUR,,CUR DRIFT >1.0 A for 30+ min,Inspect sealing jaw,HIGH,,,,,,SOP_003_MaintenanceRules.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+MAINT-03,,ST03_LABELLING,TEN,,TEN STUCK >10 samples,Replace sensor,MEDIUM,,,,,,SOP_003_MaintenanceRules.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+MAINT-04,,ST01_FILLING,PRS,,PRS <3.3 bar for >15 min,Inspect filter and pump,MEDIUM,,,,,,SOP_003_MaintenanceRules.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+MAINT-05,,SRV01_SERVERROOM,TMP,,TMP >25°C for >5 min,Activate secondary cooling,CRITICAL,,,,,,SOP_003_MaintenanceRules.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+MAINT-06,,WRH01_WAREHOUSE,TMP,,TMP DRIFT >2°C over 2 h,Inspect compressor; notify,QCRITICAL,,,,,,SOP_003_MaintenanceRules.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+MAINT-07,,CHM01_CHEMICALSTORAGE,TMP,,TMP >20°C for >10 min,Emergency ventilation; notify safety officer,CRITICAL,,,,,,SOP_003_MaintenanceRules.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+MAINT-08,,RND01_RDLAB,HUM,,HUM DRIFT >10%RH over 60 min,Activate dehumidifier; check HVAC drain,HIGH,,,,,,SOP_003_MaintenanceRules.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+,,Production Area,,,,,,,10,8,12,,SOP_004_PersonnelZoneAccess.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+,,Server Room,,,,,,2,,,,,SOP_004_PersonnelZoneAccess.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+,,General Warehouse,,,,,,,3,2,,,SOP_004_PersonnelZoneAccess.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+,,Main Entrance,,,,,,,,,,,SOP_004_PersonnelZoneAccess.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+,,Chemical Storage,,,,,,4,,,,,SOP_004_PersonnelZoneAccess.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+,,R&D Lab,,,,,,,5,4,,,SOP_004_PersonnelZoneAccess.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+,,Cafeteria,,,,,,,,,,,SOP_004_PersonnelZoneAccess.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+RULE-ACCESS-01,,,,,,"Log as OccupancyEvent::UnauthorisedAccess with person_id, zone, and timestamp.",,,,,,,SOP_004_PersonnelZoneAccess.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+RULE-ACCESS-02,,,,,,Notify Security personnel within 2 minutes of detection.,,,,,,,SOP_004_PersonnelZoneAccess.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+RULE-ACCESS-03,,,,,,KG node must include authorized=NO and a reference to this rule.,,,,,,,SOP_004_PersonnelZoneAccess.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
+RULE-ACCESS-04,,Chemical Storage,,,,Immediate escalation to the Safety Officer regardless of role.,,,,,,,SOP_004_PersonnelZoneAccess.txt,qwen2.5-7b-instruct,cot_structured,1,qwen2_5-7b-instruct_cot_structured_run1,1,False
