@@ -9,7 +9,6 @@ _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_ZIP = os.path.join(_SCRIPT_DIR, "data", "seed_rules.zip")
 TEXTS_DIR = os.path.join(_SCRIPT_DIR, "texts")
 
-# Only PDF and plain text are supported (Docling removed)
 _SUPPORTED = {".pdf", ".txt"}
 
 
