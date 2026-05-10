@@ -1,12 +1,13 @@
 {
-  "qwen2_5-7b-instruct_naive_run1": "completed",
-  "qwen2_5-7b-instruct_few_shot_static_run1": "completed",
-  "qwen2_5-7b-instruct_graph_informed_run1": "completed",
-  "qwen2_5-7b-instruct_cot_basic_run1": "completed",
-  "qwen2_5-7b-instruct_cot_structured_run1": "completed",
-  "qwen2_5-7b-instruct_pre_act_run1": "completed",
-  "qwen2_5-7b-instruct_self_consistency_run1": "completed",
-  "qwen2_5-7b-instruct_reflexion_run1": "completed",
-  "qwen2_5-7b-instruct_reflexion_guided_run1": "completed",
-  "qwen2_5-7b-instruct_react_abox_run1": "completed"
+  "llama-3_2-3b-instruct_naive_run1": "completed",
+  "llama-3_2-3b-instruct_few_shot_static_run1": "completed",
+  "llama-3_2-3b-instruct_graph_informed_run1": "completed",
+  "llama-3_2-3b-instruct_cot_basic_run1": "completed",
+  "llama-3_2-3b-instruct_cot_structured_run1": "completed",
+  "llama-3_2-3b-instruct_pre_act_run1": "completed",
+  "llama-3_2-3b-instruct_self_consistency_run1": "completed",
+  "llama-3_2-3b-instruct_reflexion_run1": "completed",
+  "llama-3_2-3b-instruct_reflexion_guided_run1": "completed",
+  "llama-3_2-3b-instruct_react_abox_run1": "completed",
+  "llama-3_2-3b-instruct_langgraph_run1": "completed"
 }

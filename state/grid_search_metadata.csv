@@ -1,0 +1,10 @@
+run_id,base_exp_id,model,paradigm,run_n,level,reasoning_native,total_rules,sop_files,errors,duration_sec,avg_rule_sec,avg_llm_turns,temperature,prompt_tokens,completion_tokens,total_tokens,tokens_per_rule
+llama3_2-1b_few_shot_static_run1,llama3_2-1b_few_shot_static,llama3.2:1b,few_shot_static,1,0,False,25,4,0,202.67,8.1068,1.0,0,3452,3352,6804,272.2
+qwen2_5-7b-instruct_few_shot_static_run1,qwen2_5-7b-instruct_few_shot_static,qwen2.5-7b-instruct,few_shot_static,1,0,False,19,4,0,75.72,3.9853,1.0,0,3612,2518,6130,322.6
+qwen2_5-7b-instruct_few_shot_static_run1,qwen2_5-7b-instruct_few_shot_static,qwen2.5-7b-instruct,few_shot_static,1,0,False,0,4,4,342.36,0.0,0.0,0,0,0,0,0.0
+qwen2_5-7b-instruct_few_shot_static_run1,qwen2_5-7b-instruct_few_shot_static,qwen2.5-7b-instruct,few_shot_static,1,0,False,0,4,4,343.23,0.0,0.0,0,0,0,0,0.0
+qwen2_5-7b-instruct_few_shot_static_run1,qwen2_5-7b-instruct_few_shot_static,qwen2.5-7b-instruct,few_shot_static,1,0,False,0,4,4,343.1,0.0,0.0,0,0,0,0,0.0
+qwen2_5-7b_few_shot_static_run1,qwen2_5-7b_few_shot_static,qwen2.5:7b,few_shot_static,1,0,False,20,4,0,127.28,6.3639,1.0,0,3612,2715,6327,316.4
+qwen2_5-7b_few_shot_static_run1,qwen2_5-7b_few_shot_static,qwen2.5:7b,few_shot_static,1,0,False,20,4,0,132.87,6.6435,1.0,0,3612,2715,6327,316.4
+qwen2_5-7b_few_shot_static_run1,qwen2_5-7b_few_shot_static,qwen2.5:7b,few_shot_static,1,0,False,20,4,0,135.99,6.7995,1.0,0,3612,2715,6327,316.4
+qwen2_5-7b_few_shot_static_run1,qwen2_5-7b_few_shot_static,qwen2.5:7b,few_shot_static,1,0,False,35,4,0,274.91,7.8547,1.0,0,6489,4767,11256,321.6

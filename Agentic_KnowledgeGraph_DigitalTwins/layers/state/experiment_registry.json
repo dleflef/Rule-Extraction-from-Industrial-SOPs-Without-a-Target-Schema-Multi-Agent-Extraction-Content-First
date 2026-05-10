@@ -1,0 +1,12 @@
+{
+  "mistralai-mistral-7b-instruct-v0_3_naive_run1": "completed",
+  "mistralai-mistral-7b-instruct-v0_3_few_shot_static_run1": "completed",
+  "mistralai-mistral-7b-instruct-v0_3_graph_informed_run1": "completed",
+  "mistralai-mistral-7b-instruct-v0_3_cot_basic_run1": "completed",
+  "mistralai-mistral-7b-instruct-v0_3_cot_structured_run1": "completed",
+  "mistralai-mistral-7b-instruct-v0_3_pre_act_run1": "completed",
+  "mistralai-mistral-7b-instruct-v0_3_self_consistency_run1": "completed",
+  "mistralai-mistral-7b-instruct-v0_3_reflexion_run1": "completed",
+  "mistralai-mistral-7b-instruct-v0_3_reflexion_guided_run1": "completed",
+  "mistralai-mistral-7b-instruct-v0_3_react_abox_run1": "completed"
+}
