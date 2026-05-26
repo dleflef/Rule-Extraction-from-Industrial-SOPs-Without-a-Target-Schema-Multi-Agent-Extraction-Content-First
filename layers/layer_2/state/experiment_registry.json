@@ -1,0 +1,23 @@
+{
+  "ministral-3-14b_naive_run1": "completed",
+  "ministral-3-14b_few_shot_static_run1": "completed",
+  "ministral-3-14b_graph_informed_run1": "completed",
+  "ministral-3-14b_cot_basic_run1": "completed",
+  "ministral-3-14b_cot_structured_run1": "completed",
+  "ministral-3-14b_pre_act_run1": "completed",
+  "ministral-3-14b_self_consistency_run1": "completed",
+  "ministral-3-14b_reflexion_run1": "completed",
+  "ministral-3-14b_reflexion_guided_run1": "completed",
+  "ministral-3-14b_react_abox_run1": "completed",
+  "gpt-oss-20b_naive_run1": "completed",
+  "gpt-oss-20b_few_shot_static_run1": "completed",
+  "gpt-oss-20b_graph_informed_run1": "completed",
+  "gpt-oss-20b_cot_basic_run1": "completed",
+  "gpt-oss-20b_cot_structured_run1": "completed",
+  "gpt-oss-20b_pre_act_run1": "completed",
+  "gpt-oss-20b_self_consistency_run1": "completed",
+  "gpt-oss-20b_reflexion_run1": "completed",
+  "gpt-oss-20b_reflexion_guided_run1": "completed",
+  "gpt-oss-20b_react_abox_run1": "completed",
+  "gemma3-4b_langgraph_agentic_run1": "partial"
+}

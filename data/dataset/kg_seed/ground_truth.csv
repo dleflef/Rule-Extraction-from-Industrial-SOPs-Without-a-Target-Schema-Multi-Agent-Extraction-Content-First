@@ -1,0 +1,87 @@
+ruleId,class,station,sensor,sensorType,condition,action,severity,critHi,warnHi,critLo,warnLo,unit,source
+RULE-ST01-01,OperationalRule,ST01_FILLING,ST01_FILLING_FLW,FLW,FLW MUST be maintained between 112 and 128 L/min,Inspect and notify maintenance,MANDATORY,135.0,128.0,105.0,112.0,L/min,SOP-001
+RULE-ST01-02,OperationalRule,ST01_FILLING,ST01_FILLING_TMP,TMP,TMP exceeds 26°C,Reduce speed by 10% and notify QC,WARNING,30.0,26.0,15.0,18.0,°C,SOP-001
+RULE-ST01-03,OperationalRule,ST01_FILLING,ST01_FILLING_PRS,PRS,PRS drop below 3.3 bar,Inspect inlet valve within 5 min,WARNING,4.8,4.2,3.0,3.3,bar,SOP-001
+RULE-ST02-01,OperationalRule,ST02_SEALING,ST02_SEALING_TMP,TMP,TMP MUST remain between 175°C and 195°C,Inspect and notify maintenance,MANDATORY,210.0,195.0,165.0,175.0,°C,SOP-001
+RULE-ST02-02,OperationalRule,ST02_SEALING,ST02_SEALING_TMP,TMP,TMP > 210°C (CRITICAL),"Emergency stop ST02, ST03, ST04",CRITICAL,210.0,195.0,165.0,175.0,°C,SOP-001
+RULE-ST02-03,OperationalRule,ST02_SEALING,ST02_SEALING_CUR,CUR,CUR increase >1.5 A above nominal sustained >5 min,Schedule maintenance,WARNING,15.0,13.5,9.5,11.0,A,SOP-001
+RULE-ST02-04,OperationalRule,ST02_SEALING,ST02_SEALING_CUR,CUR,CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING,Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers WARNING,WARNING,15.0,13.5,9.5,11.0,A,SOP-001
+RULE-ST03-01,OperationalRule,ST03_LABELLING,ST03_LABELLING_TEN,TEN,TEN MUST be between 1.8 and 2.6 N,Inspect and notify maintenance,MANDATORY,3.0,2.6,1.5,1.8,N,SOP-001
+RULE-ST03-02a,OperationalRule,ST03_LABELLING,ST03_LABELLING_CNT,CNT,CNT below 110 pcs/min,Check for label jam,WARNING,140,130,100,110,pcs/min,SOP-001
+RULE-ST03-02b,OperationalRule,ST03_LABELLING,ST03_LABELLING_CNT,CNT,CNT below 100 pcs/min (CRITICAL),Halt labelling; inspect label path,CRITICAL,140,130,100,110,pcs/min,SOP-001
+RULE-ST03-03,OperationalRule,ST03_LABELLING,ST03_LABELLING_TEN,TEN,TEN STUCK >10 consecutive samples,Sensor failure — replace sensor,CRITICAL,3.0,2.6,1.5,1.8,N,SOP-001
+RULE-ST04-01,OperationalRule,ST04_PACKAGING,ST04_PACKAGING_VIB,VIB,VIB > 0.20 mm/s (WARNING),Schedule maintenance within 24 h,WARNING,0.35,0.20,0.01,0.02,mm/s,SOP-001
+RULE-ST04-02,OperationalRule,ST04_PACKAGING,ST04_PACKAGING_VIB,VIB,VIB > 0.35 mm/s (CRITICAL),Emergency stop; inspect bearings,CRITICAL,0.35,0.20,0.01,0.02,mm/s,SOP-001
+RULE-ST04-03,OperationalRule,ST04_PACKAGING,ST04_PACKAGING_SPD,SPD,SPD drops below 1.00 m/s without operator command,Verify RULE-ST02-04 (electrical coupling with ST02_SEALING_CUR),WARNING,1.6,1.4,1.25,1.0,m/s,SOP-001
+RULE-SRV01-01,OperationalRule,SRV01_SERVERROOM,SRV01_SERVERROOM_TMP,TMP,TMP MUST NOT exceed 25°C,Inspect and notify maintenance,MANDATORY,28.0,25.0,16.0,18.0,°C,SOP-001
+RULE-SRV01-02,OperationalRule,SRV01_SERVERROOM,SRV01_SERVERROOM_TMP,TMP,TMP > 28°C (CRITICAL),Automatic controlled shutdown of all PLC nodes,CRITICAL,28.0,25.0,16.0,18.0,°C,SOP-001
+RULE-WRH01-01a,OperationalRule,WRH01_WAREHOUSE,WRH01_WAREHOUSE_TMP,TMP,TMP MUST remain between 0.5°C and 8°C,Activate backup refrigeration; notify QC,MANDATORY,12.0,8.0,-1.0,0.5,°C,SOP-001
+RULE-WRH01-01b,OperationalRule,WRH01_WAREHOUSE,WRH01_WAREHOUSE_TMP,TMP,TMP CRITICAL above 12°C,Notify QC and quarantine batch,CRITICAL,12.0,8.0,-1.0,0.5,°C,SOP-001
+RULE-WRH01-02,OperationalRule,WRH01_WAREHOUSE,WRH01_WAREHOUSE_HUM,HUM,HUM above 85%RH,Inspect door seals and activate dehumidifier,WARNING,90.0,85.0,55.0,60.0,%RH,SOP-001
+RULE-CHM01-01a,OperationalRule,CHM01_CHEMICALSTORAGE,CHM01_CHEMICALSTORAGE_TMP,TMP,TMP MUST remain between 10°C and 20°C,Activate emergency ventilation and notify safety officer,MANDATORY,25.0,20.0,5.0,10.0,°C,SOP-001
+RULE-CHM01-01b,OperationalRule,CHM01_CHEMICALSTORAGE,CHM01_CHEMICALSTORAGE_TMP,TMP,TMP CRITICAL above 25°C,Activate emergency ventilation; notify safety officer immediately,CRITICAL,25.0,20.0,5.0,10.0,°C,SOP-001
+RULE-CHM01-02a,OperationalRule,CHM01_CHEMICALSTORAGE,CHM01_CHEMICALSTORAGE_HUM,HUM,HUM MUST NOT exceed 50%RH,Activate desiccant system if HUM >45%RH,MANDATORY,60.0,50.0,15.0,20.0,%RH,SOP-001
+RULE-CHM01-02b,OperationalRule,CHM01_CHEMICALSTORAGE,CHM01_CHEMICALSTORAGE_HUM,HUM,HUM above 45%RH,Activate desiccant system; inspect storage containers for leaks,WARNING,60.0,50.0,15.0,20.0,%RH,SOP-001
+RULE-CHM01-03,AccessRule,Chemical Storage,,,Only personnel with hazmat training (technician/supervisor/manager) are authorised to enter Chemical Storage,UNAUTHORIZED_ACCESS must be escalated within 2 minutes,CRITICAL,,,,,,SOP-001
+RULE-RND01-01,OperationalRule,RND01_RDLAB,RND01_RDLAB_TMP,TMP,TMP MUST remain between 18°C and 26°C for experimental validity,Inspect and notify maintenance,MANDATORY,30.0,26.0,15.0,18.0,°C,SOP-001
+RULE-RND01-02a,OperationalRule,RND01_RDLAB,RND01_RDLAB_HUM,HUM,HUM drift above 65%RH,Activate dehumidifier,WARNING,75.0,65.0,25.0,35.0,%RH,SOP-001
+RULE-RND01-02b,OperationalRule,RND01_RDLAB,RND01_RDLAB_HUM,HUM,HUM above 75%RH (CRITICAL),Suspend sensitive experiments and inspect HVAC system,CRITICAL,75.0,65.0,25.0,35.0,%RH,SOP-001
+RULE-CAF01-01,OperationalRule,CAF01_CAFETERIA,CAF01_CAFETERIA_TMP,TMP,TMP above 26°C,Check ventilation system. Occupant comfort is the primary criterion,WARNING,30.0,26.0,14.0,17.0,°C,SOP-001
+RULE-CAF01-02,OperationalRule,CAF01_CAFETERIA,CAF01_CAFETERIA_HUM,HUM,HUM above 70%RH,Inspect drainage and activate ventilation,WARNING,80.0,70.0,25.0,35.0,%RH,SOP-001
+RULE-THR-ST01-TMP-CRIT,ThresholdRule,ST01_FILLING,ST01_FILLING_TMP,TMP,"Temperature critical thresholds: 15.0°C (CRIT_LO), 18.0°C (WARN_LO), 22.0±0.4°C (NOMINAL), 26.0°C (WARN_HI), 30.0°C (CRIT_HI)",Inspect and notify maintenance,CRITICAL,30.0,26.0,15.0,18.0,°C,SOP-002
+RULE-THR-ST01-PRS-CRIT,ThresholdRule,ST01_FILLING,ST01_FILLING_PRS,PRS,"Pressure critical thresholds: 3.0 bar (CRIT_LO), 3.3 bar (WARN_LO), 3.8±0.05 bar (NOMINAL), 4.2 bar (WARN_HI), 4.8 bar (CRIT_HI)",Inspect and notify maintenance,CRITICAL,4.8,4.2,3.0,3.3,bar,SOP-002
+RULE-THR-ST01-FLW-CRIT,ThresholdRule,ST01_FILLING,ST01_FILLING_FLW,FLW,"Flow critical thresholds: 105.0 L/min (CRIT_LO), 112.0 L/min (WARN_LO), 120.0±1.5 L/min (NOMINAL), 128.0 L/min (WARN_HI), 135.0 L/min (CRIT_HI)",Inspect and notify maintenance,CRITICAL,135.0,128.0,105.0,112.0,L/min,SOP-002
+RULE-THR-ST02-TMP-CRIT,ThresholdRule,ST02_SEALING,ST02_SEALING_TMP,TMP,"Temperature critical thresholds: 165.0°C (CRIT_LO), 175.0°C (WARN_LO), 185.0±1.2°C (NOMINAL), 195.0°C (WARN_HI), 210.0°C (CRIT_HI)",E-STOP ST02/ST03/ST04; inspect element,CRITICAL,210.0,195.0,165.0,175.0,°C,SOP-002
+RULE-THR-ST02-PRS-CRIT,ThresholdRule,ST02_SEALING,ST02_SEALING_PRS,PRS,"Pressure critical thresholds: 4.2 bar (CRIT_LO), 4.6 bar (WARN_LO), 5.2±0.08 bar (NOMINAL), 5.7 bar (WARN_HI), 6.2 bar (CRIT_HI)",Inspect and notify maintenance,CRITICAL,6.2,5.7,4.2,4.6,bar,SOP-002
+RULE-THR-ST02-CUR-CRIT,ThresholdRule,ST02_SEALING,ST02_SEALING_CUR,CUR,"Current critical thresholds: 9.5 A (CRIT_LO), 11.0 A (WARN_LO), 12.4±0.3 A (NOMINAL), 13.5 A (WARN_HI), 15.0 A (CRIT_HI)",E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04),CRITICAL,15.0,13.5,9.5,11.0,A,SOP-002
+RULE-THR-ST03-SPD-CRIT,ThresholdRule,ST03_LABELLING,ST03_LABELLING_SPD,SPD,"Speed critical thresholds: 0.65 m/s (CRIT_LO), 0.75 m/s (WARN_LO), 0.85±0.01 m/s (NOMINAL), 0.95 m/s (WARN_HI), 1.05 m/s (CRIT_HI)",Inspect and notify maintenance,CRITICAL,1.05,1.35,1.05,1.15,m/s,SOP-002
+RULE-THR-ST03-TEN-CRIT,ThresholdRule,ST03_LABELLING,ST03_LABELLING_TEN,TEN,"Tension critical thresholds: 1.5 N (CRIT_LO), 1.8 N (WARN_LO), 2.2±0.05 N (NOMINAL), 2.6 N (WARN_HI), 3.0 N (CRIT_HI)",Inspect and notify maintenance,CRITICAL,3.0,2.6,1.5,1.8,N,SOP-002
+RULE-THR-ST03-CNT-CRIT,ThresholdRule,ST03_LABELLING,ST03_LABELLING_CNT,CNT,"Count critical thresholds: 100 pcs/min (CRIT_LO), 110 pcs/min (WARN_LO), 120±2.0 pcs/min (NOMINAL), 130 pcs/min (WARN_HI), 140 pcs/min (CRIT_HI)",E-STOP labelling; inspect label path,CRITICAL,140,130,100,110,pcs/min,SOP-002
+RULE-THR-ST04-VIB-CRIT,ThresholdRule,ST04_PACKAGING,ST04_PACKAGING_VIB,VIB,"Vibration critical thresholds: 0.01 mm/s (CRIT_LO), 0.02 mm/s (WARN_LO), 0.12±0.005 mm/s (NOMINAL), 0.2 mm/s (WARN_HI), 0.35 mm/s (CRIT_HI)",E-STOP; inspect main bearing,CRITICAL,0.35,0.2,0.01,0.02,mm/s,SOP-002
+RULE-THR-ST04-CUR-CRIT,ThresholdRule,ST04_PACKAGING,ST04_PACKAGING_CUR,CUR,"Current critical thresholds: 6.5 A (CRIT_LO), 7.5 A (WARN_LO), 8.7±0.2 A (NOMINAL), 9.8 A (WARN_HI), 11.0 A (CRIT_HI)",Inspect and notify maintenance,CRITICAL,11.0,9.8,6.5,7.5,A,SOP-002
+RULE-THR-ST04-SPD-CRIT,ThresholdRule,ST04_PACKAGING,ST04_PACKAGING_SPD,SPD,"Speed critical thresholds: 0.85 m/s (CRIT_LO), 1.0 m/s (WARN_LO), 1.2±0.02 m/s (NOMINAL), 1.4 m/s (WARN_HI), 1.6 m/s (CRIT_HI)",Inspect and notify maintenance,CRITICAL,1.6,1.4,1.25,1.0,m/s,SOP-002
+RULE-THR-SRV01-TMP-CRIT,ThresholdRule,SRV01_SERVERROOM,SRV01_SERVERROOM_TMP,TMP,"Temperature critical thresholds: 16.0°C (CRIT_LO), 18.0°C (WARN_LO), 21.0±0.3°C (NOMINAL), 25.0°C (WARN_HI), 28.0°C (CRIT_HI)",Activate backup cooling; prepare controlled PLC shutdown,CRITICAL,28.0,25.0,16.0,18.0,°C,SOP-002
+RULE-THR-SRV01-HUM-CRIT,ThresholdRule,SRV01_SERVERROOM,SRV01_SERVERROOM_HUM,HUM,"Humidity critical thresholds: 25.0%RH (CRIT_LO), 30.0%RH (WARN_LO), 45.0±1.0%RH (NOMINAL), 60.0%RH (WARN_HI), 70.0%RH (CRIT_HI)",Inspect and notify maintenance,CRITICAL,70.0,60.0,25.0,30.0,%RH,SOP-002
+RULE-THR-WRH01-TMP-CRIT,ThresholdRule,WRH01_WAREHOUSE,WRH01_WAREHOUSE_TMP,TMP,"Temperature critical thresholds: CRIT_LO=-1.0°C, WARN_LOW=0.5°C, nominal=4.0±0.5°C, WARN_HI=8.0°C, CRIT_HI=12.0°C",Activate backup refrigeration; notify QC,CRITICAL,12.0,8.0,-1.0,0.5,°C,SOP-002
+RULE-THR-WRH01-HUM-CRIT,ThresholdRule,WRH01_WAREHOUSE,WRH01_WAREHOUSE_HUM,HUM,"Humidity critical thresholds: CRIT_LO=55.0%RH, WARN_LOW=60.0%RH, nominal=75.0±1.5%RH, WARN_HI=85.0%RH, CRIT_HI=90.0%RH",Inspect and notify maintenance,CRITICAL,90.0,85.0,55.0,60.0,%RH,SOP-002
+RULE-THR-CHM01-TMP-CRIT,ThresholdRule,CHM01_CHEMICALSTORAGE,CHM01_CHEMICALSTORAGE_TMP,TMP,"Temperature critical thresholds: CRIT_LO=5.0°C, WARN_LOW=10.0°C, nominal=15.0±0.3°C, WARN_HI=20.0°C, CRIT_HI=25.0°C",Activate emergency ventilation; notify safety officer immediately,CRITICAL,25.0,20.0,5.0,10.0,°C,SOP-002
+RULE-THR-CHM01-HUM-CRIT,ThresholdRule,CHM01_CHEMICALSTORAGE,CHM01_CHEMICALSTORAGE_HUM,HUM,"Humidity critical thresholds: CRIT_LO=15.0%RH, WARN_LOW=20.0%RH, nominal=35.0±1.0%RH, WARN_HI=50.0%RH, CRIT_HI=60.0%RH",Activate desiccant system; inspect storage containers for leaks,CRITICAL,60.0,50.0,15.0,20.0,%RH,SOP-002
+RULE-THR-RND01-TMP-CRIT,ThresholdRule,RND01_RDLAB,RND01_RDLAB_TMP,TMP,"Temperature critical thresholds: CRIT_LO=15.0°C, WARN_LOW=18.0°C, nominal=22.0±0.2°C, WARN_HI=26.0°C, CRIT_HI=30.0°C",Inspect and notify maintenance,CRITICAL,30.0,26.0,15.0,18.0,°C,SOP-002
+RULE-THR-RND01-HUM-CRIT,ThresholdRule,RND01_RDLAB,RND01_RDLAB_HUM,HUM,"Humidity critical thresholds: CRIT_LO=25.0%RH, WARN_LOW=35.0%RH, nominal=50.0±1.0%RH, WARN_HI=65.0%RH, CRIT_HI=75.0%RH",Suspend experiments; inspect HVAC system,CRITICAL,75.0,65.0,25.0,35.0,%RH,SOP-002
+RULE-THR-CAF01-TMP-CRIT,ThresholdRule,CAF01_CAFETERIA,CAF01_CAFETERIA_TMP,TMP,"Temperature critical thresholds: CRIT_LO=14.0°C, WARN_LOW=17.0°C, nominal=21.0±0.4°C, WARN_HI=26.0°C, CRIT_HI=30.0°C",Inspect and notify maintenance,CRITICAL,30.0,26.0,14.0,17.0,°C,SOP-002
+RULE-THR-CAF01-HUM-CRIT,ThresholdRule,CAF01_CAFETERIA,CAF01_CAFETERIA_HUM,HUM,"Humidity critical thresholds: CRIT_LO=25.0%RH, WARN_LOW=35.0%RH, nominal=55.0±1.5%RH, WARN_HI=70.0%RH, CRIT_HI=80.0%RH",Inspect and notify maintenance,CRITICAL,80.0,70.0,25.0,35.0,%RH,SOP-002
+RULE-ANOM-SPIKE,ThresholdRule,,,,"Transient deviation >3σ, <5 min; Single reading >CRIT",AnomalyEvent::Spike,CRITICAL,,,,,,SOP-002
+RULE-ANOM-DRIFT,ThresholdRule,,,,Monotonic deviation >15 min; Slope >0.1σ/min for 5+ readings,AnomalyEvent::Drift,CRITICAL,,,,,,SOP-002
+RULE-ANOM-STUCK,ThresholdRule,,,,Unchanged >10 consecutive readings; std(last 10)<0.001×nominal,AnomalyEvent::StuckSensor,CRITICAL,,,,,,SOP-002
+RULE-ANOM-OUT_OF_RANGE,ThresholdRule,,,,Sustained WARN violation >10 min; >WARN for 20+ readings,AnomalyEvent::OutOfRange,CRITICAL,,,,,,SOP-002
+RULE-ANOM-CORRELATED,ThresholdRule,,,,Causally linked to another station; Onset within 90 min of cause,AnomalyEvent::Correlated,CRITICAL,,,,,,SOP-002
+MAINT-01,MaintenanceRule,ST04_PACKAGING,ST04_PACKAGING_VIB,VIB,VIB DRIFT >0.05 mm/s over 60 min,Inspect and lubricate main bearing,HIGH,,,,,mm/s,SOP-003
+MAINT-02,MaintenanceRule,ST02_SEALING,ST02_SEALING_CUR,CUR,CUR DRIFT >1.0 A for 30+ min,Inspect sealing jaw alignment,HIGH,,,,,A,SOP-003
+MAINT-03,MaintenanceRule,ST03_LABELLING,ST03_LABELLING_TEN,TEN,TEN STUCK >10 consecutive samples,Replace TEN sensor,MEDIUM,,,,,N,SOP-003
+MAINT-04,MaintenanceRule,ST01_FILLING,ST01_FILLING_PRS,PRS,PRS <3.3 bar for >15 min,Inspect inlet filter and pump,MEDIUM,,,,,bar,SOP-003
+MAINT-05,MaintenanceRule,SRV01_SERVERROOM,SRV01_SERVERROOM_TMP,TMP,TMP >25°C for >5 min,Activate secondary cooling,CRITICAL,,,,,°C,SOP-003
+MAINT-06,MaintenanceRule,WRH01_WAREHOUSE,WRH01_WAREHOUSE_TMP,TMP,TMP DRIFT >2°C over 2 h,Inspect compressor; notify QC,CRITICAL,,,,,°C,SOP-003
+MAINT-07,MaintenanceRule,CHM01_CHEMICALSTORAGE,CHM01_CHEMICALSTORAGE_TMP,TMP,TMP >20°C for >10 min,Emergency ventilation; notify safety officer,CRITICAL,,,,,°C,SOP-003
+MAINT-08,MaintenanceRule,RND01_RDLAB,RND01_RDLAB_HUM,HUM,HUM DRIFT >10%RH over 60 min,Activate dehumidifier; check HVAC drain,HIGH,,,,,%RH,SOP-003
+RULE-CORR-01,MaintenanceRule,ST02_SEALING,ST02_SEALING_CUR,CUR,ST02_SEALING-CUR↑ causes ST04_PACKAGING-SPD↓ via shared electrical coupling,1.Verify ST02-CUR trend 2.Inspect sealing jaw 3.Reset ST04 speed,WARNING,,,,,A,SOP-003
+RULE-CORR-02,MaintenanceRule,SRV01_SERVERROOM,SRV01_SERVERROOM_TMP,TMP,SRV01-TMP↑ causes SCADA latency↑ → apparent STUCK readings on all sensors,1.Reduce SRV01-TMP <25°C 2.Verify PLC heartbeats 3.Clear STUCK flags,WARNING,,,,,°C,SOP-003
+RULE-CORR-03,MaintenanceRule,WRH01_WAREHOUSE,WRH01_WAREHOUSE_TMP,TMP,WRH01-TMP↑ causes product quality risk → QC HOLD,1.Restore WRH01-TMP <8°C 2.Notify QC 3.Place batch on HOLD,CRITICAL,,,,,°C,SOP-003
+RULE-OCC-PROD,AccessRule,Production Area,,,Occupancy WARNING above 10 persons; CRITICAL above 12 (max),Alert security; enforce evacuation if CRITICAL,WARNING,,,,,persons,SOP-004
+RULE-OCC-SRV,AccessRule,Server Room,,,CRITICAL above 2 persons; access badge required,Alert security immediately; badge enforcement,CRITICAL,,,,,persons,SOP-004
+RULE-OCC-WRH,AccessRule,General Warehouse,,,WARNING above 3 persons (max 4),Alert supervisor,WARNING,,,,,persons,SOP-004
+RULE-OCC-CHM,AccessRule,Chemical Storage,,,CRITICAL above 4 persons; hazmat training required,Alert safety officer; enforce hazmat policy,CRITICAL,,,,,persons,SOP-004
+RULE-OCC-RND,AccessRule,R&D Lab,,,WARNING above 5 persons (max 6); precision experiments may be disturbed,Notify lab supervisor,WARNING,,,,,persons,SOP-004
+RULE-OCC-CAFETERIA,AccessRule,Cafeteria,,,Monitoring only — occupant comfort,,,,,,,persons,SOP-004
+RULE-ACCESS-01,AccessRule,,,,Any entry by an unauthorised role,"Log as OccupancyEvent::UnauthorisedAccess with person_id, zone, timestamp",MANDATORY,,,,,,SOP-004
+RULE-ACCESS-02,AccessRule,,,,Unauthorised access detected,Security personnel MUST be notified within 2 minutes,MANDATORY,,,,,,SOP-004
+RULE-ACCESS-03,AccessRule,,,,KG node for unauthorised access event,MUST include authorized=NO and reference to this rule,MANDATORY,,,,,,SOP-004
+RULE-ACCESS-04,AccessRule,Chemical Storage,,,Any UNAUTHORIZED_ACCESS to Chemical Storage — zero-tolerance policy,Immediate escalation to Safety Officer regardless of role,CRITICAL,,,,,,SOP-004
+RULE-ACK-OP-WARN,AccessRule,,,,operator role — WARNING alarm acknowledgment,Must acknowledge within 15 minutes,MANDATORY,,,,,min,SOP-004
+RULE-ACK-OP-CRIT,AccessRule,,,,operator role — CRITICAL alarm acknowledgment,Must acknowledge within 3 minutes,MANDATORY,,,,,min,SOP-004
+RULE-ACK-TECH-CRIT,AccessRule,,,,technician role — CRITICAL alarm acknowledgment,Must acknowledge within 2 minutes,MANDATORY,,,,,min,SOP-004
+RULE-ACK-SUP-WARN,AccessRule,,,,supervisor role — WARNING alarm acknowledgment,Must acknowledge within 5 minutes,MANDATORY,,,,,min,SOP-004
+RULE-ACK-SUP-CRIT,AccessRule,,,,supervisor role — CRITICAL alarm acknowledgment,Must acknowledge within 1 minute,MANDATORY,,,,,min,SOP-004
+RULE-ACK-MAN-WARN,AccessRule,,,,manager role — WARNING alarm acknowledgment,Must acknowledge within 15 minutes,MANDATORY,,,,,min,SOP-004
+RULE-ACK-MAN-CRIT,AccessRule,,,,manager role — CRITICAL alarm acknowledgment,Must acknowledge within 5 minutes,MANDATORY,,,,,min,SOP-004
+RULE-ACK-SEC-WARN,AccessRule,,,,security role — WARNING alarm acknowledgment,Must acknowledge within 20 minutes,MANDATORY,,,,,min,SOP-004
+RULE-ACK-SEC-CRIT,AccessRule,,,,security role — CRITICAL alarm acknowledgment,Must acknowledge within 5 minutes,MANDATORY,,,,,min,SOP-004

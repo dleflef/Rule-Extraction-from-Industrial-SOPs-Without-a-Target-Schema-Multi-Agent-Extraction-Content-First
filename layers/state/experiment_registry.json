@@ -1,13 +1,3 @@
 {
-  "llama-3_2-3b-instruct_naive_run1": "completed",
-  "llama-3_2-3b-instruct_few_shot_static_run1": "completed",
-  "llama-3_2-3b-instruct_graph_informed_run1": "completed",
-  "llama-3_2-3b-instruct_cot_basic_run1": "completed",
-  "llama-3_2-3b-instruct_cot_structured_run1": "completed",
-  "llama-3_2-3b-instruct_pre_act_run1": "completed",
-  "llama-3_2-3b-instruct_self_consistency_run1": "completed",
-  "llama-3_2-3b-instruct_reflexion_run1": "completed",
-  "llama-3_2-3b-instruct_reflexion_guided_run1": "completed",
-  "llama-3_2-3b-instruct_react_abox_run1": "completed",
-  "llama-3_2-3b-instruct_langgraph_run1": "completed"
+  "ministral-3-8b+ministral-3-14b+qwen-qwen3-4b-2507+ministral-3-14b+ministral-3-14b+ministral-3-14b+ministral-3-8b+ministral-3-8b_multi_agent_s42_run1": "completed"
 }

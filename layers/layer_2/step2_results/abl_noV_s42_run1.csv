@@ -1,0 +1,106 @@
+ruleId,class,station,sensor,sensorType,condition,action,severity,critHi,warnHi,warnLo,critLo,unit,source_file,run_id,doc_type_classified
+RULE-ST01-01,ThresholdRule,ST01_FILLING,ST01_FLW,FLW,"Flow rate outside [112, 128] L/min",Maintain flow within bounds,MANDATORY,128,,112,,L/min,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-ST01-02,OperationalRule,ST01_FILLING,ST01_TMP,TMP,Temperature > 26°C,Reduce speed by 10% and notify QC,WARNING,,26,,,°C,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-ST01-03,OperationalRule,ST01_FILLING,ST01_PRS,PRS,Pressure drop below 3.3 bar,Inspect inlet valve within 5 minutes,CRITICAL,,,3.3,,bar,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-ST02-01,ThresholdRule,ST02_SEALING,ST02_TMP,TMP,"Temperature outside [175, 195]°C",Maintain temperature within bounds,MANDATORY,195,,175,,°C,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-ST02-02,OperationalRule,ST02_SEALING,ST02_TMP,TMP,Temperature > 210°C,"Emergency stop ST02, ST03, ST04",CRITICAL,210,,,,°C,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-ST02-03,MaintenanceRule,ST02_SEALING,ST02_CUR,CUR,Current increase >1.5 A above nominal sustained >5 min,Schedule maintenance,WARNING,,1.5,,,A,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-ST04-03,OperationalRule,ST04_PACKAGING,ST04_SPD,SPD,Speed drops below 1.00 m/s without operator command,Verify RULE-ST02-04 (ST02_CUR drift),WARNING,,,1.00,,m/s,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-SRV01-01,ThresholdRule,SRV01_SERVERROOM,SRV01_TMP,TMP,Temperature > 25°C,Do not exceed 25°C,WARNING,25,,,,°C,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-SRV01-02,OperationalRule,SRV01_SERVERROOM,SRV01_TMP,TMP,Temperature > 28°C,Automatic controlled shutdown of all PLC nodes,CRITICAL,28,,,,°C,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-WRH01-01,ThresholdRule,WRH01_WAREHOUSE,WRH01_TMP,TMP,"Temperature outside [0.5, 8]°C",Maintain temperature within bounds,MANDATORY,8,,0.5,,°C,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-WRH01-01_CRIT,OperationalRule,WRH01_WAREHOUSE,WRH01_TMP,TMP,Temperature > 12°C,Notify QC and quarantine batch,CRITICAL,12,,,,°C,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-WRH01-02,OperationalRule,WRH01_WAREHOUSE,WRH01_HUM,HUM,Humidity > 85%RH,Inspect door seals and activate dehumidifier,WARNING,,85,,,%RH,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-CHM01-01,ThresholdRule,CHM01_CHEMICALSTORAGE,CHM01_TMP,TMP,"Temperature outside [10, 20]°C",Maintain temperature within bounds,MANDATORY,20,,10,,°C,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-CHM01-01_CRIT,OperationalRule,CHM01_CHEMICALSTORAGE,CHM01_TMP,TMP,Temperature > 25°C,Activate emergency ventilation and notify safety officer immediately,CRITICAL,25,,,,°C,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-CHM01-02,ThresholdRule,CHM01_CHEMICALSTORAGE,CHM01_HUM,HUM,Humidity > 50%RH,Do not exceed 50%RH,WARNING,50,,,,%RH,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-CHM01-02_DEHUMIDIFY,OperationalRule,CHM01_CHEMICALSTORAGE,CHM01_HUM,HUM,Humidity > 45%RH,Activate desiccant system,WARNING,,45,,,%RH,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-RND01-01,ThresholdRule,RND01_RDLAB,RND01_TMP,TMP,"Temperature outside [18, 26]°C",Maintain temperature within bounds for experimental validity,MANDATORY,26,,18,,°C,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-CAF01-01,OperationalRule,CAF01_CAFETERIA,CAF01_TMP,TMP,Temperature > 26°C,Check ventilation system (occupant comfort),WARNING,26,,,,°C,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-CAF01-02,OperationalRule,CAF01_CAFETERIA,CAF01_HUM,HUM,Humidity > 70%RH,Inspect drainage and activate ventilation,WARNING,,70,,,%RH,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-CORR-01,MaintenanceRule,,,,Fault at any station in the sequence (ST01_FILLING → ST02_SEALING → ST03_LABELLING → ST04_PACKAGING),Propagates downstream unless the line is halted,CRITICAL,,,,,,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-CORR-02,MaintenanceRule,,,,CUR drift at ST02_SEALING,Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING,WARNING,,,,,,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-THR-ST03-TEN-MANDATORY,ThresholdRule,ST03_LABELLING,ST03_TEN,TEN,"Tension outside [1.8, 2.6] N",Maintain tension within bounds,MANDATORY,2.6,,1.8,,N,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-THR-ST03-TEN-CRIT,ThresholdRule,ST03_LABELLING,ST03_TEN,TEN,Tension stuck >10 consecutive samples,Sensor failure,CRITICAL,,,,,,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-ST03-02,OperationalRule,ST03_LABELLING,ST03_CNT,CNT,Count < 110 pcs/min,Check for label jam,WARNING,,,110,,pcs/min,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-ST03-02_CRIT,OperationalRule,ST03_LABELLING,ST03_CNT,CNT,Count < 100 pcs/min,Halt station,CRITICAL,,,100,,pcs/min,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-ST04-01,OperationalRule,ST04_PACKAGING,ST04_VIB,VIB,Vibration > 0.20 mm/s,Schedule maintenance within 24 hours,WARNING,,0.20,,,mm/s,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-ST04-02,OperationalRule,ST04_PACKAGING,ST04_VIB,VIB,Vibration > 0.35 mm/s,Emergency stop; inspect bearings,CRITICAL,0.35,,,,mm/s,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-OCC-CHM,AccessRule,CHM01_CHEMICALSTORAGE,,,Unauthorized access detected,Escalate within 2 minutes,CRITICAL,,,,,,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-OCC-CHM_AUTH,AccessRule,CHM01_CHEMICALSTORAGE,,,Personnel without hazmat training attempts entry,Deny access; only technicians/supervisors/managers authorized,CRITICAL,,,,,,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-RND01-02,OperationalRule,RND01_RDLAB,RND01_HUM,HUM,Humidity drift above 65%RH,Activate dehumidifier,WARNING,,65,,,%RH,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+RULE-RND01-02_CRIT,OperationalRule,RND01_RDLAB,RND01_HUM,HUM,Humidity > 75%RH,Suspend sensitive experiments and inspect HVAC system,CRITICAL,75,,,,%RH,SOP_001_OperatingProcedures.txt,abl_noV_s42_run1,mixed
+,ThresholdRule,ST01,ST01_TMP,TMP,"Temperature outside [15, 30] °C",,,30,26,18,15,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,ST01,ST01_PRS,PRS,"Pressure outside [3, 4.8] bar",,,4.8,4.2,3.3,3,bar,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,ST01,ST01_FLW,FLW,"Flow outside [105, 135] L/min",,,135,128,112,105,L/min,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,ST01,ST01_TMP,TMP,Temperature ≤ 15 °C or ≥ 30 °C,Inspect and notify maintenance,CRITICAL,,,,,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,ST01,ST01_PRS,PRS,Pressure ≤ 3 bar or ≥ 4.8 bar,Inspect and notify maintenance,CRITICAL,,,,,bar,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,ST01,ST01_FLW,FLW,Flow ≤ 105 L/min or ≥ 135 L/min,Inspect and notify maintenance,CRITICAL,,,,,L/min,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,ST02,ST02_TMP,TMP,"Temperature outside [165, 210] °C",,,210,195,175,165,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,ST02,ST02_PRS,PRS,"Pressure outside [4.2, 6.2] bar",,,6.2,5.7,4.6,4.2,bar,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,ST02,ST02_CUR,CUR,"Current outside [9.5, 15] A",,,15,13.5,11,9.5,A,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+RULE-ST02-04,OperationalRule,ST02,ST02_TMP,TMP,Temperature ≤ 165 °C or ≥ 210 °C,E-STOP ST02/ST03/ST04; inspect element,CRITICAL,,,,,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,ST02,ST02_CUR,CUR,Current ≤ 9.5 A or ≥ 15 A,E-STOP; inspect load; verify ST04_SPD,CRITICAL,,,,,A,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,ST03,ST03_SPD,SPD,"Speed outside [0.65, 1.05] m/s",,,1.05,0.95,0.75,0.65,m/s,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,ST03,ST03_TEN,TEN,"Tension outside [1.5, 3] N",,,3,2.6,1.8,1.5,N,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,ST03,ST03_CNT,CNT,"Count outside [100, 140] pcs/min",,,140,130,110,100,pcs/min,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,ST03,ST03_SPD,SPD,Speed ≤ 0.65 m/s or ≥ 1.05 m/s,Inspect and notify maintenance,CRITICAL,,,,,m/s,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,ST03,ST03_TEN,TEN,Tension ≤ 1.5 N or ≥ 3 N,Inspect and notify maintenance,CRITICAL,,,,,N,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,ST03,ST03_CNT,CNT,Count ≤ 100 pcs/min or ≥ 140 pcs/min,E-STOP labelling; inspect label path,CRITICAL,,,,,pcs/min,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,ST04,ST04_VIB,VIB,"Vibration outside [0.01, 0.35] mm/s",,,0.35,0.2,0.02,0.01,mm/s,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,ST04,ST04_CUR,CUR,"Current outside [6.5, 11] A",,,11,9.8,7.5,6.5,A,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,ST04,ST04_SPD,SPD,"Speed outside [0.85, 1.6] m/s",,,1.6,1.4,1,0.85,m/s,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,ST04,ST04_VIB,VIB,Vibration ≤ 0.01 mm/s or ≥ 0.35 mm/s,E-STOP; inspect main bearing,CRITICAL,,,,,mm/s,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,ST04,ST04_CUR,CUR,Current ≤ 6.5 A or ≥ 11 A,Inspect and notify maintenance,CRITICAL,,,,,A,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,ST04,ST04_SPD,SPD,Speed ≤ 0.85 m/s or ≥ 1.6 m/s,Inspect and notify maintenance,CRITICAL,,,,,m/s,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,SRV01,SRV01_TMP,TMP,"Temperature outside [16, 28] °C",,,28,25,18,16,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,SRV01,SRV01_HUM,HUM,"Humidity outside [25, 70] %RH",,,70,60,30,25,%RH,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,SRV01,SRV01_TMP,TMP,Temperature ≤ 16 °C or ≥ 28 °C,Activate backup cooling; prepare controlled PLC,CRITICAL,,,,,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,SRV01,SRV01_HUM,HUM,Humidity ≤ 25 %RH or ≥ 70 %RH,Inspect and notify maintenance,CRITICAL,,,,,%RH,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,WRH01,WRH01_TMP,TMP,"Temperature outside [-1, 12] °C",,,12,8,0.5,-1,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,WRH01,WRH01_HUM,HUM,"Humidity outside [55, 90] %RH",,,90,85,60,55,%RH,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,WRH01,WRH01_TMP,TMP,Temperature ≤ -1 °C or ≥ 12 °C,Activate backup refrigeration; notify,CRITICAL,,,,,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,WRH01,WRH01_HUM,HUM,Humidity ≤ 55 %RH or ≥ 90 %RH,Inspect and notify maintenance,CRITICAL,,,,,%RH,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,CHM01,CHM01_TMP,TMP,"Temperature outside [5, 25] °C",,,25,20,10,5,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,CHM01,CHM01_HUM,HUM,"Humidity outside [15, 60] %RH",,,60,50,20,15,%RH,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,CHM01,CHM01_TMP,TMP,Temperature ≤ 5 °C or ≥ 25 °C,Activate emergency ventilation; notify safety officer,CRITICAL,,,,,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,CHM01,CHM01_HUM,HUM,Humidity ≤ 15 %RH or ≥ 60 %RH,Activate desiccant system; inspect storage containers,CRITICAL,,,,,%RH,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,RND01,RND01_TMP,TMP,"Temperature outside [15, 30] °C",,,30,26,18,15,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,RND01,RND01_HUM,HUM,"Humidity outside [25, 75] %RH",,,75,65,35,25,%RH,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,RND01,RND01_TMP,TMP,Temperature ≤ 15 °C or ≥ 30 °C,Inspect and notify maintenance,CRITICAL,,,,,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,RND01,RND01_HUM,HUM,Humidity ≤ 25 %RH or ≥ 75 %RH,Suspend experiments; inspect HVAC system,CRITICAL,,,,,%RH,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,CAF01,CAF01_TMP,TMP,"Temperature outside [14, 30] °C",,,30,26,17,14,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,ThresholdRule,CAF01,CAF01_HUM,HUM,"Humidity outside [25, 80] %RH",,,80,70,35,25,%RH,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,CAF01,CAF01_TMP,TMP,Temperature ≤ 14 °C or ≥ 30 °C,Inspect and notify maintenance,CRITICAL,,,,,°C,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,OperationalRule,CAF01,CAF01_HUM,HUM,Humidity ≤ 25 %RH or ≥ 80 %RH,Inspect and notify maintenance,CRITICAL,,,,,%RH,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,MaintenanceRule,,,,"Transient deviation >3s, <5min with reading >CRIT threshold",Detect as AnomalyEvent::Spike,WARNING,,,,,,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,MaintenanceRule,,,,Monotonic deviation >15 min with slope >0.1 s/min for 5+ readings,Detect as AnomalyEvent::Drift,WARNING,,,,,,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,MaintenanceRule,,,,Unchanged reading >10 consecutive with std(last 10) < 0.001×nominal,Detect as AnomalyEvent::StuckSensor,WARNING,,,,,,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,MaintenanceRule,,,,Sustained WARN violation >10 min or >WARN for 20+ readings,Detect as AnomalyEvent::OutOfRange,WARNING,,,,,,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+,MaintenanceRule,,,,Causally linked to another station with onset within 90 min of cause,Detect as AnomalyEvent::Correlated,WARNING,,,,,,SOP_002_AlarmThresholds.txt,abl_noV_s42_run1,tabular
+MAINT-01,MaintenanceRule,ST04_PACKAGING,ST04_PACKAGING_VIB,VIB,VIB DRIFT >0.05 mm/s over 60 min,Inspect and lubricate bearing,HIGH,,,,,mm/s,SOP_003_MaintenanceRules.txt,abl_noV_s42_run1,mixed
+MAINT-02,MaintenanceRule,ST02_SEALING,ST02_SEALING_CUR,CUR,CUR DRIFT >1.0 A for 30+ min,Inspect sealing jaw,HIGH,,,,,A,SOP_003_MaintenanceRules.txt,abl_noV_s42_run1,mixed
+MAINT-03,MaintenanceRule,ST03_LABELLING,ST03_LABELLING_TEN,TEN,TEN STUCK >10 samples,Replace sensor,MEDIUM,,,,,,SOP_003_MaintenanceRules.txt,abl_noV_s42_run1,mixed
+MAINT-04,MaintenanceRule,ST01_FILLING,ST01_FILLING_PRS,PRS,PRS <3.3 bar for >15 min,Inspect filter and pump,MEDIUM,,,3.3,,bar,SOP_003_MaintenanceRules.txt,abl_noV_s42_run1,mixed
+RULE-THR-SRV01-TMP-CRIT,ThresholdRule,SRV01_SERVERROOM,SRV01_SERVERROOM_TMP,TMP,TMP >25°C for >5 min,Activate secondary cooling,CRITICAL,25,,,,C,SOP_003_MaintenanceRules.txt,abl_noV_s42_run1,mixed
+MAINT-05,MaintenanceRule,WRH01_WAREHOUSE,WRH01_WAREHOUSE_TMP,TMP,TMP DRIFT >2°C over 2 h,Inspect compressor; notify,CRITICAL,,,,,C,SOP_003_MaintenanceRules.txt,abl_noV_s42_run1,mixed
+MAINT-07,ThresholdRule,CHM01_CHEMICALSTORAGE,CHM01_CHEMICALSTORAGE_TMP,TMP,TMP >20°C for >10 min,Emergency ventilation; notify safety,CRITICAL,20,,,,C,SOP_003_MaintenanceRules.txt,abl_noV_s42_run1,mixed
+MAINT-08,MaintenanceRule,RND01_RDLAB,RND01_RDLAB_HUM,HUM,HUM DRIFT >10%RH over 60 min,Activate dehumidifier; check HVAC,HIGH,,,,,%RH,SOP_003_MaintenanceRules.txt,abl_noV_s42_run1,mixed
+RULE-CORR-01,MaintenanceRule,ST02_SEALING,,,ST02_SEALING_CUR drift → ST04_PACKAGING_SPD drop (conveyor speed reduction due to sealing motor overload),1. Verify ST02-CUR trend. 2. Inspect sealing jaw. 3. Reset ST04,HIGH,,,,,,SOP_003_MaintenanceRules.txt,abl_noV_s42_run1,mixed
+RULE-CORR-02,MaintenanceRule,SRV01_SERVERROOM,,,SRV01_TMP >25°C → SCADA latency → apparent STUCK readings in PLC,1. Reduce SRV01-TMP <25°C. 2. Verify PLC heartbeats. 3. Clear SCADA,CRITICAL,,,,,,SOP_003_MaintenanceRules.txt,abl_noV_s42_run1,mixed
+RULE-CORR-03,MaintenanceRule,WRH01_WAREHOUSE,,,WRH01_TMP drift → QC HOLD (product quality risk),1. Restore WRH01-TMP <8°C. 2. Notify QC. 3. Place batch on HOLD,CRITICAL,,,,,,SOP_003_MaintenanceRules.txt,abl_noV_s42_run1,mixed
+RULE-OCC-SRV,AccessRule,Server Room,,,Occupancy exceeds 2 persons,Issue CRITICAL alert; access badge required,CRITICAL,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-OCC-WRH,AccessRule,General Warehouse,,,Occupancy exceeds 3 persons,Issue WARNING alert,WARNING,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-OCC-RND,AccessRule,R&D Lab,,,Occupancy exceeds 5 persons,Issue WARNING alert; precision experiments may be disturbed,WARNING,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-OCC-MAINENTRANCE,AccessRule,Main Entrance,,,Occupancy exceeds 8 persons,Monitoring only (no alert),LOW,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-OCC-CAFETERIA,AccessRule,Cafeteria,,,Occupancy exceeds 20 persons,Monitoring only (occupant comfort),LOW,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-OCC-PROD,AccessRule,Production Area,,,Occupancy exceeds 10 persons,Issue WARNING alert,WARNING,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-OCC-PROD-CRIT,AccessRule,Production Area,,,Occupancy exceeds 12 persons,Issue CRITICAL alert,CRITICAL,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-CHM01-03,AccessRule,Chemical Storage,,,Occupancy exceeds 4 persons,Issue CRITICAL alert; hazmatraining required (RULE-CHM01-03),CRITICAL,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-OCC-CHM,AccessRule,Chemical Storage,,,UnauthorisedAccess detected,Immediate escalation to Safety Officer regardless of role,CRITICAL,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-ACCESS-01,AccessRule,All Zones,,,Unauthorised role attempts entry,"Log as OccupancyEvent::UnauthorisedAccess with person_id, zone, and timestamp",MANDATORY,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-ACCESS-02,AccessRule,All Zones,,,UnauthorisedAccess detected,Notify security personnel within 2 minutes,HIGH,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-ACCESS-03,AccessRule,All Zones,,,UnauthorisedAccess detected,Set authorized=NO in KG node and reference RULE-ACCESS-01,MANDATORY,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-ACK-OP-WARN,AccessRule,All Roles,,,WARNING alert triggered,"Acknowledge within 15 minutes (operator), 10 minutes (technician), 5 minutes (supervisor), or 15 minutes (manager)",WARNING,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-ACK-OP-CRIT,AccessRule,All Roles,,,CRITICAL alert triggered,"Acknowledge within 3 minutes (operator), 2 minutes (technician), 1 minute (supervisor), or 5 minutes (manager/security)",CRITICAL,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix
+RULE-ACK-SEC-HIGH,AccessRule,All Roles,,,UnauthorisedAccess detected,Security personnel notified within 2 minutes,HIGH,,,,,,SOP_004_PersonnelZoneAccess.txt,abl_noV_s42_run1,matrix

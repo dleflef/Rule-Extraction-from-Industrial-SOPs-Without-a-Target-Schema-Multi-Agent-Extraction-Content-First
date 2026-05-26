@@ -1,0 +1,5 @@
+filename,doc_type,total_rules,llm_turns,duration_sec,prompt_tokens,completion_tokens,total_tokens
+SOP_001_OperatingProcedures.txt,tabular,20,5,67.16,12395,4240,16635
+SOP_002_AlarmThresholds.txt,matrix,44,7,118.63,18885,8332,27217
+SOP_003_MaintenanceRules.txt,tabular,8,5,18.68,7974,1255,9229
+SOP_004_PersonnelZoneAccess.txt,matrix,19,5,37.16,8270,2684,10954

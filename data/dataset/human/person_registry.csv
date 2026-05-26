@@ -1,0 +1,45 @@
+person_id,csi_subject,role,shift,department,authorized_zones,primary_zone,max_ack_warning,max_ack_critical
+P001,soggetto 1,operator,Morning,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P002,soggetto 2,operator,Afternoon,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P003,soggetto 3,operator,Morning,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P004,soggetto 4,operator,Afternoon,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P005,soggetto 5,operator,Morning,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P006,soggetto 6,operator,Afternoon,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P007,soggetto 7,operator,Morning,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P008,soggetto 8,operator,Afternoon,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P009,soggetto 9,operator,Morning,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P010,soggetto 10,operator,Afternoon,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P011,soggetto 11,operator,Morning,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P012,soggetto 12,operator,Afternoon,Production,Production Area|General Warehouse|Cafeteria,Production Area,15,3
+P013,soggetto 13,operator,Morning,Production,Production Area|General Warehouse|Cafeteria,General Warehouse,15,3
+P014,soggetto 14,operator,Afternoon,Production,Production Area|General Warehouse|Cafeteria,General Warehouse,15,3
+P015,soggetto 15,operator,Morning,Production,Production Area|General Warehouse|Cafeteria,General Warehouse,15,3
+P016,soggetto 16,operator,Afternoon,Production,Production Area|General Warehouse|Cafeteria,General Warehouse,15,3
+P017,soggetto 17,operator,Morning,Production,Production Area|General Warehouse|Cafeteria,Cafeteria,15,3
+P018,soggetto 18,operator,Afternoon,Production,Production Area|General Warehouse|Cafeteria,Cafeteria,15,3
+P019,soggetto 19,operator,Morning,Production,Production Area|General Warehouse|Cafeteria,Cafeteria,15,3
+P020,soggetto 20,operator,Afternoon,Production,Production Area|General Warehouse|Cafeteria,Cafeteria,15,3
+P021,soggetto 21,technician,Morning,IT,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria,Production Area,15,3
+P022,soggetto 22,technician,Afternoon,IT,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria,Production Area,15,3
+P023,soggetto 23,technician,Morning,IT,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria,Production Area,15,3
+P024,soggetto 24,technician,Afternoon,IT,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria,Production Area,15,3
+P025,soggetto 25,technician,Morning,IT,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria,General Warehouse,15,3
+P026,soggetto 26,technician,Afternoon,IT,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria,General Warehouse,15,3
+P027,soggetto 27,technician,Morning,IT,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria,Server Room,15,3
+P028,soggetto 28,technician,Afternoon,IT,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria,Server Room,15,3
+P029,soggetto 29,technician,Morning,IT,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria,R&D Lab,15,3
+P030,soggetto 30,technician,Afternoon,IT,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria,R&D Lab,15,3
+P031,soggetto 31,supervisor,Morning,Operations,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Production Area,15,3
+P032,soggetto 32,supervisor,Afternoon,Operations,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Production Area,15,3
+P033,soggetto 33,supervisor,Morning,Operations,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Main Entrance,15,3
+P034,soggetto 34,supervisor,Afternoon,Operations,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Main Entrance,15,3
+P035,soggetto 35,supervisor,Morning,Operations,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Chemical Storage,15,3
+P036,soggetto 36,supervisor,Afternoon,Operations,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Chemical Storage,15,3
+P037,soggetto 37,supervisor,Morning,Operations,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,R&D Lab,15,3
+P038,soggetto 38,supervisor,Afternoon,Operations,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,R&D Lab,15,3
+P039,soggetto 39,manager,Morning,Management,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Production Area,15,3
+P040,soggetto 40,manager,Afternoon,Management,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Production Area,15,3
+P041,soggetto 41,manager,Morning,Management,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Main Entrance,15,3
+P042,soggetto 42,manager,Afternoon,Management,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Main Entrance,15,3
+P043,soggetto 43,security,Morning,Security,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Server Room,15,3
+P044,soggetto 44,security,Afternoon,Security,Production Area|Server Room|General Warehouse|Chemical Storage|R&D Lab|Cafeteria|Main Entrance,Server Room,15,3

@@ -13,7 +13,7 @@ to grid_search_metadata.csv.
 Usage
 -----
     python3 step2_grid_search_extraction.py
-    python3 step2_grid_search_extraction.py --models qwen2.5:14b phi4
+    python3 step2_grid_search_extraction.py --models qemma3:4b
     python3 step2_grid_search_extraction.py --paradigms naive few_shot_static
     python3 step2_grid_search_extraction.py --force    # re-run all, ignore registry
     python3 step2_grid_search_extraction.py --abox data/seed_rules/dataset/kg_seeds/nodes_factory.csv
@@ -38,34 +38,33 @@ import time
 from collections import Counter
 from typing import Any
 
+from dotenv import load_dotenv
 from openai import OpenAI
+
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".env"))
+
+_SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))          # layers/layer_2/
+_PROJECT_ROOT = os.path.normpath(os.path.join(_SCRIPT_DIR, "..", ".."))  # project root
 
 # ── MODELS AND PARADIGMS ──────────────────────────────────────────────────────
 
 MODELS: list[str] = [
-    "llama3.2:3b",
-    "mistral:7b",
-    "qwen2.5:7b",
-    "deepseek-r1:7b",
-    "qwen2.5:14b",
-    "phi4",
-    "deepseek-r1:14b",
+    "ministral-3:14b",
+    "gemma3:12b",
+    "ministral-3:8b",
+    "qwen/qwen3-4b-2507",
 ]
 
 PARADIGMS: list[str] = [
-    # L0 -- single call, prompt-only
     "naive",
     "few_shot_static",
     "graph_informed",
-    # L1 -- single call with explicit reasoning instruction
     "cot_basic",
     "cot_structured",
     "pre_act",
-    # L2 -- multi-call with self-improvement
     "self_consistency",
     "reflexion",
     "reflexion_guided",
-    # L3 -- agentic with external tool access
     "react_abox",
 ]
 
@@ -85,17 +84,20 @@ PARADIGM_LEVEL: dict[str, int] = {
 
 # Models that generate an internal <think> block before the JSON output.
 # The <think> block is stripped by parse_rules() before JSON parsing.
-REASONING_NATIVE: set[str] = {"deepseek-r1:7b", "deepseek-r1:14b", "deepseek-r1-distill-qwen-7b"}
+REASONING_NATIVE: set[str] = set()
 
 # Models whose chat template does not support the system role.
 # The system message is merged into the first user message automatically.
-NO_SYSTEM_ROLE: set[str] = {"mistralai/mistral-7b-instruct-v0.3", "mistral:7b"}
+NO_SYSTEM_ROLE: set[str] = {"ministral-3:3b", "ministral-3:8b", "ministral-3:14b"}
 
 
 # ── EXPERIMENT PARAMETERS ─────────────────────────────────────────────────────
 
-N_RUNS = 1  # runs per (model, paradigm); temperature=0 makes
-# multiple runs identical for deterministic paradigms
+N_RUNS = 1  # runs per (model, paradigm)
+SEED   = 42  # default RNG seed passed to Ollama via extra_body={"options":{"seed":N}}
+# Three seeds used in evaluation for seed-independence verification: 42, 123, 7
+# Run with: python3 step2_grid_search_extraction_en.py --seeds 42 123 7
+# With T=0.0 + fixed seed, outputs are bitwise identical within a seed across runs.
 
 SOP_TEXT_LIMIT = 8000  # max characters passed to the model per SOP document
 
@@ -123,35 +125,55 @@ MAX_REACT_TURNS = 5
 # ── LLM CONNECTION PARAMETERS ─────────────────────────────────────────────────
 
 LLM_TIMEOUT_SEC = 600  # API call timeout (10 min) -- llama3.2:1b does ~3 tok/s on CPU
-LLM_NUM_CTX = 8192  # context window: 2k input + 1k output
-MAX_OUTPUT_TOKENS = (
-    4096  # salvage parser recovers complete rules even if JSON is truncated
-)
+LLM_NUM_CTX = 16384   # context window: 2k input + 1k output
+MAX_OUTPUT_TOKENS = 16384 
 MAX_RETRIES = 3  # attempts before giving up on a single call
 RETRY_BASE_DELAY = 15.0  # seconds before first retry; doubles each attempt
 
 
 # ── FILE PATHS ────────────────────────────────────────────────────────────────
 
-TEXTS_DIR = "texts"
-RESULTS_DIR = "step2_results"
-STATE_DIR = "state"
-REGISTRY_FILE = os.path.join(STATE_DIR, "experiment_registry.json")
-METADATA_FILE = os.path.join(STATE_DIR, "grid_search_metadata.csv")
-HEARTBEAT_FILE = "heartbeat.txt"
+TEXTS_DIR = os.path.join(_SCRIPT_DIR, "..", "texts")                           # layers/texts/
+ABOX_DEFAULT_PATH = os.path.join(
+    _PROJECT_ROOT, "data", "dataset", "kg_seed", "nodes_factory.csv"
+)
+
+RESULTS_DIR    = os.path.join(_SCRIPT_DIR, "step2_results")
+STATE_DIR      = os.path.join(_SCRIPT_DIR, "..", "state")
+REGISTRY_FILE  = os.path.join(STATE_DIR, "experiment_registry.json")
+METADATA_FILE  = os.path.join(STATE_DIR, "grid_search_metadata.csv")
+HEARTBEAT_FILE = os.path.join(_SCRIPT_DIR, "..", "heartbeat.txt")
 
 os.makedirs(RESULTS_DIR, exist_ok=True)
 os.makedirs(STATE_DIR, exist_ok=True)
 
-# Allow overriding the Ollama endpoint via environment variable.
-# Docker Compose sets OLLAMA_BASE_URL=http://ollama:11434/v1 automatically.
+# Ollama endpoint (cloud or local)
 _OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434/v1")
+_OLLAMA_API_KEY  = os.environ.get("OLLAMA_API_KEY",  "ollama")
 
-client = OpenAI(
-    api_key="ollama",
+# LM Studio endpoint — for models loaded locally in LM Studio
+_LMSTUDIO_BASE_URL = os.environ.get("LMSTUDIO_BASE_URL", "http://localhost:1234/v1")
+_LMSTUDIO_API_KEY  = os.environ.get("LMSTUDIO_API_KEY",  "lm-studio")
+
+# Comma-separated model names to route to LM Studio instead of Ollama.
+# Set in .env:  LMSTUDIO_MODELS=qwen3-4B-2507
+LMSTUDIO_MODELS: set[str] = set(
+    m.strip() for m in os.environ.get("LMSTUDIO_MODELS", "").split(",") if m.strip()
+)
+
+_ollama_client = OpenAI(
+    api_key=_OLLAMA_API_KEY,
     base_url=_OLLAMA_BASE_URL,
     timeout=LLM_TIMEOUT_SEC,
 )
+_lmstudio_client = OpenAI(
+    api_key=_LMSTUDIO_API_KEY,
+    base_url=_LMSTUDIO_BASE_URL,
+    timeout=LLM_TIMEOUT_SEC,
+)
+
+def _client_for(model: str) -> OpenAI:
+    return _lmstudio_client if model in LMSTUDIO_MODELS else _ollama_client
 
 
 # ── PROMPT CONSTANTS ──────────────────────────────────────────────────────────
@@ -167,7 +189,6 @@ _BASE_SYSTEM = (
     "For ThresholdRule entries extract numeric values into the dedicated fields "
     "(critHi, warnHi, warnLo, critLo, unit). "
     'For all other classes leave those fields empty ("").'
-    "Do not summarize. You MUST extract every single rule and table row exhaustively. "
 )
 
 # graph_informed: adds mandatory sensor naming and numeric field mapping
@@ -181,7 +202,7 @@ _GRAPH_CONSTRAINT = (
     'with the pure numeric values from the table (e.g. critHi="30.0", unit="C").'
 )
 
-# few_shot_static: two concrete output examples, one per main rule class
+# few_shot_static: two concrete output examples, one per main rule class.
 _FEW_SHOT_EXAMPLE = (
     " Follow these style examples:"
     "\n\nExample 1 -- OperationalRule (narrative rule):"
@@ -328,14 +349,15 @@ signal.signal(signal.SIGTERM, _save_and_exit)
 # "completed" means the run finished and its CSV was saved -- it will be skipped.
 
 
-def make_run_id(model: str, paradigm: str, run_n: int) -> str:
+def make_run_id(model: str, paradigm: str, run_n: int, seed: int | None = None) -> str:
     """
     Canonical ID for a single run.
-    Format: <model_normalised>_<paradigm>_run<N>
-    Example: qwen2_5-14b_naive_run1
+    Format: <model_normalised>_<paradigm>_s<SEED>_run<N>
+    Example: ministral-3-14b_few_shot_static_s42_run1
     """
     base = f"{model}_{paradigm}".replace(":", "-").replace(".", "_").replace("/", "-")
-    return f"{base}_run{run_n}"
+    seed_part = f"_s{seed}" if seed is not None else ""
+    return f"{base}{seed_part}_run{run_n}"
 
 
 def make_exp_id(model: str, paradigm: str) -> str:
@@ -425,11 +447,12 @@ def _llm_call_raw(
                 flush=True,
             )
             t_call = time.time()
-            resp = client.chat.completions.create(
+            resp = _client_for(model).chat.completions.create(
                 model=model,
                 messages=messages,
                 temperature=temperature,
                 max_tokens=MAX_OUTPUT_TOKENS,
+                extra_body={"options": {"seed": SEED, "num_ctx": LLM_NUM_CTX}},
             )
             elapsed = time.time() - t_call
             ts_end = time.strftime("%H:%M:%S")
@@ -1060,8 +1083,9 @@ def load_abox_sensors(nodes_path: str) -> set[str]:
     """
     for path in [
         nodes_path,
-        "data/seed_rules/dataset/kg_seeds/nodes_factory.csv",
-        "../data/seed_rules/dataset/kg_seeds/nodes_factory.csv",
+        ABOX_DEFAULT_PATH,
+        os.path.join(_PROJECT_ROOT, "data", "dataset", "kg_seed", "nodes_factory.csv"),
+        os.path.join(_SCRIPT_DIR, "..", "..", "data", "dataset", "kg_seed", "nodes_factory.csv"),
     ]:
         if os.path.exists(path):
             try:
@@ -1250,6 +1274,7 @@ def run_single_experiment(
             elif paradigm == "react_abox":
                 rules, n_turns = run_react_abox(model, sop_excerpt, abox_sensors)
 
+
             else:
                 print(f"Unknown paradigm: '{paradigm}'")
                 rules, n_turns = [], 0
@@ -1283,18 +1308,20 @@ def run_single_experiment(
 def run_experiment(
     models: list[str] | None = None,
     paradigms: list[str] | None = None,
-    abox_path: str = "data/seed_rules/dataset/kg_seeds/nodes_factory.csv",
-    force_redo: bool = False,
+    abox_path: str = ABOX_DEFAULT_PATH,
+    force_redo: bool = True,
     n_runs: int = N_RUNS,
+    seed: int = SEED,
 ) -> None:
     """
     Outer loop over models x paradigms x run_n.
 
-    Skips runs already marked "completed" in the registry unless
-    force_redo=True. Marks each run "partial" before starting and
-    "completed" after saving a non-empty result file.
+    Always re-runs every condition (force_redo=True by default).
+    Pass force_redo=False or use --no-force to skip already-completed runs.
+    Marks each run "partial" before starting and "completed" after saving.
     """
-    global _registry_ref
+    global _registry_ref, SEED
+    SEED = seed
 
     _models = models or MODELS
     _paradigms = paradigms or PARADIGMS
@@ -1316,9 +1343,11 @@ def run_experiment(
     done_runs = sum(1 for v in registry.values() if v == "completed")
 
     print(f"  ABox loaded: {len(abox_sensors)} sensors")
+    print(f"  SOP dir:     {abs_texts}")
     print(f"  SOP files:   {txt_files}")
     print(f"  Models:      {_models}")
     print(f"  Paradigms:   {_paradigms}")
+    print(f"  Seed:        {seed}")
     print(f"  Runs per condition: {n_runs}")
     print(f"  Registry: {done_runs}/{total_runs} already completed")
     print(f"  To run:   {total_runs - done_runs}")
@@ -1328,7 +1357,7 @@ def run_experiment(
         for paradigm in _paradigms:
             level = PARADIGM_LEVEL[paradigm]
             for run_n in range(1, n_runs + 1):
-                run_id = make_run_id(model, paradigm, run_n)
+                run_id = make_run_id(model, paradigm, run_n, seed=seed)
                 _heartbeat.set_experiment(run_id)
 
                 if not force_redo and is_completed(registry, run_id):
@@ -1434,19 +1463,32 @@ if __name__ == "__main__":
         help="Subset of paradigms (default: all)",
     )
     parser.add_argument(
-        "--force", action="store_true", help="Ignore registry and re-run everything"
+        "--no-force", dest="no_force", action="store_true",
+        help="Skip runs already marked completed in the registry",
     )
     parser.add_argument(
         "--abox",
-        default="data/seed_rules/dataset/kg_seeds/nodes_factory.csv",
+        default=ABOX_DEFAULT_PATH,
         help="Path to nodes_factory.csv for react_abox sensor verification",
+    )
+    parser.add_argument(
+        "--seeds",
+        nargs="+",
+        type=int,
+        default=[SEED],
+        help=f"RNG seeds to run in sequence (default: [{SEED}]). Example: --seeds 42 123 7",
     )
     args = parser.parse_args()
 
-    run_experiment(
-        models=args.models,
-        paradigms=args.paradigms,
-        abox_path=args.abox,
-        force_redo=args.force,
-        n_runs=args.runs,
-    )
+    for seed_val in args.seeds:
+        print(f"\n{'='*65}")
+        print(f"  SEED = {seed_val}  ({args.seeds.index(seed_val)+1}/{len(args.seeds)})")
+        print(f"{'='*65}")
+        run_experiment(
+            models=args.models,
+            paradigms=args.paradigms,
+            abox_path=args.abox,
+            force_redo=not args.no_force,
+            n_runs=args.runs,
+            seed=seed_val,
+        )
