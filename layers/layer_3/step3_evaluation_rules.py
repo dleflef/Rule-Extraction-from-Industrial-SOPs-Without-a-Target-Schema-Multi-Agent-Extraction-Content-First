@@ -6,14 +6,20 @@ Evaluation framework for industrial SOP rule extraction.
 Implements the evaluation methodology strictly from the iMAKS benchmark:
   1. F1_strict: Exact match of ruleIds after normalisation.
   2. F1_content: Content-first metric using Hungarian assignment (primary).
-     Score per pair is a class-weighted average of:
-       (a) exact match on categorical fields (class, station, sensor, severity)
-       (b) tolerance score on numeric fields: 1 - |gt-llm| / |gt|
-       (c) SBERT cosine similarity on text fields (condition, action)
+     Score per pair is the weighted average of active field scores
+     (fields present in the GT, i.e. score ≠ N/A):
+
+         content_score(g,l) = Σ(w_f * s_f) / Σ(w_f)   for f in F*(g,l)
+
+     Field scoring by type:
+       (a) categorical fields: exact match  → s_f ∈ {0, 1}
+       (b) numeric fields:     tolerance    → s_f = max(0, 1 - |gt-llm|/max(|gt|,|llm|,ε))
+       (c) text fields:        SBERT cosine → s_f ∈ [0, 1]
+     Weights are raw (not pre-normalised); the denominator Σw_f normalises
+     dynamically over whichever fields are active in the GT row.
 
 Optimizations:
   - Hardware acceleration: Auto-detects and utilises MPS or CUDA.
-  - VRAM Caching: Caches SBERT tensor embeddings to prevent redundant inference.
   - Strict Column Ordering: Enforces requested column sequence in final summary CSV.
 """
 
@@ -45,55 +51,80 @@ os.makedirs(STEP3_RESULTS_DIR, exist_ok=True)
 
 # ── EVALUATION CONFIG ──────────────────────────────────────────────────────────
 
-# Field weight definitions (class‑weighted) strictly per iMAKS spec.
-# Categorical fields: class, station, sensor, severity.
-# Numeric fields:      critHi, warnHi, warnLo, critLo (ThresholdRule only).
-# Text fields:         condition, action.
-# No unit field is scored.
+# Raw field weights per rule class, directly from the README weight table.
+# Weights are NOT pre-normalised; the content_agreement function divides by
+# the sum of weights for active fields (those present in the GT row).
+#
+# Field types:
+#   Categorical (exact match): class, station, sensor, sensorType, severity, unit
+#   Numeric (tolerance score): critHi, critLo, warnHi, warnLo
+#   Text (SBERT cosine):       condition, action
+#
+# '—' in the table means the field is absent for that class (no key → skipped).
+# Note: condition/action have low weights for ThresholdRule because the GT stores
+# them in synthetic form (e.g. "T > 80°C"); the numeric thresholds are primary.
 
-FIELD_WEIGHTS = {
+FIELD_WEIGHTS: dict[str, dict[str, float]] = {
     "ThresholdRule": {
-        "class":   0.0667,   # scaled to sum 1 (original had unit)
-        "station": 0.1444,
-        "sensor":  0.0778,
-        "severity": 0.0778,
-        "critHi":  0.1667,
-        "warnHi":  0.1111,
-        "warnLo":  0.1111,
-        "critLo":  0.1667,
-        "condition": 0.0444,
-        "action":    0.0333
+        "class":      1.5,
+        "station":    2.0,
+        "sensor":     2.5,
+        "sensorType": 1.0,
+        "severity":   0.5,
+        "unit":       1.0,
+        "critHi":     3.0,
+        "critLo":     3.0,
+        "warnHi":     1.5,
+        "warnLo":     1.5,
+        "condition":  0.5,
+        "action":     0.5,
     },
     "OperationalRule": {
-        "class":    0.15,
-        "station":  0.20,
-        "sensor":   0.12,
-        "severity": 0.13,
-        "condition": 0.20,
-        "action":    0.20
+        "class":      1.5,
+        "station":    2.0,
+        "sensor":     1.5,
+        "sensorType": 0.5,
+        "severity":   1.0,
+        "critHi":     1.0,
+        "critLo":     1.0,
+        "condition":  4.0,
+        "action":     2.0,
     },
     "MaintenanceRule": {
-        "class":    0.15,
-        "station":  0.20,
-        "sensor":   0.12,
-        "severity": 0.13,
-        "condition": 0.20,
-        "action":    0.20
+        "class":      1.5,
+        "station":    2.0,
+        "sensor":     2.5,
+        "sensorType": 1.0,
+        "severity":   1.5,
+        "condition":  3.5,
+        "action":     2.0,
     },
     "AccessRule": {
-        "class":    0.15,
-        "station":  0.20,
-        "severity": 0.15,
-        "condition": 0.25,
-        "action":    0.25
-    }
+        "class":      1.5,
+        "station":    2.0,
+        "severity":   1.5,
+        "condition":  2.0,
+        "action":     1.5,
+    },
+    "default": {
+        "class":      1.0,
+        "station":    1.5,
+        "sensor":     1.5,
+        "severity":   1.0,
+        "condition":  2.0,
+        "action":     1.0,
+    },
 }
+
+# Field type lookup — determines which scoring function to apply.
+_CATEGORICAL_FIELDS = {"class", "station", "sensor", "sensorType", "severity", "unit"}
+_NUMERIC_FIELDS     = {"critHi", "critLo", "warnHi", "warnLo"}
+_TEXT_FIELDS        = {"condition", "action"}
 
 
 # ── HARDWARE ACCELERATION & CACHING ────────────────────────────────────────────
 
 _sbert_model = None
-_emb_cache = {}
 
 def get_device() -> str:
     if torch.cuda.is_available():
@@ -109,12 +140,6 @@ def get_sbert() -> SentenceTransformer:
         print(f"    Loading SBERT model (all-MiniLM-L6-v2) on device: [{device.upper()}]...")
         _sbert_model = SentenceTransformer("all-MiniLM-L6-v2", device=device)
     return _sbert_model
-
-def clear_cache():
-    global _emb_cache
-    _emb_cache.clear()
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
 
 
 # ── SIMILARITY FUNCTIONS ───────────────────────────────────────────────────────
@@ -132,83 +157,74 @@ def _norm_str_field(s: Any) -> str:
     return str(s).strip().lower()
 
 def _numeric_tolerance(gt_val: Any, llm_val: Any, epsilon: float = 1e-9) -> float:
-    """iMAKS tolerance score: 1 - |gt - llm| / |gt|, with zero guard."""
+    """Symmetric iMAKS tolerance score: max(0, 1 - |a-b| / max(|a|,|b|,ε))."""
     try:
         f_gt = float(str(gt_val).strip())
         f_llm = float(str(llm_val).strip())
     except ValueError:
-        # If either cannot be parsed, treat as 0 if both equal after normalisation
         return 1.0 if str(gt_val).strip() == str(llm_val).strip() else 0.0
 
-    # Handle zero ground truth
-    if abs(f_gt) < epsilon:
-        return 1.0 if abs(f_llm) < epsilon else 0.0
+    denom = max(abs(f_gt), abs(f_llm), epsilon)
+    return max(0.0, 1.0 - abs(f_gt - f_llm) / denom)
 
-    score = 1.0 - abs(f_gt - f_llm) / abs(f_gt)
-    return max(0.0, score)
+def _batch_encode_texts(texts: List[str]) -> Dict[str, Any]:
+    unique = list({t for t in texts if t})
+    if not unique:
+        return {}
+    model = get_sbert()
+    embs = model.encode(unique, batch_size=64, convert_to_tensor=True, show_progress_bar=False)
+    return {t: embs[i] for i, t in enumerate(unique)}
 
-def _semantic_similarity(text_a: str, text_b: str) -> float:
+
+def _semantic_similarity(text_a: str, text_b: str, emb_cache: Dict[str, Any] = None) -> float:
     if not text_a and not text_b:
         return 1.0
     if not text_a or not text_b:
         return 0.0
 
     model = get_sbert()
-
-    if text_a not in _emb_cache:
-        _emb_cache[text_a] = model.encode(text_a, convert_to_tensor=True)
-    emb_a = _emb_cache[text_a]
-
-    if text_b not in _emb_cache:
-        _emb_cache[text_b] = model.encode(text_b, convert_to_tensor=True)
-    emb_b = _emb_cache[text_b]
+    emb_a = emb_cache.get(text_a) if emb_cache else None
+    emb_b = emb_cache.get(text_b) if emb_cache else None
+    if emb_a is None:
+        emb_a = model.encode(text_a, convert_to_tensor=True)
+    if emb_b is None:
+        emb_b = model.encode(text_b, convert_to_tensor=True)
 
     cos_sim = util.cos_sim(emb_a, emb_b).item()
     return max(0.0, float(cos_sim))
 
 
-def content_agreement(r_gt: Dict, r_ext: Dict) -> float:
+def content_agreement(r_gt: Dict, r_ext: Dict, emb_cache: Dict[str, Any] = None) -> float:
     """
-    Computes the content agreement score between one ground truth rule
-    and one extracted rule, strictly following the iMAKS definition.
+    Weighted average content score per the README formula:
+        content_score = Σ(w_f * s_f) / Σ(w_f)   for f in F*(g,l)
+    where F*(g,l) = fields with a non-empty GT value.
+    Weights are raw (not pre-normalised); the denominator handles normalisation.
     """
-    rule_class = r_gt.get("class", "OperationalRule")
-    weights = FIELD_WEIGHTS.get(rule_class, FIELD_WEIGHTS["OperationalRule"])
+    rule_class = r_gt.get("class", "")
+    weights = FIELD_WEIGHTS.get(rule_class, FIELD_WEIGHTS["default"])
 
     total_weight = 0.0
-    total_score = 0.0
+    total_score  = 0.0
 
-    # 1) Categorical fields: exact match
-    categorical_fields = ["class", "station", "sensor", "severity"]
-    # For AccessRule, 'sensor' is not present, so it will be skipped gracefully
-    for field in categorical_fields:
-        if field in weights:
-            gt_val = r_gt.get(field)
-            if pd.notna(gt_val) and str(gt_val).strip():
-                w = weights[field]
-                total_weight += w
-                if _norm_str_field(gt_val) == _norm_str_field(r_ext.get(field)):
-                    total_score += 1.0 * w
+    for field, w in weights.items():
+        gt_val = r_gt.get(field)
+        if not (pd.notna(gt_val) and str(gt_val).strip()):
+            continue
 
-    # 2) Numeric fields (only for ThresholdRule)
-    if rule_class == "ThresholdRule":
-        for field in ["critHi", "warnHi", "warnLo", "critLo"]:
-            if field in weights:
-                gt_val = r_gt.get(field)
-                if pd.notna(gt_val) and str(gt_val).strip():
-                    w = weights[field]
-                    total_weight += w
-                    total_score += _numeric_tolerance(gt_val, r_ext.get(field)) * w
+        total_weight += w
+        ext_val = r_ext.get(field, "")   # 👈 default to ""
 
-    # 3) Text fields: SBERT cosine similarity
-    for field in ["condition", "action"]:
-        if field in weights:
-            gt_val = r_gt.get(field)
-            if pd.notna(gt_val) and str(gt_val).strip():
-                w = weights[field]
-                total_weight += w
-                sim = _semantic_similarity(str(gt_val), str(r_ext.get(field, "")))
-                total_score += sim * w
+        if field in _CATEGORICAL_FIELDS:
+            score = 1.0 if _norm_str_field(gt_val) == _norm_str_field(ext_val) else 0.0
+        elif field in _NUMERIC_FIELDS:
+            score = _numeric_tolerance(gt_val, ext_val)
+        elif field in _TEXT_FIELDS:
+            score = _semantic_similarity(str(gt_val), str(ext_val), emb_cache)
+        else:
+            score = 0.0
+
+        total_score += w * score
 
     if total_weight == 0:
         return 0.0
@@ -239,10 +255,13 @@ def evaluate_content(gt_rules: List[Dict], ext_rules: List[Dict], threshold: flo
     if not gt_rules or not ext_rules:
         return 0.0, 0.0, 0.0, 0, len(ext_rules), len(gt_rules)
 
+    all_texts = [str(r.get(f, "")) for r in gt_rules + ext_rules for f in _TEXT_FIELDS]
+    emb_cache = _batch_encode_texts(all_texts)
+
     cost_matrix = np.zeros((len(gt_rules), len(ext_rules)))
     for i, gt in enumerate(gt_rules):
         for j, ext in enumerate(ext_rules):
-            cost_matrix[i, j] = 1.0 - content_agreement(gt, ext)
+            cost_matrix[i, j] = 1.0 - content_agreement(gt, ext, emb_cache)
 
     row_ind, col_ind = linear_sum_assignment(cost_matrix)
 
@@ -268,8 +287,6 @@ def run_evaluation(gt_path: str, pred_path: str) -> dict:
     except Exception as e:
         print(f"    Error loading files for {os.path.basename(pred_path)}: {e}")
         return {}
-
-    clear_cache()
 
     f1_s, pr_s, re_s, tp_s, fp_s, fn_s = evaluate_strict(gt_rules, ext_rules)
     f1_c, pr_c, re_c, tp_c, fp_c, fn_c = evaluate_content(gt_rules, ext_rules)

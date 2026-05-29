@@ -53,6 +53,7 @@ MODELS: list[str] = [
     "gemma3:12b",
     "ministral-3:8b",
     "qwen/qwen3-4b-2507",
+    "gpt-oss:20b",
 ]
 
 PARADIGMS: list[str] = [

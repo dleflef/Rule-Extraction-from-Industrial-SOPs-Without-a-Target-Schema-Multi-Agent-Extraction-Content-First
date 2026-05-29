@@ -100,3 +100,13 @@ ministral-3-8b+ministral-3-14b+qwen-qwen3-4b-2507+qwen-qwen3-4b-2507+ministral-3
 ministral-3-8b+ministral-3-14b+qwen-qwen3-4b-2507+qwen-qwen3-4b-2507+ministral-3-14b+ministral-3-14b+ministral-3-8b+ministral-3-8b_multi_agent_s42_run1,ministral-3:8b+ministral-3:14b+qwen/qwen3-4b-2507+qwen/qwen3-4b-2507+ministral-3:14b+ministral-3:14b+ministral-3:8b+ministral-3:8b,multi_agent,1,3,70,4,0,405.56,5.7937,36835,34314,71149,1016.4
 ministral-3-8b+ministral-3-14b+qwen-qwen3-4b-2507+qwen-qwen3-4b-2507+ministral-3-14b+ministral-3-14b+ministral-3-8b+ministral-3-8b_multi_agent_s42_run1,ministral-3:8b+ministral-3:14b+qwen/qwen3-4b-2507+qwen/qwen3-4b-2507+ministral-3:14b+ministral-3:14b+ministral-3:8b+ministral-3:8b,multi_agent,1,3,52,4,0,480.09,9.2325,35713,29562,65275,1255.3
 ministral-3-8b+ministral-3-14b+qwen-qwen3-4b-2507+ministral-3-14b+ministral-3-14b+ministral-3-14b+ministral-3-8b+ministral-3-8b_multi_agent_s42_run1,ministral-3:8b+ministral-3:14b+qwen/qwen3-4b-2507+ministral-3:14b+ministral-3:14b+ministral-3:14b+ministral-3:8b+ministral-3:8b,multi_agent,1,3,88,4,0,610.25,6.9347,48176,44149,92325,1049.1
+gpt-oss-20b_naive_s42_run1,gpt-oss-20b_naive,gpt-oss:20b,naive,1,0,False,66,4,0,75.47,1.1435,1.0,0,4757,14827,19584,296.7
+gpt-oss-20b_few_shot_static_s42_run1,gpt-oss-20b_few_shot_static,gpt-oss:20b,few_shot_static,1,0,False,65,4,0,71.78,1.1043,1.0,0,5781,16108,21889,336.8
+gpt-oss-20b_graph_informed_s42_run1,gpt-oss-20b_graph_informed,gpt-oss:20b,graph_informed,1,0,False,63,4,0,68.3,1.0841,1.0,0,5245,14878,20123,319.4
+gpt-oss-20b_cot_basic_s42_run1,gpt-oss-20b_cot_basic,gpt-oss:20b,cot_basic,1,1,False,66,4,0,96.66,1.4646,1.0,0,4809,19250,24059,364.5
+gpt-oss-20b_cot_structured_s42_run1,gpt-oss-20b_cot_structured,gpt-oss:20b,cot_structured,1,1,False,88,4,0,69.63,0.7913,1.0,0,5065,16694,21759,247.3
+gpt-oss-20b_pre_act_s42_run1,gpt-oss-20b_pre_act,gpt-oss:20b,pre_act,1,1,False,78,4,0,122.28,1.5677,1.0,0,4905,21465,26370,338.1
+gpt-oss-20b_self_consistency_s42_run1,gpt-oss-20b_self_consistency,gpt-oss:20b,self_consistency,1,2,False,63,4,0,247.35,3.9263,3.0,0.3,14271,55642,69913,1109.7
+gpt-oss-20b_reflexion_s42_run1,gpt-oss-20b_reflexion,gpt-oss:20b,reflexion,1,2,False,65,4,0,152.26,2.3425,2.0,0,25188,34167,59355,913.2
+gpt-oss-20b_reflexion_guided_s42_run1,gpt-oss-20b_reflexion_guided,gpt-oss:20b,reflexion_guided,1,2,False,89,4,0,211.31,2.3743,3.0,0,35181,46985,82166,923.2
+gpt-oss-20b_react_abox_s42_run1,gpt-oss-20b_react_abox,gpt-oss:20b,react_abox,1,3,False,64,4,0,136.58,2.1341,2.0,0,18504,25397,43901,686.0

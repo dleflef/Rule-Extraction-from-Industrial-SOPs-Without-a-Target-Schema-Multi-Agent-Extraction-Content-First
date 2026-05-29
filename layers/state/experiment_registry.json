@@ -1,3 +1,12 @@
 {
-  "ministral-3-8b+ministral-3-14b+qwen-qwen3-4b-2507+ministral-3-14b+ministral-3-14b+ministral-3-14b+ministral-3-8b+ministral-3-8b_multi_agent_s42_run1": "completed"
+  "gpt-oss-20b_naive_s42_run1": "completed",
+  "gpt-oss-20b_few_shot_static_s42_run1": "completed",
+  "gpt-oss-20b_graph_informed_s42_run1": "completed",
+  "gpt-oss-20b_cot_basic_s42_run1": "completed",
+  "gpt-oss-20b_cot_structured_s42_run1": "completed",
+  "gpt-oss-20b_pre_act_s42_run1": "completed",
+  "gpt-oss-20b_self_consistency_s42_run1": "completed",
+  "gpt-oss-20b_reflexion_s42_run1": "completed",
+  "gpt-oss-20b_reflexion_guided_s42_run1": "completed",
+  "gpt-oss-20b_react_abox_s42_run1": "completed"
 }
