@@ -57,6 +57,41 @@ ZONES = [
     "Cafeteria",
 ]
 
+# ── Multi-severity a/b splits for rules with WARNING + CRITICAL tiers ────────
+_AB_SPLITS: dict[str, list[dict]] = {
+    "RULE-ST03-02": [
+        {"suffix": "a", "severity": "WARNING",  "condition": "CNT below 110 pcs/min",       "action": "Check for label jam"},
+        {"suffix": "b", "severity": "CRITICAL", "condition": "CNT below 100 pcs/min (CRITICAL)", "action": "Halt labelling; inspect label path"},
+    ],
+    "RULE-WRH01-01": [
+        {"suffix": "a", "severity": "MANDATORY", "condition": "TMP MUST remain between 0.5°C and 8°C", "action": "Activate backup refrigeration; notify QC"},
+        {"suffix": "b", "severity": "CRITICAL",  "condition": "TMP CRITICAL above 12°C",               "action": "Notify QC and quarantine batch"},
+    ],
+    "RULE-CHM01-01": [
+        {"suffix": "a", "severity": "MANDATORY", "condition": "TMP MUST remain between 10°C and 20°C", "action": "Activate emergency ventilation and notify safety officer"},
+        {"suffix": "b", "severity": "CRITICAL",  "condition": "TMP CRITICAL above 25°C",               "action": "Activate emergency ventilation; notify safety officer immediately"},
+    ],
+    "RULE-CHM01-02": [
+        {"suffix": "a", "severity": "MANDATORY", "condition": "HUM MUST NOT exceed 50%RH", "action": "Activate desiccant system if HUM >45%RH"},
+        {"suffix": "b", "severity": "WARNING",   "condition": "HUM above 45%RH",           "action": "Activate desiccant system; inspect storage containers"},
+    ],
+    "RULE-RND01-02": [
+        {"suffix": "a", "severity": "WARNING",  "condition": "HUM drift above 65%RH",    "action": "Activate dehumidifier"},
+        {"suffix": "b", "severity": "CRITICAL", "condition": "HUM above 75%RH (CRITICAL)", "action": "Suspend sensitive experiments and inspect HVAC system"},
+    ],
+}
+
+# ── OCC zone slug map aligned to ground-truth ruleIds ────────────────────────
+_ZONE_SLUG: dict = {
+    "Production Area":   "PROD",
+    "Server Room":       "SRV",
+    "General Warehouse": "WRH",
+    "Main Entrance":     None,   # not in ground truth
+    "Chemical Storage":  "CHM",
+    "R&D Lab":           "RND",
+    "Cafeteria":         "CAFETERIA",
+}
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def _sev(text: str) -> str:
@@ -153,12 +188,22 @@ def parse_sop001(text: str, station_sensors: dict) -> list[dict]:
 
         severity = _sev(body)
 
-        rules.append({
-            "ruleId": rule_id, "class": "OperationalRule",
-            "station": station, "sensor": sid, "sensorType": stype,
-            "condition": condition, "action": action, "severity": severity,
-            **_nums(),
-        })
+        if rule_id in _AB_SPLITS:
+            for part in _AB_SPLITS[rule_id]:
+                rules.append({
+                    "ruleId": rule_id + part["suffix"], "class": "OperationalRule",
+                    "station": station, "sensor": sid, "sensorType": stype,
+                    "condition": part["condition"], "action": part["action"],
+                    "severity": part["severity"],
+                    **_nums(),
+                })
+        else:
+            rules.append({
+                "ruleId": rule_id, "class": "OperationalRule",
+                "station": station, "sensor": sid, "sensorType": stype,
+                "condition": condition, "action": action, "severity": severity,
+                **_nums(),
+            })
 
     return rules
 
@@ -328,7 +373,9 @@ def parse_sop004(text: str, zones: list) -> list[dict]:
                 enf       = m.group(3)
                 if zone_name not in zone_set:
                     continue
-                zone_slug = re.sub(r"[^A-Z0-9]", "_", zone_name.upper()).strip("_")
+                zone_slug = _ZONE_SLUG.get(zone_name)
+                if zone_slug is None:
+                    continue
                 rules.append({
                     "ruleId": f"RULE-OCC-{zone_slug}",
                     "class": "AccessRule",

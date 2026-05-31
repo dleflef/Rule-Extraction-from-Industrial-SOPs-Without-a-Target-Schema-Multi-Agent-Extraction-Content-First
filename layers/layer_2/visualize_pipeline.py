@@ -2,176 +2,198 @@ from __future__ import annotations
 
 import argparse
 import os
-import re
-import subprocess
 import sys
-import tempfile
-from collections import defaultdict
 
 _DIR = os.path.dirname(os.path.abspath(__file__))
 if _DIR not in sys.path:
     sys.path.insert(0, _DIR)
 
-from step2_TEST import build_pipeline, _build_pipeline_for_ablation, ABLATION_CONFIGS
+from step2_TEST import _ABL_TAG_MAP
 
-ABLATION_OPTIONS = ABLATION_CONFIGS  # convenience alias
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 
-# Output scale: 1 = native SVG size, 2 = 2× (sharper but larger file)
-PNG_SCALE = 1
+# ── colours ────────────────────────────────────────────────────────────────────
+C_EXTRACTOR = "#dbeafe"   # blue  — extractors
+C_CONTROL   = "#fef9c3"   # yellow — control nodes
+C_IO        = "#dcfce7"   # green  — save / CSV
+C_ENDPOINT  = "#f3f4f6"   # grey   — START / END
+B_EXTRACTOR = "#3b82f6"
+B_CONTROL   = "#ca8a04"
+B_IO        = "#16a34a"
+B_ENDPOINT  = "#6b7280"
+T_EXTRACTOR = "#1e3a8a"
+T_CONTROL   = "#713f12"
+T_IO        = "#14532d"
+T_ENDPOINT  = "#374151"
 
-
-def _postprocess_mermaid(mermaid_code: str) -> str:
-    """
-    1. Switch layout direction to LR so the pipeline flows left→right and
-       parallel branches (same rank) naturally stack top→bottom.
-    2. Add ~~~ invisible links between nodes that share the same parent-set
-       and child-set to hint dagre they belong at the same rank.
-    """
-    # Switch TD → LR
-    code = mermaid_code.replace("graph TD;", "graph LR;")
-
-    edge_re = re.compile(r"^\t(\S+)\s+(?:-->|-\.->)\s+(\S+);")
-    parents_of:  dict[str, set[str]] = defaultdict(set)
-    children_of: dict[str, set[str]] = defaultdict(set)
-    for line in code.splitlines():
-        m = edge_re.match(line)
-        if m:
-            src, dst = m.group(1), m.group(2)
-            children_of[src].add(dst)
-            parents_of[dst].add(src)
-
-    all_nodes = set(parents_of) | set(children_of)
-    sig_to_nodes: dict[tuple, list[str]] = defaultdict(list)
-    for node in all_nodes:
-        if node.startswith("__"):
-            continue
-        sig = (frozenset(parents_of[node]), frozenset(children_of[node]))
-        if sig[0] or sig[1]:
-            sig_to_nodes[sig].append(node)
-
-    invisible = []
-    for nodes in sig_to_nodes.values():
-        if len(nodes) >= 2:
-            ns = sorted(nodes)
-            for a, b in zip(ns, ns[1:]):
-                invisible.append(f"\t{a} ~~~ {b};")
-
-    if invisible:
-        lines = code.splitlines()
-        insert_at = next(
-            (i for i, l in enumerate(lines) if l.strip().startswith("classDef")),
-            len(lines),
-        )
-        lines[insert_at:insert_at] = invisible
-        code = "\n".join(lines)
-
-    return code
+BOX_W  = 0.18   # node box width  (axes fraction)
+BOX_H  = 0.07   # node box height (axes fraction)
+R_CIRC = 0.035  # radius for START / END circles
 
 
-def _parse_svg_dimensions(svg_path: str) -> tuple[int, int]:
-    """Read width/height from the root <svg> element, falling back to viewBox."""
-    with open(svg_path, encoding="utf-8") as f:
-        header = f.read(4096)
-    # Try explicit width/height attributes first
-    w = re.search(r'<svg[^>]+\bwidth="([\d.]+)"', header)
-    h = re.search(r'<svg[^>]+\bheight="([\d.]+)"', header)
-    if w and h:
-        return int(float(w.group(1))) + 40, int(float(h.group(1))) + 40
-    # Fall back to viewBox="minX minY width height"
-    vb = re.search(r'<svg[^>]+\bviewBox="[\d.]+ [\d.]+ ([\d.]+) ([\d.]+)"', header)
-    if vb:
-        return int(float(vb.group(1))) + 40, int(float(vb.group(2))) + 40
-    return 3200, 2000
+def _box(ax, cx, cy, label, fill, edge, text_color, fontsize=9):
+    """Draw a rounded rectangle centred at (cx, cy)."""
+    rect = FancyBboxPatch(
+        (cx - BOX_W / 2, cy - BOX_H / 2), BOX_W, BOX_H,
+        boxstyle="round,pad=0.01",
+        facecolor=fill, edgecolor=edge, linewidth=1.4,
+        transform=ax.transAxes, clip_on=False,
+    )
+    ax.add_patch(rect)
+    ax.text(cx, cy, label, ha="center", va="center", fontsize=fontsize,
+            color=text_color, fontweight="bold", transform=ax.transAxes,
+            multialignment="center")
 
 
-def _render_mermaid_png(mermaid_code: str, output_path: str) -> None:
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".mmd", delete=False, encoding="utf-8"
-    ) as tmp:
-        tmp.write(mermaid_code)
-        tmp.flush()
-        tmp_path = tmp.name
+def _circle(ax, cx, cy, label, fill, edge, text_color):
+    """Draw a circle node (START / END)."""
+    circ = mpatches.Circle(
+        (cx, cy), R_CIRC,
+        facecolor=fill, edgecolor=edge, linewidth=1.2,
+        transform=ax.transAxes, clip_on=False,
+    )
+    ax.add_patch(circ)
+    ax.text(cx, cy, label, ha="center", va="center", fontsize=8,
+            color=text_color, fontweight="bold", transform=ax.transAxes)
 
-    svg_path = output_path.replace(".png", "_tmp.svg")
-    try:
-        # Step 1: render to SVG (auto-sized to diagram content)
-        subprocess.run(
-            [
-                "npx", "@mermaid-js/mermaid-cli",
-                "-i", tmp_path,
-                "-o", svg_path,
-                "--backgroundColor", "white",
-            ],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
 
-        # Step 2: measure the SVG's natural size
-        w, h = _parse_svg_dimensions(svg_path)
-
-        # Step 3: render to PNG using those exact dimensions × scale
-        subprocess.run(
-            [
-                "npx", "@mermaid-js/mermaid-cli",
-                "-i", tmp_path,
-                "-o", output_path,
-                "--width",  str(w),
-                "--height", str(h),
-                "--scale",  str(PNG_SCALE),
-                "--backgroundColor", "white",
-            ],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        print(f"PNG saved → {output_path}  ({w * PNG_SCALE}×{h * PNG_SCALE} px)")
-    finally:
-        os.unlink(tmp_path)
-        if os.path.exists(svg_path):
-            os.unlink(svg_path)
+def _arrow(ax, x0, y0, x1, y1, label="", color="#555", rad=0.0,
+           label_dx=0.01, label_dy=0.0):
+    """Draw an annotated arrow between two points in axes coordinates."""
+    ax.annotate(
+        "", xy=(x1, y1), xytext=(x0, y0),
+        xycoords="axes fraction", textcoords="axes fraction",
+        arrowprops=dict(
+            arrowstyle="-|>", color=color, lw=1.2,
+            connectionstyle=f"arc3,rad={rad}",
+        ),
+    )
+    if label:
+        mx = (x0 + x1) / 2 + label_dx
+        my = (y0 + y1) / 2 + label_dy
+        ax.text(mx, my, label, ha="left", va="center", fontsize=7,
+                color="#555", transform=ax.transAxes,
+                bbox=dict(boxstyle="round,pad=0.1", fc="white", ec="none", alpha=0.8))
 
 
 def visualize(ablation: str | None = None) -> None:
-    if ablation:
-        app = _build_pipeline_for_ablation(ablation)
-        tag = f"abl_{ablation}"
+    has_judge = ablation != "no_judge"
+
+    # ── node labels ──────────────────────────────────────────────────────────
+    coord_lbl    = "coordinator\nkeyword regex" if ablation == "no_cm"        else "coordinator\nLLM classify"
+    merge_lbl    = "merge\ndeterministic only"  if ablation == "no_adj"       else "merge\nadjudicator LLM"
+    validate_lbl = "validate\npassthrough"       if ablation == "no_validator" else "validate\nLLM check"
+
+    # ── y positions (top-down, values decrease) ───────────────────────────────
+    # Rows are laid out explicitly so extractors are always at the same level.
+    Y = {
+        "START":  0.96,
+        "COORD":  0.86,
+        "EXTR":   0.73,   # shared y for all three extractors
+        "MRG":    0.60,
+        "VAL":    0.50,
+        "JDG":    0.40,
+        "PRE":    0.29,
+        "NRM":    0.29 if not has_judge else 0.19,
+        "SAV":    0.19 if not has_judge else 0.09,
+        "END":    0.09 if not has_judge else 0.01,
+    }
+
+    # ── figure setup ─────────────────────────────────────────────────────────
+    fig, ax = plt.subplots(figsize=(11, 14))
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1)
+    ax.axis("off")
+    ax.set_title("", pad=0)
+
+    # ── draw nodes ───────────────────────────────────────────────────────────
+    cx = 0.50   # centre x for main column
+
+    _circle(ax, cx, Y["START"], "START", C_ENDPOINT, B_ENDPOINT, T_ENDPOINT)
+    _box(ax, cx, Y["COORD"], coord_lbl, C_CONTROL, B_CONTROL, T_CONTROL)
+
+    # Three extractors at the same y — fixed x positions
+    _box(ax, 0.18, Y["EXTR"], "extract_narrative\nExtractor-A", C_EXTRACTOR, B_EXTRACTOR, T_EXTRACTOR)
+    _box(ax, 0.50, Y["EXTR"], "extract_tabular\nExtractor-B",   C_EXTRACTOR, B_EXTRACTOR, T_EXTRACTOR)
+    _box(ax, 0.82, Y["EXTR"], "extract_matrix\nExtractor-C",    C_EXTRACTOR, B_EXTRACTOR, T_EXTRACTOR)
+
+    _box(ax, cx, Y["MRG"],  merge_lbl,    C_CONTROL, B_CONTROL, T_CONTROL)
+    _box(ax, cx, Y["VAL"],  validate_lbl, C_CONTROL, B_CONTROL, T_CONTROL)
+
+    if has_judge:
+        _box(ax, cx, Y["JDG"], "judge\ngap detector", C_CONTROL, B_CONTROL, T_CONTROL)
+        _box(ax, cx, Y["PRE"], "pre_retry",            C_CONTROL, B_CONTROL, T_CONTROL)
+
+    _box(ax, cx, Y["NRM"], "normalize\nruleId canon.", C_CONTROL, B_CONTROL, T_CONTROL)
+    _box(ax, cx, Y["SAV"], "save\n→ CSV",              C_IO,      B_IO,      T_IO)
+    _circle(ax, cx, Y["END"], "END", C_ENDPOINT, B_ENDPOINT, T_ENDPOINT)
+
+    # ── draw edges (forward) ─────────────────────────────────────────────────
+    top   = lambda y: y + BOX_H / 2
+    bot   = lambda y: y - BOX_H / 2
+    top_c = lambda y: y + R_CIRC
+
+    # START → COORD
+    _arrow(ax, cx, top_c(Y["START"]) - R_CIRC, cx, top(Y["COORD"]))
+
+    # COORD → extractors
+    _arrow(ax, cx, bot(Y["COORD"]), 0.18, top(Y["EXTR"]), "narrative / mixed", rad=-0.15)
+    _arrow(ax, cx, bot(Y["COORD"]), 0.50, top(Y["EXTR"]), "tabular")
+    _arrow(ax, cx, bot(Y["COORD"]), 0.82, top(Y["EXTR"]), "matrix", rad=0.15)
+
+    # extractors → MRG
+    _arrow(ax, 0.18, bot(Y["EXTR"]), cx, top(Y["MRG"]), rad=0.15)
+    _arrow(ax, 0.50, bot(Y["EXTR"]), cx, top(Y["MRG"]))
+    _arrow(ax, 0.82, bot(Y["EXTR"]), cx, top(Y["MRG"]), rad=-0.15)
+
+    # MRG → VAL → ...
+    _arrow(ax, cx, bot(Y["MRG"]), cx, top(Y["VAL"]))
+
+    if has_judge:
+        _arrow(ax, cx, bot(Y["VAL"]), cx, top(Y["JDG"]))
+        # "pass": label moved left so it doesn't land on top of the PRE box
+        _arrow(ax, cx - 0.02, bot(Y["JDG"]), cx - 0.02, top(Y["NRM"]), "pass",
+               label_dx=-0.12, label_dy=0.04)
+        _arrow(ax, cx + 0.02, bot(Y["JDG"]), cx + 0.02, top(Y["PRE"]), "needs retry")
+
+        # PRE → extractors retry: simple diagonals from PRE corners to extractor outer edges
+        _arrow(ax, cx - BOX_W / 2, bot(Y["PRE"]),
+               0.18 - BOX_W / 2, Y["EXTR"], color="#999")
+        _arrow(ax, cx + BOX_W / 2, bot(Y["PRE"]),
+               0.82 + BOX_W / 2, Y["EXTR"], color="#999")
     else:
-        app = build_pipeline()
-        tag = "full"
+        _arrow(ax, cx, bot(Y["VAL"]), cx, top(Y["NRM"]))
 
+    _arrow(ax, cx, bot(Y["NRM"]), cx, top(Y["SAV"]))
+    _arrow(ax, cx, bot(Y["SAV"]), cx, Y["END"] + R_CIRC)
+
+    # ── save ─────────────────────────────────────────────────────────────────
+    tag     = f"abl_{ablation}" if ablation else "full"
     out_png = os.path.join(_DIR, f"pipeline_{tag}.png")
-    out_md  = os.path.join(_DIR, f"pipeline_{tag}.md")
-
-    mermaid = _postprocess_mermaid(app.get_graph().draw_mermaid())
-
-    try:
-        _render_mermaid_png(mermaid, out_png)
-    except Exception as e:
-        # Fallback: save the Mermaid source and print it
-        print(f"PNG rendering failed ({e}), falling back to Mermaid markdown.")
-        with open(out_md, "w") as f:
-            f.write(f"```mermaid\n{mermaid}\n```\n")
-        print(f"Mermaid saved → {out_md}")
-        print("Paste the code below at https://mermaid.live/ to view:")
-        print(mermaid)
+    plt.tight_layout()
+    plt.savefig(out_png, dpi=150, bbox_inches="tight", facecolor="white")
+    plt.close()
+    print(f"Saved → {out_png}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Visualize step2_TEST pipeline graph")
     parser.add_argument(
-        "--ablation", choices=list(ABLATION_OPTIONS), default=None,
-        help="Visualize an ablation variant instead of the full pipeline",
+        "--ablation", choices=list(_ABL_TAG_MAP.keys()), default=None,
+        help="Visualize an ablation variant (omit for full pipeline)",
     )
     parser.add_argument(
         "--all", dest="all_variants", action="store_true",
-        help="Render full pipeline + all four ablation variants",
+        help="Render full pipeline + all ablation variants",
     )
     args = parser.parse_args()
 
     if args.all_variants:
         visualize(None)
-        for abl in ABLATION_OPTIONS:
+        for abl in _ABL_TAG_MAP:
             visualize(abl)
     else:
         visualize(args.ablation)

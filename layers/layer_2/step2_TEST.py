@@ -1,25 +1,3 @@
-"""
-step2_TEST.py  ─  LangGraph multi-agent SOP rule extraction pipeline
-=====================================================================
-Graph topology
-  START → coordinator → (Send fan-out per file to typed extractor)
-        → extract_narrative[×N_narr] | extract_tabular[×N_tab] | extract_matrix[×N_mat]  (parallel)
-        → merge → validate → judge
-  judge ─→ pre_retry → (Send fan-out retry files to typed extractors)
-         → extract_narrative | extract_tabular | extract_matrix
-         → merge → validate → judge
-        └→ normalize → save → END
-
-LLM assignments (evaluation_summary.csv, strict_f1 ranking):
-  Coordinator : qwen/qwen3-4b-2507   lightweight classification     (fast)
-  Extractor A : gemma3-12b           narrative / mixed  strict_f1 = 0.702
-  Extractor B : ministral-3-8b       tabular            strict_f1 = 0.606
-  Extractor C : gemma3-12b           matrix             strict_f1 = 0.702
-  Adjudicator : gpt-oss-20b          conflict merge
-  Validator   : ministral-3-14b      quality control
-  Judge       : ministral-3-14b      gap detection
-  Normalizer  : qwen/qwen3-4b-2507   ID canonicalize
-"""
 
 from __future__ import annotations
 
@@ -39,6 +17,8 @@ from langgraph.types import Send
 from openai import OpenAI
 
 # ── Environment & paths ────────────────────────────────────────────────────────
+# The project's .env file is located two levels above this script and is loaded
+# before any environment variable is accessed, so runtime secrets are never hard-coded.
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
 
 _SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
@@ -52,6 +32,9 @@ LMSTUDIO_MODELS: set[str] = set(
     m.strip() for m in os.environ.get("LMSTUDIO_MODELS", "").split(",") if m.strip()
 )
 
+# Two OpenAI-compatible clients are instantiated at module load time — one targeting
+# Ollama and one targeting LM Studio. The correct client is selected per call based on
+# whether the requested model name appears in the LMSTUDIO_MODELS set.
 _ollama_client   = OpenAI(api_key=_OLLAMA_API_KEY,   base_url=_OLLAMA_BASE_URL,   timeout=600)
 _lmstudio_client = OpenAI(api_key=_LMSTUDIO_API_KEY, base_url=_LMSTUDIO_BASE_URL, timeout=600)
 
@@ -61,18 +44,24 @@ def _client_for(model: str) -> OpenAI:
 
 
 # ── Constants ──────────────────────────────────────────────────────────────────
+# Retry and token budgets are kept conservative to survive transient network issues
+# without saturating the local inference server's queue.
 MAX_RETRIES       = 3
 RETRY_BASE_DELAY  = 15.0
 LLM_NUM_CTX       = 16384
 MAX_OUTPUT_TOKENS = 16384
 SOP_TEXT_LIMIT    = 8000
 
+# Input and output paths are anchored to the project root so the script can be
+# invoked from any working directory without path resolution errors.
 ABOX_DEFAULT_PATH = os.path.join(_PROJECT_ROOT, "data", "dataset", "kg_seed", "nodes_factory.csv")
 TEXTS_DIR         = os.path.join(_SCRIPT_DIR, "..", "texts")
 RESULTS_DIR       = os.path.join(_SCRIPT_DIR, "step2_results")
 GROUND_TRUTH_PATH = os.path.join(_PROJECT_ROOT, "data", "dataset", "kg_seed", "ground_truth.csv")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
+# A fixed field order is declared so that every output CSV shares the same column
+# layout regardless of which rule types are extracted in a given run.
 RULE_FIELDS = [
     "ruleId", "class", "station", "sensor", "sensorType",
     "condition", "action", "severity",
@@ -81,6 +70,56 @@ RULE_FIELDS = [
     "llm_turns", "text_truncated",
 ]
 
+# Default model assignments are centralised here so a single point is available
+# for experiment reconfiguration; each key is also exposed as a CLI argument.
+#
+# Assignments are grounded in the grid-search evaluation (evaluation_summary.csv,
+# few_shot_static paradigm, seed 42) unless otherwise noted:
+#
+#   coordinator_model  → qwen/qwen3-4b-2507
+#       Document-type classification is a lightweight structural decision that does
+#       not require extraction capability. The 4b model handles it reliably while
+#       keeping per-run latency low; its low strict F1 on extraction (0.352) is
+#       irrelevant for this purely classificatory role.
+#
+#   extractor_a_model  → gemma3:12b  (narrative / mixed SOPs)
+#       gemma3:12b achieved the highest strict F1 (0.702) and precision (0.815)
+#       among all single-model few_shot_static runs. High precision is prioritised
+#       for narrative documents because hallucinated rules are harder to filter
+#       deterministically than missed rules (which the judge+retry loop recovers).
+#
+#   extractor_b_model  → ministral-3:8b  (tabular threshold SOPs)
+#       ministral-3:8b reached strict F1 = 0.606 and content F1 = 0.727 on
+#       few_shot_static — the best balance of precision and recall for structured
+#       table rows. Tabular extraction is more mechanical than narrative parsing,
+#       so the 8b model is sufficient and faster than the 14b variant (F1 = 0.527).
+#
+#   extractor_c_model  → gemma3:12b  (access / occupancy matrix SOPs)
+#       Matrix documents share the same schema-awareness requirements as narrative
+#       SOPs; gemma3:12b's leading precision (0.815) is reused to minimise spurious
+#       AccessRule entries from cross-cell inference.
+#
+#   adjudicator_model  → ministral-3:14b
+#       Conflict resolution requires multi-candidate reasoning beyond pure extraction.
+#       The ablation study (abl_noAdj: content F1 = 0.703 vs full pipeline 0.823)
+#       confirms the adjudicator's contribution; the 14b model is the most capable
+#       local Ministral variant for this complex reasoning task.
+#
+#   validator_model    → ministral-3:14b
+#       Grounding verification and false-negative recovery demand careful cross-
+#       referencing of extracted rules against raw SOP text. The 14b model is
+#       assigned because under-validating costs recall (abl_noValidator: content
+#       F1 = 0.776 vs 0.823 in the full run).
+#
+#   judge_model        → ministral-3:14b
+#       Gap detection across S1–S4 categories is the most complex reasoning task
+#       in the pipeline. The ablation (abl_noJudge: content F1 = 0.795 vs 0.823)
+#       shows its impact; the 14b model minimises missed violations.
+#
+#   normalizer_model   → qwen/qwen3-4b-2507
+#       ruleId canonicalisation is a pattern-matching task over a fixed naming
+#       schema. The 4b model handles this efficiently; assigning a heavier model
+#       would add latency without improving the single field being rewritten.
 DEFAULTS = {
     "coordinator_model": "qwen/qwen3-4b-2507",
     "extractor_a_model": "gemma3:12b",
@@ -96,10 +135,12 @@ DEFAULTS = {
 _ABL_TAG_MAP: dict[str, str] = {
     "no_cm":        "noCM",
     "no_adj":       "noAdj",
-    "no_validator": "noV",
-    "no_judge":     "noQGE",
+    "no_validator": "noValidator",
+    "no_judge":     "noJudge",
 }
 
+# Models that do not accept a dedicated system-role message are collected here.
+# Their system content is folded into the first user turn before the request is sent.
 NO_SYSTEM_ROLE: set[str] = {"ministral-3:3b", "ministral-3:8b", "ministral-3:14b"}
 
 DocType = Literal["narrative", "tabular", "matrix", "mixed"]
@@ -113,6 +154,10 @@ _DTYPE_TO_NODE: dict[str, str] = {
 
 
 # ── LangGraph State ────────────────────────────────────────────────────────────
+# The shared pipeline state is declared as a TypedDict so LangGraph can enforce
+# typed partial updates from each node. The extracted_rules field is annotated with
+# operator.add so that outputs from parallel extractor nodes are automatically
+# concatenated rather than overwritten.
 class PipelineState(TypedDict, total=False):
     coordinator_model:  str
     extractor_a_model:  str
@@ -139,6 +184,8 @@ class PipelineState(TypedDict, total=False):
 
 
 # ── LLM utilities ─────────────────────────────────────────────────────────────
+# System content is merged into the first user message when the target model
+# does not support a dedicated system role in its message list format.
 def _merge_system_into_user(messages: list[dict]) -> list[dict]:
     if not messages or messages[0].get("role") != "system":
         return messages
@@ -154,6 +201,8 @@ def _merge_system_into_user(messages: list[dict]) -> list[dict]:
 def llm_call(model: str, messages: list[dict], temperature: float = 0) -> str:
     if model in NO_SYSTEM_ROLE:
         messages = _merge_system_into_user(messages)
+    # Each failed attempt is logged and followed by an exponential backoff delay.
+    # On the final attempt the exception is re-raised so the caller is notified of failure.
     delay = RETRY_BASE_DELAY
     last_exc: Exception | None = None
     for attempt in range(1, MAX_RETRIES + 1):
@@ -188,6 +237,8 @@ def parse_rules(raw: str) -> list[dict]:
     """
     if not raw:
         return []
+    # Chain-of-thought reasoning blocks are stripped before JSON extraction is attempted
+    # so that model "thinking" tokens do not interfere with parsing.
     raw = re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL)
 
     def _extract(text: str) -> list[dict]:
@@ -247,6 +298,8 @@ def parse_rules(raw: str) -> list[dict]:
 
 
 # ── Merge helpers (from step2_ma.py) ──────────────────────────────────────────
+# Canonical class and severity sets are defined here so membership checks are performed
+# against a single source of truth rather than scattered string literals.
 _ALLOWED_CLASSES    = {"ThresholdRule", "OperationalRule", "MaintenanceRule", "AccessRule"}
 _ALLOWED_SEVERITIES = {"CRITICAL", "WARNING", "MANDATORY", "HIGH", "MEDIUM", "LOW"}
 
@@ -271,7 +324,9 @@ def _norm_text(s: str) -> str:
 _CONTENT_FIELDS      = ("class", "station", "sensorType", "severity", "condition", "action")
 _AGREEMENT_THRESHOLD = 0.75  # fraction of non-empty paired fields that must agree to collapse
 
-
+# Content-field similarity is measured by counting how many paired non-empty values
+# agree after normalisation; only populated pairs are included in the denominator
+# so that sparse rules are not unfairly penalised.
 def _agreement_score(r1: dict, r2: dict) -> float:
     """Fraction of content fields with equal normalized values (only non-empty pairs counted)."""
     compared = agreed = 0
@@ -341,6 +396,8 @@ def _guard_fields(rule: dict, original_candidates: list[dict]) -> dict:
 
 def _deterministic_post_filter(rules: list[dict]) -> list[dict]:
     """Validate classes, drop empty ThresholdRules, deduplicate by 6-field content signature."""
+    # Rules are deduplicated by a six-field content signature; when two rules share
+    # the same signature, the one with more populated fields is retained.
     seen_sigs: dict[str, dict] = {}
     for r in rules:
         cls = str(r.get("class", "")).strip()
@@ -721,6 +778,9 @@ def _build_judge_system(doc_types: dict[str, str]) -> str:
 # ══════════════════════════════════════════════════════════════════════════════
 #  LangGraph nodes
 # ══════════════════════════════════════════════════════════════════════════════
+# Each node receives the full PipelineState and is expected to return a partial
+# update dict. The update is merged into the shared state by LangGraph before
+# the next node is invoked.
 
 _STRUCTURAL_CLASSIFY_PROMPT = (
     "You are a document structure analyst. Classify the industrial SOP document below "
@@ -864,7 +924,8 @@ def merge_node(state: PipelineState) -> dict:
     if not all_rules:
         return {"merged_rules": []}
 
-    # Group by (class, station, sensorType)
+    # Rules are grouped by (class, station, sensorType) so that only candidates
+    # describing the same physical entity are considered for merging or adjudication.
     groups: dict[tuple, list[dict]] = {}
     for r in all_rules:
         key = (
@@ -950,7 +1011,8 @@ def merge_node(state: PipelineState) -> dict:
             "candidates": deduped,
         })
 
-    # Batched LLM adjudication for all conflict groups
+    # All unresolved conflict groups are batched into a single LLM call to minimise
+    # total inference time; the LLM response is then applied to the collected output list.
     if conflict_groups:
         print(f"  [Adjudicator] {len(conflict_groups)} conflict group(s) → LLM")
         raw = llm_call(model, [
@@ -984,6 +1046,9 @@ def validate_node(state: PipelineState) -> dict:
     sop_texts = state.get("sop_texts", {})
     print(f"[Validator/{model}] Validating {len(rules)} rules...")
 
+    # Two validation passes are applied in sequence: a fast deterministic pass cleans up
+    # class labels and duplicates, then a per-file LLM pass checks grounding and
+    # recovers any rules that were missed during extraction.
     # Pass 1 — deterministic cleanup (class normalisation, threshold hygiene, dedup)
     rules = _deterministic_post_filter(rules)
     print(f"  → {len(rules)} after deterministic filter")
@@ -1036,7 +1101,8 @@ def judge_node(state: PipelineState) -> dict:
         print("  → max retries reached")
         return {"retry_files": {}}
 
-    # Deterministic physics pre-check: surface S3(c) violations before LLM call
+    # A deterministic physics pre-check is performed before the LLM call so that
+    # threshold-ordering violations are surfaced even when the LLM judge overlooks them.
     physics_violations = [r for r in validated if not _physics_valid(r)]
     if physics_violations:
         print(f"  [Judge] {len(physics_violations)} physics violation(s) detected (S3-physics):")
@@ -1070,7 +1136,8 @@ def judge_node(state: PipelineState) -> dict:
     if feedback.get("pass", True):
         return {"retry_files": {}}
 
-    # Flag files identified as deficient by the LLM judge
+    # Files identified as deficient by the LLM judge are collected, then augmented
+    # by a deterministic safety net that catches files with zero substantive rules.
     llm_deficient: set[str] = set(feedback.get("deficient_files") or [])
 
     # Deterministic safety net: catch files with zero substantive rules regardless of LLM verdict
@@ -1162,6 +1229,9 @@ def normalize_node(state: PipelineState) -> dict:
     )}])
     normalized = parse_rules(raw)
 
+    # Only the ruleId field is taken from the LLM response; all semantic fields are
+    # preserved from the originals. If the returned count does not match, originals
+    # are kept unchanged to prevent silent data loss.
     if normalized and len(normalized) == len(rules):
         final = [
             {**orig, "ruleId": norm.get("ruleId", orig.get("ruleId", ""))}
@@ -1200,8 +1270,13 @@ def _judge_routing(state: PipelineState) -> str:
 # ══════════════════════════════════════════════════════════════════════════════
 #  Ablation node variants
 # ══════════════════════════════════════════════════════════════════════════════
+# Simplified node variants are defined here so that the contribution of each
+# pipeline component can be measured by swapping it out at graph-assembly time.
+# Only the behaviour of the affected node is changed; all other nodes remain identical.
 
 # ── no_cm: keyword-based coordinator (no LLM) ─────────────────────────────────
+# Document type is inferred from a small set of regex patterns when the LLM
+# coordinator is removed. Each pattern is matched against the first 3 000 characters.
 _KEYWORD_CLASSIFY_RULES: list[tuple[str, str]] = [
     (r"CRIT_LO|WARN_LO|WARN_HI|CRIT_HI",                                     "tabular"),
     (r"(?i)(?:zone|area|sector)\s+\w+.*(?:authorized|forbidden|max.persons)",  "matrix"),
@@ -1329,7 +1404,8 @@ def merge_node_no_adj(state: PipelineState) -> dict:
 def _passthrough_validate(state: PipelineState) -> dict:
     """Pass merged rules directly to judge without LLM validation (ablation: no_validator)."""
     rules = state.get("merged_rules", [])
-    # Still apply deterministic filter so the judge sees clean data
+    # The deterministic filter is still applied so the judge receives clean data
+    # even though the LLM validation step has been removed.
     rules = _deterministic_post_filter(rules)
     print(f"[Validator/skipped] {len(rules)} rules passed through (ablation: no_validator)")
     return {"validated_rules": rules}
@@ -1338,7 +1414,9 @@ def _passthrough_validate(state: PipelineState) -> dict:
 # ══════════════════════════════════════════════════════════════════════════════
 #  Graph assembly
 # ══════════════════════════════════════════════════════════════════════════════
-
+# The graph topology is assembled here. Ablation flags are used to substitute
+# simplified node variants so that each component's contribution can be isolated.
+# Edges and conditional fan-outs are registered after all nodes are added.
 def build_graph(ablation: str | None = None) -> StateGraph:
     builder = StateGraph(PipelineState)
 
@@ -1369,7 +1447,9 @@ def build_graph(ablation: str | None = None) -> StateGraph:
     builder.add_edge("merge", "validate")
 
     if ablation == "no_judge":
-        # Skip judge and retry loop entirely
+        # The judge node and its associated retry loop are omitted entirely when
+        # the no_judge ablation is selected; validated rules are passed straight
+        # to the normalizer.
         builder.add_edge("validate", "normalize")
     else:
         builder.add_node("judge",     judge_node)
@@ -1394,7 +1474,9 @@ def build_graph(ablation: str | None = None) -> StateGraph:
 # ══════════════════════════════════════════════════════════════════════════════
 #  Entry point
 # ══════════════════════════════════════════════════════════════════════════════
-
+# The initial pipeline state is constructed from module-level defaults, then
+# selectively overridden by caller-supplied keyword arguments. The compiled
+# graph is invoked synchronously and the final state dict is returned to the caller.
 def run_pipeline(ablation: str | None = None, **overrides: str) -> dict:
     initial_state: PipelineState = {
         **DEFAULTS,                          # type: ignore[typeddict-item]
@@ -1419,6 +1501,8 @@ def run_pipeline(ablation: str | None = None, **overrides: str) -> dict:
 
 
 if __name__ == "__main__":
+    # CLI arguments are parsed and mapped to pipeline overrides so model names and
+    # the ablation flag can be supplied without modifying the source file.
     parser = argparse.ArgumentParser(description="LangGraph multi-agent SOP rule extraction")
     for key, default in DEFAULTS.items():
         parser.add_argument(f"--{key.replace('_', '-')}", default=default)

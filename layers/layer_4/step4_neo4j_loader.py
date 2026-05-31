@@ -105,7 +105,7 @@ def print_summary(driver) -> None:
         print("\n  Node counts:")
         for rec in session.run(
             "MATCH (n) UNWIND labels(n) AS lbl "
-            "WHERE lbl <> 'Node' "
+            "WITH lbl WHERE lbl <> 'Node' "
             "RETURN lbl, count(*) AS cnt ORDER BY cnt DESC"
         ):
             print(f"    {rec['lbl']:20s} {rec['cnt']}")

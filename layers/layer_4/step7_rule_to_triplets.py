@@ -52,7 +52,7 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.abspath(__file__)),
 _SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
 _PROJECT_ROOT = os.path.normpath(os.path.join(_SCRIPT_DIR, "..", ".."))
 
-EVAL_CSV    = os.path.join(_PROJECT_ROOT, "layers", "step3_results", "comprehensive_evaluation_results.csv")
+EVAL_CSV    = os.path.join(_PROJECT_ROOT, "layers", "step3_results", "evaluation_summary.csv")
 RESULTS_DIR = os.path.join(_PROJECT_ROOT, "layers", "layer_2", "step2_results")
 
 NEO4J_URI      = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
@@ -341,12 +341,12 @@ def add_triplets(driver, run_file: str, clear_triplets: bool = False) -> None:
 
 
 def _best_run() -> str:
-    # Same selection logic as step5: pick the run with the highest f1_content
+    # Same selection logic as step5: pick the run with the highest content_f1
     with open(EVAL_CSV, encoding="utf-8") as f:
-        rows = [r for r in csv.DictReader(f) if r.get("f1_content")]
-    best = max(rows, key=lambda r: float(r["f1_content"]))
-    print(f"  Best run : {best['file']}  F1_content={float(best['f1_content']):.4f}")
-    return best["file"]
+        rows = [r for r in csv.DictReader(f) if r.get("content_f1")]
+    best = max(rows, key=lambda r: float(r["content_f1"]))
+    print(f"  Best run : {best['file_name']}  F1_content={float(best['content_f1']):.4f}")
+    return best["file_name"]
 
 
 def main(run_file: str | None = None, clear_triplets: bool = False) -> None:

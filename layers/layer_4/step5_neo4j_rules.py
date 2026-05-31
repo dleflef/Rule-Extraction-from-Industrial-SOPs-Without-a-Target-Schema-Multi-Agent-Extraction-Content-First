@@ -30,7 +30,7 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.abspath(__file__)),
 _SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
 _PROJECT_ROOT = os.path.normpath(os.path.join(_SCRIPT_DIR, "..", ".."))
 
-EVAL_CSV        = os.path.join(_PROJECT_ROOT, "layers", "step3_results", "comprehensive_evaluation_results.csv")
+EVAL_CSV        = os.path.join(_PROJECT_ROOT, "layers", "step3_results", "evaluation_summary.csv")
 RESULTS_DIR     = os.path.join(_PROJECT_ROOT, "layers", "layer_2", "step2_results")
 DEFAULT_RUN_FILE = "ext_ministral-3-14b_few_shot_static_run1.csv"
 
@@ -46,37 +46,38 @@ _META_FIELDS = {"source_file", "model_name", "paradigm", "level", "run_id", "llm
 
 def best_run() -> str:
     # Read the step3 evaluation results and pick whichever run scored highest
-    # on f1_content. That is the run we will load into Neo4j.
+    # on content_f1. That is the run we will load into Neo4j.
     with open(EVAL_CSV, encoding="utf-8") as f:
-        rows = [r for r in csv.DictReader(f) if r.get("f1_content")]
-    best = max(rows, key=lambda r: float(r["f1_content"]))
+        rows = [r for r in csv.DictReader(f) if r.get("content_f1")]
+    best = max(rows, key=lambda r: float(r["content_f1"]))
     print(
-        f"  Best run : {best['file']}\n"
-        f"  F1_content={float(best['f1_content']):.4f}  "
-        f"P={float(best['f1_content_precision']):.4f}  "
-        f"R={float(best['f1_content_recall']):.4f}"
+        f"  Best run : {best['file_name']}\n"
+        f"  F1_content={float(best['content_f1']):.4f}  "
+        f"P={float(best['content_pr']):.4f}  "
+        f"R={float(best['content_re']):.4f}"
     )
-    return best["file"]
+    return best["file_name"]
 
 
 def _parse_meta(filename: str) -> dict:
     # The result filenames follow the pattern:
-    # ext_<model>_<paradigm>_run<N>.csv
-    # We parse them here so we can tag each :ExtractedRule node with the
-    # model and paradigm that produced it, which is useful for later analysis.
-    # Paradigms can be 1, 2, or 3 tokens (e.g. "naive" vs "few_shot_static"),
-    # so we try each length until we get a non-empty model string.
+    # ext_<model>_<paradigm>_run<N>.csv  (or ext_<model>_<paradigm>_s<seed>_run<N>.csv)
+    # Paradigms can be 1, 2, or 3 tokens (e.g. "naive" vs "few_shot_static").
+    # Filenames without a run token (e.g. ext_multi_agent_langgraph.csv) are
+    # returned as-is with paradigm="unknown".
     stem = filename.replace("ext_", "").replace(".csv", "")
     parts = stem.split("_")
-    run_part = next((p for p in reversed(parts) if p.startswith("run")), "run1")
-    run_idx = parts.index(run_part)
+    run_idx = next((len(parts) - 1 - i for i, p in enumerate(reversed(parts)) if p.startswith("run")), None)
+    if run_idx is None:
+        return {"model": stem, "paradigm": "unknown", "run_n": "run1"}
+    run_part = parts[run_idx]
     for paradigm_len in (3, 2, 1):
         if run_idx >= paradigm_len:
             paradigm = "_".join(parts[run_idx - paradigm_len: run_idx])
             model = "_".join(parts[: run_idx - paradigm_len])
             if model:
                 return {"model": model, "paradigm": paradigm, "run_n": run_part}
-    return {"model": stem, "paradigm": "unknown", "run_n": "run1"}
+    return {"model": stem, "paradigm": "unknown", "run_n": run_part}
 
 
 def load_rules(driver, run_file: str, clear_rules: bool = False) -> None:

@@ -79,21 +79,23 @@ def eval_anomaly_events(session) -> list[dict]:
 
 
 def eval_maintenance(session) -> list[dict]:
-    # Maintenance nodes are matched by ruleId rather than by sensor, because
-    # maintenance rules are keyed to a procedure ID, not a sensor signal.
-    # We normalise case and strip dashes/underscores before comparing so that
-    # minor formatting differences between the ABox and the LLM output don't
-    # cause false negatives.
+    # Maintenance nodes are linked to AnomalyEvents (via :triggers) which in turn
+    # are linked to Sensors. We match coverage by asking: does any ExtractedRule
+    # of class MaintenanceRule cover the sensor that feeds into this maintenance node?
+    # This is more reliable than ruleId string matching because LLM-extracted IDs
+    # use different naming conventions than the ABox (e.g. RULE-ST02-03 vs MAINT-02).
     records = session.run("""
-        MATCH (m:Maintenance)
-        OPTIONAL MATCH (r:ExtractedRule)
-        WHERE toLower(replace(replace(r.ruleId, '-', ''), '_', ''))
-            CONTAINS toLower(replace(replace(m.ruleId, '-', ''), '_', ''))
+        MATCH (s:Sensor)-[:triggers]->(m:Maintenance)
+        OPTIONAL MATCH (r:ExtractedRule)-[:COVERS]->(s)
+        WITH m, s, [x IN collect(r)
+                    WHERE x.ruleClass IN ['MaintenanceRule', 'PredictiveMaintenanceRule']]
+                   AS maintRules
         RETURN
-            m.ruleId         AS maintId,
-            m.priority       AS priority,
-            count(r)         AS coveringRules,
-            collect(r.ruleId)[0..3] AS matchedIds
+            m.ruleId              AS maintId,
+            m.priority            AS priority,
+            s.name                AS sensor,
+            size(maintRules)      AS coveringRules,
+            [x IN maintRules | x.ruleId][0..3] AS matchedIds
         ORDER BY m.ruleId
     """)
 
@@ -105,7 +107,7 @@ def eval_maintenance(session) -> list[dict]:
             "type":           "Maintenance",
             "anomaly_type":   "",
             "severity":       rec["priority"] or "",
-            "sensor":         "",
+            "sensor":         rec["sensor"] or "",
             "covering_rules": rec["coveringRules"],
             "matched_ids":    ", ".join(rec["matchedIds"] or []),
             "status":         status,
@@ -171,7 +173,10 @@ def print_report(ae: list[dict], maint: list[dict], gt0009: dict) -> None:
     maint_covered = sum(1 for r in maint if r["status"] == "COVERED")
     print(f"\n  Maintenance    {maint_covered}/{len(maint)} COVERED")
     for r in maint:
-        print(f"    {_flag(r['status'])} {r['event_id']:10s} → {r['status']}")
+        print(
+            f"    {_flag(r['status'])} {r['event_id']:10s} "
+            f"{r['sensor']:30s} → {r['status']}"
+        )
 
     total = len(ae) + len(maint)
     covered = ae_covered + maint_covered
