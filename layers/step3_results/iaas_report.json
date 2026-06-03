@@ -1,0 +1,966 @@
+{
+  "iaas_mean": 0.9422,
+  "iaas_std": 0.0267,
+  "fleiss_kappa": 0.5962,
+  "hallucination_rate": 0.2198,
+  "consensus_rate": 0.7473,
+  "n_runs": 20,
+  "n_clusters": 91,
+  "n_consensus_rules": 68,
+  "n_hallucination_rules": 20,
+  "similarity_threshold": 0.9,
+  "hallucination_frac": 0.3,
+  "consensus_frac": 0.7,
+  "per_pair": [
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run02.csv",
+      "iaas": 0.9742
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run03.csv",
+      "iaas": 0.9115
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run04.csv",
+      "iaas": 0.9533
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run05.csv",
+      "iaas": 0.9697
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run06.csv",
+      "iaas": 0.9776
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run07.csv",
+      "iaas": 0.9316
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run08.csv",
+      "iaas": 0.971
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run09.csv",
+      "iaas": 0.9661
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run10.csv",
+      "iaas": 0.9208
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run11.csv",
+      "iaas": 0.9731
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run12.csv",
+      "iaas": 0.9718
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9522
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9623
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9554
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.93
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.956
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9351
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9734
+    },
+    {
+      "run_i": "ext_multi_agent_run01.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9213
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run03.csv",
+      "iaas": 0.9294
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run04.csv",
+      "iaas": 0.9456
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run05.csv",
+      "iaas": 0.978
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run06.csv",
+      "iaas": 0.9766
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run07.csv",
+      "iaas": 0.9297
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run08.csv",
+      "iaas": 0.9642
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run09.csv",
+      "iaas": 0.9716
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run10.csv",
+      "iaas": 0.9355
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run11.csv",
+      "iaas": 0.984
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run12.csv",
+      "iaas": 0.971
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9631
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9802
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9544
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9303
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9779
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9434
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9893
+    },
+    {
+      "run_i": "ext_multi_agent_run02.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9431
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run04.csv",
+      "iaas": 0.9183
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run05.csv",
+      "iaas": 0.9102
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run06.csv",
+      "iaas": 0.9132
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run07.csv",
+      "iaas": 0.865
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run08.csv",
+      "iaas": 0.8988
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run09.csv",
+      "iaas": 0.91
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run10.csv",
+      "iaas": 0.9005
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run11.csv",
+      "iaas": 0.9158
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run12.csv",
+      "iaas": 0.905
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9107
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9393
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.8891
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.8623
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9255
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.877
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9192
+    },
+    {
+      "run_i": "ext_multi_agent_run03.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.8943
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run05.csv",
+      "iaas": 0.9478
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run06.csv",
+      "iaas": 0.9606
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run07.csv",
+      "iaas": 0.9017
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run08.csv",
+      "iaas": 0.9469
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run09.csv",
+      "iaas": 0.9544
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run10.csv",
+      "iaas": 0.9369
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run11.csv",
+      "iaas": 0.9554
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run12.csv",
+      "iaas": 0.9455
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9464
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9713
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9284
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9087
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9423
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9089
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9661
+    },
+    {
+      "run_i": "ext_multi_agent_run04.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9012
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run06.csv",
+      "iaas": 0.96
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run07.csv",
+      "iaas": 0.9395
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run08.csv",
+      "iaas": 0.9677
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run09.csv",
+      "iaas": 0.9555
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run10.csv",
+      "iaas": 0.9313
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run11.csv",
+      "iaas": 0.9656
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run12.csv",
+      "iaas": 0.9862
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9543
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.965
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9655
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9363
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9606
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9542
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9767
+    },
+    {
+      "run_i": "ext_multi_agent_run05.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9252
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run07.csv",
+      "iaas": 0.9149
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run08.csv",
+      "iaas": 0.9505
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run09.csv",
+      "iaas": 0.9584
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run10.csv",
+      "iaas": 0.9293
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run11.csv",
+      "iaas": 0.9666
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run12.csv",
+      "iaas": 0.9668
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9497
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9653
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9413
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9172
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9642
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9311
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9808
+    },
+    {
+      "run_i": "ext_multi_agent_run06.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9273
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run08.csv",
+      "iaas": 0.9348
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run09.csv",
+      "iaas": 0.9251
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run10.csv",
+      "iaas": 0.8952
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run11.csv",
+      "iaas": 0.9363
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run12.csv",
+      "iaas": 0.9475
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9202
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9263
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9418
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9819
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9232
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9198
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9303
+    },
+    {
+      "run_i": "ext_multi_agent_run07.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9636
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run09.csv",
+      "iaas": 0.9738
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run10.csv",
+      "iaas": 0.9254
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run11.csv",
+      "iaas": 0.9757
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run12.csv",
+      "iaas": 0.9614
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9602
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9598
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9675
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9434
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9635
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9361
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9665
+    },
+    {
+      "run_i": "ext_multi_agent_run08.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9181
+    },
+    {
+      "run_i": "ext_multi_agent_run09.csv",
+      "run_j": "ext_multi_agent_run10.csv",
+      "iaas": 0.9375
+    },
+    {
+      "run_i": "ext_multi_agent_run09.csv",
+      "run_j": "ext_multi_agent_run11.csv",
+      "iaas": 0.9892
+    },
+    {
+      "run_i": "ext_multi_agent_run09.csv",
+      "run_j": "ext_multi_agent_run12.csv",
+      "iaas": 0.9509
+    },
+    {
+      "run_i": "ext_multi_agent_run09.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9836
+    },
+    {
+      "run_i": "ext_multi_agent_run09.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9638
+    },
+    {
+      "run_i": "ext_multi_agent_run09.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9595
+    },
+    {
+      "run_i": "ext_multi_agent_run09.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9258
+    },
+    {
+      "run_i": "ext_multi_agent_run09.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9853
+    },
+    {
+      "run_i": "ext_multi_agent_run09.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9249
+    },
+    {
+      "run_i": "ext_multi_agent_run09.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9681
+    },
+    {
+      "run_i": "ext_multi_agent_run09.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9274
+    },
+    {
+      "run_i": "ext_multi_agent_run10.csv",
+      "run_j": "ext_multi_agent_run11.csv",
+      "iaas": 0.9244
+    },
+    {
+      "run_i": "ext_multi_agent_run10.csv",
+      "run_j": "ext_multi_agent_run12.csv",
+      "iaas": 0.9135
+    },
+    {
+      "run_i": "ext_multi_agent_run10.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9208
+    },
+    {
+      "run_i": "ext_multi_agent_run10.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9348
+    },
+    {
+      "run_i": "ext_multi_agent_run10.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9163
+    },
+    {
+      "run_i": "ext_multi_agent_run10.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.8704
+    },
+    {
+      "run_i": "ext_multi_agent_run10.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9293
+    },
+    {
+      "run_i": "ext_multi_agent_run10.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.8891
+    },
+    {
+      "run_i": "ext_multi_agent_run10.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9216
+    },
+    {
+      "run_i": "ext_multi_agent_run10.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.8785
+    },
+    {
+      "run_i": "ext_multi_agent_run11.csv",
+      "run_j": "ext_multi_agent_run12.csv",
+      "iaas": 0.9529
+    },
+    {
+      "run_i": "ext_multi_agent_run11.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9744
+    },
+    {
+      "run_i": "ext_multi_agent_run11.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9713
+    },
+    {
+      "run_i": "ext_multi_agent_run11.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9648
+    },
+    {
+      "run_i": "ext_multi_agent_run11.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9303
+    },
+    {
+      "run_i": "ext_multi_agent_run11.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9781
+    },
+    {
+      "run_i": "ext_multi_agent_run11.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9294
+    },
+    {
+      "run_i": "ext_multi_agent_run11.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9697
+    },
+    {
+      "run_i": "ext_multi_agent_run11.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9277
+    },
+    {
+      "run_i": "ext_multi_agent_run12.csv",
+      "run_j": "ext_multi_agent_run13.csv",
+      "iaas": 0.9488
+    },
+    {
+      "run_i": "ext_multi_agent_run12.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9599
+    },
+    {
+      "run_i": "ext_multi_agent_run12.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9668
+    },
+    {
+      "run_i": "ext_multi_agent_run12.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9347
+    },
+    {
+      "run_i": "ext_multi_agent_run12.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9588
+    },
+    {
+      "run_i": "ext_multi_agent_run12.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.956
+    },
+    {
+      "run_i": "ext_multi_agent_run12.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9787
+    },
+    {
+      "run_i": "ext_multi_agent_run12.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9241
+    },
+    {
+      "run_i": "ext_multi_agent_run13.csv",
+      "run_j": "ext_multi_agent_run14.csv",
+      "iaas": 0.9607
+    },
+    {
+      "run_i": "ext_multi_agent_run13.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9519
+    },
+    {
+      "run_i": "ext_multi_agent_run13.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9173
+    },
+    {
+      "run_i": "ext_multi_agent_run13.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9905
+    },
+    {
+      "run_i": "ext_multi_agent_run13.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9152
+    },
+    {
+      "run_i": "ext_multi_agent_run13.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9681
+    },
+    {
+      "run_i": "ext_multi_agent_run13.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9259
+    },
+    {
+      "run_i": "ext_multi_agent_run14.csv",
+      "run_j": "ext_multi_agent_run15.csv",
+      "iaas": 0.9328
+    },
+    {
+      "run_i": "ext_multi_agent_run14.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9099
+    },
+    {
+      "run_i": "ext_multi_agent_run14.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9539
+    },
+    {
+      "run_i": "ext_multi_agent_run14.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9168
+    },
+    {
+      "run_i": "ext_multi_agent_run14.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9609
+    },
+    {
+      "run_i": "ext_multi_agent_run14.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9123
+    },
+    {
+      "run_i": "ext_multi_agent_run15.csv",
+      "run_j": "ext_multi_agent_run16.csv",
+      "iaas": 0.9281
+    },
+    {
+      "run_i": "ext_multi_agent_run15.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9557
+    },
+    {
+      "run_i": "ext_multi_agent_run15.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9478
+    },
+    {
+      "run_i": "ext_multi_agent_run15.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.947
+    },
+    {
+      "run_i": "ext_multi_agent_run15.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.908
+    },
+    {
+      "run_i": "ext_multi_agent_run16.csv",
+      "run_j": "ext_multi_agent_run17.csv",
+      "iaas": 0.9292
+    },
+    {
+      "run_i": "ext_multi_agent_run16.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9121
+    },
+    {
+      "run_i": "ext_multi_agent_run16.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9334
+    },
+    {
+      "run_i": "ext_multi_agent_run16.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9617
+    },
+    {
+      "run_i": "ext_multi_agent_run17.csv",
+      "run_j": "ext_multi_agent_run18.csv",
+      "iaas": 0.9176
+    },
+    {
+      "run_i": "ext_multi_agent_run17.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9655
+    },
+    {
+      "run_i": "ext_multi_agent_run17.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9359
+    },
+    {
+      "run_i": "ext_multi_agent_run18.csv",
+      "run_j": "ext_multi_agent_run19.csv",
+      "iaas": 0.9376
+    },
+    {
+      "run_i": "ext_multi_agent_run18.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.8921
+    },
+    {
+      "run_i": "ext_multi_agent_run19.csv",
+      "run_j": "ext_multi_agent_run20.csv",
+      "iaas": 0.9322
+    }
+  ]
+}

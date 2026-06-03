@@ -1,4 +1,5 @@
 
+
 from __future__ import annotations
 
 import argparse
@@ -99,6 +100,12 @@ RULE_FIELDS = [
 #       SOPs; gemma3:12b's leading precision (0.815) is reused to minimise spurious
 #       AccessRule entries from cross-cell inference.
 #
+#   adjudicator_model  → ministral-3:14b
+#       Conflict resolution requires multi-candidate reasoning beyond pure extraction.
+#       The ablation study (abl_noAdj: content F1 = 0.703 vs full pipeline 0.823)
+#       confirms the adjudicator's contribution; the 14b model is the most capable
+#       local Ministral variant for this complex reasoning task.
+#
 #   validator_model    → ministral-3:14b
 #       Grounding verification and false-negative recovery demand careful cross-
 #       referencing of extracted rules against raw SOP text. The 14b model is
@@ -119,6 +126,7 @@ DEFAULTS = {
     "extractor_a_model": "gemma3:12b",
     "extractor_b_model": "ministral-3:8b",
     "extractor_c_model": "gemma3:12b",
+    "adjudicator_model": "ministral-3:14b",
     "validator_model":   "ministral-3:14b",
     "judge_model":       "ministral-3:14b",
     "normalizer_model":  "qwen/qwen3-4b-2507",
@@ -127,6 +135,7 @@ DEFAULTS = {
 # Ablation tag → output filename label
 _ABL_TAG_MAP: dict[str, str] = {
     "no_cm":        "noCM",
+    "no_adj":       "noAdj",
     "no_validator": "noValidator",
     "no_judge":     "noJudge",
 }
@@ -155,6 +164,7 @@ class PipelineState(TypedDict, total=False):
     extractor_a_model:  str
     extractor_b_model:  str
     extractor_c_model:  str
+    adjudicator_model:  str
     validator_model:    str
     judge_model:        str
     normalizer_model:   str
@@ -172,6 +182,7 @@ class PipelineState(TypedDict, total=False):
     retry_count:        int
     output_path:        str
     ablation:           str
+    coordinator_metadata: dict[str, dict]  # keyed by fname; keys: threshold_col_map, rule_id_pattern, sensor_id_example
 
 
 # ── LLM utilities ─────────────────────────────────────────────────────────────
@@ -202,7 +213,6 @@ def llm_call(model: str, messages: list[dict], temperature: float = 0) -> str:
                 model=model,
                 messages=messages,
                 temperature=temperature,
-                seed=42,
                 max_tokens=MAX_OUTPUT_TOKENS,
                 extra_body={"options": {"seed": 42, "num_ctx": LLM_NUM_CTX}},
             )
@@ -293,6 +303,7 @@ def parse_rules(raw: str) -> list[dict]:
 # Canonical class and severity sets are defined here so membership checks are performed
 # against a single source of truth rather than scattered string literals.
 _ALLOWED_CLASSES    = {"ThresholdRule", "OperationalRule", "MaintenanceRule", "AccessRule"}
+_ALLOWED_SEVERITIES = {"CRITICAL", "WARNING", "MANDATORY", "HIGH", "MEDIUM", "LOW"}
 
 _CLASS_ALIASES = {
     "correlationrule": "MaintenanceRule",
@@ -372,6 +383,18 @@ def _physics_valid(r: dict) -> bool:
     return all(vals[lo] <= vals[hi] for lo, hi in pairs if lo in vals and hi in vals)
 
 
+def _guard_fields(rule: dict, original_candidates: list[dict]) -> dict:
+    """Restore categorical fields corrupted by LLM from the richest input candidate."""
+    best = max(original_candidates, key=_n_nonempty)
+    out = dict(rule)
+    if out.get("class") not in _ALLOWED_CLASSES:
+        out["class"] = best.get("class", "")
+    if out.get("severity", "").upper() not in _ALLOWED_SEVERITIES:
+        out["severity"] = best.get("severity", "")
+    if not out.get("station") and best.get("station"):
+        out["station"] = best["station"]
+    return out
+
 
 def _deterministic_post_filter(rules: list[dict]) -> list[dict]:
     """Validate classes, drop empty ThresholdRules, deduplicate by 6-field content signature."""
@@ -428,119 +451,159 @@ _BASE_SYSTEM = (
     'For all other classes leave those fields empty ("").'
 )
 
-# ── Per-extractor context blocks ───────────────────────────────────────────────
-# Extractor A — narrative / mixed: all four classes + multi-severity rule
+# ── Per-extractor context blocks (agnostic) ──────────────────────────────────
+
 _CONTEXT_A = (
     "\n\nExtract ALL technical rules. "
     "CRITICAL: if multiple rules appear on the same line (separated by semicolons, periods, "
-    "or rule identifiers such as RULE-A-01: … RULE-A-02: …), extract EACH as a SEPARATE "
-    "rule object. "
+    "or consecutive labeled identifiers — whatever the document uses), extract EACH as a "
+    "SEPARATE rule object. "
     "Prefer the extended output: {\"reasoning\": \"<brief parse note>\", \"rules\": [...]}.\n\n"
     "Valid classes:\n"
     "  OperationalRule  — process-level condition triggers an operational response; "
     "no numeric thresholds in critHi/warnHi/warnLo/critLo.\n"
     "  ThresholdRule    — sensor crosses a numeric boundary; populate available threshold "
-    "fields with PURE NUMBERS (no unit suffix). Column mapping: CRIT_LO→critLo, WARN_LO→warnLo, "
-    "WARN_HI→warnHi, CRIT_HI→critHi.\n"
+    "fields with PURE NUMBERS (no unit suffix). Assign values by severity tier: "
+    "low-critical value → critLo, low-warning → warnLo, high-warning → warnHi, high-critical → critHi.\n"
     "  MaintenanceRule  — sustained drift, stuck reading, cross-sensor correlation, or predictive "
     "maintenance trigger; leave all four threshold fields empty.\n"
-    "  AccessRule       — personnel authorisation, zone occupancy limit, or alarm acknowledgment "
-    "deadline; includes occupancy headcounts and per-role acknowledgment times.\n\n"
+    "  AccessRule       — personnel authorisation, area access restriction, zone occupancy limit, "
+    "or role-based time-bound response requirement (e.g. response deadlines, permit conditions, "
+    "qualification requirements); includes headcount limits and role-based response times.\n\n"
     "MULTI-SEVERITY RULE: for OperationalRule/MaintenanceRule/AccessRule, if the document "
     "describes DIFFERENT actions for different severity tiers, extract EACH tier as a SEPARATE "
     "rule. For ThresholdRule, populate ALL four numeric fields in a SINGLE rule.\n\n"
     "Field rules:\n"
-    "  sensor     — FULL identifier = <STATION_ID>_<TYPE_CODE> (e.g. ZONE_A_TMP). Never just the type code.\n"
-    "  sensorType — SHORT type code for the sensor's physical quantity as used in the document "
-    "(e.g. TMP for temperature, PRS for pressure, FLW for flow). Match the document's own abbreviations.\n\n"
-    "Examples (do NOT copy values — structure only):\n"
-    "OperationalRule (WARNING): "
-    "{\"ruleId\":\"RULE-STA-01a\",\"class\":\"OperationalRule\",\"station\":\"STATION_A\","
-    "\"sensor\":\"STATION_A_TMP\",\"sensorType\":\"TMP\",\"condition\":\"TMP exceeds <value><unit>\","
-    "\"action\":\"<corrective action>\",\"severity\":\"WARNING\","
-    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"<unit>\"}\n"
-    "OperationalRule (CRITICAL — same sensor, different action): "
-    "{\"ruleId\":\"RULE-STA-01b\",\"class\":\"OperationalRule\",\"station\":\"STATION_A\","
-    "\"sensor\":\"STATION_A_TMP\",\"sensorType\":\"TMP\",\"condition\":\"TMP exceeds <higher value><unit>\","
+    "  ruleId     — If the document provides an explicit identifier (see rule_id_pattern above), "
+    "copy it verbatim. Otherwise, generate a unique placeholder using the pattern shown in "
+    "the metadata; the downstream normalizer will canonicalize it.\n"
+    "  station    — the zone/station/area name exactly as written in the document. "
+    "Never infer or abbreviate.\n"
+    "  sensor     — the full sensor identifier. Follow the naming convention shown by the "
+    "sensor_id_example provided in the metadata. If the document uses standalone tags "
+    "(e.g. FIC-101, TI-203) copy verbatim. If it uses compound identifiers (station prefix + type code), "
+    "construct the full identifier from the surrounding context. Never use just the type code alone.\n"
+    "  sensorType — the physical quantity type as abbreviated in the document. "
+    "Use the document's own abbreviation if one exists; otherwise use a short descriptive code "
+    "(e.g. TMP for temperature, PRS for pressure, FLW for flow, VIB for vibration).\n\n"
+    "Abstract structure examples (the concrete values are placeholders — always use the "
+    "document’s actual text):"
+    "\n\nExample 1 -- OperationalRule WARNING (narrative, process-level condition):"
+    "\n {\"ruleId\":\"RULE-<STATION>-<NN>\",\"class\":\"OperationalRule\",\"station\":\"<Station Name>\","
+    "\"sensor\":\"<Full Sensor ID as in text>\",\"sensorType\":\"<TYPE>\","
+    "\"condition\":\"<physical condition with numeric boundaries if present>\","
+    "\"action\":\"<required response>\",\"severity\":\"WARNING\","
+    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"<unit if given>\"}"
+    "\n\nExample 2 -- OperationalRule CRITICAL (same sensor, escalated action — separate rule):"
+    "\n {\"ruleId\":\"RULE-<STATION>-<NN>b\",\"class\":\"OperationalRule\",\"station\":\"<Station Name>\","
+    "\"sensor\":\"<Full Sensor ID>\",\"sensorType\":\"<TYPE>\","
+    "\"condition\":\"<escalated condition>\","
     "\"action\":\"<escalated action>\",\"severity\":\"CRITICAL\","
-    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"<unit>\"}\n"
-    "ThresholdRule (all four fields): "
-    "{\"ruleId\":\"RULE-THR-STA-TMP-CRIT\",\"class\":\"ThresholdRule\","
-    "\"station\":\"STATION_A\",\"sensor\":\"STATION_A_TMP\",\"sensorType\":\"TMP\","
-    "\"condition\":\"<sensor> alarm thresholds\",\"action\":\"<response action>\","
-    "\"severity\":\"CRITICAL\",\"critHi\":\"<n>\",\"warnHi\":\"<n>\",\"warnLo\":\"<n>\","
-    "\"critLo\":\"<n>\",\"unit\":\"<unit>\"}\n"
-    "MaintenanceRule (drift): "
-    "{\"ruleId\":\"MAINT-01\",\"class\":\"MaintenanceRule\",\"station\":\"STATION_B\","
-    "\"sensor\":\"STATION_B_VIB\",\"sensorType\":\"VIB\","
-    "\"condition\":\"<sensor> drift ><value> <unit> over <duration>\","
-    "\"action\":\"<inspection action>\",\"severity\":\"HIGH\","
-    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"<unit>\"}\n"
-    "MaintenanceRule (correlated fault): "
-    "{\"ruleId\":\"RULE-CORR-01\",\"class\":\"MaintenanceRule\",\"station\":\"STATION_C\","
-    "\"sensor\":\"STATION_C_SEN\",\"sensorType\":\"<TYPE>\","
-    "\"condition\":\"<sensor A> change at <station X> causes <effect> at <station Y>\","
-    "\"action\":\"<multi-step response>\",\"severity\":\"WARNING\","
-    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"<unit>\"}\n"
-    "AccessRule (occupancy): "
-    "{\"ruleId\":\"RULE-OCC-Z1\",\"class\":\"AccessRule\",\"station\":\"ZONE_1\","
-    "\"sensor\":\"\",\"sensorType\":\"\",\"condition\":\"zone occupancy exceeds <n> persons\","
-    "\"action\":\"<evacuation or restriction action>\",\"severity\":\"CRITICAL\","
-    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"persons\"}\n"
-    "AccessRule (acknowledgment): "
-    "{\"ruleId\":\"RULE-ACK-ROLE-WARN\",\"class\":\"AccessRule\",\"station\":\"\","
+    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"<unit>\"}"
+    "\n\nExample 3 -- ThresholdRule (all four numeric tier fields populated):"
+    "\n {\"ruleId\":\"RULE-THR-<STATION>-<TYPE>-CRIT\",\"class\":\"ThresholdRule\","
+    "\"station\":\"<Station Name>\",\"sensor\":\"<Full Sensor ID>\",\"sensorType\":\"<TYPE>\","
+    "\"condition\":\"<description of alarm thresholds>\","
+    "\"action\":\"<required response>\",\"severity\":\"CRITICAL\","
+    "\"critHi\":\"<high critical value>\",\"warnHi\":\"<high warning value>\",\"warnLo\":\"<low warning value>\",\"critLo\":\"<low critical value>\",\"unit\":\"<unit>\"}"
+    "\n\nExample 4 -- MaintenanceRule (sustained drift pattern):"
+    "\n {\"ruleId\":\"MAINT-<NN>\",\"class\":\"MaintenanceRule\",\"station\":\"<Station Name>\","
+    "\"sensor\":\"<Full Sensor ID>\",\"sensorType\":\"<TYPE>\","
+    "\"condition\":\"<sensor> DRIFT > <value> <unit> over <time>\","
+    "\"action\":\"<maintenance action>\",\"severity\":\"HIGH\","
+    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"<unit>\"}"
+    "\n\nExample 5 -- MaintenanceRule (cross-station correlated fault):"
+    "\n {\"ruleId\":\"RULE-CORR-<NN>\",\"class\":\"MaintenanceRule\",\"station\":\"<Station Name>\","
+    "\"sensor\":\"<Full Sensor ID>\",\"sensorType\":\"<TYPE>\","
+    "\"condition\":\"<description of correlation>\","
+    "\"action\":\"<resolution steps>\",\"severity\":\"WARNING\","
+    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"\"}"
+    "\n\nExample 6 -- AccessRule (zone headcount limit):"
+    "\n {\"ruleId\":\"RULE-OCC-<ZONE>\",\"class\":\"AccessRule\",\"station\":\"<Zone Name>\","
+    "\"sensor\":\"\",\"sensorType\":\"\",\"condition\":\"zone occupancy exceeds <N> persons\","
+    "\"action\":\"restrict entry; initiate evacuation\",\"severity\":\"CRITICAL\","
+    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"persons\"}"
+    "\n\nExample 7 -- AccessRule (role-based response deadline):"
+    "\n {\"ruleId\":\"RULE-ACK-<ROLE>-<SEV>\",\"class\":\"AccessRule\",\"station\":\"\","
     "\"sensor\":\"\",\"sensorType\":\"\","
-    "\"condition\":\"<role> must acknowledge WARNING alarm\","
-    "\"action\":\"acknowledge within <n> minutes\",\"severity\":\"MANDATORY\","
+    "\"condition\":\"<role> must acknowledge <SEV> alarm\","
+    "\"action\":\"acknowledge within <N> minutes\",\"severity\":\"MANDATORY\","
     "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"min\"}\n"
 )
 
-# Extractor B — tabular: ThresholdRule only
 _CONTEXT_B = (
     "\n\nPrefer the extended output: {\"reasoning\": \"<brief parse note>\", \"rules\": [...]}.\n\n"
     "Valid class for tabular documents:\n"
     "  ThresholdRule — map each table row to one ThresholdRule. "
     "Populate PURE NUMBERS into threshold fields (no unit suffix). "
-    "Column mapping: CRIT_LO→critLo, WARN_LO→warnLo, WARN_HI→warnHi, CRIT_HI→critHi.\n\n"
+    "Map the document's threshold columns to output fields by severity tier: "
+    "low-critical column → critLo, low-warning → warnLo, high-warning → warnHi, high-critical → critHi. "
+    "Use the document-specific column mapping provided in the metadata above if present; "
+    "otherwise infer which column represents each tier from the column header text.\n\n"
     "Field rules:\n"
-    "  sensor     — FULL identifier = <STATION_ID>_<TYPE_CODE>. Never just the type code.\n"
-    "  sensorType — SHORT type code for the sensor's physical quantity as used in the document "
-    "(e.g. TMP for temperature, PRS for pressure, FLW for flow). Match the document's own abbreviations.\n\n"
-    "Example (do NOT copy values — structure only):\n"
-    "ThresholdRule: "
-    "{\"ruleId\":\"RULE-THR-STA-TMP-CRIT\",\"class\":\"ThresholdRule\","
-    "\"station\":\"STATION_A\",\"sensor\":\"STATION_A_TMP\",\"sensorType\":\"TMP\","
-    "\"condition\":\"<sensor> alarm thresholds\",\"action\":\"<response action>\","
-    "\"severity\":\"CRITICAL\",\"critHi\":\"<n>\",\"warnHi\":\"<n>\",\"warnLo\":\"<n>\","
-    "\"critLo\":\"<n>\",\"unit\":\"<unit>\"}\n"
+    "  ruleId     — If the row has an identifier, use it verbatim. Otherwise generate a placeholder "
+    "(e.g. THR-<STATION>-<SENSOR>) — the normalizer will fix it.\n"
+    "  station    — taken ONLY from an explicit station column or row prefix; do not derive from sensor ID.\n"
+    "  sensor     — the full sensor identifier. Follow the naming convention shown by the "
+    "sensor_id_example in the metadata. If the document uses standalone tags copy verbatim. "
+    "Never use just the type code alone.\n"
+    "  sensorType — the physical quantity type as abbreviated in the document. "
+    "Use the document's own abbreviation if one exists.\n"
+    "  unit       — taken only from an explicit unit cell or column header; never infer.\n\n"
+    "Follow these style examples (do NOT copy these values — extract actual values from the document):"
+    "\n\nExample 1 -- ThresholdRule (temperature row, four tier fields populated):"
+    "\n {\"ruleId\":\"RULE-THR-ST01-TMP-CRIT\",\"class\":\"ThresholdRule\","
+    "\"station\":\"ST01_FILLING\",\"sensor\":\"ST01_FILLING_TMP\",\"sensorType\":\"TMP\","
+    "\"condition\":\"TMP alarm thresholds for ST01_FILLING\","
+    "\"action\":\"Inspect and notify maintenance\",\"severity\":\"CRITICAL\","
+    "\"critHi\":\"30\",\"warnHi\":\"26\",\"warnLo\":\"18\",\"critLo\":\"15\",\"unit\":\"°C\"}"
+    "\n\nExample 2 -- ThresholdRule (pressure row, different station and engineering unit):"
+    "\n {\"ruleId\":\"RULE-THR-ST01-PRS-CRIT\",\"class\":\"ThresholdRule\","
+    "\"station\":\"ST01_FILLING\",\"sensor\":\"ST01_FILLING_PRS\",\"sensorType\":\"PRS\","
+    "\"condition\":\"PRS alarm thresholds for ST01_FILLING\","
+    "\"action\":\"Inspect and notify maintenance\",\"severity\":\"CRITICAL\","
+    "\"critHi\":\"4.8\",\"warnHi\":\"4.2\",\"warnLo\":\"3.3\",\"critLo\":\"3\",\"unit\":\"bar\"}\n"
 )
 
-# Extractor C — matrix: AccessRule only + multi-severity for occupancy/ack tiers
 _CONTEXT_C = (
     "\n\nPrefer the extended output: {\"reasoning\": \"<brief parse note>\", \"rules\": [...]}.\n\n"
     "Valid class for matrix documents:\n"
-    "  AccessRule — personnel authorisation, zone occupancy limit, or alarm acknowledgment "
-    "deadline; includes occupancy headcounts and per-role acknowledgment times.\n\n"
-    "MULTI-SEVERITY RULE: if the matrix defines different limits for WARNING and CRITICAL tiers "
-    "(e.g. different occupancy thresholds or acknowledgment deadlines), extract EACH tier as a "
-    "SEPARATE rule with the appropriate severity.\n\n"
+    "  AccessRule — personnel authorisation, area access restriction, zone occupancy limit, "
+    "or role-based time-bound response requirement (e.g. response deadlines, permit conditions, "
+    "qualification requirements); includes headcount limits and role-based response times.\n\n"
+    "MULTI-SEVERITY RULE: if the matrix defines different limits for different severity tiers "
+    "(e.g. different occupancy thresholds or response deadlines per severity level), extract "
+    "EACH tier as a SEPARATE rule with the appropriate severity.\n\n"
     "Field rules:\n"
-    "  sensor     — FULL identifier = <STATION_ID>_<TYPE_CODE>. Leave empty if not applicable.\n"
-    "  sensorType — SHORT type code. Leave empty for pure access/occupancy rules.\n\n"
-    "Examples (do NOT copy values — structure only):\n"
-    "AccessRule (occupancy): "
-    "{\"ruleId\":\"RULE-OCC-Z1\",\"class\":\"AccessRule\",\"station\":\"ZONE_1\","
-    "\"sensor\":\"\",\"sensorType\":\"\",\"condition\":\"zone occupancy exceeds <n> persons\","
-    "\"action\":\"<evacuation or restriction action>\",\"severity\":\"CRITICAL\","
-    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"persons\"}\n"
-    "AccessRule (acknowledgment): "
-    "{\"ruleId\":\"RULE-ACK-ROLE-WARN\",\"class\":\"AccessRule\",\"station\":\"\","
+    "  ruleId     — If the row/cell has an identifier (see rule_id_pattern in metadata), use it verbatim. "
+    "Otherwise generate a unique placeholder; the normalizer will fix it.\n"
+    "  station    — the zone or area name exactly as written in the table.\n"
+    "  sensor/sensorType — leave empty unless the text explicitly provides numeric sensor values "
+    "for this access rule.\n\n"
+    "Follow these style examples (do NOT copy these values — extract actual values from the document):"
+    "\n\nExample 1 -- AccessRule (zone occupancy CRITICAL limit):"
+    "\n {\"ruleId\":\"RULE-OCC-PROD\",\"class\":\"AccessRule\",\"station\":\"Production Area\","
+    "\"sensor\":\"\",\"sensorType\":\"\",\"condition\":\"zone occupancy exceeds 12 persons\","
+    "\"action\":\"restrict entry; initiate evacuation\",\"severity\":\"CRITICAL\","
+    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"persons\"}"
+    "\n\nExample 2 -- AccessRule (zone occupancy WARNING limit — same zone, lower threshold, separate rule):"
+    "\n {\"ruleId\":\"RULE-OCC-PROD-W\",\"class\":\"AccessRule\",\"station\":\"Production Area\","
+    "\"sensor\":\"\",\"sensorType\":\"\",\"condition\":\"zone occupancy exceeds 10 persons\","
+    "\"action\":\"issue warning; notify supervisor\",\"severity\":\"WARNING\","
+    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"persons\"}"
+    "\n\nExample 3 -- AccessRule (role × severity response deadline, WARNING tier):"
+    "\n {\"ruleId\":\"RULE-ACK-OP-WARN\",\"class\":\"AccessRule\",\"station\":\"\","
     "\"sensor\":\"\",\"sensorType\":\"\","
-    "\"condition\":\"<role> must acknowledge WARNING alarm\","
-    "\"action\":\"acknowledge within <n> minutes\",\"severity\":\"MANDATORY\","
+    "\"condition\":\"operator must acknowledge WARNING alarm\","
+    "\"action\":\"acknowledge within 15 minutes\",\"severity\":\"MANDATORY\","
+    "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"min\"}"
+    "\n\nExample 4 -- AccessRule (same role, CRITICAL tier — stricter deadline, separate rule):"
+    "\n {\"ruleId\":\"RULE-ACK-OP-CRIT\",\"class\":\"AccessRule\",\"station\":\"\","
+    "\"sensor\":\"\",\"sensorType\":\"\","
+    "\"condition\":\"operator must acknowledge CRITICAL alarm\","
+    "\"action\":\"acknowledge within 3 minutes\",\"severity\":\"MANDATORY\","
     "\"critHi\":\"\",\"warnHi\":\"\",\"warnLo\":\"\",\"critLo\":\"\",\"unit\":\"min\"}\n"
 )
-
 
 _PHYSICAL_CONSTRAINT_MAPPING = (
     "\nPHYSICAL CONSTRAINT MAPPING — apply to every rule:\n"
@@ -566,18 +629,15 @@ def _prompt_narrative() -> str:
     return _BASE_SYSTEM + _CONTEXT_A + _PHYSICAL_CONSTRAINT_MAPPING + (
         "\nDocument type: narrative / mixed SOP.\n"
         "INSTRUCTIONS:\n"
-        "1. Extract EVERY explicitly labeled rule. "
-        "CRITICAL — later sections of the document may pack multiple rules into a SINGLE "
-        "paragraph or bullet point with no line breaks between them (e.g. 'RULE-XX-01: ... "
-        "RULE-XX-02: ... RULE-XX-03: ...' all in one block of text, separated only by "
-        "periods or sentence boundaries). Scan EVERY paragraph systematically, even short "
-        "ones, and split on each rule identifier you encounter. Never stop at the first rule "
-        "in a paragraph — read to the end of it.\n"
+        "1. Extract EVERY explicitly labeled rule or constraint. "
+        "Use the rule identifier pattern provided in document-specific metadata if available; "
+        "otherwise look for any structured label the document uses to identify individual rules. "
+        "When multiple rules appear on the same line, extract each separately.\n"
         "2. Each station-sensor-condition combination is a separate rule.\n"
         "3. Process-level conditions → OperationalRule. "
         "When WARNING and CRITICAL require different actions, produce TWO rules.\n"
         "4. Drift patterns, stuck-sensor, cross-sensor correlations → MaintenanceRule.\n"
-        "5. Access, occupancy, acknowledgment → AccessRule.\n"
+        "5. Access, occupancy, time-bound response requirements, authorization constraints → AccessRule.\n"
         "6. Inline threshold numbers → ThresholdRule (all four fields in one rule).\n"
         "7. Apply PCM-1 through PCM-5: do not hallucinate numeric values or units; "
         "leave any field without explicit textual evidence empty.\n"
@@ -589,9 +649,13 @@ def _prompt_tabular() -> str:
         "\nDocument type: tabular (threshold table SOP).\n"
         "INSTRUCTIONS:\n"
         "1. Map each table row to exactly one ThresholdRule.\n"
-        "2. Column mapping: CRIT_LO→critLo, WARN_LO→warnLo, WARN_HI→warnHi, CRIT_HI→critHi.\n"
+        "2. Column mapping: assign columns to output fields by severity tier "
+        "(low-critical → critLo, low-warning → warnLo, high-warning → warnHi, high-critical → critHi). "
+        "Use the document-specific column mapping from metadata above if provided; "
+        "otherwise infer which column represents each tier from the column header text.\n"
         "3. Store ONLY pure numeric values in threshold fields (no unit suffix).\n"
-        "4. Generate ruleId as RULE-THR-<STATION_ABBR>-<SENSOR_TYPE>-CRIT.\n"
+        "4. If no ruleId appears in the source for a row, generate a short placeholder "
+        "(e.g. THR-<STATION>-<SENSOR>); a downstream normalizer will canonicalize all ruleIds.\n"
         "5. Do NOT skip any row — every sensor in the table must produce a rule.\n"
         "6. Apply PCM-1 through PCM-5: if a table cell is blank, dash, or N/A, leave the "
         "corresponding field empty — do not fill it from a neighbouring row or the column "
@@ -603,26 +667,21 @@ def _prompt_tabular() -> str:
 
 def _prompt_matrix() -> str:
     return _BASE_SYSTEM + _CONTEXT_C + _PHYSICAL_CONSTRAINT_MAPPING + (
-        "\nDocument type: access / occupancy / acknowledgment matrix.\n"
-        "INSTRUCTIONS — extract ALL THREE sub-types:\n"
-        "1. Occupancy limits: one AccessRule per zone with EXPLICITLY ENFORCED limits only — "
-        "the table must state a maximum AND describe a consequence when it is exceeded "
-        "(e.g. 'WARNING above X', 'CRITICAL above Y', 'badge required'). "
-        "Zones that are described as monitored or tracked without a stated enforcement "
-        "consequence do NOT produce an AccessRule. "
-        "Include WARNING and CRITICAL tiers as separate rules when BOTH are defined.\n"
-        "2. Acknowledgment deadlines: one AccessRule per (role × severity) combination "
-        "present in the acknowledgment-time table. Cover every populated cell — do not skip any.\n"
-        "3. Labeled prose rules: extract each as a separate AccessRule ONLY if it defines "
-        "a real-world operational constraint — a physical or access condition that triggers "
-        "a required human action. Skip rules that describe software, data model, or system "
-        "recording requirements rather than operational procedures.\n"
+        "\nDocument type: access control / occupancy / authorization matrix.\n"
+        "INSTRUCTIONS — extract ALL sub-types present in the document:\n"
+        "1. Occupancy or headcount limits: one AccessRule per zone or area that has a defined "
+        "maximum headcount or capacity limit. Include each severity tier as a separate rule "
+        "when the table defines multiple tiers.\n"
+        "2. Role-based response requirements: one AccessRule per (role × severity) or "
+        "(role × condition) combination present in any response-time, deadline, or "
+        "authorization table. Cover every populated cell — do not skip any.\n"
+        "3. Labeled prose rules or access constraints: extract each as a separate AccessRule. "
+        "Use the rule identifier pattern from document metadata if provided.\n"
         "Leave sensor/sensorType/threshold fields empty for all AccessRules unless the text "
         "explicitly provides numeric sensor values.\n"
-        "4. Apply PCM-1 through PCM-5: headcount and acknowledgment times must be copied "
-        "verbatim from the cell (e.g., '12 persons', '15 min'). Zone and role names must "
-        "match the exact table label. If a cell is blank, do not synthesize a rule for "
-        "that (role × severity) or zone combination.\n"
+        "4. Apply PCM-1 through PCM-5: numeric values (headcounts, times, limits) must be "
+        "copied verbatim from the cell. Zone, area, and role names must match the exact table "
+        "label. If a cell is blank, do not synthesize a rule for that combination.\n"
     )
 
 
@@ -635,7 +694,27 @@ _PROMPT_FN = {
 
 
 
-# ── Normalizer prompt ─────────────────────────────────────────────────────────
+# ── Conflict adjudicator & normalizer prompts ──────────────────────────────────
+CONFLICT_ADJUDICATOR_SYSTEM = (
+    "You are a conflict resolver for extracted industrial SOP rules. "
+    "You receive conflict groups where each group contains 2+ rule candidates "
+    "sharing the same class, station, and sensorType.\n\n"
+    "ABSOLUTE RULE — NEVER merge rules with different severity values: "
+    "different severity tiers (e.g. WARNING vs CRITICAL, HIGH vs MEDIUM) for the same sensor "
+    "represent intentionally distinct operational states. Even if their actions appear similar "
+    "in wording, they must be kept as separate rules. Apply this check FIRST before any "
+    "other comparison.\n\n"
+    "SEMANTIC DEDUPLICATION — compare rules by physical implication, not text wording:\n"
+    "  MERGE — ONLY if two rules (a) share the same severity AND (b) apply to the exact same "
+    "sensor AND (c) enforce the exact same physical limits (identical numeric values in "
+    "critLo/warnLo/warnHi/critHi) OR describe the same physical constraint with the same action "
+    "(minor wording differences only). Output ONE merged rule combining all non-empty fields.\n"
+    "  KEEP_ALL — if severities differ, actions differ, numeric threshold values differ, or "
+    "conditions describe genuinely different physical situations. Keep all candidates as separate rules.\n\n"
+    "Never merge rules whose required action or numeric limits differ.\n"
+    "Never add fields not present in any input candidate.\n"
+    "Return ONLY valid JSON: {\"resolved\": [<flat list of output rules>]}"
+)
 
 NORMALIZER_SYSTEM = (
     "You are a ruleId normalizer. Your ONLY task is to assign canonical ruleIds. "
@@ -660,31 +739,43 @@ NORMALIZER_SYSTEM = (
 )
 
 VALIDATOR_SYSTEM = (
-    "You are a gap-detection validator for industrial SOP rule extraction. "
-    "You receive rules already extracted from ONE document and that document's text.\n\n"
-    "Your ONLY task is to find false negatives — rules present in the document text "
-    "but missing from the extracted set. "
-    "Scan the document for labeled rule identifiers "
-    "(RULE-XX-YY, MAINT-XX, RULE-CORR-XX, RULE-THR-*, RULE-OCC-*, RULE-ACK-*, RULE-ACCESS-*). "
-    "For each identifier found in the text, check if it already appears in any extracted ruleId. "
-    "Only report a rule as missing if: "
-    "(i) its ruleId is completely absent from all extracted rules, AND "
-    "(ii) its condition AND action are explicitly stated in the text — do not infer or paraphrase.\n\n"
-    "Do NOT remove, modify, or re-evaluate any existing rule. "
-    "Return ONLY the newly discovered missing rules (do not repeat existing ones). "
-    "If nothing is missing, return an empty list.\n\n"
-    "Return valid JSON: {\"rules\": [<only newly discovered rules>]}."
+    "You are a strict validator for industrial SOP rule extraction. "
+    "You receive rules extracted from ONE document and that document's full text.\n\n"
+    "Rule class constraints (use when validating):\n"
+    "  ThresholdRule    — must have at least one non-empty threshold field "
+    "(critHi/warnHi/warnLo/critLo) and a condition referencing a numeric boundary.\n"
+    "  OperationalRule  — process-level condition triggers a specific response; "
+    "threshold fields must be empty. Different severity tiers (WARNING, CRITICAL) "
+    "for the same sensor with DIFFERENT required actions are TWO separate rules.\n"
+    "  MaintenanceRule  — sustained drift, stuck sensor, or cross-sensor correlation; "
+    "threshold fields must be empty.\n"
+    "  AccessRule       — personnel authorisation, occupancy limit, or time-bound "
+    "acknowledgment deadline. Different severity tiers with different limits are TWO separate rules.\n\n"
+    "STEP 1 — Remove false positives: ONLY delete a rule if its condition, action, or numeric "
+    "values are clearly and obviously absent from the source text with no plausible grounding. "
+    "When in doubt, KEEP the rule — a slightly imprecise rule is far less harmful than a "
+    "missing one. Do NOT delete rules merely because their wording differs from the text, "
+    "because another rule covers the same sensor, or because a field is empty. "
+    "WARNING and CRITICAL tiers for the same sensor are intentionally separate rules.\n\n"
+    "STEP 2 — Recover false negatives using a TWO-PASS approach:\n"
+    "  Pass A — Enumerate explicitly stated rules and constraints: scan for items directly "
+    "expressed via a labeled identifier (using the rule_id_pattern from metadata if provided), "
+    "or via explicit constraint language ('MUST', 'SHALL', 'exceeds', numeric limits, "
+    "response times, occupancy headcounts). Do NOT enumerate background, context, or headers.\n"
+    "  Pass B — For each item from Pass A with NO corresponding extracted rule, add it now. "
+    "Condition and action must be directly supported by the source text. "
+    "Pay special attention to rules that share a line with other rules.\n\n"
+    "Return valid JSON: {\"rules\": [...]}. "
+    "Copy all passing rules EXACTLY as received — do not rewrite any field."
 )
 
 
 # ── Judge checklists ────────────────────────────────────────────────────────────
 _CHECKLIST_NARRATIVE = (
     "Checklist for OPERATING PROCEDURE / NARRATIVE documents:\n"
-    "1. ACTIVELY SCAN the full document text for every labeled rule identifier "
-    "(RULE-XX-YY pattern or equivalent). List each identifier you find. "
-    "Then verify each one is represented in the extracted rules. "
-    "If ANY labeled rule from the text is absent from the extracted set, set pass=false "
-    "and list the missing identifiers in 'suggestions'.\n"
+    "1. Is there a rule for EVERY explicitly labeled constraint in the text? "
+    "Check for any structured identifier the document uses (e.g. RULE-XX-YY, MAINT-NN, "
+    "§3.1, Req. 4.5, Step 2.3, or any other pattern that identifies a distinct rule or limit).\n"
     "2. For each station, are all mentioned sensor types covered by at least one rule?\n"
     "3. When the text describes WARNING and CRITICAL responses for the same sensor that "
     "require DIFFERENT actions, are both extracted as separate rules?\n"
@@ -703,7 +794,8 @@ _CHECKLIST_MATRIX = (
     "1. Is there an AccessRule for every zone with a defined occupancy limit?\n"
     "2. Is there an AccessRule for every (role × severity) combination that has an explicit "
     "value in the acknowledgment-time table? Count the populated cells — no cell may be skipped.\n"
-    "3. Are all prose labeled rules (RULE-ACCESS-XX or equivalent) included?\n"
+    "3. Are all explicitly labeled prose rules included? Check any rule identifier pattern "
+    "used in the document (e.g. RULE-ACCESS-XX, §4.2, Requirement 3.1, or any other labeling scheme).\n"
 )
 
 _CHECKLIST_MAINTENANCE = (
@@ -736,8 +828,6 @@ _JUDGE_SUFFIX = (
     "Return JSON: {\"gaps\": [list of gap codes from S1/S2/S3/S4], "
     "\"suggestions\": \"specific retry instructions — for S3(b)/(c) violations name the "
     "ruleId to DROP or the exact field values to correct\", "
-    "\"deficient_files\": [list of source_file filenames that need re-extraction; "
-    "base this on which files are missing rules or contain violations — empty list if none], "
     "\"pass\": true/false}"
 )
 
@@ -768,29 +858,46 @@ def _build_judge_system(doc_types: dict[str, str]) -> str:
 _STRUCTURAL_CLASSIFY_PROMPT = (
     "You are a document structure analyst. Classify the industrial SOP document below "
     "into exactly one type based on its DOMINANT spatial layout.\n\n"
-    "Classification rules — read carefully before deciding:\n"
-    "  narrative — the primary content is individually labeled operational rules written as "
-    "PROSE SENTENCES in flowing text (each rule is a complete sentence or short paragraph "
-    "with a condition and a required response, identified by a label). "
-    "May contain a small informational table (e.g. a station dependency list) but the "
-    "labeled prose rules are clearly the dominant content. "
-    "KEY: the rules are SENTENCES, not table rows.\n"
-    "  tabular   — the document is PRIMARILY a sensor threshold table where each row defines "
-    "the full set of numeric alarm limits for one sensor across multiple severity tiers "
-    "(low-critical, low-warning, high-warning, high-critical). The table PURPOSE is to specify "
-    "numeric boundaries — it is a threshold reference, not a list of tasks or procedures.\n"
-    "  matrix    — the document is a cross-reference grid mapping roles or personnel to "
-    "zones or areas (authorisation status, headcounts). The dominant structure is a "
-    "role-vs-zone or role-vs-severity lookup table.\n"
-    "  mixed     — the primary content is TABLE ROWS (not prose sentences) where each row "
-    "describes a maintenance procedure or fault pattern as structured data: trigger condition, "
-    "required action, and priority level stored in separate columns. "
-    "Also choose mixed for correlated-fault tables linking one sensor's deviation to another. "
-    "KEY: the maintenance content is TABLE DATA, not labeled prose sentences — if the document "
-    "primarily contains labeled prose rules, choose narrative instead.\n\n"
+    "Classification rules — apply them in ORDER, stop at the first match:\n\n"
+    "  1. tabular — the document's dominant structure is a table with columns representing "
+    "numeric alarm threshold bands (low-critical, low-warning, high-warning, high-critical "
+    "under ANY naming — e.g. CRIT_LO/WARN_HI, Min Alarm/Max Alarm, Alert Low/Action High, "
+    "LL/L/H/HH, or any other multi-tier numeric limit convention). The exact column names "
+    "do not matter; what matters is that numeric limits appear across multiple severity tiers "
+    "in a tabular layout. "
+    "A table whose columns are Rule ID / Sensor / Trigger / Action / Priority is NOT tabular. "
+    "A table whose columns are Pattern / Primary Fault / Resolution is NOT tabular.\n\n"
+    "  2. matrix — the dominant structure is a role-vs-zone or role-vs-severity lookup grid "
+    "(authorisation status, occupancy headcounts, acknowledgment times).\n\n"
+    "  3. mixed — the document's PRIMARY content is predictive or corrective maintenance tasks "
+    "or correlated-fault patterns. The key signal is a TABLE whose rows represent individual "
+    "maintenance events or fault patterns, with columns explicitly for triggers, required "
+    "actions, and priorities (e.g. 'Trigger / Action / Priority', 'Pattern / Primary Fault / "
+    "Resolution'). Row identifiers follow a maintenance-specific scheme (e.g. MAINT-01, MAINT-02). "
+    "IMPORTANT — a document is NOT mixed just because it contains an informational table "
+    "(dependency list, station overview) or because its prose rules have condition→action "
+    "structure. The maintenance TABLE must be the dominant content.\n\n"
+    "  4. narrative — the primary content is individually labeled operational rules written as "
+    "prose (each rule has its own identifier and states a process condition and required response). "
+    "Simple informational tables (station dependency lists, cross-reference grids) do NOT "
+    "override a narrative classification — choose narrative whenever labeled prose rules dominate "
+    "and no maintenance-specific table structure is present.\n\n"
+    "Also extract document-level metadata to help downstream extractors:\n"
+    "  threshold_col_map — if tabular: map each detected threshold column header to one of "
+    "{critLo, warnLo, warnHi, critHi}. Example: {\"critLo\": \"LL\", \"warnLo\": \"L\", "
+    "\"warnHi\": \"H\", \"critHi\": \"HH\"}. Use null if not tabular or columns not identifiable.\n"
+    "  rule_id_pattern — REQUIRED if the document contains any labeled rules or constraints: "
+    "return the exact pattern string used (e.g. 'RULE-XX-YY', 'MAINT-NN', 'Req. 4.5', '§3.1'). "
+    "If your structural_reasoning mentions any rule label, you MUST populate this field. "
+    "Use null ONLY if the document contains zero labeled rules.\n"
+    "  sensor_id_example — one representative sensor/tag identifier from the document "
+    "(e.g. 'FIC-101', 'ST01_FLW', 'TI-203'). Use null if none found.\n\n"
     "Reply ONLY with valid JSON: "
     "{\"doc_type\": \"<narrative|tabular|matrix|mixed>\", "
-    "\"structural_reasoning\": \"<one sentence naming the dominant layout feature>\"}\n\n"
+    "\"structural_reasoning\": \"<one sentence citing the specific layout that determined your choice>\", "
+    "\"threshold_col_map\": <object or null>, "
+    "\"rule_id_pattern\": <string or null>, "
+    "\"sensor_id_example\": <string or null>}\n\n"
     "Document:\n"
 )
 
@@ -802,8 +909,9 @@ def coordinator_node(state: PipelineState) -> dict:
     txt_files = sorted(f for f in os.listdir(abs_texts) if f.endswith(".txt"))
     print(f"[Coordinator/{model}] Found {len(txt_files)} SOP files.")
 
-    sop_texts: dict[str, str] = {}
-    doc_types: dict[str, str] = {}
+    sop_texts:            dict[str, str]  = {}
+    doc_types:            dict[str, str]  = {}
+    coordinator_metadata: dict[str, dict] = {}
 
     for fname in txt_files:
         with open(os.path.join(abs_texts, fname), encoding="utf-8") as f:
@@ -811,7 +919,7 @@ def coordinator_node(state: PipelineState) -> dict:
         sop_texts[fname] = text[:SOP_TEXT_LIMIT]
 
         raw = llm_call(model, [
-            {"role": "user", "content": _STRUCTURAL_CLASSIFY_PROMPT + text[:8000]},
+            {"role": "user", "content": _STRUCTURAL_CLASSIFY_PROMPT + text[:SOP_TEXT_LIMIT]},
         ]).strip()
         raw = re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL).strip()
 
@@ -825,26 +933,39 @@ def coordinator_node(state: PipelineState) -> dict:
                 dtype = "narrative"
             if reasoning:
                 print(f"    [structural_reasoning] {reasoning}")
+
+            meta: dict = {}
+            if result.get("threshold_col_map"):
+                meta["threshold_col_map"] = result["threshold_col_map"]
+                print(f"    [col_map] {meta['threshold_col_map']}")
+            if result.get("rule_id_pattern"):
+                meta["rule_id_pattern"] = result["rule_id_pattern"]
+            if result.get("sensor_id_example"):
+                meta["sensor_id_example"] = result["sensor_id_example"]
+            if meta:
+                coordinator_metadata[fname] = meta
         except Exception:
             dtype = next((t for t in ("tabular", "matrix", "mixed") if t in raw.lower()), "narrative")
 
         doc_types[fname] = dtype
         print(f"  {fname}: {dtype} → {_DTYPE_TO_NODE[dtype]}")
 
-    return {"sop_texts": sop_texts, "doc_types": doc_types, "extracted_rules": []}
+    return {"sop_texts": sop_texts, "doc_types": doc_types, "extracted_rules": [],
+            "coordinator_metadata": coordinator_metadata}
 
 
 def dispatch_to_extractors(state: PipelineState)  -> list[Send]:
     """Fan-out: one Send per SOP file to the correct typed extractor node."""
     return [
         Send(_DTYPE_TO_NODE[dtype], {
-            "current_fname":     fname,
-            "current_dtype":     dtype,
-            "sop_texts":         state["sop_texts"],
-            "extractor_a_model": state["extractor_a_model"],
-            "extractor_b_model": state["extractor_b_model"],
-            "extractor_c_model": state["extractor_c_model"],
-            "is_retry":          False,
+            "current_fname":        fname,
+            "current_dtype":        dtype,
+            "sop_texts":            state["sop_texts"],
+            "extractor_a_model":    state["extractor_a_model"],
+            "extractor_b_model":    state["extractor_b_model"],
+            "extractor_c_model":    state["extractor_c_model"],
+            "coordinator_metadata": state.get("coordinator_metadata", {}),
+            "is_retry":             False,
         })
         for fname, dtype in state["doc_types"].items()
     ]
@@ -858,7 +979,33 @@ def _run_extractor(state: PipelineState, model_key: str, label: str) -> dict:
     model    = state[model_key]  # type: ignore[literal-required]
     is_retry = state.get("is_retry", False)
 
-    system_prompt = _PROMPT_FN[dtype]()
+    # Build document-specific metadata block first so instructions that reference it
+    # can correctly say "above" — metadata must appear before the per-extractor context.
+    meta = state.get("coordinator_metadata", {}).get(fname, {})
+    meta_block = ""
+    if meta:
+        meta_lines = ["Document-specific metadata (discovered by coordinator — use these when extracting):"]
+        if meta.get("threshold_col_map"):
+            meta_lines.append(
+                f"  Threshold column mapping for this document: {json.dumps(meta['threshold_col_map'])}. "
+                "Map these column headers to critLo/warnLo/warnHi/critHi accordingly."
+            )
+        if meta.get("rule_id_pattern"):
+            meta_lines.append(
+                f"  Rule identifier pattern used in this document: {meta['rule_id_pattern']}. "
+                "Use this pattern when identifying labeled rules."
+            )
+        if meta.get("sensor_id_example"):
+            meta_lines.append(
+                f"  Example sensor/tag identifier from this document: {meta['sensor_id_example']}. "
+                "Follow this naming format when extracting sensor fields."
+            )
+        meta_block = "\n".join(meta_lines) + "\n\n"
+
+    # Metadata is prepended after _BASE_SYSTEM so all subsequent instructions can reference it as "above".
+    base = _BASE_SYSTEM + "\n\n" + meta_block if meta_block else _BASE_SYSTEM
+    system_prompt = _PROMPT_FN[dtype]().replace(_BASE_SYSTEM, base, 1)
+
     if is_retry:
         system_prompt += "\nThis is a RETRY. Be exhaustive — extract EVERY rule, including multi-rule lines."
 
@@ -905,10 +1052,11 @@ def merge_node(state: PipelineState) -> dict:
       Branch B2 — ThresholdRule semantic dedup: same sensor + identical numeric thresholds.
       Branch C  — content-agreement dedup: candidates scoring >= _AGREEMENT_THRESHOLD are
                   collapsed (richest kept); action-disagreement guards severity-tier splits.
-      Remaining conflicts are kept as-is — no LLM adjudication.
+      Branch D  — genuine conflict: queued for batched LLM adjudication.
     """
+    model     = state["adjudicator_model"]
     all_rules = state.get("extracted_rules", [])
-    print(f"[Merge] Merging {len(all_rules)} raw rules (deterministic only)...")
+    print(f"[Adjudicator/{model}] Merging {len(all_rules)} raw rules...")
 
     if not all_rules:
         return {"merged_rules": []}
@@ -917,18 +1065,15 @@ def merge_node(state: PipelineState) -> dict:
     # describing the same physical entity are considered for merging or adjudication.
     groups: dict[tuple, list[dict]] = {}
     for r in all_rules:
-        cls     = r.get("class",      "").strip()
-        station = r.get("station",    "").strip().upper()
-        stype   = r.get("sensorType", "").strip().upper()
-        # When both station and sensorType are empty (common for AccessRule and
-        # MaintenanceRule), rules with different conditions would otherwise land
-        # in one giant group and be incorrectly collapsed.
-        # Adding a condition prefix as a fourth key component prevents this.
-        cond_disc = _norm_text(r.get("condition", ""))[:40] if (not station and not stype) else ""
-        key = (cls, station, stype, cond_disc)
+        key = (
+            r.get("class", "").strip(),
+            r.get("station", "").strip().upper(),
+            r.get("sensorType", "").strip().upper(),
+        )
         groups.setdefault(key, []).append(r)
 
     output: list[dict] = []
+    conflict_groups: list[dict] = []
 
     for key, candidates in groups.items():
         cls = key[0]
@@ -997,53 +1142,96 @@ def merge_node(state: PipelineState) -> dict:
             output.append(deduped[0])
             continue
 
-        # Remaining conflicts after deterministic dedup — keep all, let validator clean up
-        output.extend(deduped)
+        # Branch D — genuine conflict: queue for LLM
+        conflict_groups.append({
+            "group_key":  {"class": key[0], "station": key[1], "sensorType": key[2]},
+            "candidates": deduped,
+        })
+
+    # All unresolved conflict groups are batched into a single LLM call to minimise
+    # total inference time; the LLM response is then applied to the collected output list.
+    if conflict_groups:
+        print(f"  [Adjudicator] {len(conflict_groups)} conflict group(s) → LLM")
+        raw = llm_call(model, [
+            {"role": "system", "content": CONFLICT_ADJUDICATOR_SYSTEM},
+            {"role": "user",   "content": json.dumps(conflict_groups, indent=2)[:12000]},
+        ])
+        try:
+            resolved = json.loads(
+                re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL).strip()
+            ).get("resolved", [])
+        except Exception:
+            resolved = []
+
+        all_originals = [r for grp in conflict_groups for r in grp["candidates"]]
+        if resolved:
+            for r in resolved:
+                if isinstance(r, dict):
+                    output.append(_guard_fields(r, all_originals))
+        else:
+            for grp in conflict_groups:
+                output.extend(grp["candidates"])
 
     print(f"  → {len(output)} rules after merge")
     return {"merged_rules": output}
 
 
 def validate_node(state: PipelineState) -> dict:
-    """Deterministic cleanup then additive LLM gap-filling; never removes existing rules."""
+    """LLM filtering plus deterministic post-filter: class validation, numeric completeness checks, and duplicate elimination."""
     model     = state["validator_model"]
     rules     = state.get("merged_rules", [])
     sop_texts = state.get("sop_texts", {})
     print(f"[Validator/{model}] Validating {len(rules)} rules...")
 
+    # Two validation passes are applied in sequence: a fast deterministic pass cleans up
+    # class labels and duplicates, then a per-file LLM pass checks grounding and
+    # recovers any rules that were missed during extraction.
     # Pass 1 — deterministic cleanup (class normalisation, threshold hygiene, dedup)
     rules = _deterministic_post_filter(rules)
     print(f"  → {len(rules)} after deterministic filter")
 
-    # Pass 2 — per-file LLM gap-filling: only adds missing rules, never removes
+    # Pass 2 — per-file LLM check: remove hallucinations + recover false negatives
     by_file: dict[str, list[dict]] = defaultdict(list)
     for r in rules:
         by_file[r.get("source_file", "")].append(r)
 
-    all_valid: list[dict] = list(rules)
+    all_valid: list[dict] = []
     for fname, file_rules in by_file.items():
         raw_text = sop_texts.get(fname, "")
         if not raw_text:
+            all_valid.extend(file_rules)
             continue
 
-        print(f"  [Validator] {fname}: {len(file_rules)} rules → LLM gap-check")
+        # Pass coordinator metadata so the validator can do targeted rule-label scanning.
+        coord_meta = state.get("coordinator_metadata", {})
+        meta = coord_meta.get(fname, {})
+        meta_note = ""
+        if meta:
+            parts = []
+            if meta.get("rule_id_pattern"):
+                parts.append(f"Rule identifier pattern in this document: {meta['rule_id_pattern']}")
+            if meta.get("sensor_id_example"):
+                parts.append(f"Example sensor identifier: {meta['sensor_id_example']}")
+            if parts:
+                meta_note = "Document metadata:\n  " + "\n  ".join(parts) + "\n\n"
+
+        print(f"  [Validator] {fname}: {len(file_rules)} rules → LLM check")
         raw = llm_call(model, [
             {"role": "system", "content": VALIDATOR_SYSTEM},
             {"role": "user",   "content": (
-                f"Source document:\n{raw_text[:8000]}\n\n"
+                f"{meta_note}"
+                f"Source document:\n{raw_text}\n\n"
                 f"Extracted rules:\n{json.dumps(file_rules, indent=2)[:6000]}"
             )},
         ])
-        found = parse_rules(raw)
-        if found:
-            existing_ids = {r.get("ruleId") for r in file_rules}
-            added = [r for r in found if r.get("ruleId") not in existing_ids]
-            for r in added:
+        updated = parse_rules(raw)
+        if updated:
+            for r in updated:
                 if not r.get("source_file"):
                     r["source_file"] = fname
-            if added:
-                print(f"    [Validator delta] {fname}: added {len(added)} → {sorted(r.get('ruleId') for r in added)}")
-                all_valid.extend(added)
+            all_valid.extend(updated)
+        else:
+            all_valid.extend(file_rules)
 
     # Final deterministic pass to clean up anything the LLM introduced
     valid = _deterministic_post_filter(all_valid)
@@ -1057,15 +1245,14 @@ def judge_node(state: PipelineState) -> dict:
     validated   = state.get("validated_rules", [])
     doc_types   = state.get("doc_types", {})
     sop_texts   = state.get("sop_texts", {})
+    coord_meta  = state.get("coordinator_metadata", {})
     retry_count = state.get("retry_count", 0)
     print(f"[Judge/{model}] Checking {len(validated)} rules (retry_count={retry_count})...")
 
-    if retry_count >= 1:
+    if retry_count >= 2:
         print("  → max retries reached")
         return {"retry_files": {}}
 
-    # A deterministic physics pre-check is performed before the LLM call so that
-    # threshold-ordering violations are surfaced even when the LLM judge overlooks them.
     physics_violations = [r for r in validated if not _physics_valid(r)]
     if physics_violations:
         print(f"  [Judge] {len(physics_violations)} physics violation(s) detected (S3-physics):")
@@ -1074,23 +1261,32 @@ def judge_node(state: PipelineState) -> dict:
                   f"critLo={r.get('critLo')} warnLo={r.get('warnLo')} "
                   f"warnHi={r.get('warnHi')} critHi={r.get('critHi')}")
 
-    # Per-file judge calls — each file gets its full SOP_TEXT_LIMIT chars of text.
+    # Group validated rules by source file so each per-file call gets only that file's rules.
     by_file: dict[str, list[dict]] = defaultdict(list)
     for r in validated:
         by_file[r.get("source_file", "")].append(r)
 
+    # Per-file LLM judge calls — each file gets its full SOP_TEXT_LIMIT chars of text.
     llm_deficient: set[str] = set()
-    llm_feedback:  dict[str, dict] = {}
     for fname, dtype in doc_types.items():
         file_rules = by_file.get(fname, [])
         file_text  = sop_texts.get(fname, "")
         judge_sys  = _build_judge_system({fname: dtype})
-        rules_json = json.dumps(file_rules, indent=2)[:6000]
 
+        meta = coord_meta.get(fname, {})
+        meta_parts = []
+        if meta.get("rule_id_pattern"):
+            meta_parts.append(f"rule_id_pattern='{meta['rule_id_pattern']}'")
+        if meta.get("sensor_id_example"):
+            meta_parts.append(f"sensor_id_example='{meta['sensor_id_example']}'")
+        meta_context = ("Document metadata: " + ", ".join(meta_parts) + "\n\n") if meta_parts else ""
+
+        rules_json = json.dumps(file_rules, indent=2)[:6000]
         print(f"  [Judge] {fname} ({dtype}): {len(file_rules)} rules")
         raw = llm_call(model, [
             {"role": "system", "content": judge_sys},
             {"role": "user",   "content": (
+                f"{meta_context}"
                 f"Source document:\n{file_text}\n\n"
                 f"Extracted rules:\n{rules_json}"
             )},
@@ -1104,10 +1300,10 @@ def judge_node(state: PipelineState) -> dict:
         passed = feedback.get("pass", True)
         gaps   = feedback.get("gaps", [])
         print(f"    → Pass: {passed}, Gaps: {gaps}")
-        llm_feedback[fname] = feedback
         if not passed:
             llm_deficient.add(fname)
 
+    # Compile retry files: LLM-flagged files + safety net for class-empty files.
     retry_files: dict[str, str] = {}
     for fname, dtype in doc_types.items():
         file_rules = by_file.get(fname, [])
@@ -1121,26 +1317,18 @@ def judge_node(state: PipelineState) -> dict:
         tabular_empty   = dtype == "tabular" and "ThresholdRule" not in classes
         matrix_empty    = dtype == "matrix"  and "AccessRule"    not in classes
 
-        structural_failure = no_rules or narrative_empty or tabular_empty or matrix_empty
-
-        if structural_failure:
-            # Only retry on complete structural failures (zero rules of expected class).
-            # Partial gaps detected by the LLM are handled by the validator's additive
-            # gap-filling and do NOT trigger retry — retry causes re-merge over-dedup
-            # that loses valid rules from the original extraction.
+        if llm_flagged or no_rules or narrative_empty or tabular_empty or matrix_empty:
             reason = (
-                "no rules extracted"              if no_rules        else
-                "no ThresholdRules"               if tabular_empty   else
-                "no AccessRules"                  if matrix_empty    else
+                "LLM-flagged"                    if llm_flagged     else
+                "no rules extracted"             if no_rules        else
+                "no ThresholdRules"              if tabular_empty   else
+                "no AccessRules"                 if matrix_empty    else
                 "missing substantive rule classes"
             )
             print(f"  Judge: {fname} → retry ({reason})")
             retry_files[fname] = dtype
-        elif llm_flagged:
-            # Log LLM-detected gaps for observability but do not retry.
-            suggestions = llm_feedback.get(fname, {}).get("suggestions", "")
-            print(f"  Judge: {fname} → gaps noted (no retry): {suggestions[:120]}")
 
+    print(f"  → Overall: {len(llm_deficient)} deficient, {len(retry_files)} file(s) queued for retry")
     return {"retry_files": retry_files}
 
 
@@ -1156,13 +1344,14 @@ def dispatch_retry_sends(state: PipelineState) -> list[Send]:
     retry_files = state.get("retry_files", {})
     return [
         Send(_DTYPE_TO_NODE.get(dtype, "extract_narrative"), {
-            "current_fname":     fname,
-            "current_dtype":     dtype,
-            "sop_texts":         state["sop_texts"],
-            "extractor_a_model": state["extractor_a_model"],
-            "extractor_b_model": state["extractor_b_model"],
-            "extractor_c_model": state["extractor_c_model"],
-            "is_retry":          True,
+            "current_fname":        fname,
+            "current_dtype":        dtype,
+            "sop_texts":            state["sop_texts"],
+            "extractor_a_model":    state["extractor_a_model"],
+            "extractor_b_model":    state["extractor_b_model"],
+            "extractor_c_model":    state["extractor_c_model"],
+            "coordinator_metadata": state.get("coordinator_metadata", {}),
+            "is_retry":             True,
         })
         for fname, dtype in retry_files.items()
     ]
@@ -1238,7 +1427,7 @@ def save_node(state: PipelineState) -> dict:
 
 
 def _judge_routing(state: PipelineState) -> str:
-    if state.get("retry_files") and state.get("retry_count", 0) < 1:
+    if state.get("retry_files") and state.get("retry_count", 0) < 2:
         return "pre_retry"
     return "normalize"
 
@@ -1252,11 +1441,13 @@ def _judge_routing(state: PipelineState) -> str:
 
 # ── no_cm: keyword-based coordinator (no LLM) ─────────────────────────────────
 # Document type is inferred from a small set of regex patterns when the LLM
-# coordinator is removed. Each pattern is matched against the first 8 000 characters.
+# coordinator is removed. Each pattern is matched against the first 3 000 characters.
 _KEYWORD_CLASSIFY_RULES: list[tuple[str, str]] = [
-    (r"CRIT_LO|WARN_LO|WARN_HI|CRIT_HI",                                     "tabular"),
-    (r"(?i)(?:zone|area|sector)\s+\w+.*(?:authorized|forbidden|max.persons)",  "matrix"),
-    (r"MAINT-|predictive[- ]maintenance|drift.*threshold|cross.sensor",        "mixed"),
+    # Match any multi-tier numeric threshold column convention, not just this dataset's names
+    (r"(?i)(?:CRIT_LO|WARN_LO|WARN_HI|CRIT_HI|crit[_\s\-]lo|warn[_\s\-]hi"
+     r"|action[_\s\-]low|action[_\s\-]high|\bLL\b|\bHH\b|\bLOLO\b|\bHIHI\b)",  "tabular"),
+    (r"(?i)(?:zone|area|sector)\s+\w+.*(?:authoris|authoriz|forbidden|max.persons|occupancy)",  "matrix"),
+    (r"MAINT-|(?i)(?:predictive[- ]maintenance|drift.*threshold|cross.sensor|fault.correlation)", "mixed"),
 ]
 
 
@@ -1281,19 +1472,110 @@ def coordinator_node_no_cm(state: PipelineState) -> dict:
         with open(os.path.join(abs_texts, fname), encoding="utf-8") as f:
             text = f.read()
         sop_texts[fname] = text[:SOP_TEXT_LIMIT]
-        dtype = _keyword_classify(text[:8000])
+        dtype = _keyword_classify(text[:3000])
         doc_types[fname] = dtype
         print(f"  {fname}: {dtype} → {_DTYPE_TO_NODE[dtype]}")
 
-    return {"sop_texts": sop_texts, "doc_types": doc_types, "extracted_rules": []}
+    return {"sop_texts": sop_texts, "doc_types": doc_types, "extracted_rules": [],
+            "coordinator_metadata": {}}
 
 
+# ── no_adj: deterministic-only merge (no LLM conflict resolution) ─────────────
+def merge_node_no_adj(state: PipelineState) -> dict:
+    """Merge with deterministic deduplication only; no LLM adjudicator (ablation: no_adj)."""
+    all_rules = state.get("extracted_rules", [])
+    print(f"[Merge/deterministic] Merging {len(all_rules)} raw rules (no adjudicator)...")
 
-# ── no_validator: skip validation entirely ────────────────────────────────────
-def validate_node_noop(state: PipelineState) -> dict:
-    """Pass merged rules directly as validated rules — no filtering, no LLM (ablation: no_validator)."""
+    if not all_rules:
+        return {"merged_rules": []}
+
+    groups: dict[tuple, list[dict]] = {}
+    for r in all_rules:
+        key = (
+            r.get("class", "").strip(),
+            r.get("station", "").strip().upper(),
+            r.get("sensorType", "").strip().upper(),
+        )
+        groups.setdefault(key, []).append(r)
+
+    output: list[dict] = []
+
+    for key, candidates in groups.items():
+        cls = key[0]
+
+        if len(candidates) == 1:
+            output.append(candidates[0])
+            continue
+
+        # Branch B — ThresholdRule complementary merge
+        if (
+            cls == "ThresholdRule"
+            and len(candidates) == 2
+            and not _has_all_four(candidates[0])
+            and not _has_all_four(candidates[1])
+            and (
+                (_has_crit_fields(candidates[0]) and _has_warn_fields(candidates[1]))
+                or (_has_warn_fields(candidates[0]) and _has_crit_fields(candidates[1]))
+            )
+        ):
+            crit_src = candidates[0] if _has_crit_fields(candidates[0]) else candidates[1]
+            warn_src = candidates[1] if _has_crit_fields(candidates[0]) else candidates[0]
+            merged = dict(crit_src)
+            for field in ("warnHi", "warnLo"):
+                if not merged.get(field) and warn_src.get(field):
+                    merged[field] = warn_src[field]
+            for field in ("station", "sensor", "sensorType", "condition", "action", "unit"):
+                if not merged.get(field) and warn_src.get(field):
+                    merged[field] = warn_src[field]
+            merged["severity"] = "CRITICAL"
+            output.append(merged)
+            continue
+
+        # Branch B2 — ThresholdRule semantic dedup
+        if cls == "ThresholdRule":
+            thr_sigs: dict[str, dict] = {}
+            for r in candidates:
+                tsig = _threshold_sig(r)
+                if tsig not in thr_sigs or _n_nonempty(r) > _n_nonempty(thr_sigs[tsig]):
+                    thr_sigs[tsig] = r
+            candidates = list(thr_sigs.values())
+            if len(candidates) == 1:
+                output.append(candidates[0])
+                continue
+
+        # Branch C — content-agreement dedup
+        seen: list[dict] = []
+        for r in candidates:
+            best_idx, best_score = -1, 0.0
+            for i, existing in enumerate(seen):
+                s = _agreement_score(r, existing)
+                if s > best_score:
+                    best_score, best_idx = s, i
+            if best_score >= _AGREEMENT_THRESHOLD:
+                existing = seen[best_idx]
+                a1 = _norm_text(str(r.get("action") or ""))
+                a2 = _norm_text(str(existing.get("action") or ""))
+                if a1 == a2 or not a1 or not a2:
+                    if _n_nonempty(r) > _n_nonempty(existing):
+                        seen[best_idx] = r
+                    continue
+            seen.append(r)
+
+        # Branch D — genuine conflict: keep all (no LLM resolution)
+        output.extend(seen)
+
+    print(f"  → {len(output)} rules after deterministic merge")
+    return {"merged_rules": output}
+
+
+# ── no_validator: passthrough that skips LLM validation ───────────────────────
+def _passthrough_validate(state: PipelineState) -> dict:
+    """Pass merged rules directly to judge without LLM validation (ablation: no_validator)."""
     rules = state.get("merged_rules", [])
-    print(f"[Validator/skipped] {len(rules)} rules passed through unchanged (ablation: no_validator)")
+    # The deterministic filter is still applied so the judge receives clean data
+    # even though the LLM validation step has been removed.
+    rules = _deterministic_post_filter(rules)
+    print(f"[Validator/skipped] {len(rules)} rules passed through (ablation: no_validator)")
     return {"validated_rules": rules}
 
 
@@ -1307,13 +1589,14 @@ def build_graph(ablation: str | None = None) -> StateGraph:
     builder = StateGraph(PipelineState)
 
     coordinator_fn = coordinator_node_no_cm if ablation == "no_cm"        else coordinator_node
-    validate_fn    = validate_node_noop     if ablation == "no_validator" else validate_node
+    merge_fn       = merge_node_no_adj      if ablation == "no_adj"       else merge_node
+    validate_fn    = _passthrough_validate  if ablation == "no_validator" else validate_node
 
     builder.add_node("coordinator",       coordinator_fn)
     builder.add_node("extract_narrative", extract_narrative_node)
     builder.add_node("extract_tabular",   extract_tabular_node)
     builder.add_node("extract_matrix",    extract_matrix_node)
-    builder.add_node("merge",             merge_node)
+    builder.add_node("merge",             merge_fn)
     builder.add_node("validate",          validate_fn)
     builder.add_node("normalize",         normalize_node)
     builder.add_node("save",              save_node)
@@ -1365,20 +1648,21 @@ def build_graph(ablation: str | None = None) -> StateGraph:
 def run_pipeline(ablation: str | None = None, **overrides: str) -> dict:
     initial_state: PipelineState = {
         **DEFAULTS,                          # type: ignore[typeddict-item]
-        "abox_path":        ABOX_DEFAULT_PATH,
-        "sop_texts":        {},
-        "doc_types":        {},
-        "extracted_rules":  [],
-        "merged_rules":     [],
-        "validated_rules":  [],
-        "normalized_rules": [],
-        "retry_files":      {},
-        "retry_count":      0,
-        "output_path":      "",
-        "current_fname":    "",
-        "current_dtype":    "",
-        "is_retry":         False,
-        "ablation":         ablation or "",
+        "abox_path":             ABOX_DEFAULT_PATH,
+        "sop_texts":             {},
+        "doc_types":             {},
+        "extracted_rules":       [],
+        "merged_rules":          [],
+        "validated_rules":       [],
+        "normalized_rules":      [],
+        "retry_files":           {},
+        "retry_count":           0,
+        "output_path":           "",
+        "current_fname":         "",
+        "current_dtype":         "",
+        "is_retry":              False,
+        "ablation":              ablation or "",
+        "coordinator_metadata":  {},
         **overrides,                         # type: ignore[typeddict-item]
     }
     graph = build_graph(ablation).compile()
@@ -1397,9 +1681,9 @@ if __name__ == "__main__":
         choices=list(_ABL_TAG_MAP.keys()),
         default=None,
         help=(
-            "Ablation study — completely remove one pipeline component: "
-            "no_cm (keyword coordinator instead of LLM), "
-            "no_validator (skip validator entirely), no_judge (skip judge+retry entirely)"
+            "Ablation study — omit one pipeline component: "
+            "no_cm (keyword coordinator), no_adj (no LLM merge), "
+            "no_validator (skip validator), no_judge (skip judge+retry)"
         ),
     )
     args = vars(parser.parse_args())

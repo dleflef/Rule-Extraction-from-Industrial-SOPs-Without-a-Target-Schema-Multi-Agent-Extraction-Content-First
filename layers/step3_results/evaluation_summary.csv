@@ -1,12 +1,11 @@
 file_name,total_extracted,strict_f1,strict_pr,strict_re,strict_tp,strict_fp,strict_fn,content_f1,content_pr,content_re,content_tp,content_fp,content_fn
-ext_multi_agent_langgraph.csv,72,0.558,0.632,0.5,43,25,43,0.823,0.903,0.756,65,7,21
-abl_noJudge_s42_run1.csv,65,0.531,0.639,0.453,39,22,47,0.795,0.923,0.698,60,5,26
-abl_noValidator_s42_run1.csv,61,0.583,0.724,0.488,42,16,44,0.776,0.934,0.663,57,4,29
-abl_noCM_s42_run1.csv,69,0.632,0.71,0.57,49,20,37,0.761,0.855,0.686,59,10,27
+ext_multi_agent_langgraph.csv,79,0.703,0.734,0.674,58,21,28,0.909,0.949,0.872,75,4,11
+abl_noValidator_s42_run1.csv,75,0.671,0.72,0.628,54,21,32,0.894,0.96,0.837,72,3,14
+abl_noJudge_s42_run1.csv,79,0.703,0.734,0.674,58,21,28,0.885,0.924,0.849,73,6,13
+abl_noCM_s42_run1.csv,86,0.675,0.7,0.651,56,24,30,0.872,0.872,0.872,75,11,11
 ext_gpt-oss-20b_few_shot_static_s42_run1.csv,65,0.411,0.477,0.36,31,34,55,0.728,0.846,0.64,55,10,31
 ext_ministral-3-8b_few_shot_static_s42_run1.csv,79,0.606,0.633,0.581,50,29,36,0.727,0.759,0.698,60,19,26
 ext_ministral-3-14b_few_shot_static_s42_run1.csv,82,0.527,0.543,0.512,44,37,42,0.726,0.744,0.709,61,21,25
-abl_noAdj_s42_run1.csv,59,0.556,0.69,0.465,40,18,46,0.703,0.864,0.593,51,8,35
 ext_qwen-qwen3-4b-2507_few_shot_static_s42_run1.csv,80,0.352,0.367,0.337,29,50,57,0.699,0.725,0.674,58,22,28
 ext_gpt-oss-20b_reflexion_s42_run1.csv,65,0.397,0.462,0.349,30,35,56,0.662,0.769,0.581,50,15,36
 ext_gemma3-12b_graph_informed_s42_run1.csv,65,0.403,0.476,0.349,30,33,56,0.649,0.754,0.57,49,16,37
@@ -24,8 +23,8 @@ ext_ministral-3-8b_reflexion_s42_run1.csv,80,0.431,0.534,0.36,31,27,55,0.554,0.5
 ext_ministral-3-8b_react_abox_s42_run1.csv,76,0.395,0.421,0.372,32,44,54,0.543,0.579,0.512,44,32,42
 ext_ministral-3-8b_graph_informed_s42_run1.csv,83,0.431,0.534,0.36,31,27,55,0.533,0.542,0.523,45,38,41
 ext_gpt-oss-20b_graph_informed_s42_run1.csv,63,0.416,0.492,0.36,31,32,55,0.51,0.603,0.442,38,25,48
-ext_qwen-qwen3-4b-2507_react_abox_s42_run1.csv,78,0.356,0.377,0.337,29,48,57,0.5,0.526,0.477,41,37,45
 ext_gpt-oss-20b_pre_act_s42_run1.csv,78,0.341,0.359,0.326,28,50,58,0.5,0.526,0.477,41,37,45
+ext_qwen-qwen3-4b-2507_react_abox_s42_run1.csv,78,0.356,0.377,0.337,29,48,57,0.5,0.526,0.477,41,37,45
 ext_qwen-qwen3-4b-2507_reflexion_s42_run1.csv,81,0.458,0.475,0.442,38,42,48,0.491,0.506,0.477,41,40,45
 ext_qwen-qwen3-4b-2507_graph_informed_s42_run1.csv,81,0.458,0.475,0.442,38,42,48,0.491,0.506,0.477,41,40,45
 ext_qwen-qwen3-4b-2507_pre_act_s42_run1.csv,82,0.371,0.383,0.36,31,50,55,0.476,0.488,0.465,40,42,46

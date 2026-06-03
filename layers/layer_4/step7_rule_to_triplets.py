@@ -42,8 +42,6 @@ from __future__ import annotations
 import argparse
 import csv
 import os
-import re
-
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
 
@@ -82,6 +80,15 @@ _STATION_TO_ZONE: dict[str, str] = {
     "CHM01_CHEMICALSTORAGE": "Chemical Storage",
     "RND01_RDLAB":           "R&D Lab",
     "CAF01_CAFETERIA":       "Cafeteria",
+    # LLM sometimes writes the zone name directly instead of the station code
+    "Production Area":       "Production Area",
+    "Server Room":           "Server Room",
+    "General Warehouse":     "General Warehouse",
+    "Main Entrance":         "Main Entrance",
+    "Chemical Storage":      "Chemical Storage",
+    "Chem. Storage":         "Chemical Storage",
+    "R&D Lab":               "R&D Lab",
+    "Cafeteria":             "Cafeteria",
 }
 
 # We detect cross-station dependencies by scanning the condition text for known
@@ -127,11 +134,6 @@ def _detect_foreign_stations(condition: str, own_station: str) -> list[str]:
             found.add(station)
     return sorted(found)
 
-
-def _norm_rule_id(rule_id: str) -> str:
-    # Strip dashes and underscores and uppercase so that "RULE-MT-001" and
-    # "rule_mt_001" both match the same Maintenance node in the ABox
-    return re.sub(r"[-_]", "", rule_id.upper())
 
 
 def add_triplets(driver, run_file: str, clear_triplets: bool = False) -> None:
@@ -297,16 +299,15 @@ def add_triplets(driver, run_file: str, clear_triplets: bool = False) -> None:
                     if rec:
                         c["restricts_access"] += rec["n"]
 
-            # Maintenance rules are linked to their ABox Maintenance node by
-            # normalised ruleId (case-insensitive, dashes/underscores removed)
-            if rule_class in _MAINTENANCE_CLASSES:
-                norm = _norm_rule_id(rule_id)
+            # Maintenance rules are linked to the ABox Maintenance node that the
+            # same sensor triggers.  ruleId normalization is unreliable because
+            # LLM-extracted IDs (e.g. RULE-ST02-03) never match ABox IDs (MAINT-02).
+            if rule_class in _MAINTENANCE_CLASSES and sensor:
                 rec = session.run(
                     "MATCH (er:ExtractedRule {uid: $uid}) "
-                    "MATCH (m:Maintenance) "
-                    "WHERE toUpper(replace(replace(m.ruleId,'-',''),'_','')) = $norm "
+                    "MATCH (s:Sensor {name: $sensor})-[:triggers]->(m:Maintenance) "
                     "MERGE (er)-[:SCHEDULES_MAINTENANCE]->(m) RETURN count(*) AS n",
-                    uid=uid, norm=norm,
+                    uid=uid, sensor=sensor,
                 ).single()
                 if rec:
                     c["schedules_maintenance"] += rec["n"]

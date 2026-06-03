@@ -2,7 +2,7 @@
 Multi-run evaluation and IAAS (Inter-Agent Agreement Score) computation
 for the LangGraph multi-agent extraction pipeline.
 
-Runs the pipeline N independent times at temperature 0.3 (no fixed seed)
+Runs the pipeline N independent times at temperature 0.5 (no fixed seed)
 to characterise LLM non-determinism, then computes:
 
   Extraction statistics (per run + aggregate):
@@ -21,7 +21,7 @@ Outputs:
     step3_results/consensus_rules.csv                        — consensus rule set
 
 Usage:
-    python3 step2_multi_run_eval.py              # 10 runs at T=0.3 (default)
+    python3 step2_multi_run_eval.py              # 20 runs at T=0.5 (default)
     python3 step2_multi_run_eval.py --runs 5
     python3 step2_multi_run_eval.py --temperature 0.5
     python3 step2_multi_run_eval.py --skip-runs  # load existing CSVs, recompute stats only
@@ -46,8 +46,8 @@ _SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
 _LAYERS_DIR   = os.path.dirname(_SCRIPT_DIR)
 _PROJECT_ROOT = os.path.dirname(_LAYERS_DIR)
 
-sys.path.insert(0, _SCRIPT_DIR)       # for step2_TEST
-sys.path.insert(0, os.path.join(_LAYERS_DIR, "layer_3"))  # for step3_evaluation_rules
+sys.path.insert(0, _SCRIPT_DIR)   # for step2_TEST
+sys.path.insert(0, _LAYERS_DIR)   # for layer_3.step3_evaluation_rules
 
 import step2_TEST as _pipe                        # noqa: E402
 from layer_3.step3_evaluation_rules import (             # noqa: E402
@@ -66,10 +66,10 @@ os.makedirs(MULTI_RUN_DIR,     exist_ok=True)
 os.makedirs(STEP3_RESULTS_DIR, exist_ok=True)
 
 # ── IAAS / stability thresholds ────────────────────────────────────────────────
-SIMILARITY_THRESHOLD  = 0.75   # SBERT cosine sim to consider two rules the same concept
+SIMILARITY_THRESHOLD  = 0.90   # SBERT cosine sim to consider two rules the same concept
 HALLUCINATION_FRAC    = 0.30   # rules present in < 30% of runs → hallucination proxy
 CONSENSUS_FRAC        = 0.70   # rules present in ≥ 70% of runs → consensus set
-MULTI_RUN_TEMPERATURE = 0.3    # default temperature for non-determinism study
+MULTI_RUN_TEMPERATURE = 0.5    # default temperature for non-determinism study
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -79,12 +79,13 @@ MULTI_RUN_TEMPERATURE = 0.3    # default temperature for non-determinism study
 def _make_patched_llm_call(temperature: float):
     """
     Returns a drop-in replacement for step2_TEST.llm_call that uses the
-    specified temperature and omits the fixed seed so each call draws a
-    genuinely independent sample from the model's distribution.
+    specified temperature and omits both the top-level seed parameter and
+    the seed inside extra_body, so each call draws a genuinely independent
+    sample from the model's distribution.
     """
     import time as _time
 
-    def patched_llm_call(model: str, messages: list, temperature: float = temperature) -> str:
+    def patched_llm_call(model: str, messages: list[dict], temperature: float = temperature) -> str:
         if model in _pipe.NO_SYSTEM_ROLE:
             messages = _pipe._merge_system_into_user(messages)
         delay = _pipe.RETRY_BASE_DELAY
@@ -178,7 +179,9 @@ def compute_f1_stats(csv_paths: list[str]) -> pd.DataFrame:
     """
     metrics_cols = [
         "strict_f1", "strict_pr", "strict_re",
+        "strict_tp", "strict_fp", "strict_fn",
         "content_f1", "content_pr", "content_re",
+        "content_tp", "content_fp", "content_fn",
         "total_extracted",
     ]
     rows: list[dict] = []
@@ -525,8 +528,8 @@ def main() -> None:
         description="Multi-run pipeline runner + IAAS evaluation"
     )
     parser.add_argument(
-        "--runs", type=int, default=10,
-        help="Number of independent pipeline runs (default: 10)",
+        "--runs", type=int, default=20,
+        help="Number of independent pipeline runs (default: 20)",
     )
     parser.add_argument(
         "--temperature", type=float, default=MULTI_RUN_TEMPERATURE,
