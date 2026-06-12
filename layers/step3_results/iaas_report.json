@@ -1,7 +1,6 @@
 {
   "iaas_mean": 0.9422,
   "iaas_std": 0.0267,
-  "fleiss_kappa": 0.5962,
   "hallucination_rate": 0.2198,
   "consensus_rate": 0.7473,
   "n_runs": 20,

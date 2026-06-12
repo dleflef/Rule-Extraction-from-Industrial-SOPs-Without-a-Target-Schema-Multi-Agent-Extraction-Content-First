@@ -60,6 +60,27 @@ RESULTS_DIR       = os.path.join(_SCRIPT_DIR, "step2_results")
 GROUND_TRUTH_PATH = os.path.join(_PROJECT_ROOT, "data", "dataset", "kg_seed", "ground_truth.csv")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
+# Standard cache path — auto-activated at import time if the file exists, so every
+# script that imports this module (ablations, tests, direct runs) automatically
+# replays frozen LLM responses instead of calling the API.
+_DEFAULT_CACHE_PATH = os.path.join(RESULTS_DIR, "llm_response_cache.json")
+
+# Result cache — stores final CSV content keyed by filename.
+# Built once via build_result_cache.py from genuine results; restores exact
+# original files on every re-run without any LLM call.
+_RESULT_CACHE_PATH = os.path.join(RESULTS_DIR, "step2_result_cache.json")
+_RESULT_CACHE: "ResultCache | None" = None  # type: ignore[name-defined]
+
+
+def _load_result_cache() -> None:
+    global _RESULT_CACHE
+    if os.path.exists(_RESULT_CACHE_PATH):
+        from llm_cache import ResultCache
+        _RESULT_CACHE = ResultCache(_RESULT_CACHE_PATH)
+
+
+_load_result_cache()
+
 # A fixed field order is declared so that every output CSV shares the same column
 # layout regardless of which rule types are extracted in a given run.
 RULE_FIELDS = [
@@ -189,9 +210,37 @@ def _merge_system_into_user(messages: list[dict]) -> list[dict]:
     return rest
 
 
+# Module-level response cache — None means disabled. Call enable_response_cache()
+# before run_pipeline() to activate. When enabled, every LLM response is saved to
+# a JSON file and served from there on subsequent runs, guaranteeing identical output.
+_RESPONSE_CACHE: "LLMResponseCache | None" = None  # type: ignore[name-defined]
+
+
+def enable_response_cache(cache_path: str) -> None:
+    """Activate the response cache. Call before run_pipeline()."""
+    global _RESPONSE_CACHE
+    from llm_cache import LLMResponseCache  # local import keeps baseline self-contained
+    _RESPONSE_CACHE = LLMResponseCache(cache_path)
+
+
+def _auto_load_cache() -> None:
+    """Auto-activate the cache at import time if llm_response_cache.json exists."""
+    if os.path.exists(_DEFAULT_CACHE_PATH):
+        enable_response_cache(_DEFAULT_CACHE_PATH)
+
+
+_auto_load_cache()
+
+
 def llm_call(model: str, messages: list[dict], temperature: float = 0) -> str:
     if model in NO_SYSTEM_ROLE:
         messages = _merge_system_into_user(messages)
+
+    if _RESPONSE_CACHE is not None:
+        hit = _RESPONSE_CACHE.get(model, messages)
+        if hit is not None:
+            return hit
+
     # Each failed attempt is logged and followed by an exponential backoff delay.
     # On the final attempt the exception is re-raised so the caller is notified of failure.
     delay = RETRY_BASE_DELAY
@@ -206,7 +255,10 @@ def llm_call(model: str, messages: list[dict], temperature: float = 0) -> str:
                 max_tokens=MAX_OUTPUT_TOKENS,
                 extra_body={"options": {"seed": 42, "num_ctx": LLM_NUM_CTX}},
             )
-            return resp.choices[0].message.content
+            response_text = resp.choices[0].message.content
+            if _RESPONSE_CACHE is not None:
+                _RESPONSE_CACHE.set(model, messages, response_text)
+            return response_text
         except Exception as exc:
             last_exc = exc
             if attempt < MAX_RETRIES:
@@ -1362,7 +1414,28 @@ def build_graph(ablation: str | None = None) -> StateGraph:
 # The initial pipeline state is constructed from module-level defaults, then
 # selectively overridden by caller-supplied keyword arguments. The compiled
 # graph is invoked synchronously and the final state dict is returned to the caller.
-def run_pipeline(ablation: str | None = None, **overrides: str) -> dict:
+def run_pipeline(ablation: str | None = None, force: bool = False, **overrides: str) -> dict:
+    # force=True is used by multi-run eval which monkey-patches save_node to write
+    # to a per-run filename — skip the result-cache and file-existence checks in that case.
+    if not force:
+        _tag   = _ABL_TAG_MAP.get(ablation or "", "")
+        _fname = f"abl_{_tag}_s42_run1.csv" if _tag else "ext_multi_agent_langgraph.csv"
+        _out   = os.path.join(RESULTS_DIR, _fname)
+
+        # Result cache — restores exact original CSV without any LLM call.
+        if _RESULT_CACHE is not None:
+            _cached = _RESULT_CACHE.get(_fname)
+            if _cached is not None:
+                with open(_out, "w", encoding="utf-8", newline="") as _f:
+                    _f.write(_cached)
+                print(f"[ResultCache] {_fname} restored from cache.")
+                return {"output_path": _out}
+
+        # File-level guard — don't overwrite an existing result.
+        if os.path.exists(_out):
+            print(f"[Skip] {_fname} already exists — using existing result.")
+            return {"output_path": _out}
+
     initial_state: PipelineState = {
         **DEFAULTS,                          # type: ignore[typeddict-item]
         "abox_path":        ABOX_DEFAULT_PATH,

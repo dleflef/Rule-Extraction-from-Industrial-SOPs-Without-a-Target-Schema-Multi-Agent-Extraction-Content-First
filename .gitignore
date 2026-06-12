@@ -5,3 +5,5 @@
 .DS_Store
 **/.DS_Store
 **/trulens_eval.sqlite
+.claude/
+**/heartbeat.txt

@@ -9,16 +9,16 @@ Ing. M. Bianchi - Process Engineering
 ST01_FILLING → ST02_SEALING → ST03_LABELLING → ST04_PACKAGING. A fault at any station propagates downstream unless the line is halted.
 
 | Station ID | Zone | Depends On | Downstream Effect |
-| ---------------------------------------- | ---------------------------------------- | -------------- | ------------------------------------------- |
+| ------------------------ | ------------------- | -------------- | --------------------------------------------------- |
 | ST01_FILLING | Production Area | - | Feeds ST02_SEALING |
-| ST02_SEALING | Production Area | ST01 | Feeds ST03; thermal fault → ST04 speed |
+| ST02_SEALING | Production Area | ST01 | Feeds ST03; thermal fault → ST04 speed reduction |
 | ST03_LABELLING | Production Area | ST02 | Feeds ST04_PACKAGING |
 | ST04_PACKAGING | Production Area | ST03 | Final output |
-| SRV01_SERVERROOM | Server Room | HVAC | SCADA control; failure → line halt |
-| WRH01_WAREHOUSE | General Warehouse | COMPRESSOR | Cold storage - product quality |
-| CHM01_CHEMICALSTORAGE Chemical Storage | CHM01_CHEMICALSTORAGE Chemical Storage | HVAC | Hazardous materials - safety critical |
-| RND01_RDLAB | R&D Lab | HVAC | Precision experiments - climate sensitive |
-| CAF01_CAFETERIA | Cafeteria | HVAC | Occupant comfort - food safety |
+| SRV01_SERVERROO M | Server Room | HVAC | SCADA control; failure → line halt |
+| WRH01_WAREHOUSE | General Warehouse | COMPRESSOR | Cold storage -product quality |
+| CHM01_CHEMICALST ORAGE | Chemical Storage | HVAC | Hazardous materials -safety critical |
+| RND01_RDLAB | R&D; Lab | HVAC | Precision experiments -climate sensitive |
+| CAF01_CAFETERIA | Cafeteria | HVAC | Occupant comfort -food safety |
 
 ## 2. Station-Level Operating Rules
 

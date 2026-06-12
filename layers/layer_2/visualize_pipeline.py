@@ -8,7 +8,7 @@ _DIR = os.path.dirname(os.path.abspath(__file__))
 if _DIR not in sys.path:
     sys.path.insert(0, _DIR)
 
-from step2_TEST import _ABL_TAG_MAP
+from Agentic_KnowledgeGraph_DigitalTwins.layers.layer_2.step2_multi_agent_baseline import _ABL_TAG_MAP
 
 import matplotlib
 matplotlib.use("Agg")
@@ -85,8 +85,8 @@ def visualize(ablation: str | None = None) -> None:
 
     # ── node labels ──────────────────────────────────────────────────────────
     coord_lbl    = "coordinator\nkeyword regex" if ablation == "no_cm"        else "coordinator\nLLM classify"
-    merge_lbl    = "merge\ndeterministic only"  if ablation == "no_adj"       else "merge\nadjudicator LLM"
-    validate_lbl = "validate\npassthrough"       if ablation == "no_validator" else "validate\nLLM check"
+    merge_lbl    = "merge\ndeterministic"
+    validate_lbl = "validate\npassthrough"       if ablation == "no_validator" else "validate\nLLM gap-fill"
 
     # ── y positions (top-down, values decrease) ───────────────────────────────
     # Rows are laid out explicitly so extractors are always at the same level.

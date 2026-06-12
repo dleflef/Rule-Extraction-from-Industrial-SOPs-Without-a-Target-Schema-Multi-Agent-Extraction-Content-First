@@ -148,6 +148,38 @@ HEARTBEAT_FILE = os.path.join(_SCRIPT_DIR, "..", "heartbeat.txt")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 os.makedirs(STATE_DIR, exist_ok=True)
 
+# LLM response cache — populated on first run, replayed on every subsequent run.
+# Keyed by SHA-256(model, messages) so the same prompt always returns the same text.
+_GRID_CACHE: "LLMResponseCache | None" = None  # type: ignore[name-defined]
+
+
+def _get_grid_cache() -> "LLMResponseCache":  # type: ignore[name-defined]
+    global _GRID_CACHE
+    if _GRID_CACHE is None:
+        import sys as _sys
+        _sys.path.insert(0, _SCRIPT_DIR)
+        from llm_cache import LLMResponseCache
+        _GRID_CACHE = LLMResponseCache(os.path.join(RESULTS_DIR, "grid_search_cache.json"))
+    return _GRID_CACHE
+
+
+_RESULT_CACHE_GS: "ResultCache | None" = None  # type: ignore[name-defined]
+_RESULT_CACHE_GS_LOADED = False
+
+
+def _get_result_cache() -> "ResultCache | None":  # type: ignore[name-defined]
+    global _RESULT_CACHE_GS, _RESULT_CACHE_GS_LOADED
+    if not _RESULT_CACHE_GS_LOADED:
+        _RESULT_CACHE_GS_LOADED = True
+        _path = os.path.join(RESULTS_DIR, "step2_result_cache.json")
+        if os.path.exists(_path):
+            import sys as _sys
+            _sys.path.insert(0, _SCRIPT_DIR)
+            from llm_cache import ResultCache
+            _RESULT_CACHE_GS = ResultCache(_path)
+    return _RESULT_CACHE_GS
+
+
 # Ollama endpoint (cloud or local)
 _OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434/v1")
 _OLLAMA_API_KEY  = os.environ.get("OLLAMA_API_KEY",  "ollama")
@@ -438,6 +470,12 @@ def _llm_call_raw(
     if model in NO_SYSTEM_ROLE:
         messages = _merge_system_into_user(messages)
 
+    # Cache check — returns immediately on hit, bypassing the LLM entirely.
+    _cache = _get_grid_cache()
+    _hit = _cache.get(model, messages)
+    if _hit is not None:
+        return _hit, LLMUsage()
+
     for attempt in range(1, MAX_RETRIES + 1):
         try:
             prompt_chars = sum(len(m.get("content", "")) for m in messages)
@@ -473,6 +511,7 @@ def _llm_call_raw(
             print(
                 f"      [LLM raw reply]\n{content}\n      [/LLM raw reply]", flush=True
             )
+            _cache.set(model, messages, content)
             return content, usage
 
         except Exception as exc:
@@ -1363,6 +1402,25 @@ def run_experiment(
 
                 if not force_redo and is_completed(registry, run_id):
                     print(f"  SKIP {run_id}")
+                    continue
+
+                # Result cache — restores exact original CSV without any LLM call.
+                _csv_out  = os.path.join(RESULTS_DIR, f"ext_{run_id}.csv")
+                _rc_fname = f"ext_{run_id}.csv"
+                _rc       = _get_result_cache()
+                if _rc is not None:
+                    _cached = _rc.get(_rc_fname)
+                    if _cached is not None:
+                        with open(_csv_out, "w", encoding="utf-8", newline="") as _f:
+                            _f.write(_cached)
+                        print(f"  CACHE {run_id} — restored from result cache.")
+                        mark_completed(registry, run_id)
+                        continue
+
+                # File-level guard — preserves genuine run results exactly.
+                if os.path.exists(_csv_out):
+                    print(f"  SKIP {run_id} — CSV already exists.")
+                    mark_completed(registry, run_id)
                     continue
 
                 print(f"\n{'─'*65}")

@@ -4,8 +4,8 @@ Document: SOP-004 | Rev: 1.0 | Date: 2025-12-01 | Author: Ing. F. Ferrari - Safe
 
 ## 1. Role-Zone Authorisation Matrix
 
-| Role | Prod. Area | Server Room | Gen. Warehouse | Main Entrance | Chem. Storage | R&D Lab | Cafeteria |
-| ------------ | -------------- | --------------- | ------------------ | ----------------- | ----------------- | ----------- | ------------- |
+| Role | Prod. Area | Server Room | Gen. Warehous e | Main Entranc e | Chem. Stora ge | R&D; Lab | Cafeteria |
+| ------------ | -------------- | --------------- | ------------------- | ------------------ | ------------------ | ------------ | ------------- |
 | operator | YES | NO | YES | YES | NO | NO | YES |
 | technician | YES | YES | YES | YES | YES | YES | YES |
 | supervisor | YES | YES | YES | YES | YES | YES | YES |
@@ -16,19 +16,19 @@ Document: SOP-004 | Rev: 1.0 | Date: 2025-12-01 | Author: Ing. F. Ferrari - Safe
 ## 2. Maximum Occupancy per Zone
 
 | Zone | Max Persons | Enforcement |
-| ------------------- | --------------- | ---------------------------------------------------------------- |
+| ------------------- | --------------- | --------------------------------------------------------------- |
 | Production Area | 12 | WARNING above 10; CRITICAL above 12 |
 | Server Room | 2 | CRITICAL above 2; access badge required |
 | General Warehouse | 4 | WARNING above 3 |
 | Main Entrance | 8 | Monitoring only |
-| Chemical Storage | 4 | CRITICAL above 4; hazmatraining required - see RULE-CHM01-03 |
-| R&D Lab | 6 | WARNING above 5; precision experiments may be disturbed |
-| Cafeteria | 20 | Monitoring only - occupant comfort |
+| Chemical Storage | 4 | CRITICAL above 4; hazmatraining required -see RULE-CHM01-03 |
+| R&D; Lab | 6 | WARNING above 5; precision experiments may be disturbed |
+| Cafeteria | 20 | Monitoring only -occupant comfort |
 
 ## 3. Maximum Acknowledgment Times by Role and Severity
 
-| Role | Max Ack - WARNING (min) | Max Ack - CRITICAL (min) |
-| ------------ | --------------------------- | ---------------------------- |
+| Role | Max Ack -WARNING (min) | Max Ack -CRITICAL (min) |
+| ------------ | -------------------------- | --------------------------- |
 | operator | 15 | 3 |
 | technician | 10 | 2 |
 | supervisor | 5 | 1 |
@@ -41,4 +41,6 @@ RULE-ACCESS-01: Any entry by an unauthorised role MUST be logged as OccupancyEve
 
 RULE-ACCESS-02: Security personnel MUST be notified within 2 minutes of detection.
 
-RULE-ACCESS-03: The KG node MUST include authorized=NO and a reference to this rule. RULE-ACCESS-04: Chemical Storage has zero-tolerance policy. Any UNAUTHORIZED_ACCESS triggers immediate escalation to the Safety Officer regardless of role.
+RULE-ACCESS-03: The KG node MUST include authorized=NO and a reference to this rule.
+
+RULE-ACCESS-04: Chemical Storage has zero-tolerance policy. Any UNAUTHORIZED_ACCESS triggers immediate escalation to the Safety Officer regardless of role.

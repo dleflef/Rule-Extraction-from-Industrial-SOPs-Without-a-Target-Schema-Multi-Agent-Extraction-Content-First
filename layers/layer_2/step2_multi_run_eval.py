@@ -10,21 +10,21 @@ to characterise LLM non-determinism, then computes:
 
   IAAS metrics (across K runs):
     - Pairwise content agreement (mean ± std across all K*(K-1)/2 pairs)
-    - Fleiss κ  (binary presence of rule clusters across runs)
     - Hallucination-proxy rate (rules present in < HALLUCINATION_FRAC of runs)
     - Consensus rule set (rules present in ≥ CONSENSUS_FRAC of runs)
 
 Outputs:
     step2_results/multi_run/ext_multi_agent_run{i:02d}.csv   — per-run extractions
     step3_results/multi_run_stats.csv                        — F1 mean/std/CI95
-    step3_results/iaas_report.json                           — IAAS, Fleiss κ, etc.
+    step3_results/iaas_report.json                           — IAAS metrics
     step3_results/consensus_rules.csv                        — consensus rule set
 
 Usage:
-    python3 step2_multi_run_eval.py              # 20 runs at T=0.5 (default)
+    python3 step2_multi_run_eval.py                        # 20 runs at T=0.5, no seed
     python3 step2_multi_run_eval.py --runs 5
     python3 step2_multi_run_eval.py --temperature 0.5
-    python3 step2_multi_run_eval.py --skip-runs  # load existing CSVs, recompute stats only
+    python3 step2_multi_run_eval.py --skip-runs            # load existing CSVs, recompute stats only
+    python3 step2_multi_run_eval.py --seed-base 42 --force # reproducible from scratch (run i → seed 42+i)
 """
 
 from __future__ import annotations
@@ -49,7 +49,7 @@ _PROJECT_ROOT = os.path.dirname(_LAYERS_DIR)
 sys.path.insert(0, _SCRIPT_DIR)   # for step2_TEST
 sys.path.insert(0, _LAYERS_DIR)   # for layer_3.step3_evaluation_rules
 
-import step2_TEST as _pipe                        # noqa: E402
+import Agentic_KnowledgeGraph_DigitalTwins.layers.layer_2.step2_multi_agent_baseline as _pipe                        # noqa: E402
 from layer_3.step3_evaluation_rules import (             # noqa: E402
     run_evaluation,
     content_agreement,
@@ -76,20 +76,39 @@ MULTI_RUN_TEMPERATURE = 0.5    # default temperature for non-determinism study
 #  Monkey-patches applied before each pipeline invocation
 # ══════════════════════════════════════════════════════════════════════════════
 
-def _make_patched_llm_call(temperature: float):
+def _make_patched_llm_call(temperature: float, seed: int | None = None, run_label: str | None = None):
     """
     Returns a drop-in replacement for step2_TEST.llm_call that uses the
-    specified temperature and omits both the top-level seed parameter and
-    the seed inside extra_body, so each call draws a genuinely independent
-    sample from the model's distribution.
+    specified temperature. When seed is None, omits both the top-level seed
+    parameter and the seed inside extra_body so each call draws a genuinely
+    independent sample (original non-determinism study behaviour). When seed
+    is an integer, passes it via extra_body.options.seed so the run is
+    reproducible with the same LLM version.
+
+    When run_label is provided, a per-run LLM response cache is loaded from
+    multi_run/{run_label}_cache.json. Cache hits bypass the LLM entirely,
+    guaranteeing identical per-run CSVs on every re-run after the first.
     """
     import time as _time
+    from llm_cache import LLMResponseCache
+
+    _cache: LLMResponseCache | None = None
+    if run_label is not None:
+        _cache_path = os.path.join(MULTI_RUN_DIR, f"{run_label}_cache.json")
+        _cache = LLMResponseCache(_cache_path)
 
     def patched_llm_call(model: str, messages: list[dict], temperature: float = temperature) -> str:
         if model in _pipe.NO_SYSTEM_ROLE:
             messages = _pipe._merge_system_into_user(messages)
+        if _cache is not None:
+            hit = _cache.get(model, messages)
+            if hit is not None:
+                return hit
         delay = _pipe.RETRY_BASE_DELAY
         last_exc: Exception | None = None
+        opts: dict = {"num_ctx": _pipe.LLM_NUM_CTX}
+        if seed is not None:
+            opts["seed"] = seed
         for attempt in range(1, _pipe.MAX_RETRIES + 1):
             try:
                 resp = _pipe._client_for(model).chat.completions.create(
@@ -97,9 +116,12 @@ def _make_patched_llm_call(temperature: float):
                     messages=messages,
                     temperature=temperature,
                     max_tokens=_pipe.MAX_OUTPUT_TOKENS,
-                    extra_body={"options": {"num_ctx": _pipe.LLM_NUM_CTX}},
+                    extra_body={"options": opts},
                 )
-                return resp.choices[0].message.content
+                text = resp.choices[0].message.content
+                if _cache is not None:
+                    _cache.set(model, messages, text)
+                return text
             except Exception as exc:
                 last_exc = exc
                 if attempt < _pipe.MAX_RETRIES:
@@ -139,31 +161,77 @@ def _make_patched_save_node(run_label: str):
 #  Runner
 # ══════════════════════════════════════════════════════════════════════════════
 
-def run_multi(n_runs: int, temperature: float) -> list[str]:
+def run_multi(n_runs: int, temperature: float,
+              seed_base: int | None = None, force: bool = False) -> list[str]:
     """
-    Runs the pipeline n_runs times, each with the patched llm_call (no fixed
-    seed, specified temperature).  Returns the list of output CSV paths.
+    Runs the pipeline n_runs times with the patched llm_call.
+
+    seed_base: when set, run i gets seed=(seed_base + i), making the batch
+               reproducible from scratch with the same LLM version.
+               When None, no seed is passed (original non-determinism behaviour).
+    force:     delete all existing run CSVs before starting so every run is
+               regenerated, even if files already exist.
     """
     output_paths: list[str] = []
+    manifest_entries: list[dict] = []
+
+    if force:
+        existing = [
+            f for f in os.listdir(MULTI_RUN_DIR)
+            if f.startswith("ext_multi_agent_run") and f.endswith(".csv")
+        ]
+        if existing:
+            print(f"[Runner] --force: deleting {len(existing)} existing run CSVs …")
+            for fname in existing:
+                os.remove(os.path.join(MULTI_RUN_DIR, fname))
 
     for i in range(1, n_runs + 1):
         run_label = f"run{i:02d}"
         out_path  = os.path.join(MULTI_RUN_DIR, f"ext_multi_agent_{run_label}.csv")
+        run_seed  = (seed_base + i) if seed_base is not None else None
+        seed_tag  = f"seed={run_seed}" if run_seed is not None else "no seed"
+
+        # Result cache — restores exact original CSV without any LLM call.
+        _rc = _pipe._RESULT_CACHE
+        _fname = f"ext_multi_agent_{run_label}.csv"
+        if _rc is not None:
+            _cached = _rc.get(_fname)
+            if _cached is not None:
+                with open(out_path, "w", encoding="utf-8", newline="") as _f:
+                    _f.write(_cached)
+                print(f"\n[ResultCache] {_fname} restored from cache.")
+                output_paths.append(out_path)
+                manifest_entries.append({"run": run_label, "seed": run_seed, "source": "result_cache"})
+                continue
 
         if os.path.exists(out_path):
             print(f"\n[Runner] Run {i}/{n_runs} — found existing file, skipping: {out_path}")
             output_paths.append(out_path)
+            manifest_entries.append({"run": run_label, "seed": run_seed, "source": "cached"})
             continue
 
         print(f"\n{'='*65}")
-        print(f"  Multi-run pipeline  |  run {i}/{n_runs}  |  T={temperature}  |  no seed")
+        print(f"  Multi-run pipeline  |  run {i}/{n_runs}  |  T={temperature}  |  {seed_tag}")
         print(f"{'='*65}")
 
-        _pipe.llm_call   = _make_patched_llm_call(temperature)
+        _pipe.llm_call   = _make_patched_llm_call(temperature, run_seed, run_label=run_label)
         _pipe.save_node  = _make_patched_save_node(run_label)
 
-        _pipe.run_pipeline()
+        _pipe.run_pipeline(force=True)  # force=True: save_node is monkey-patched to per-run path
         output_paths.append(out_path)
+        manifest_entries.append({"run": run_label, "seed": run_seed, "source": "generated"})
+
+    # Write run manifest so the exact seed config is always recoverable.
+    manifest = {
+        "seed_base":   seed_base,
+        "temperature": temperature,
+        "n_runs":      n_runs,
+        "runs":        manifest_entries,
+    }
+    manifest_path = os.path.join(MULTI_RUN_DIR, "run_manifest.json")
+    with open(manifest_path, "w", encoding="utf-8") as f:
+        json.dump(manifest, f, indent=2)
+    print(f"\n[Runner] Manifest written → {manifest_path}  (seed_base={seed_base})")
 
     return output_paths
 
@@ -329,41 +397,12 @@ def _cluster_rules(all_rules: list[dict]) -> list[list[dict]]:
     return clusters
 
 
-def _fleiss_kappa(matrix: np.ndarray) -> float:
-    """
-    Fleiss κ for binary ratings.
-
-    matrix : shape (N_items, K_raters), values in {0, 1}
-    Returns κ ∈ [-1, 1].
-    """
-    N, K = matrix.shape
-    if K < 2 or N < 1:
-        return float("nan")
-
-    # Proportion of raters assigning each category
-    p_pos = float(matrix.sum()) / (N * K)
-    p_neg = 1.0 - p_pos
-    P_e   = p_pos ** 2 + p_neg ** 2
-
-    if abs(P_e - 1.0) < 1e-12:
-        return 1.0  # perfect agreement by chance — trivial case
-
-    # Mean observed agreement across items
-    P_o_vals = (
-        (matrix.sum(axis=1) ** 2) + ((K - matrix.sum(axis=1)) ** 2) - K
-    ) / (K * (K - 1))
-    P_o = float(P_o_vals.mean())
-
-    return (P_o - P_e) / (1.0 - P_e)
-
-
 def compute_iaas(csv_paths: list[str]) -> dict:
     """
     Computes all IAAS metrics across K pipeline runs.
 
     Returns a dict with:
       - iaas_mean / iaas_std          pairwise agreement
-      - fleiss_kappa                  inter-run κ on rule clusters
       - hallucination_rate            proxy: rules in < HALLUCINATION_FRAC of runs
       - consensus_rate                rules in ≥ CONSENSUS_FRAC of runs
       - n_clusters                    unique rule concepts found
@@ -419,10 +458,6 @@ def compute_iaas(csv_paths: list[str]) -> dict:
             if 0 <= ri < K:
                 presence[ci, ri] = 1
 
-    # ── Fleiss κ ──────────────────────────────────────────────────────────────
-    kappa = _fleiss_kappa(presence)
-    print(f"[IAAS] Fleiss κ = {kappa:.4f}")
-
     # ── Stability fractions per cluster ───────────────────────────────────────
     run_frac      = presence.sum(axis=1) / K          # shape (n_clusters,)
     n_hallu       = int((run_frac < HALLUCINATION_FRAC).sum())
@@ -458,7 +493,6 @@ def compute_iaas(csv_paths: list[str]) -> dict:
     return {
         "iaas_mean":            round(iaas_mean, 4),
         "iaas_std":             round(iaas_std, 4),
-        "fleiss_kappa":         round(kappa, 4) if not np.isnan(kappa) else None,
         "hallucination_rate":   round(hallu_rate, 4),
         "consensus_rate":       round(consensus_rate, 4),
         "n_runs":               K,
@@ -512,7 +546,6 @@ def save_iaas_report(iaas: dict) -> None:
 
     # Pretty summary
     print(f"\n  IAAS           : {iaas['iaas_mean']:.4f} ± {iaas['iaas_std']:.4f}")
-    print(f"  Fleiss κ       : {iaas.get('fleiss_kappa')}")
     print(f"  Hallucination  : {iaas['hallucination_rate']:.2%} "
           f"({iaas['n_hallucination_rules']}/{iaas['n_clusters']} rule concepts)")
     print(f"  Consensus set  : {iaas['consensus_rate']:.2%} "
@@ -539,6 +572,15 @@ def main() -> None:
         "--skip-runs", action="store_true",
         help="Skip pipeline execution; load existing CSVs from multi_run/ and recompute stats",
     )
+    parser.add_argument(
+        "--seed-base", type=int, default=None,
+        help="Base seed for reproducibility. Run i gets seed=(seed_base + i). "
+             "Omit to use no seed (genuine non-determinism, original behaviour).",
+    )
+    parser.add_argument(
+        "--force", action="store_true",
+        help="Delete existing run CSVs and regenerate all N runs from scratch.",
+    )
     args = parser.parse_args()
 
     # ── Collect run CSVs ──────────────────────────────────────────────────────
@@ -553,7 +595,7 @@ def main() -> None:
             sys.exit(1)
         print(f"[Runner] --skip-runs: found {len(csv_paths)} existing CSVs.")
     else:
-        csv_paths = run_multi(args.runs, args.temperature)
+        csv_paths = run_multi(args.runs, args.temperature, args.seed_base, args.force)
 
     # ── F1 statistics ─────────────────────────────────────────────────────────
     print(f"\n[Stats] Evaluating {len(csv_paths)} runs against ground truth …")

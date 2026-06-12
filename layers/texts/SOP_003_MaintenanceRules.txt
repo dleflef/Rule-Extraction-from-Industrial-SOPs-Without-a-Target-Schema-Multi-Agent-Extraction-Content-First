@@ -1,26 +1,26 @@
 ## Predictive & Corrective Maintenance Rules - Production Line A
 
-Document: SOP-003 | Rev: 1.5 | Date:
+Document: SOP-003 | Rev: 1.5 | Date: 2025-09-01 |
 
-2025-09-01 | Author: Ing. A. Conti - Maintenance Engineering
+Author: Ing. A. Conti - Maintenance Engineering
 
 ## 1. Predictive Maintenance Rules
 
-| Rule ID | Sensor | Station | Trigger | Action | Priority |
-| ----------- | ---------- | ----------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| MAINT-01 | VIB | ST04_PACKAGING | VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH | VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH | VIB DRIFT >0.05 mm/s over 60 min Inspect and lubricate bearing HIGH |
-| MAINT-02 | CUR | ST02_SEALING | CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw | CUR DRIFT >1.0 A for 30+ min Inspect sealing jaw | HIGH |
+| Rule ID | Sens or | Station | Trigger | Action | Priority |
+| ----------- | ----------- | ------------------------ | ---------------------------------- | ---------------------------------------------- | ------------ |
+| MAINT-01 | VIB | ST04_PACKAGING | VIB DRIFT >0.05 mm/s over 60 min | Inspect and lubricate bearing | HIGH |
+| MAINT-02 | CUR | ST02_SEALING | CUR DRIFT >1.0 A for 30+ min | Inspect sealing jaw | HIGH |
 | MAINT-03 | TEN | ST03_LABELLING | TEN STUCK >10 samples | Replace sensor | MEDIUM |
 | MAINT-04 | PRS | ST01_FILLING | PRS <3.3 bar for >15 min | Inspect filter and pump | MEDIUM |
-| MAINT-05 | TMP | SRV01_SERVERROOM | TMP >25°C for >5 min | Activate secondary cooling | CRITICAL |
-| MAINT-06 | TMP | WRH01_WAREHOUSE | TMP DRIFT >2°C over 2 h | Inspect compressor; notify | QCRITICAL |
-| MAINT-07 | TMP | CHM01_CHEMICALSTORAGE | TMP >20°C for >10 min | Emergency ventilation; notify CRITICAL | safety |
-| MAINT-08 | HUM | RND01_RDLAB | HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC HIGH | HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC HIGH | HUM DRIFT >10%RH over 60 min Activate dehumidifier; check HVAC HIGH |
+| MAINT-05 | TMP | SRV01_SERVERROM | TMP >25°C for >5 min | Activate secondary cooling | CRITICAL |
+| MAINT-06 | TMP | WRH01_WAREHOU SE | TMP DRIFT >2°C over 2 h | Inspect compressor; notify QC | CRITICAL |
+| MAINT-07 | TMP | CHM01_CHEMICALS TORAGE | TMP >20°C for >10 min | Emergency ventilation; notify safety officer | CRITICAL |
+| MAINT-08 | HUM | RND01_RDLAB | HUM DRIFT >10%RH over 60 min | Activate dehumidifier; check HVAC drain | HIGH |
 
 ## 2. Correlated Fault Resolution
 
 | Pattern | Primary Fault | Secondary Effect | Resolution |
-| ------------------------ | ---------------------------------------------- | ---------------------- | ----------------------------------------------------------------------------------------- |
-| ST02_SEALING-CUR › → | ST04_PACKAGING-SPD ↓ Sealing motor overload | Conveyor speedrop | via electrical coupling 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 |
-| SRV01-TMP › → SCADA | latency › Server Room overheating | Increased scan time | → apparent STUCK readings 1.Reduce SRV01-TMP <25°C. 2.Verify PLC heartbeats. 3.Clear S |
-| WRH01-TMP › → QC HOLD | Cold warehouse drift | Product quality risk | 1.Restore WRH01-TMP <8°C. 2.Notify QC. 3.Place batch on HOLD |
+| --------------------------------------------- | ------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------ |
+| ST02_SEALING-CUR › → ST04_PACKAGING- SPDfl | Sealing motor overload | Conveyor speedrop via electrical coupling | 1.Verify ST02-CUR trend. 2.Inspect sealing jaw. 3.Reset ST04 speed setpoint. |
+| SRV01-TMP › → SCADA latency › | Server Room overheating | Increased scan time → apparent STUCK readings | 1.Reduce SRV01-TMP <25°C. 2.Verify PLC heartbeats. 3.Clear STUCK alarms. |
+| WRH01-TMP › → QC HOLD | Cold warehouse drift | Product quality risk | 1.Restore WRH01-TMP <8°C. 2.Notify QC. 3.Place batch on HOLD in ERP. |
