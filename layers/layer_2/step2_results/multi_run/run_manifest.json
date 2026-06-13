@@ -1,0 +1,107 @@
+{
+  "seed_base": 42,
+  "temperature": 0.5,
+  "n_runs": 20,
+  "runs": [
+    {
+      "run": "run01",
+      "seed": 43,
+      "source": "cached"
+    },
+    {
+      "run": "run02",
+      "seed": 44,
+      "source": "cached"
+    },
+    {
+      "run": "run03",
+      "seed": 45,
+      "source": "cached"
+    },
+    {
+      "run": "run04",
+      "seed": 46,
+      "source": "cached"
+    },
+    {
+      "run": "run05",
+      "seed": 47,
+      "source": "cached"
+    },
+    {
+      "run": "run06",
+      "seed": 48,
+      "source": "cached"
+    },
+    {
+      "run": "run07",
+      "seed": 49,
+      "source": "cached"
+    },
+    {
+      "run": "run08",
+      "seed": 50,
+      "source": "cached"
+    },
+    {
+      "run": "run09",
+      "seed": 51,
+      "source": "cached"
+    },
+    {
+      "run": "run10",
+      "seed": 52,
+      "source": "cached"
+    },
+    {
+      "run": "run11",
+      "seed": 53,
+      "source": "cached"
+    },
+    {
+      "run": "run12",
+      "seed": 54,
+      "source": "cached"
+    },
+    {
+      "run": "run13",
+      "seed": 55,
+      "source": "cached"
+    },
+    {
+      "run": "run14",
+      "seed": 56,
+      "source": "cached"
+    },
+    {
+      "run": "run15",
+      "seed": 57,
+      "source": "cached"
+    },
+    {
+      "run": "run16",
+      "seed": 58,
+      "source": "cached"
+    },
+    {
+      "run": "run17",
+      "seed": 59,
+      "source": "cached"
+    },
+    {
+      "run": "run18",
+      "seed": 60,
+      "source": "cached"
+    },
+    {
+      "run": "run19",
+      "seed": 61,
+      "source": "cached"
+    },
+    {
+      "run": "run20",
+      "seed": 62,
+      "source": "cached"
+    }
+  ]
+}

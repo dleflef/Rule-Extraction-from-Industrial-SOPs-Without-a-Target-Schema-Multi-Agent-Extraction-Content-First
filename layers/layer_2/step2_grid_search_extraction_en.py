@@ -134,7 +134,7 @@ RETRY_BASE_DELAY = 15.0  # seconds before first retry; doubles each attempt
 
 # ── FILE PATHS ────────────────────────────────────────────────────────────────
 
-TEXTS_DIR = os.path.join(_SCRIPT_DIR, "..", "texts")                           # layers/texts/
+TEXTS_DIR = os.path.join(_PROJECT_ROOT, "layers", "layer_1", "texts")          # layers/layer_1/texts/
 ABOX_DEFAULT_PATH = os.path.join(
     _PROJECT_ROOT, "data", "dataset", "kg_seed", "nodes_factory.csv"
 )

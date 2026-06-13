@@ -55,7 +55,7 @@ SOP_TEXT_LIMIT    = 8000
 # Input and output paths are anchored to the project root so the script can be
 # invoked from any working directory without path resolution errors.
 ABOX_DEFAULT_PATH = os.path.join(_PROJECT_ROOT, "data", "dataset", "kg_seed", "nodes_factory.csv")
-TEXTS_DIR         = os.path.join(_SCRIPT_DIR, "..", "texts")
+TEXTS_DIR         = os.path.join(_PROJECT_ROOT, "layers", "layer_1", "texts")
 RESULTS_DIR       = os.path.join(_SCRIPT_DIR, "step2_results")
 GROUND_TRUTH_PATH = os.path.join(_PROJECT_ROOT, "data", "dataset", "kg_seed", "ground_truth.csv")
 os.makedirs(RESULTS_DIR, exist_ok=True)

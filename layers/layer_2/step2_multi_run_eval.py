@@ -20,10 +20,11 @@ Outputs:
     step3_results/consensus_rules.csv                        — consensus rule set
 
 Usage:
-    python3 step2_multi_run_eval.py                        # 20 runs at T=0.5, no seed
+    python3 step2_multi_run_eval.py                        # 20 runs at T=0.5, seed-base=42 (default)
     python3 step2_multi_run_eval.py --runs 5
     python3 step2_multi_run_eval.py --temperature 0.5
     python3 step2_multi_run_eval.py --skip-runs            # load existing CSVs, recompute stats only
+    python3 step2_multi_run_eval.py --seed-base -1         # disable seeding (genuine non-determinism)
     python3 step2_multi_run_eval.py --seed-base 42 --force # reproducible from scratch (run i → seed 42+i)
 """
 
@@ -49,7 +50,7 @@ _PROJECT_ROOT = os.path.dirname(_LAYERS_DIR)
 sys.path.insert(0, _SCRIPT_DIR)   # for step2_TEST
 sys.path.insert(0, _LAYERS_DIR)   # for layer_3.step3_evaluation_rules
 
-import Agentic_KnowledgeGraph_DigitalTwins.layers.layer_2.step2_multi_agent_baseline as _pipe                        # noqa: E402
+import step2_multi_agent_baseline as _pipe                                                                           # noqa: E402
 from layer_3.step3_evaluation_rules import (             # noqa: E402
     run_evaluation,
     content_agreement,
@@ -572,10 +573,13 @@ def main() -> None:
         "--skip-runs", action="store_true",
         help="Skip pipeline execution; load existing CSVs from multi_run/ and recompute stats",
     )
+    # Default seed ensures IAAS is reproducible across re-runs without caching the LLM.
+    # Run i gets seed=(seed_base + i) via Ollama's extra_body.options.seed.
+    # Pass --seed-base -1 (or patch the arg) to restore genuine non-determinism.
     parser.add_argument(
-        "--seed-base", type=int, default=None,
+        "--seed-base", type=int, default=42,
         help="Base seed for reproducibility. Run i gets seed=(seed_base + i). "
-             "Omit to use no seed (genuine non-determinism, original behaviour).",
+             "Default 42. Set to a negative value to disable seeding.",
     )
     parser.add_argument(
         "--force", action="store_true",
@@ -595,7 +599,8 @@ def main() -> None:
             sys.exit(1)
         print(f"[Runner] --skip-runs: found {len(csv_paths)} existing CSVs.")
     else:
-        csv_paths = run_multi(args.runs, args.temperature, args.seed_base, args.force)
+        seed_base = None if (args.seed_base is not None and args.seed_base < 0) else args.seed_base
+        csv_paths = run_multi(args.runs, args.temperature, seed_base, args.force)
 
     # ── F1 statistics ─────────────────────────────────────────────────────────
     print(f"\n[Stats] Evaluating {len(csv_paths)} runs against ground truth …")

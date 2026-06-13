@@ -10,7 +10,7 @@ import csv, os, re, sys
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
 LAYERS_DIR  = os.path.join(SCRIPT_DIR, "..")
 PROJECT_DIR = os.path.normpath(os.path.join(LAYERS_DIR, ".."))
-TEXTS_DIR   = os.path.join(LAYERS_DIR, "texts")
+TEXTS_DIR   = os.path.join(PROJECT_DIR, "layers", "layer_1", "texts")
 RESULTS_DIR = os.path.join(SCRIPT_DIR, "baseline_results")
 OUTPUT_FILE = os.path.join(RESULTS_DIR, "baseline_b0.csv")
 os.makedirs(RESULTS_DIR, exist_ok=True)
