@@ -1,6 +1,6 @@
 metric,value
 seed,20260710
-detector_code_git_sha,e14c889-dirty
+detector_code_git_sha,37b32d1
 events_injected,42
 holdout_tp,41
 holdout_fn_gap,1
