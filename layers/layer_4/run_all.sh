@@ -12,10 +12,13 @@ cd "$(dirname "$0")"
 python3 step4_populate.py            # extracted rules -> Neo4j
 python3 step4b_load_abox.py          # ABox load + GOVERNS_ABOX validation
 python3 step5_detect.py              # Phase 2 scoring (guide Table 2)
-python3 step5_sensitivity.py         # parameter grid + scoring strictness
-python3 step5_baselines.py           # oracle / z-score bracketing
 python3 step5_holdout.py             # held-out injection (one-shot seed)
 python3 step5_holdout.py --multiseed # 10 pre-committed seeds, pooled
+python3 step5_sensitivity.py         # parameter grid + strictness + calibration
+                                     # (after holdout: Part 3 checks the fresh
+                                     #  injected stream, present even on a
+                                     #  clean clone where it is gitignored)
+python3 step5_baselines.py           # oracle / z-score bracketing
 python3 step5_leakage_audit.py       # GT-leakage runtime audit
 
 echo

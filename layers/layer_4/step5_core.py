@@ -584,10 +584,24 @@ def score_coverage(events: list[Event],
             det_end     = max(e.end   for e in covering)
             latency_min = (det_start - gt.start).total_seconds() / 60.0
             gt_dur_sec  = (gt.end - gt.start).total_seconds()
-            ov_start    = max(gt.start, det_start)
-            ov_end      = min(gt.end,   det_end)
-            ov_sec      = max(0.0, (ov_end - ov_start).total_seconds())
-            cov_pct     = 100.0 * ov_sec / gt_dur_sec if gt_dur_sec > 0 else 100.0
+            # coveragePct = UNION of per-event overlaps with the GT window,
+            # not the [det_start, det_end] envelope — with multiple disjoint
+            # covering events the envelope would count the uncovered gaps
+            # between them as covered. Identical to the envelope for a
+            # single covering event (every case in the current results).
+            clipped = sorted((max(gt.start, e.start), min(gt.end, e.end))
+                             for e in covering)
+            ov_sec, cur_s, cur_e = 0.0, None, None
+            for s, e in clipped:
+                if cur_e is None or s > cur_e:
+                    if cur_e is not None:
+                        ov_sec += (cur_e - cur_s).total_seconds()
+                    cur_s, cur_e = s, e
+                else:
+                    cur_e = max(cur_e, e)
+            if cur_e is not None:
+                ov_sec += (cur_e - cur_s).total_seconds()
+            cov_pct = 100.0 * ov_sec / gt_dur_sec if gt_dur_sec > 0 else 100.0
             results.append({
                 "gtId": gt.gt_id, "sensor": gt.sensor, "type": gt.atype,
                 "status": "COVERED",
