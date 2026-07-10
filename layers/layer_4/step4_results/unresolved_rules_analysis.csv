@@ -1,0 +1,7 @@
+ruleId,sensor_llm,diagnosis
+MAINT-05,SRV01_SERVERROM_TMP,sensor_not_in_abox
+MAINT-07,CHM01_CHEMICALS_STORAGE_TMP,wrong_concept
+RULE-ACCESS-01,UnauthorisedAccess,wrong_concept
+RULE-ACCESS-03,KG node,wrong_concept
+RULE-ACCESS-04,Unauthorised_Access,wrong_concept
+RULE-THR-RND01_RDLAB-TEN-CRIT,RND01_RDLAB_TEN,typo_near_miss

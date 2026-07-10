@@ -7,3 +7,6 @@
 **/trulens_eval.sqlite
 .claude/
 **/heartbeat.txt
+
+# regenerable from seed (recorded in holdout_summary.csv) — 9.5 MB
+layers/layer_4/detection_results/holdout/injected_timeseries.csv

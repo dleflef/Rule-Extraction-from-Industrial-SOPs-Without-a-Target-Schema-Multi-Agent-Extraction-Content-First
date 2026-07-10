@@ -1,0 +1,11 @@
+ruleId,sensor,condition,action
+RULE-ST02-03,ST02_SEALING_CUR,CUR increase >1.5 A above nominal sustained >5 min - schedule maintenance.,schedule maintenance
+RULE-ST02-04,ST02_SEALING_CUR,CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling. Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING.,
+MAINT-01,ST04_PACKAGING_VIB,ST04_PACKAGING_VIB drift >0.05 mm/s over 60 min,Inspect and lubricate bearing
+MAINT-02,ST02_SEALING_CUR,ST02_SEALING_CUR drift >1.0 A for 30+ min,Inspect sealing jaw
+MAINT-03,ST03_LABELLING_TEN,ST03_LABELLING_TEN stuck >10 samples,Replace sensor
+MAINT-04,ST01_FILLING_PRS,ST01_FILLING_PRS <3.3 bar for >15 min,Inspect filter and pump
+MAINT-05,SRV01_SERVERROM_TMP,SRV01_SERVERROM_TMP >25°C for >5 min,Activate secondary cooling
+MAINT-06,WRH01_WAREHOUSE_TMP,WRH01_WAREHOUSE_TMP drift >2°C over 2 h,Inspect compressor; notify QC
+MAINT-07,CHM01_CHEMICALS_STORAGE_TMP,CHM01_CHEMICALS_STORAGE_TMP >20°C for >10 min,Emergency ventilation; notify safety officer
+MAINT-08,RND01_RDLAB_HUM,RND01_RDLAB_HUM drift >10%RH over 60 min,Activate dehumidifier; check HVAC drain

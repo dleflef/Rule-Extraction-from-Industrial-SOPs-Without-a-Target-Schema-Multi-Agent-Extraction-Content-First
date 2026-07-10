@@ -1,0 +1,15 @@
+metric,value
+total_rules_loaded,75
+rules_with_sensor,57
+active_rules,51
+unresolved_rules,6
+rules_without_sensor,18
+resolution_rate_pct,89.5
+abox_sensor_count,22
+unique_sensors_covered,22
+sensor_coverage_rate_pct,100.0
+rule_density_avg,2.32
+governs_abox_edges,51
+maint_active,8
+maint_unresolved,2
+maint_resolution_rate_pct,80.0

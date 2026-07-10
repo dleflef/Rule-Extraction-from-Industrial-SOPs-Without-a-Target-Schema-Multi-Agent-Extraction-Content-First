@@ -1,0 +1,16 @@
+criterion,value,tp,total,recall,dropped_gtIds
+min_coverage_pct,>=0% (shipped),13,14,0.929,
+min_coverage_pct,>=5%,13,14,0.929,
+min_coverage_pct,>=10%,12,14,0.857,GT-0013
+min_coverage_pct,>=25%,11,14,0.786,GT-0002|GT-0013
+min_coverage_pct,>=50%,9,14,0.643,GT-0002|GT-0008|GT-0012|GT-0013
+min_coverage_pct,>=75%,5,14,0.357,GT-0001|GT-0002|GT-0003|GT-0004|GT-0008|GT-0012|GT-0013|GT-0014
+max_latency_min,unlimited (shipped),13,14,0.929,
+max_latency_min,<=120min,13,14,0.929,
+max_latency_min,<=60min,10,14,0.714,GT-0008|GT-0012|GT-0013
+max_latency_min,<=30min,8,14,0.571,GT-0002|GT-0003|GT-0008|GT-0012|GT-0013
+max_latency_min,<=15min,8,14,0.571,GT-0002|GT-0003|GT-0008|GT-0012|GT-0013
+max_latency_min,<=5min,8,14,0.571,GT-0002|GT-0003|GT-0008|GT-0012|GT-0013
+max_latency_frac_of_gt,<=1x GT duration,13,14,0.929,
+max_latency_frac_of_gt,<=0.5x GT duration,9,14,0.643,GT-0002|GT-0008|GT-0012|GT-0013
+max_latency_frac_of_gt,<=0.25x GT duration,7,14,0.5,GT-0002|GT-0003|GT-0004|GT-0008|GT-0012|GT-0013

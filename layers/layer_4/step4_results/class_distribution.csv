@@ -1,0 +1,5 @@
+rule_class,count
+AccessRule,21
+MaintenanceRule,10
+OperationalRule,15
+ThresholdRule,29

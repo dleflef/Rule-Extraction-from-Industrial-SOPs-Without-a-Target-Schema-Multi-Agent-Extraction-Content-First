@@ -1,0 +1,18 @@
+metric,value
+seed,20260710
+detector_code_git_sha,e14c889-dirty
+events_injected,42
+holdout_tp,41
+holdout_fn_gap,1
+holdout_fp,7
+holdout_recall,0.976
+holdout_recall_ci95_lo,0.877
+holdout_recall_ci95_hi,0.996
+holdout_precision,0.854
+holdout_f1,0.911
+holdout_recall_mincov25,0.929
+rules_quarantined,4
+recall_DRIFT,"10/10 = 1.000 [0.722,1.000]"
+recall_OUT_OF_RANGE,"13/14 = 0.929 [0.685,0.987]"
+recall_SPIKE,"10/10 = 1.000 [0.722,1.000]"
+recall_STUCK,"8/8 = 1.000 [0.676,1.000]"
