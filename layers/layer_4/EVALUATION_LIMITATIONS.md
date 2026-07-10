@@ -23,7 +23,10 @@ expected for honest evaluation: dev-exposed 13/13 (1.000) > held-out
 pooled 0.907. Pooled per type: STUCK 80/80, SPIKE 98/100,
 OUT_OF_RANGE 122/140, DRIFT 81/100 — the slow-ramp DRIFT weakness seen in
 the strictness curve is confirmed out-of-sample. Pooled recall under the
-stricter ≥25%-overlap criterion: 0.795.
+stricter ≥25%-overlap criterion: 0.793 (corrected from 0.795 after the
+coveragePct union fix — the earlier envelope computation had slightly
+inflated one seed's multi-event coverage figure; headline recall/precision
+were unaffected).
 
 **GT-0009 / CORRELATED scope decision:** no multi-source fusion detector is
 implemented. The guide (§2.3.2) defines the CORRELATED type as requiring
