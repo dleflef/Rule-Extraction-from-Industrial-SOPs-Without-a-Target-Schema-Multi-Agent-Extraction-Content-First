@@ -18,9 +18,9 @@ Graph schema (rule subgraph)
 (:Rule)-[:APPLIES_TO]->(:Station)   # only when rule.station is populated
 
 Rules are stored regardless of class (including AccessRule) so the full
-extraction is represented in the graph.  step4_detect.py --neo4j will
-skip AccessRule and correlated rules at query time, mirroring what the
-CSV-based loader does.
+extraction is represented in the graph.  step5_detect.py (via
+load_rules_from_neo4j in step5_core.py) skips AccessRule at query time,
+mirroring what the CSV-based loader does.
 
 Run BEFORE step4b_load_abox.py (either order is fine — schemas are disjoint).
 

@@ -151,15 +151,11 @@ def main() -> None:
     nc_tp      = sum(1 for v in noncorr if v["status"] == "COVERED")
     nc_lo, nc_hi = wilson_ci(nc_tp, len(noncorr))
 
-    def _gt_num(v: dict) -> int:
-        try:
-            return int(v["gtId"].rsplit("-", 1)[1])
-        except (IndexError, ValueError):
-            return 0
-    dev_cov  = [v for v in coverage if 1 <= _gt_num(v) <= 9]
-    test_cov = [v for v in coverage if _gt_num(v) >= 10]
-    dev_tp   = sum(1 for v in dev_cov  if v["status"] == "COVERED")
-    test_tp  = sum(1 for v in test_cov if v["status"] == "COVERED")
+    # The guide's nominal dev(GT-0001..09)/test(GT-0010..14) split is NOT
+    # reported as separate metrics: the detector stack was designed while
+    # observing all 14 events, so no honest held-out claim is possible on
+    # this set (EVALUATION_LIMITATIONS.md Limitation 1). The generalization
+    # estimate is the injection holdout (step5_holdout.py --multiseed).
 
     print("      Maintenance node coverage (structural Neo4j check) …")
     maint = evaluate_maintenance_coverage()
@@ -201,10 +197,7 @@ def main() -> None:
         {"metric": "anomaly_excl_gt0009_ci95_lo",  "value": round(nc_lo, 3)},
         {"metric": "anomaly_excl_gt0009_ci95_hi",  "value": round(nc_hi, 3)},
         {"metric": "gt0009_binary",                "value": "NOT_ATTEMPTED (no fusion detector)"},
-        {"metric": "anomaly_dev_total",            "value": len(dev_cov)},
-        {"metric": "anomaly_dev_covered",          "value": dev_tp},
-        {"metric": "anomaly_test_total",           "value": len(test_cov)},
-        {"metric": "anomaly_test_covered",         "value": test_tp},
+        {"metric": "generalization_estimate",      "value": "holdout injection only — original 14 events are dev-exposed (Limitation 1)"},
         {"metric": "maintenance_total",            "value": len(maint)},
         {"metric": "maintenance_covered",          "value": maint_tp},
         {"metric": "phase2_total_events",          "value": phase2_total},
@@ -237,9 +230,9 @@ def main() -> None:
     print(f"    Excl. GT-0009 (guide: binary scored separately): "
           f"{nc_tp}/{len(noncorr)} = {nc_tp/len(noncorr):.3f} "
           f"[{nc_lo:.3f}, {nc_hi:.3f}]")
-    print(f"    Dev {dev_tp}/{len(dev_cov)}   Test {test_tp}/{len(test_cov)} "
-          f"(test NOT held out during design — descriptive only, "
-          f"see holdout run + EVALUATION_LIMITATIONS.md)")
+    print(f"    All 14 events are dev-exposed; the guide's nominal dev/test "
+          f"split is not reported (no honest held-out claim is possible on "
+          f"this set — generalization comes from step5_holdout.py --multiseed)")
     print(f"\n  {'GT ID':<10} {'Sensor':<28} {'Type':<14} {'Status':<9} "
           f"{'Cov%':<6} {'Lat(min)'}")
     for v in coverage:
@@ -254,11 +247,14 @@ def main() -> None:
     print(f"\n  Maintenance nodes (STRUCTURAL check — no detection involved):")
     for x in maint:
         print(f"    {x['maintLabel']:<12} {x['sensor']:<28} {x['status']}")
-    print(f"\n  Phase 2 combined: {phase2_covered}/{phase2_total} "
-          f"({phase2_frac:.1%})  [bar ≥ {PHASE2_COVERAGE_THRESHOLD:.0%}]  "
+    print(f"\n  Report these two SEPARATELY "
+          f"(EVALUATION_LIMITATIONS.md — Metric definitions):")
+    print(f"    Anomaly detection      : {m['anomaly_tp']}/{len(coverage)}")
+    print(f"    Maintenance structural : {maint_tp}/{len(maint)}")
+    print(f"  Guide Table 2 compliance line only (mixes the two units): "
+          f"{phase2_covered}/{phase2_total} ({phase2_frac:.1%}) "
+          f"[bar ≥ {PHASE2_COVERAGE_THRESHOLD:.0%}] "
           f"→ {'PASS' if phase2_pass else 'FAIL'}")
-    print(f"    (mixes detection {m['anomaly_tp']}/{len(coverage)} with the "
-          f"structural check {maint_tp}/{len(maint)} — report separately)")
     print(f"\n  Results in detection_results/: phase2_anomaly_coverage.csv, "
           f"phase2_maintenance_coverage.csv,")
     print(f"  phase2_summary.csv, detected_events.csv, violation_rates.csv")

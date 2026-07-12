@@ -231,6 +231,11 @@ def load_rules_from_csv() -> list[Rule]:
 # ── Condition parsers ─────────────────────────────────────────────────────────
 
 def _bound_severity(val: float, r: Rule) -> Optional[str]:
+    # Crit bounds are checked before warn bounds, so a rule extracted with
+    # critHi == warnHi (a real LLM defect, e.g. RULE-CAF01-01) classifies a
+    # warn-band violation as CRITICAL and bypasses the WARNING on-delay.
+    # Recall/precision are unaffected; per-event latency can be understated
+    # by up to ON_DELAY_WARNING_MIN — see EVALUATION_LIMITATIONS.md.
     if r.crit_hi is not None and val > r.crit_hi:
         return "CRITICAL"
     if r.crit_lo is not None and val < r.crit_lo:
