@@ -12,14 +12,14 @@ while detection runs. Code inspection says neither is read; this script
 tests it.
 
 Checks:
-  1. COLUMN-STRIP EQUIVALENCE (the main proof): write a copy of
-     timeseries_raw.csv containing ONLY timestamp,sensor_id,value — every
-     GT-bearing column physically removed — and run the full detection
-     path (plausibility quarantine + all four detectors) on both files.
-     PASS = the violation rates, quarantine set, and every single alarm
-     (sensor, timestamp, value, severity, detector, rule) are identical.
-     If detection consulted any GT column in any way, the stripped run
-     would differ.
+  1. COLUMN-STRIP EQUIVALENCE (the main proof): a copy of
+     timeseries_raw.csv is written containing ONLY timestamp, sensor_id
+     and value — every GT-bearing column is physically removed — and the
+     full detection path (plausibility quarantine + all four detectors)
+     is run on both files. PASS means the violation rates, the quarantine
+     set, and every single alarm (sensor, timestamp, value, severity,
+     detector, rule) are identical. Had any GT column been consulted in
+     any way, the stripped run would differ.
   2. RULE-NODE PURITY: no Rule node in Neo4j carries GT anomaly fields
      (gtId / anomalyType / startTs / endTs) — extracted rules cannot
      smuggle event windows into detection. (Skipped politely if Neo4j is
@@ -51,8 +51,9 @@ from step5_core import (
 
 
 def write_stripped_copy(dst: str) -> tuple[int, list[str]]:
-    """Copy timeseries_raw.csv keeping ONLY timestamp,sensor_id,value.
-    Returns (row_count, removed_column_names)."""
+    """A copy of timeseries_raw.csv is written in which ONLY timestamp,
+    sensor_id and value are kept; (row_count, removed_column_names) is
+    returned so the removal can be reported."""
     with open(TIMESERIES_CSV, newline="", encoding="utf-8") as fin, \
          open(dst, "w", newline="", encoding="utf-8") as fout:
         reader = csv.DictReader(fin)

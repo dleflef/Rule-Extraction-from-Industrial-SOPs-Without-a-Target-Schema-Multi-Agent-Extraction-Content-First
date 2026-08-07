@@ -1,27 +1,36 @@
 """
 step5_sensitivity.py
 
-Part 1 — one-factor-at-a-time grid over every step5 free parameter
-(on-delay, merge window, plausibility cutoff, drift baseline ratio, drift
-minimum-evidence guard) → sensitivity_analysis.csv.
+The robustness companion to step5_detect.py. Three questions are answered,
+each in its own part, and each is written to its own CSV so the evidence
+can be cited independently.
 
-Part 2 — scoring-strictness sweep: re-scores the shipped-default run under
-progressively stricter acceptance criteria (minimum overlap %, maximum
-latency absolute / relative to GT duration) → scoring_strictness.csv.
-The shipped rule counts ANY nonzero overlap as COVERED; this sweep is the
-honest curve showing how much of the headline recall that leniency buys.
+Part 1 — parameter sensitivity (sensitivity_analysis.csv).
+Every free constant of the detection engine (warning on-delay, alarm merge
+window, plausibility cutoff, drift baseline ratio, drift minimum-evidence
+guard) is varied one factor at a time while everything else is held at the
+shipped default. If the headline result were an artifact of tuning, it
+would move here; a flat recall column is the evidence that it is not.
 
-Part 3 — calibration-filter equivalence check: the shipped plausibility
-filter is transductive (violation rates over the full evaluation stream).
-This part computes the rates over only the pre-registered first
-CALIBRATION_HOURS (a commissioning period, deployable online) and compares
-the resulting quarantine set against the shipped one — on the original
-stream and, if present, on the holdout injected stream. If the sets match,
-the transductivity caveat reduces to an implementation detail.
-→ calibration_filter_check.csv.
+Part 2 — scoring strictness (scoring_strictness.csv).
+The shipped scoring rule counts ANY nonzero overlap with a ground-truth
+window as COVERED. In this part the already-computed baseline run is
+re-scored under progressively stricter acceptance criteria: a minimum
+overlap percentage, a maximum detection latency in minutes, and a maximum
+latency relative to each event's own duration. The resulting curve shows
+exactly how much of the headline recall is bought by the lenient rule.
 
-Read-only: never writes to Neo4j. Run after step4_populate.py →
-step4b_load_abox.py.
+Part 3 — calibration-filter equivalence (calibration_filter_check.csv).
+The shipped plausibility filter is transductive: violation rates are
+computed over the full evaluation stream, which a live deployment could
+not do. Here the rates are recomputed over only the pre-registered first
+CALIBRATION_HOURS of the stream — a commissioning period that would be
+available in a real deployment — and the resulting quarantine set is
+compared with the shipped one. If the two sets are identical, the
+transductivity concern is reduced to an implementation detail.
+
+The script is read-only: Neo4j is queried for the rules but never written.
+It is run after step4_populate.py , step4b_load_abox.py.
 
 Usage:
     python layers/layer_4/step5_sensitivity.py
@@ -33,7 +42,7 @@ import csv
 import os
 
 from step5_core import (
-    RESULTS_DIR, TIMESERIES_CSV,
+    RESULTS_DIR,
     ON_DELAY_WARNING_MIN, GAP_MERGE_MIN, PLAUSIBILITY_MAX_VIOLATION_RATE,
     BASELINE_WINDOW_RATIO, DRIFT_MIN_REF_SAMPLES, CALIBRATION_HOURS,
     load_rules_from_neo4j, compute_violation_rates, stream_and_detect,
@@ -41,14 +50,15 @@ from step5_core import (
     apply_strictness,
 )
 
-HOLDOUT_INJECTED_CSV = os.path.join(RESULTS_DIR, "holdout",
-                                    "injected_timeseries.csv")
-
+# Every config below is the shipped default with exactly one entry changed,
+# so any difference in the results can be attributed to that one factor.
+# A cal_window of None means the violation rates are taken over the full
+# stream, as shipped; a number selects the commissioning-window variant.
 _D = {"on_delay": ON_DELAY_WARNING_MIN, "merge": GAP_MERGE_MIN,
       "plausibility": PLAUSIBILITY_MAX_VIOLATION_RATE,
       "drift_ratio": BASELINE_WINDOW_RATIO,
       "drift_min_ref": DRIFT_MIN_REF_SAMPLES,
-      "cal_window": None}   # None = shipped full-stream violation rates
+      "cal_window": None}
 
 CONFIGS = [
     {**_D, "label": "baseline (shipped defaults)"},
@@ -84,6 +94,9 @@ def main() -> None:
     gt_windows = load_gt_windows()
 
     # ── Part 1: parameter grid ────────────────────────────────────────────────
+    # Each config is run through the full detect , merge , score path.
+    # The first config is the shipped default; its coverage rows are kept
+    # aside because Part 2 re-scores exactly that run.
     print(f"\nPart 1 — parameter grid: {len(CONFIGS)} configs …\n")
     print(f"  {'config':<42} {'tp':<6} {'recall':<8} {'precision':<10} "
           f"{'f1':<7} {'fp':<4} quar")
@@ -141,6 +154,9 @@ def main() -> None:
     print(f"  Written to {out_path}")
 
     # ── Part 2: scoring-strictness sweep ──────────────────────────────────────
+    # No new detection is performed here: the shipped-default coverage rows
+    # from Part 1 are re-scored under stricter acceptance criteria, so the
+    # curve isolates the effect of the scoring rule itself.
     total = len(baseline_coverage)
     print(f"\nPart 2 — scoring strictness (shipped rule: ANY overlap = COVERED)\n")
     print(f"  {'criterion':<26} {'value':<20} {'tp':<7} {'recall':<8} dropped")
@@ -176,6 +192,10 @@ def main() -> None:
     print(f"\n  Written to {s_path} — report this curve next to the headline recall.")
 
     # ── Part 3: calibration-filter equivalence check ──────────────────────────
+    # The two violation-rate tables computed at the top of main() are
+    # compared here: one taken over the full stream (as shipped) and one
+    # over only the first CALIBRATION_HOURS. If both quarantine the same
+    # rules, the shipped filter could have been deployed online unchanged.
     print(f"\nPart 3 — calibration-filter equivalence "
           f"(full stream vs first {CALIBRATION_HOURS} h)\n")
     cutoff = PLAUSIBILITY_MAX_VIOLATION_RATE
@@ -183,33 +203,23 @@ def main() -> None:
     def _qset(vr):
         return {rid for rid, rate in vr.items() if rate > cutoff}
 
-    streams = [("original", TIMESERIES_CSV, vrates, vrates_cal)]
-    if os.path.exists(HOLDOUT_INJECTED_CSV):
-        streams.append((
-            "holdout_injected(seed=canonical)", HOLDOUT_INJECTED_CSV,
-            compute_violation_rates(rules, timeseries_csv=HOLDOUT_INJECTED_CSV),
-            compute_violation_rates(rules, timeseries_csv=HOLDOUT_INJECTED_CSV,
-                                    calibration_hours=CALIBRATION_HOURS)))
-
-    c_rows = []
-    for name, _path, vr_full, vr_cal in streams:
-        q_full, q_cal = _qset(vr_full), _qset(vr_cal)
-        max_diff = max((abs(vr_full[r] - vr_cal.get(r, 0.0))
-                        for r in vr_full), default=0.0)
-        same = q_full == q_cal
-        c_rows.append({
-            "stream": name,
-            "quarantine_full_stream": "|".join(sorted(q_full)),
-            "quarantine_calibration_window": "|".join(sorted(q_cal)),
-            "quarantine_sets_identical": str(same),
-            "max_abs_rate_difference": round(max_diff, 4),
-        })
-        print(f"  {name}: quarantine sets "
-              f"{'IDENTICAL' if same else 'DIFFER'} "
-              f"(max per-rule rate diff {max_diff:.4f})")
-        if not same:
-            print(f"    full-only: {sorted(q_full - q_cal)}")
-            print(f"    cal-only : {sorted(q_cal - q_full)}")
+    q_full, q_cal = _qset(vrates), _qset(vrates_cal)
+    max_diff = max((abs(vrates[r] - vrates_cal.get(r, 0.0))
+                    for r in vrates), default=0.0)
+    same = q_full == q_cal
+    c_rows = [{
+        "stream": "original",
+        "quarantine_full_stream": "|".join(sorted(q_full)),
+        "quarantine_calibration_window": "|".join(sorted(q_cal)),
+        "quarantine_sets_identical": str(same),
+        "max_abs_rate_difference": round(max_diff, 4),
+    }]
+    print(f"  original: quarantine sets "
+          f"{'IDENTICAL' if same else 'DIFFER'} "
+          f"(max per-rule rate diff {max_diff:.4f})")
+    if not same:
+        print(f"    full-only: {sorted(q_full - q_cal)}")
+        print(f"    cal-only : {sorted(q_cal - q_full)}")
 
     c_path = os.path.join(RESULTS_DIR, "calibration_filter_check.csv")
     with open(c_path, "w", newline="", encoding="utf-8") as f:
@@ -220,8 +230,8 @@ def main() -> None:
         w.writeheader()
         w.writerows(c_rows)
     print(f"\n  Written to {c_path}")
-    if all(r["quarantine_sets_identical"] == "True" for r in c_rows):
-        print("  → An online system calibrated in the first "
+    if same:
+        print("   An online system calibrated in the first "
               f"{CALIBRATION_HOURS} h would quarantine the same rules and "
               "produce identical results:")
         print("    the filter does not exploit anomaly-period data.")

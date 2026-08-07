@@ -3,22 +3,24 @@ step4b_load_abox.py
 
 Step 4b — ABox loading + rule validation.
 
-1. Loads the physical factory ABox into Neo4j from the kg_seed CSVs:
+1. The physical factory ABox is loaded into Neo4j from the kg_seed CSVs:
      115 nodes  (System, Zone, Component, Sensor, AnomalyEvent,
                  Maintenance, Person, SafetyEvent)
      ~341 edges (contains, monitors, triggers, part_of, involves,
                  authorized_for, …)
 
-2. Validates the extracted Rule nodes (loaded by step4_populate.py)
+2. The extracted Rule nodes (loaded by step4_populate.py) are validated
    against the real ABox Sensor nodes:
-     - Creates (:Rule)-[:GOVERNS_ABOX]->(:ABoxNode:Sensor) edges where
-       the rule's sensor field exactly matches the ABox sensor name.
-     - Reports "active" rules (sensor found) vs "dead" rules (sensor not
-       in ABox — usually LLM typos like SRV01_SERVERROM_TMP).
+     - A (:Rule)-[:GOVERNS_ABOX]->(:ABoxNode:Sensor) edge is created
+       wherever the rule's sensor field exactly matches an ABox sensor
+       name.
+     - "Active" rules (sensor found) are reported separately from
+       unresolved ones (sensor not in the ABox — usually an LLM typo such
+       as SRV01_SERVERROM_TMP).
 
-No ground-truth anomaly labels are used in this step.  AnomalyEvent
-nodes are loaded as opaque ABox facts; their GT fields are only read
-later by step5_detect.py after detection finishes.
+No ground-truth anomaly labels are used in this step. AnomalyEvent nodes
+are loaded as opaque ABox facts; their GT fields are read only later, by
+step5_detect.py, after detection has finished.
 
 Run AFTER step4_populate.py.
 
@@ -53,7 +55,8 @@ NEO4J_USER     = os.environ.get("NEO4J_USERNAME", "neo4j")
 NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD", "neo4j")
 NEO4J_DATABASE = os.environ.get("NEO4J_DATABASE", "neo4j")
 
-# ABox node labels that map directly to a nodeId as primary key
+# The ABox node labels that are accepted from nodes.csv; each is keyed by
+# its nodeId. Rows with any other label are skipped with a warning.
 ABOX_LABELS = {
     "System", "Zone", "Component", "Sensor",
     "AnomalyEvent", "Maintenance", "Person", "SafetyEvent",
@@ -83,7 +86,9 @@ def _tbl(headers: list, rows: list, title: str = "") -> None:
 
 
 def _coerce(val: str):
-    """Return float if numeric-looking, else the original string, else None."""
+    """Numeric-looking strings are converted to float so they can be
+    compared in Cypher; anything else is kept as a string, and empty
+    values become None."""
     if not val or not val.strip():
         return None
     v = val.strip()
@@ -104,7 +109,8 @@ def load_edges(path: str) -> list[dict]:
 
 
 def _build_props(row: dict, exclude: set[str]) -> dict:
-    """Collect all non-empty fields from a CSV row as a Neo4j property dict."""
+    """All non-empty fields of a CSV row are collected into a Neo4j
+    property dict, so sparse columns never create empty properties."""
     return {k: _coerce(v) for k, v in row.items()
             if k not in exclude and v and v.strip()}
 
@@ -189,23 +195,24 @@ def populate_abox(driver, nodes: list[dict], edges: list[dict],
         ["edge_type", "count"],
         [{"edge_type": rt, "count": cnt} for rt, cnt in sorted(rel_counts.items())],
     )
-    print(f"  Saved → step4_results/abox_nodes_summary.csv  "
+    print(f"  Saved , step4_results/abox_nodes_summary.csv  "
           f"({sum(by_label.values())} nodes)")
-    print(f"  Saved → step4_results/abox_edges_summary.csv  "
+    print(f"  Saved , step4_results/abox_edges_summary.csv  "
           f"({sum(rel_counts.values())} edges)")
 
 
 def validate_rules_against_abox(driver) -> dict:
-    """Link Rule nodes to real ABox Sensor nodes; surface unresolved rules.
+    """Rule nodes are linked to real ABox Sensor nodes, and unresolved
+    rules are surfaced.
 
-    An "unresolved rule" is one whose sensor field does not match any ABox
-    Sensor's name — almost always an LLM extraction typo.  Unresolved rules
-    will never fire during detection and explain coverage gaps.
+    An "unresolved" rule is one whose sensor field matches no ABox
+    sensor's name — almost always an LLM extraction typo. Such rules can
+    never fire during detection, which is why they explain coverage gaps.
 
-    No anomaly GT fields are read here; this is purely structural.
+    No anomaly GT fields are read here; the check is purely structural.
 
-    Returns a dict with keys "active" (list[str] ruleIds) and
-    "unresolved" (list[tuple[ruleId, sensor]]).
+    A dict is returned with keys "active" (list of ruleIds) and
+    "unresolved" (list of (ruleId, sensor) tuples).
     """
     import re
     from collections import defaultdict
@@ -248,7 +255,7 @@ def validate_rules_against_abox(driver) -> dict:
             "MATCH (r:Rule) RETURN count(r) AS c"
         ).single()["c"]
 
-        # How many real sensors exist in the ABox?
+        # The number of real ABox sensors is needed for the coverage rate.
         abox_sensor_count = session.run(
             "MATCH (s:ABoxNode:Sensor) RETURN count(s) AS c"
         ).single()["c"]
@@ -408,10 +415,10 @@ def validate_rules_against_abox(driver) -> dict:
         _write_csv(os.path.join(out_dir, "unresolved_rules_analysis.csv"),
                    ["ruleId", "sensor_llm", "diagnosis"], unresolved_dicts)
 
-    print(f"\n  Saved → step4_results/rule_validation.csv          ({len(active)} active, {len(unresolved)} unresolved)")
-    print(f"  Saved → step4_results/rule_validation_stats.csv    (14 metrics)")
-    print(f"  Saved → step4_results/rule_class_breakdown.csv     ({len(cls_rows)} rule classes)")
-    print(f"  Saved → step4_results/unresolved_rules_analysis.csv({len(unresolved)} unresolved rules)")
+    print(f"\n  Saved ,  step4_results/rule_validation.csv          ({len(active)} active, {len(unresolved)} unresolved)")
+    print(f"  Saved ,  step4_results/rule_validation_stats.csv    (14 metrics)")
+    print(f"  Saved ,  step4_results/rule_class_breakdown.csv     ({len(cls_rows)} rule classes)")
+    print(f"  Saved ,  step4_results/unresolved_rules_analysis.csv({len(unresolved)} unresolved rules)")
     print(f"  (all 4 also copied to detection_results/)")
 
     return {"active": [rid for rid, _ in active], "unresolved": unresolved}

@@ -1,31 +1,33 @@
 """
 step5_core.py
 
-Shared engine for Phase 2 anomaly detection (iMAKS, guide §3.1/§3.3).
-Everything that step5_detect.py, step5_sensitivity.py, step5_baselines.py
-and step5_holdout.py have in common lives here, so there is
-exactly one definition of the detectors, the scoring rule, and the metrics.
+The shared engine for Phase 2 anomaly detection (iMAKS, guide §3.1/§3.3).
+Everything that step5_detect.py and step5_sensitivity.py have in common is
+kept here, so the detectors, the scoring rule, and the metric definitions
+exist exactly once and no two experiments can disagree because of
+duplicated logic.
 
-Detectors (all driven ONLY by extracted rules — never by GT):
-  threshold  : value crosses an extracted critHi/warnHi/warnLo/critLo bound
-  stuck      : value frozen for N samples          ("stuck >N samples")
-  drift      : rolling delta over a time window    ("drift >X over Y min/h")
-  sustained  : bound violated for N minutes        (">X for >Y min/h")
+Four detectors are provided, all driven ONLY by the extracted rules and
+never by ground truth:
+  threshold  : the value crosses an extracted critHi/warnHi/warnLo/critLo bound
+  stuck      : the value has been frozen for N samples   ("stuck >N samples")
+  drift      : a rolling delta over a time window        ("drift >X over Y min/h")
+  sustained  : a bound is violated for N minutes         (">X for >Y min/h")
 
-Out of scope — CORRELATED events (GT-0009): the guide (§2.3.2) defines the
-CORRELATED type as requiring three-way multi-source fusion (timeseries
-co-occurrence + SOP-001 causal rule + SOP-003 corroboration). No fusion
-detector is implemented; CORRELATED events are scored by the same uniform
-rule as everything else and are expected to show as GAP. The guide's
-separate GT-0009 binary is therefore NOT ATTEMPTED at this stage.
+Out of scope — CORRELATED events (GT-0009): the CORRELATED type is defined
+by the guide (§2.3.2) as requiring three-way multi-source fusion
+(timeseries co-occurrence + SOP-001 causal rule + SOP-003 corroboration).
+No fusion detector is implemented; CORRELATED events are scored by the
+same uniform rule as everything else and are expected to appear as GAP.
+The guide's separate GT-0009 binary is therefore reported as NOT ATTEMPTED.
 
-Anti-leakage invariants (hold for every entry point in this module):
-  - Detection reads ONLY timestamp / sensor_id / value from the timeseries.
-  - GT (nodes.csv / edges.csv / annotated timeseries) is read only by the
-    scoring helpers, which callers invoke strictly AFTER detection.
-  - Rules come from LLM extraction (Neo4j or the step4_results CSV dump);
-    the one deliberate exception is the oracle baseline in
-    step5_baselines.py, which is documented as the leak-everything bound.
+Anti-leakage invariants, held by every entry point in this module:
+  - Only timestamp / sensor_id / value are read from the timeseries during
+    detection.
+  - Ground truth (nodes.csv / edges.csv) is read only by the scoring
+    helpers, which are invoked strictly AFTER detection has finished.
+  - The rules are taken from LLM extraction (Neo4j or the step4_results
+    CSV dump); GT bounds are never used as detection rules.
 """
 
 from __future__ import annotations
@@ -60,48 +62,60 @@ NEO4J_DATABASE = os.environ.get("NEO4J_DATABASE", "neo4j")
 
 # ── Tunable constants ─────────────────────────────────────────────────────────
 # Every constant below is exposed as a parameter of stream_and_detect() /
-# merge_alarms() and exercised by step5_sensitivity.py. Shipped defaults were
-# fixed before the sensitivity analysis and are NOT retuned against GT.
+# merge_alarms() and is exercised by step5_sensitivity.py. The shipped
+# defaults were fixed before the sensitivity analysis was run and were
+# never retuned against ground truth.
 
-# WARNING on-delay: only alarm after 5 continuous minutes of violation
-# (ISA-18.2 alarm rationalisation). CRITICAL fires immediately.
+# WARNING alarms are raised only after 5 continuous minutes of violation,
+# following ISA-18.2 alarm rationalisation practice; CRITICAL alarms are
+# raised immediately.
 ON_DELAY_WARNING_MIN = 5
 
-# Merge alarms on the same sensor within 15 min into one event. The
-# sensitivity table shows 30 min would remove both residual FPs — kept at
-# 15 to avoid post-hoc tuning against GT (see EVALUATION_LIMITATIONS.md).
+# Alarms on the same sensor separated by less than 15 minutes are merged
+# into one event. The sensitivity table shows that 30 minutes would remove
+# both residual false positives; 15 is kept so the value is not tuned
+# post hoc against ground truth (see EVALUATION_LIMITATIONS.md).
 GAP_MERGE_MIN = 15
 
-# Drift detector: recent window sized PER SENSOR from that sensor's own
-# extracted rule duration — a global cap smaller than a rule's "over N min"
-# makes that rule structurally unable to fire (bit MAINT-06 once).
+# The drift detector's recent window is sized PER SENSOR from that
+# sensor's own extracted rule duration. A global cap smaller than a rule's
+# "over N min" clause would make the rule structurally unable to fire —
+# a failure mode that was actually hit once with MAINT-06.
 DEFAULT_DRIFT_WINDOW_MIN = 60
-# Baseline duration = ratio × recent-window duration (2 h vs 1 h shipped).
+# The baseline (reference) window is this many times longer than the
+# recent window: with the shipped ratio of 2, the last hour is compared
+# against the two hours before it.
 BASELINE_WINDOW_RATIO = 2
-# Minimum baseline samples before drift_delta() reports a nonzero value.
+# No drift value is reported until the baseline holds at least this many
+# samples, so that startup noise is never compared against an empty or
+# meaningless reference.
 DRIFT_MIN_REF_SAMPLES = 10
-# Dataset sampling cadence (guide §1.2: 30 s).
+# The dataset's sampling cadence (guide §1.2: one reading every 30 s).
 SAMPLE_INTERVAL_SEC = 30
 
-# Quarantine threshold rules violating >50% of their sensor's readings —
-# almost certainly a mis-extracted bound. Unsupervised (no GT labels), but
-# data-dependent; its effect is quantified in sensitivity_analysis.csv.
+# Threshold rules that flag more than half of their sensor's readings are
+# quarantined as almost certainly mis-extracted. The check is unsupervised
+# (no labels are consulted); its effect is quantified in
+# sensitivity_analysis.csv.
 PLAUSIBILITY_MAX_VIOLATION_RATE = 0.5
 
-# Calibration window for the deployable (non-transductive) variant of the
-# plausibility filter: violation rates computed over only the FIRST N hours
-# of the stream — a commissioning period, as a real deployment would use
-# before arming alarms. PRE-REGISTERED at 8 h = 10% of the 80 h stream (an
-# a-priori round fraction, not tuned against results). step5_sensitivity.py
-# verifies whether this window quarantines the same rules as the shipped
-# full-stream filter.
+# The deployable (non-transductive) variant of the plausibility filter
+# computes violation rates over only the FIRST N hours of the stream — a
+# commissioning period, as would be available before alarms are armed in
+# a real deployment. The value was pre-registered at 8 h (10% of the 80 h
+# stream, an a-priori round fraction) and was not tuned against results.
+# Whether this window quarantines the same rules as the full-stream
+# filter is verified by step5_sensitivity.py Part 3.
 CALIBRATION_HOURS = 8
 
-STUCK_TOL = 1e-6            # values within this range count as identical
-DEFAULT_STUCK_BUFFER = 64   # fallback only — sensors with a stuck rule get
-                            # a buffer sized from the rule's own sample count
+# Two readings are treated as identical by the stuck detector when they
+# differ by less than this tolerance.
+STUCK_TOL = 1e-6
+# Fallback buffer length only — sensors that carry a stuck rule are given
+# a buffer sized from the rule's own sample count instead.
+DEFAULT_STUCK_BUFFER = 64
 
-# Phase 2 pass bar (guide Table 2: coverage fraction ≥ 70%).
+# The Phase 2 pass bar (guide Table 2: coverage fraction ≥ 70%).
 PHASE2_COVERAGE_THRESHOLD = 0.70
 
 
@@ -168,9 +182,10 @@ def _to_float(s):
 
 
 def load_rules_from_neo4j() -> list[Rule]:
-    """ACTIVE rules only — those step4b linked to a real ABox sensor via
-    GOVERNS_ABOX. Returns Rule nodes only (RETURN DISTINCT r); the GT
-    thresholds on ABoxNode:Sensor nodes are never read here."""
+    """ACTIVE rules only — those linked by step4b to a real ABox sensor
+    via GOVERNS_ABOX. Only the Rule nodes themselves are returned
+    (RETURN DISTINCT r); the GT thresholds stored on ABoxNode:Sensor
+    nodes are never read here."""
     from neo4j import GraphDatabase
     driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
     with driver.session(database=NEO4J_DATABASE) as session:
@@ -200,9 +215,9 @@ def load_rules_from_neo4j() -> list[Rule]:
 
 
 def load_rules_from_csv() -> list[Rule]:
-    """Same ACTIVE population, rebuilt from the step4_results CSV dumps —
-    lets diagnostic scripts run without Neo4j. Equivalence to the Neo4j
-    loader is asserted by step5_baselines.py's consistency check."""
+    """The same ACTIVE population, rebuilt from the step4_results CSV
+    dumps so that diagnostic scripts such as the leakage audit can be run
+    without a live Neo4j instance."""
     with open(os.path.join(STEP4_RESULTS, "rule_validation.csv"),
               newline="", encoding="utf-8") as f:
         active_ids = {r["ruleId"] for r in csv.DictReader(f)
@@ -231,11 +246,12 @@ def load_rules_from_csv() -> list[Rule]:
 # ── Condition parsers ─────────────────────────────────────────────────────────
 
 def _bound_severity(val: float, r: Rule) -> Optional[str]:
-    # Crit bounds are checked before warn bounds, so a rule extracted with
-    # critHi == warnHi (a real LLM defect, e.g. RULE-CAF01-01) classifies a
-    # warn-band violation as CRITICAL and bypasses the WARNING on-delay.
-    # Recall/precision are unaffected; per-event latency can be understated
-    # by up to ON_DELAY_WARNING_MIN — see EVALUATION_LIMITATIONS.md.
+    # Crit bounds are checked before warn bounds. As a consequence, a rule
+    # extracted with critHi == warnHi (a real LLM defect, e.g.
+    # RULE-CAF01-01) classifies a warn-band violation as CRITICAL and
+    # bypasses the WARNING on-delay. Recall and precision are unaffected;
+    # per-event latency can be understated by up to ON_DELAY_WARNING_MIN —
+    # see EVALUATION_LIMITATIONS.md.
     if r.crit_hi is not None and val > r.crit_hi:
         return "CRITICAL"
     if r.crit_lo is not None and val < r.crit_lo:
@@ -248,8 +264,9 @@ def _bound_severity(val: float, r: Rule) -> Optional[str]:
 
 
 def parse_maint_params(rules: list[Rule]) -> list[dict]:
-    """MaintenanceRule condition strings → stuck/drift/sustained detector
-    parameters. Text patterns only — no GT thresholds involved."""
+    """MaintenanceRule condition strings are parsed into stuck/drift/
+    sustained detector parameters. Only the extracted text is consulted —
+    no GT thresholds are involved at any point."""
     params = []
     for r in rules:
         if r.cls != "MaintenanceRule" or not r.sensor:
@@ -295,13 +312,15 @@ def compute_violation_rates(rules: list[Rule],
                             timeseries_csv: str = TIMESERIES_CSV,
                             calibration_hours: Optional[float] = None,
                             ) -> dict[str, float]:
-    """Fraction of readings each Threshold/OperationalRule flags.
-    Reads only timestamp/sensor_id/value — no GT columns, no labels.
+    """The fraction of readings flagged by each Threshold/OperationalRule
+    is computed here. Only timestamp/sensor_id/value are read — no GT
+    columns and no labels.
 
-    calibration_hours=None (shipped default): rates over the full stream
-    (transductive). Set to CALIBRATION_HOURS for the deployable variant
-    that uses only the first N hours as a commissioning period — see
-    step5_sensitivity.py's calibration check for the equivalence result.
+    With calibration_hours=None (the shipped default) the rates are taken
+    over the full stream, which is transductive. When CALIBRATION_HOURS is
+    passed instead, only the first N hours are used — the deployable
+    commissioning-period variant, whose equivalence to the shipped filter
+    is verified by step5_sensitivity.py Part 3.
     """
     candidates = {r.rule_id: r for r in rules
                   if r.cls in ("ThresholdRule", "OperationalRule")}
@@ -402,10 +421,12 @@ def stream_and_detect(rules: list[Rule],
                       baseline_window_ratio: float = BASELINE_WINDOW_RATIO,
                       drift_min_ref_samples: int = DRIFT_MIN_REF_SAMPLES,
                       ) -> tuple[list[Alarm], int]:
-    """Single pass over the timeseries. Reads ONLY timestamp/sensor_id/value.
+    """The whole detection run is a single pass over the timeseries, and
+    ONLY timestamp/sensor_id/value are read from it.
 
-    All constants are parameters so step5_sensitivity.py can vary them and
-    step5_holdout.py can point timeseries_csv at an injected copy.
+    All engine constants are accepted as parameters so that
+    step5_sensitivity.py can vary them one at a time; the defaults are the
+    shipped values.
     """
     by_sensor: dict[str, list[Rule]] = {}
     for r in rules:
@@ -416,9 +437,9 @@ def stream_and_detect(rules: list[Rule],
     for p in parse_maint_params(rules):
         maint_params_by_sensor.setdefault(p["sensor"], []).append(p)
 
-    # Per-sensor windows sized from the sensor's own rules — a global cap
-    # smaller than a rule's requirement would make it structurally unable
-    # to fire regardless of the data.
+    # The per-sensor windows are sized from each sensor's own rules; a
+    # global cap smaller than a rule's requirement would make that rule
+    # structurally unable to fire regardless of the data.
     drift_window_by_sensor: dict[str, float] = {}
     stuck_buffer_by_sensor: dict[str, int] = {}
     for sid, params in maint_params_by_sensor.items():
@@ -491,8 +512,9 @@ def stream_and_detect(rules: list[Rule],
                                             p["rule_id"]))
                 elif p["type"] == "sustained":
                     key = (sid, p["rule_id"])
-                    # "≥"/"≤" are single unicode chars — test both spellings
-                    # or the direction silently flips.
+                    # "≥" and "≤" are single unicode characters, so both
+                    # spellings must be tested; otherwise the comparison
+                    # direction is silently flipped.
                     upper = (">" in p["op"]) or ("≥" in p["op"])
                     in_viol = (val > p["threshold"] if upper
                                else val < p["threshold"])
@@ -509,11 +531,14 @@ def stream_and_detect(rules: list[Rule],
     return alarms, row_count
 
 
-# ── Merge alarms → events ─────────────────────────────────────────────────────
+# ── Merge alarms , events ─────────────────────────────────────────────────────
 
 def merge_alarms(alarms: list[Alarm],
                  gap_merge_min: float = GAP_MERGE_MIN) -> list[Event]:
-    """Merge consecutive alarms on the same sensor into events."""
+    """Consecutive alarms on the same sensor are merged into events; a new
+    event is started whenever the gap to the previous alarm exceeds
+    gap_merge_min. The merged event keeps the highest severity seen and
+    the union of contributing detectors and rules."""
     if not alarms:
         return []
     by_sensor: dict[str, list[Alarm]] = {}
@@ -548,8 +573,9 @@ def merge_alarms(alarms: list[Alarm],
 # ── GT loading (call ONLY after detection) ────────────────────────────────────
 
 def load_gt_windows() -> list[GtAnomaly]:
-    """GT anomaly windows from nodes.csv + edges.csv (Phase 2 reference,
-    guide §2.3). Never call before detection has finished."""
+    """The GT anomaly windows are read from nodes.csv + edges.csv (the
+    Phase 2 reference, guide §2.3). This must never be called before
+    detection has finished — GT is a scoring input only."""
     with open(NODES_CSV, newline="", encoding="utf-8") as f:
         nodes = {r["nodeId"]: r for r in csv.DictReader(f)}
     with open(EDGES_CSV, newline="", encoding="utf-8") as f:
@@ -574,11 +600,13 @@ def load_gt_windows() -> list[GtAnomaly]:
 
 def score_coverage(events: list[Event],
                    gt_windows: list[GtAnomaly]) -> list[dict]:
-    """COVERED/GAP per GT window (guide Table 2). Shipped rule: any nonzero
-    temporal overlap on the same sensor. Leniency is quantified separately
-    (apply_strictness / scoring_strictness.csv). All GT types are scored by
-    this same uniform rule — no type gets a dedicated detector or carve-out;
-    CORRELATED events are expected to show as GAP (see module docstring)."""
+    """Each GT window is scored COVERED or GAP (guide Table 2). Under the
+    shipped rule, any nonzero temporal overlap on the same sensor counts;
+    how much recall that leniency buys is quantified separately by
+    apply_strictness / scoring_strictness.csv. Every GT type is scored by
+    this same uniform rule — no type is given a dedicated detector or a
+    carve-out, so CORRELATED events are expected to appear as GAP (see the
+    module docstring)."""
     results = []
     for gt in gt_windows:
         covering = [e for e in events
@@ -589,11 +617,12 @@ def score_coverage(events: list[Event],
             det_end     = max(e.end   for e in covering)
             latency_min = (det_start - gt.start).total_seconds() / 60.0
             gt_dur_sec  = (gt.end - gt.start).total_seconds()
-            # coveragePct = UNION of per-event overlaps with the GT window,
-            # not the [det_start, det_end] envelope — with multiple disjoint
-            # covering events the envelope would count the uncovered gaps
-            # between them as covered. Identical to the envelope for a
-            # single covering event (every case in the current results).
+            # coveragePct is computed as the UNION of per-event overlaps
+            # with the GT window, not as the [det_start, det_end] envelope:
+            # with multiple disjoint covering events, the envelope would
+            # count the uncovered gaps between them as covered. For a
+            # single covering event — every case in the current results —
+            # the two are identical.
             clipped = sorted((max(gt.start, e.start), min(gt.end, e.end))
                              for e in covering)
             ov_sec, cur_s, cur_e = 0.0, None, None
@@ -630,7 +659,9 @@ def score_coverage(events: list[Event],
 
 
 def wilson_ci(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
-    """Wilson score 95% CI — always report next to small-n recall."""
+    """The Wilson score 95% confidence interval. It is reported next to
+    every recall figure because n is small and a point estimate alone
+    would overstate the certainty."""
     if n == 0:
         return (0.0, 0.0)
     p = k / n
@@ -640,19 +671,16 @@ def wilson_ci(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
     return (max(0.0, center - margin), min(1.0, center + margin))
 
 
-def compute_anomaly_metrics(coverage: list[dict], events: list[Event],
-                            fp_extra_windows: list[GtAnomaly] | None = None) -> dict:
-    """Event-level metrics. Definitions (state these in the thesis — TP and
-    FP count DIFFERENT units, standard for event-level evaluation):
+def compute_anomaly_metrics(coverage: list[dict], events: list[Event]) -> dict:
+    """Event-level metrics. The definitions should be stated explicitly in
+    the thesis, because TP and FP count DIFFERENT units — which is the
+    standard convention for event-level evaluation:
       TP = GT windows overlapped by >=1 detected event (counts GT windows)
       FN = GT windows with no overlapping event
-      FP = detected events overlapping NO GT window on their sensor (counts
-           detected events); several events covering one GT window all count
-           as matched, none as FP.
-      recall = TP/(TP+FN);  precision = TP/(TP+FP)  (mixed units).
-    fp_extra_windows: additional windows that suppress FP status without
-    entering recall — used by the holdout run, where the original 14 GT
-    events remain in the stream but only injected events are scored."""
+      FP = detected events that overlap NO GT window on their sensor
+           (counts detected events); several events covering one GT window
+           are all counted as matched, and none as FP.
+      recall = TP/(TP+FN);  precision = TP/(TP+FP)  (mixed units)."""
     covered = [v for v in coverage if v["status"] == "COVERED"]
     gaps    = [v for v in coverage if v["status"] == "GAP"]
 
@@ -660,7 +688,7 @@ def compute_anomaly_metrics(coverage: list[dict], events: list[Event],
         (v["sensor"], datetime.fromisoformat(v["gtStart"]),
          datetime.fromisoformat(v["gtEnd"]))
         for v in coverage
-    ] + [(g.sensor, g.start, g.end) for g in (fp_extra_windows or [])]
+    ]
 
     def _overlaps_any_gt(e: Event) -> bool:
         return any(e.sensor == s and e.start <= end and e.end >= start
@@ -689,9 +717,9 @@ def apply_strictness(coverage: list[dict],
                      min_cov_pct: float = 0.0,
                      max_latency_min: float | None = None,
                      max_latency_frac: float | None = None) -> tuple[int, list[str]]:
-    """Re-score COVERED rows under a stricter acceptance criterion.
-    Returns (tp, dropped_gtIds). Negative latency (early detection) always
-    satisfies a latency cap."""
+    """COVERED rows are re-scored under a stricter acceptance criterion,
+    and (tp, dropped_gtIds) is returned. Negative latency — detection
+    before the GT window opened — always satisfies a latency cap."""
     tp, dropped = 0, []
     for v in coverage:
         if v["status"] != "COVERED":

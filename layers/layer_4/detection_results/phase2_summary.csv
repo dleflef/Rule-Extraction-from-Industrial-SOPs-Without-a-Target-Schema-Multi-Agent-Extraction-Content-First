@@ -12,10 +12,7 @@ anomaly_recall_excl_gt0009,1.0
 anomaly_excl_gt0009_ci95_lo,0.772
 anomaly_excl_gt0009_ci95_hi,1.0
 gt0009_binary,NOT_ATTEMPTED (no fusion detector)
-anomaly_dev_total,9
-anomaly_dev_covered,8
-anomaly_test_total,5
-anomaly_test_covered,5
+dev_exposure_note,all 14 events observed during development — no held-out estimate on this set (Limitation 1)
 maintenance_total,8
 maintenance_covered,6
 phase2_total_events,22

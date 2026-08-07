@@ -1,10 +1,11 @@
 """
 step4_populate.py
 
-Populates Neo4j with ONLY the LLM-extracted rules from a Layer-2 extraction
-run.  No ground truth (kg_seed/nodes.csv, kg_seed/edges.csv, ground_truth.csv)
-is loaded here.  The resulting graph represents *only* the knowledge the
-pipeline extracted autonomously from the source documents.
+Neo4j is populated here with ONLY the LLM-extracted rules from a Layer-2
+extraction run. No ground truth (kg_seed/nodes.csv, kg_seed/edges.csv,
+ground_truth.csv) is loaded at this stage, so the resulting graph
+represents nothing but the knowledge that was extracted autonomously from
+the source documents.
 
 Graph schema (rule subgraph)
 -----------------------------
@@ -17,12 +18,13 @@ Graph schema (rule subgraph)
 (:Rule)-[:GOVERNS]->(:Sensor)       # only when rule.sensor is populated
 (:Rule)-[:APPLIES_TO]->(:Station)   # only when rule.station is populated
 
-Rules are stored regardless of class (including AccessRule) so the full
-extraction is represented in the graph.  step5_detect.py (via
-load_rules_from_neo4j in step5_core.py) skips AccessRule at query time,
-mirroring what the CSV-based loader does.
+Rules are stored regardless of class — AccessRule included — so that the
+full extraction is represented in the graph. AccessRule is skipped at
+query time by step5_detect.py (through load_rules_from_neo4j in
+step5_core.py), mirroring what the CSV-based loader does.
 
-Run BEFORE step4b_load_abox.py (either order is fine — schemas are disjoint).
+Intended to be run BEFORE step4b_load_abox.py, although either order
+works — the two schemas are disjoint.
 
 Usage
 -----
@@ -122,7 +124,7 @@ def print_summary(rules: list[dict]) -> None:
         RULE_FIELDS,
         rules,
     )
-    print(f"  Saved → step4_results/rules_all.csv ({len(rules)} rules)")
+    print(f"  Saved ,  step4_results/rules_all.csv ({len(rules)} rules)")
 
     # ── 3. Threshold / Operational rules — extracted bounds ──────────────────
     thr_rows = []
@@ -241,10 +243,13 @@ def populate(driver, rules: list[dict], clear: bool = True) -> None:
         for st in stations:
             session.run("MERGE (:Station {stationId: $sid})", sid=st)
 
-        # Sensor nodes (from rule sensor field — may have typos from LLM extraction)
+        # Sensor nodes are created from the rules' own sensor fields, so a
+        # sensor name misspelled by the LLM becomes a node here too — such
+        # nodes are later flagged as unresolved by step4b's ABox validation.
         print(f"  Creating {len(sensors)} Sensor nodes …")
         for sid in sensors:
-            # Find the most common sensorType/unit for this sensor across rules
+            # The first non-empty sensorType/unit found among this
+            # sensor's rules is taken as its node property.
             matches = [r for r in sensor_rules if r["sensor"].strip() == sid]
             stype = next((r.get("sensorType", "") for r in matches
                           if r.get("sensorType", "").strip()), "")
@@ -255,7 +260,9 @@ def populate(driver, rules: list[dict], clear: bool = True) -> None:
                 "SET s.sensorType = $st, s.unit = $u",
                 sid=sid, st=stype, u=unit)
 
-        # Station → Sensor edges (if we can infer which station owns this sensor)
+        # A HAS_SENSOR edge is created wherever a rule names both a
+        # station and a sensor, since that pairing is the only ownership
+        # evidence available in the extraction.
         print("  Creating HAS_SENSOR edges …")
         for r in sensor_rules:
             sid = r.get("sensor", "").strip()

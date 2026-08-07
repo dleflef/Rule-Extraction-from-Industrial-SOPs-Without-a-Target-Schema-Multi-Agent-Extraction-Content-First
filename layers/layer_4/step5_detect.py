@@ -1,29 +1,36 @@
 """
 step5_detect.py
 
-Phase 2 anomaly detection — main scoring run (iMAKS guide §3.1 Table 2, §3.3).
+Phase 2 anomaly detection — the main scoring run (iMAKS guide §3.1
+Table 2, §3.3).
 
-Pipeline:
-  1. Load ACTIVE extracted rules from Neo4j (GOVERNS_ABOX-validated).
-  2. Plausibility check: quarantine rules violating >50% of their sensor's
-     readings (unsupervised; persisted to violation_rates.csv).
-  3. Stream timeseries_raw.csv reading ONLY timestamp/sensor_id/value.
-     Detectors: threshold, stuck, drift, sustained.
-  4. Merge alarms → events; load GT windows (only now); score COVERED/GAP
-     per AnomalyEvent uniformly.
-  5. Maintenance node coverage (structural Neo4j check) + combined Phase 2
-     fraction — labelled as mixing detection with a structural check.
+The run proceeds in five stages:
+  1. The ACTIVE extracted rules are loaded from Neo4j (those validated by
+     step4b via GOVERNS_ABOX).
+  2. Plausibility check: rules that flag more than half of their sensor's
+     readings are quarantined as mis-extracted. The check is unsupervised
+     and its evidence is persisted to violation_rates.csv.
+  3. timeseries_raw.csv is streamed, with ONLY timestamp/sensor_id/value
+     being read. Four detectors are applied: threshold, stuck, drift,
+     sustained.
+  4. Alarms are merged into events; only now are the GT windows loaded,
+     and every AnomalyEvent is scored COVERED or GAP by the same uniform
+     overlap rule.
+  5. Maintenance node coverage is evaluated (a structural Neo4j check),
+     and the combined Phase 2 fraction is reported — explicitly labelled,
+     because it mixes detection results with a structural check.
 
 GT-0009 (CORRELATED): no multi-source fusion detector is implemented (see
-step5_core.py docstring). It is scored by the same uniform rule as every
-other event and is expected to show as GAP; the guide's separate binary
-(§3.3) is reported as NOT ATTEMPTED. The aggregate excluding it is also
-reported, since the guide keeps the binary out of the aggregate.
+the step5_core.py docstring). The event is scored by the same uniform
+rule as every other event and is expected to appear as GAP; the guide's
+separate binary (§3.3) is reported as NOT ATTEMPTED. The aggregate
+excluding it is also reported, since the guide keeps that binary out of
+the aggregate.
 
-All detector logic and metric definitions live in step5_core.py (shared with
-step5_sensitivity.py, step5_baselines.py, step5_holdout.py).
+All detector logic and metric definitions are kept in step5_core.py,
+shared with step5_sensitivity.py.
 
-Run after: step4_populate.py → step4b_load_abox.py
+Run after: step4_populate.py, step4b_load_abox.py
 
 Usage:
     python layers/layer_4/step5_detect.py
@@ -45,9 +52,10 @@ from step5_core import (
 # ── Neo4j-side steps (main run only) ──────────────────────────────────────────
 
 def evaluate_maintenance_coverage() -> list[dict]:
-    """Structural check (guide Table 2, Maintenance rows): a Maintenance node
-    is COVERED if at least one extracted MaintenanceRule governs its sensor.
-    No detection involved — do not mix with detection scores unlabelled."""
+    """The structural check behind the guide's Table 2 Maintenance rows: a
+    Maintenance node is COVERED when at least one extracted
+    MaintenanceRule governs its sensor. No detection is involved, so these
+    results must never be mixed with detection scores without a label."""
     from neo4j import GraphDatabase
     driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
     results = []
@@ -83,7 +91,9 @@ def evaluate_maintenance_coverage() -> list[dict]:
 
 
 def write_covers_to_neo4j(coverage: list[dict]) -> None:
-    """detectionStatus + COVERS edges for anomaly events."""
+    """The scoring outcome is written back to the graph: each AnomalyEvent
+    node receives its detectionStatus, and a COVERS edge is created from
+    every rule that contributed to a COVERED event."""
     from neo4j import GraphDatabase
     driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
     with driver.session(database=NEO4J_DATABASE) as session:
@@ -133,7 +143,7 @@ def main() -> None:
     print("[3/6] Streaming timeseries_raw.csv "
           "(reading ONLY timestamp/sensor_id/value) …")
     alarms, row_count = stream_and_detect(rules, quarantined)
-    print(f"  {row_count:,} readings → {len(alarms):,} alarms")
+    print(f"  {row_count:,} readings , {len(alarms):,} alarms")
 
     print("[4/6] Merging alarms into events …")
     events = merge_alarms(alarms)
@@ -144,18 +154,18 @@ def main() -> None:
     coverage   = score_coverage(events, gt_windows)
     m = compute_anomaly_metrics(coverage, events)
 
-    # The guide (§3.3) scores GT-0009 separately from the aggregate; with no
-    # fusion detector the binary is NOT ATTEMPTED, and the aggregate over
-    # the remaining events is reported alongside the full one.
+    # GT-0009 is scored separately from the aggregate by the guide (§3.3);
+    # with no fusion detector the binary is NOT ATTEMPTED, and the
+    # aggregate over the remaining events is reported alongside the full
+    # one.
     noncorr    = [v for v in coverage if v["type"] != "CORRELATED"]
     nc_tp      = sum(1 for v in noncorr if v["status"] == "COVERED")
     nc_lo, nc_hi = wilson_ci(nc_tp, len(noncorr))
 
     # The guide's nominal dev(GT-0001..09)/test(GT-0010..14) split is NOT
     # reported as separate metrics: the detector stack was designed while
-    # observing all 14 events, so no honest held-out claim is possible on
-    # this set (EVALUATION_LIMITATIONS.md Limitation 1). The generalization
-    # estimate is the injection holdout (step5_holdout.py --multiseed).
+    # all 14 events were being observed, so no honest held-out claim can
+    # be made on this set (EVALUATION_LIMITATIONS.md Limitation 1).
 
     print("      Maintenance node coverage (structural Neo4j check) …")
     maint = evaluate_maintenance_coverage()
@@ -197,7 +207,7 @@ def main() -> None:
         {"metric": "anomaly_excl_gt0009_ci95_lo",  "value": round(nc_lo, 3)},
         {"metric": "anomaly_excl_gt0009_ci95_hi",  "value": round(nc_hi, 3)},
         {"metric": "gt0009_binary",                "value": "NOT_ATTEMPTED (no fusion detector)"},
-        {"metric": "generalization_estimate",      "value": "holdout injection only — original 14 events are dev-exposed (Limitation 1)"},
+        {"metric": "dev_exposure_note",            "value": "all 14 events observed during development — no held-out estimate on this set (Limitation 1)"},
         {"metric": "maintenance_total",            "value": len(maint)},
         {"metric": "maintenance_covered",          "value": maint_tp},
         {"metric": "phase2_total_events",          "value": phase2_total},
@@ -232,7 +242,7 @@ def main() -> None:
           f"[{nc_lo:.3f}, {nc_hi:.3f}]")
     print(f"    All 14 events are dev-exposed; the guide's nominal dev/test "
           f"split is not reported (no honest held-out claim is possible on "
-          f"this set — generalization comes from step5_holdout.py --multiseed)")
+          f"this set — see EVALUATION_LIMITATIONS.md Limitation 1)")
     print(f"\n  {'GT ID':<10} {'Sensor':<28} {'Type':<14} {'Status':<9} "
           f"{'Cov%':<6} {'Lat(min)'}")
     for v in coverage:
@@ -254,7 +264,7 @@ def main() -> None:
     print(f"  Guide Table 2 compliance line only (mixes the two units): "
           f"{phase2_covered}/{phase2_total} ({phase2_frac:.1%}) "
           f"[bar ≥ {PHASE2_COVERAGE_THRESHOLD:.0%}] "
-          f"→ {'PASS' if phase2_pass else 'FAIL'}")
+          f" {'PASS' if phase2_pass else 'FAIL'}")
     print(f"\n  Results in detection_results/: phase2_anomaly_coverage.csv, "
           f"phase2_maintenance_coverage.csv,")
     print(f"  phase2_summary.csv, detected_events.csv, violation_rates.csv")
