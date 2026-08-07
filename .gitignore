@@ -10,3 +10,13 @@
 
 # regenerable from seed (recorded in holdout_summary.csv) — 9.5 MB
 layers/layer_4/detection_results/holdout/injected_timeseries.csv
+
+# LaTeX build artifacts (main.pdf is kept)
+*.aux
+*.bbl
+*.blg
+*.out
+*.toc
+main.log
+.eval_stage/
+.grid_stage/
