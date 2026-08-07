@@ -1,0 +1,115 @@
+SOP-BDG-003 Rev 2.1
+Effective: 2026-05-15
+Middleton Digester Station - GreenField Biogas Solutions, LLC
+
+1.0 PURPOSE AND SCOPE
+This procedure defines normal operating setpoints, automated control responses,
+maintenance triggers, and safety restrictions for the anaerobic digestion and
+biogas utilisation systems at the Middleton facility. All operations, control
+room, and maintenance personnel shall adhere to these limits and response
+requirements.
+
+2.0 NORMAL OPERATING SETPOINTS AND LIMITS
+Table 2-1 lists process parameter limits for major equipment. Where an automatic
+action is specified, the control system (DCS) will execute it without operator
+intervention unless noted.
+
+Table 2-1 - Process Parameter Limits
+
+Tag      | Equipment              | Parameter                    | Unit   | LL  | HL  | Action / Remarks
+DGT-101  | Primary Digester 1     | Temperature                  | C      | 35  | 42  | If temp <35C for >2 h continuously, DCS opens heating valve VLV-301.
+DGT-101  | Primary Digester 1     | pH                           | -      | 6.8 | 7.5 | If pH <6.5 at any time, DCS stops feed pump PMP-201 and raises Critical alarm "DGT-101 pH Low-Low".
+DGT-101  | Primary Digester 1     | Pressure (relative to atm)   | mbar   | -5  | +10 | If pressure >+15 mbar, vent valve VLV-803 opens for 30 s.
+DGT-102  | Secondary Digester 2   | Temperature                  | C      | 35  | 42  | Identical response: VLV-302 opens if temp <35C for >2 h.
+DGT-102  | Secondary Digester 2   | pH                           | -      | 6.8 | 7.5 | pH <6.5 stops PMP-202 and alarms Critical.
+DGT-102  | Secondary Digester 2   | Pressure                     | mbar   | -5  | +10 | Same overpressure response as DGT-101 via VLV-804.
+GSH-401  | Gas Holder             | Level                        | %      | 20  | 90  | If level >95%, DCS starts flare FLR-601 and inhibits CHP gas supply. If level <20%, CHP supply inhibited and Warning alarm active.
+GSH-401  | Gas Holder             | Pressure                     | mbar   | -   | 50  | Pressure relief valve VLV-802 set to lift at 55 mbar.
+BLR-501  | Steam Boiler           | Steam Pressure               | bar    | 8   | 12  | High-High alarm at 12.5 bar: DCS trips burner and initiates emergency shutdown (Critical).
+H2S-901  | H2S Scrubber           | Outlet H2S                   | ppm    | -   | 150 | If >150 ppm, DCS diverts biogas to flare and raises High H2S alarm.
+FLR-601  | Flare                  | Flame Temperature            | C      | 850 | -   | If <850C, DCS inhibits waste gas feed and triggers alarm.
+CHP-1001 | CHP Engine             | Jacket Water Temperature     | C      | 70  | 95  | If >98C, DCS derates engine to 50% load.
+VF-801   | Digester Hall Vent.    | Air Changes per Hour         | ACH    | 6   | -   | If airflow <6 ACH, DCS issues Warning alarm.
+
+3.0 AUTOMATED CONTROL AND ALARM RESPONSE RULES
+
+3.1 Biogas Quality Interlock
+If the methane concentration (CH4) measured by the biogas analyser GAS-701 falls
+below 50% vol for a period exceeding 30 minutes, the DCS shall stop the CHP-1001
+engine and divert all biogas to the flare FLR-601. A "Low CH4" Warning alarm is
+raised. If CH4 drops below 40% vol, the alarm escalates to Critical and the plant
+siren activates.
+
+3.2 Agitator Interlock
+The digester agitator AGT-301 shall not start unless the digester level is above
+the minimum agitator immersion level (2.0 m from tank bottom). If the level falls
+below 2.0 m, the DCS stops the agitator immediately.
+
+3.3 H2S Alarm Acknowledgment
+Whenever the High H2S alarm (H2S-901 outlet >150 ppm) is active, the control room
+operator must acknowledge it within 5 minutes. If the alarm is not acknowledged
+within 5 minutes, the DCS automatically initiates flaring and sends a plant-wide
+alert notification.
+
+3.4 Critical Alarm Acknowledgment Deadline
+All alarms designated as "Critical" in the alarm list (including DGT-101/102 pH
+Low-Low, BLR-501 High-High Steam Pressure, GSH-401 Level High-High, and CH4
+<40% vol) must be acknowledged by the control room operator within 3 minutes of
+annunciation. Failure to acknowledge escalates to the Shift Supervisor's pager
+and activates the facility siren.
+
+4.0 PREVENTIVE MAINTENANCE AND DRIFT TRIGGERS
+
+4.1 Agitator Vibration
+If the RMS vibration of AGT-301, measured by sensor VIB-301, exceeds 7.1 mm/s
+for more than 15 minutes continuously, a maintenance work order shall be
+auto-generated with priority "Urgent", to be addressed within 24 hours.
+
+4.2 Digester Temperature Probe Drift
+The temperature of DGT-101 shall be measured by two independent probes (TT-101A
+and TT-101B). If the absolute difference between the two readings exceeds 1.5C
+for more than 1 hour, both probes must be inspected and recalibrated within
+48 hours. A "Probe Drift" notification is logged.
+
+4.3 Gas Analyser Calibration Drift
+During daily auto-zero/span checks, if the GAS-701 zero drift exceeds 2% of full
+scale (full scale = 100% vol CH4) or the span drift exceeds 5% of the reading,
+the DCS shall schedule a recalibration task due within 48 hours and display an
+"Analyzer Cal Required" message.
+
+4.4 H2S Scrubber Media Replacement
+When the differential pressure across the H2S scrubber H2S-901 exceeds 25 mbar,
+the DCS shall generate a maintenance request to replace the media. The scrubber
+may remain in service, but the alert indicates imminent bypass.
+
+4.5 Boiler Service Interval
+The steam boiler BLR-501 shall undergo a comprehensive inspection every 8,000
+operating hours or 12 calendar months, whichever occurs first. The DCS shall
+issue a "Boiler Service Due" reminder 30 days before the deadline.
+
+4.6 Flare Ignition Test
+The flare ignition system shall be tested weekly (every 168 hours). The test and
+result (success/failure) must be logged in the shift log by the maintenance
+technician.
+
+5.0 ACCESS AND SAFETY RESTRICTIONS
+
+5.1 Confined Space Entry - Digester Tanks
+Entry into DGT-101 or DGT-102 is classified as confined space. A permit is
+mandatory. Before entry, the atmosphere must be tested for CH4 (<10% LEL),
+H2S (<10 ppm), and O2 (19.5-23.5%) within 15 minutes prior to entry. A
+dedicated standby attendant with continuous radio contact shall be posted. The
+entry supervisor must log the entry permit in the electronic system and obtain
+acknowledgment from the Shift Supervisor within 15 minutes of permit activation.
+If, during entry, the CH4 concentration exceeds 5% LEL, all personnel must
+evacuate immediately and the evacuation alarm sounded.
+
+5.2 Gas Holder Platform Access
+Personnel are prohibited from accessing the GSH-401 maintenance platform when the
+gas holder level exceeds 80%. A warning sign interlocked with the level
+transmitter shall illuminate at the access gate.
+
+5.3 Flare Area Exclusion
+When the flare FLR-601 is in operation (flame detected), a 15-metre radius
+exclusion zone is enforced. No personnel entry is permitted without explicit
+authorisation from the Shift Supervisor.

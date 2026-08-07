@@ -1,0 +1,5 @@
+corpus,runs,gt_rows,records_mean,records_std,f1,f1_std,f1_min,f1_max,precision,max_precision,recall
+external_test_desalination,5,26,27.2,0.4,0.82,0.045,0.778,0.868,0.802,0.956,0.839
+external_test_biogas,5,47,36.4,1.1,0.806,0.022,0.786,0.843,0.924,1.0,0.715
+dev_production_line,5,86,116.6,19.7,0.756,0.077,0.7,0.84,0.668,0.756,0.884
+external_test_cleanroom,5,37,38.0,0.0,0.747,0.0,0.747,0.747,0.737,0.974,0.757

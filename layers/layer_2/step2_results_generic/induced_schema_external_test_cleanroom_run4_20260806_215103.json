@@ -1,0 +1,48 @@
+{
+  "fields": {
+    "role": "The job title or certification level of the personnel.",
+    "equipment": "The name of the machine or station.",
+    "access_rights": "The specific permissions or restrictions granted to a role for a piece of equipment.",
+    "rule_name": "The identifier for a specific monitoring rule or alarm.",
+    "condition": "The narrative trigger or threshold that activates a rule.",
+    "response": "The required action or system behavior when a rule is triggered.",
+    "equipment_system": "The specific component or subsystem of a piece of equipment.",
+    "action": "The maintenance or calibration task to be performed.",
+    "interval": "The frequency or cycle count at which a task must be performed.",
+    "tolerance_target": "The acceptable range or target value for a measurement.",
+    "access_requirement": "General requirements for accessing the facility or equipment.",
+    "location": "The physical area or bay where the equipment is situated."
+  },
+  "field_map": {
+    "role": "role",
+    "equipment": "equipment",
+    "access_rights": "access_rights",
+    "rule_name": "rule_name",
+    "condition": "condition",
+    "response": "response",
+    "equipment_system": "equipment_system",
+    "action": "action",
+    "interval": "interval",
+    "tolerance_target": "tolerance_target",
+    "access_requirement": "access_requirement",
+    "location": "location"
+  },
+  "categories": {
+    "AccessConstraint": "Restrictions on who can access equipment.",
+    "TriggeredResponse": "Actions taken in response to a specific condition.",
+    "OperationalLimit": "Boundaries for safe or correct operation.",
+    "ScheduledTask": "Maintenance or calibration performed on a timeline.",
+    "Procedure": "General operational or safety protocols."
+  },
+  "category_map": {
+    "access constraint": "AccessConstraint",
+    "triggered response": "TriggeredResponse",
+    "operational limit": "OperationalLimit",
+    "scheduled task": "ScheduledTask",
+    "procedure": "Procedure"
+  },
+  "condition_field": "condition",
+  "action_field": "response",
+  "severity_field": "",
+  "numeric_fields": []
+}

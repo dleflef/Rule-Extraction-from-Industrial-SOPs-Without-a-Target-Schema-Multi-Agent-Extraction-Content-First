@@ -1,0 +1,145 @@
+RO-SOP-V4: Standard Operating Procedure for High-Pressure Reverse Osmosis Skids
+
+1. Purpose and Scope
+This document outlines the standard operating procedures for the primary high-
+pressure reverse osmosis (RO) membrane skids. It applies to all shifts and
+operating personnel at the Seawater Reverse Osmosis facility. The guidelines
+herein ensure maximum membrane lifespan and guarantee permeate water quality
+meets municipal standards. Management reserves the right to amend this text
+based on seasonal feedwater variations. The facility operates continuously,
+processing millions of gallons of feed water daily to supply the local
+municipality. This manual supersedes all previous versions distributed
+before the current calendar year.
+
+2. System Overview and Technical Background
+The desalination process at this facility utilizes thin-film composite
+membranes designed specifically for seawater applications. When seawater
+is pressurized against the semi-permeable membrane surface, pure water
+molecules pass through the microscopic pores while larger salt ions are
+rejected. This phenomenon, known as reverse osmosis, naturally opposes
+the osmotic pressure of the concentrated salt solution.
+
+Several physical phenomena occur during normal operation. Concentration
+polarization refers to the accumulation of rejected salts at the membrane
+boundary layer. This localized increase in salinity raises the effective
+osmotic pressure, thereby decreasing the net driving pressure available
+for permeate production. The plant employs cross-flow filtration to
+mitigate this effect, meaning that the feed water sweeps tangentially
+across the membrane surface. A portion of the feed water continuously
+washes the rejected salts out of the membrane vessel as brine or concentrate.
+
+The physical infrastructure includes high-pressure centrifugal pumps,
+energy recovery devices, chemical dosing skids, and precision instrumentation.
+Energy recovery is achieved through isobaric pressure exchangers, which
+transfer the hydraulic energy of the high-pressure brine directly to
+incoming feed water. This dramatically reduces the electrical load on
+the primary intake pumps, enhancing overall plant efficiency.
+
+Temperature fluctuations in the raw seawater significantly influence
+membrane performance. Warmer water possesses lower viscosity, increasing
+the permeate flux rate at a given pressure. Conversely, colder water
+during winter months inherently necessitates higher feed pressures to
+maintain the exact same volumetric production rate.
+
+3. General Startup Constraints
+Commencing production necessitates careful sequencing to protect the
+fragile membrane structures from mechanical shock. The sequence operates
+automatically, although operator observation of the flow meters is
+highly recommended during the initialization phases.
+
+[OP-ST-001] The high-pressure intake pump must ramp up at a maximum rate of 0.5 bar per minute to prevent membrane telescoping.
+[OP-ST-002] The anti-scalant dosing pump must be energized and verified active prior to raw water valve actuation.
+[OP-ST-003] During startup, the permeate bypass valve must remain fully open, and the brine reject flow must be logged every 10 minutes.
+[OP-SD-001] The main feed breaker must be tripped immediately if catastrophic seal failure occurs.
+[OP-ST-004] If permeate conductivity fails to drop below baseline within 20 minutes, immediately execute the shutdown sequence mandated by [OP-SD-001].
+
+4. Chemical Dosing Protocols
+Pre-treatment chemistry functions to keep scaling minerals, such as
+calcium carbonate and barium sulfate, dissolved in the concentrate stream.
+Anti-scalants disrupt crystal formation at a molecular level. Sodium
+bisulfite (SMBS) removes residual chlorine that would otherwise oxidize
+and permanently destroy the sensitive polyamide membrane layer.
+
+Operators must wear nitrile gloves and splash goggles when handling sodium bisulfite.
+The dosing skid containment bund must be pumped empty within 4 hours of any detected spill.
+All empty chemical carboys require a triple rinse with permeate water before disposal.
+
+Handling bulk chemicals involves inherent environmental and safety risks
+due to local acidity or basicity. The physical layout of the chemical
+building isolates oxidants from reducing agents to prevent any accidental
+cross-contamination. Transfer piping utilizes specialized fluoropolymers
+highly resistant to corrosive attack over decades of continuous service.
+
+5. Operational Setpoints and Thresholds
+Hydraulic parameters are continuously logged by the central SCADA system
+at one-second intervals. Variations in baseline pressure often indicate
+the initial onset of membrane fouling or inorganic scaling.
+
+[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.
+
+The differential pressure across the membrane array also provides insight
+into the physical fouling status. While individual vessels differ slightly
+in their flow characteristics, the bulk average serves as a reliable
+indicator of optimal cleaning intervals.
+
+6. Feedwater Quality Parameters
+The pretreatment system strives to deliver optimal water to the high-pressure
+skids. The table below defines the acceptable boundaries for the RO feed
+stream and dictates the necessary interventions when deviations occur.
+
+Parameter_Tag | Measurement | Metric_Unit | Min_Bound | Max_Bound | Required_Correction | Time_Allowance
+FQ-01 | Turbidity | NTU | 0.0 | 0.5 | Backwash multimedia filters | 30 mins
+FQ-02 | ORP | mV | -200 | 300 | Increase SMBS dosing | 15 mins
+FQ-03 | Temperature | degC | 15.0 | 35.0 | Adjust VFD speed | 60 mins
+FQ-04 | pH | pH_unit | 6.5 | 7.5 | Inject Sulfuric Acid | 10 mins
+
+7. Personnel Access and Approvals
+Safety protocols map human presence in the high-pressure zone to
+specific operational states. High-pressure piping poses significant
+kinetic energy hazards in the highly unlikely event of a mechanical rupture.
+Authorization requirements for the high-pressure skid zone vary by
+operational phase and staff role.
+
+Role | Standby | Startup | Normal_Production | CIP_Cleaning
+Plant_Operator | Full access | Full access | Full access | Visual inspection only
+Maintenance_Tech | Maintenance access | No access | Visual inspection only | Full access
+Safety_Auditor | Visual inspection only | Visual inspection only | Visual inspection only | Visual inspection only
+
+The internal zoning system maps directly to proximity sensors on the main
+access gates. Electronic badge sweeps record entry and exit times for
+compliance auditing by the safety management team.
+
+8. Environmental Considerations
+Brine discharge represents the primary environmental interaction for
+the desalination facility. The concentrated reject stream contains
+approximately twice the salinity of the raw intake water. Specialized
+diffusers located offshore ensure rapid mixing with the surrounding
+currents, minimizing any localized osmotic impact on marine life.
+The discharge plume is modeled continuously based on tidal patterns
+and seasonal oceanographic variations.
+
+9. Maintenance Philosophy
+Predictive maintenance practices form the core of the asset management
+strategy. Vibration analysis on rotating equipment, thermography of
+electrical switchgear, and acoustic monitoring of check valves provide
+early warning signs of component degradation. By relying on condition-
+based interventions rather than strictly calendar-based overhauls,
+the facility maximizes uptime and minimizes unnecessary replacement
+of healthy mechanical seals and bearings.
+
+10. Data Logging and Archival
+All process variable trends, alarm histories, and operator actions are
+historized in a redundant server cluster located in the central control
+room. This data repository supports long-term performance normalization,
+allowing process engineers to track membrane permeability and salt rejection
+decline over the typical five-to-seven-year membrane lifespan. Furthermore,
+regulatory compliance necessitates the retention of all water quality data
+for a period spanning ten years. The archiving software utilizes a lossless
+compression algorithm to store the high-frequency telemetry efficiently.
+
+11. Operational Troubleshooting and Diagnostics
+When permeability declines unexpectedly, process engineers conduct
+membrane autopsies on sacrificial elements. Destructive testing reveals
+whether the foulant is primarily biological slime, organic colloids, or
+inorganic scale. This structural analysis feeds directly back into the
+design of the pretreatment chemicals, optimizing the coagulant blend.

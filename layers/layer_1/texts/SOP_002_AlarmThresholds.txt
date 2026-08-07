@@ -48,15 +48,15 @@ Threshold hierarchy: CRIT_LO < WARN_LO < NOMINAL < WARN_HI < CRIT_HI.
 ## WRH01_WAREHOUSE Thresholds
 
 | Sensor | Unit | CRIT_ LO | WARN _LO | Nominal | WARN _HI | CRIT_ HI | CRITICAL Response |
-| ---------- | -------- | ------------ | ------------ | ------------ | ------------ | ------------ | ------------------------------------------ |
-| TMP | °C | -1 | 0.5 | 4.0 ± 0.5 | 8 | 12 | Activate backup refrigeration; notify QC |
+| ---------- | -------- | ------------ | ------------ | ------------ | ------------ | ------------ | --------------------------------------- |
+| TMP | °C | -1 | 0.5 | 4.0 ± 0.5 | 8 | 12 | Activate backup refrigeration; notify |
 | HUM | %RH | 55 | 60 | 75.0 ± 1.5 | 85 | 90 | Inspect and notify maintenance |
 
 ## CHM01_CHEMICALSTORAGE Thresholds
 
 | Sensor | Unit | CRIT_ LO | WARN _LO | Nominal | WARN _HI | CRIT_ HI | CRITICAL Response |
 | ---------- | -------- | ------------ | ------------ | ------------ | ------------ | ------------ | ------------------------------------------------------------------- |
-| TMP | °C | 5 | 10 | 15.0 ± 0.3 | 20 | 25 | Activatemergency ventilation; notify safety officer immediately |
+| TMP | °C | 5 | 10 | 15.0 ± 0.3 | 20 | 25 | Activate emergency ventilation; notify safety officer immediately |
 | HUM | %RH | 15 | 20 | 35.0 ± 1.0 | 50 | 60 | Activate desiccant system; inspect storage containers for leaks |
 
 ## RND01_RDLAB Thresholds

@@ -1,0 +1,46 @@
+{
+  "fields": {
+    "role": "The job title or certification level of the personnel.",
+    "equipment": "The name or identifier of the industrial equipment.",
+    "access_rights": "The specific permissions or restrictions granted for equipment access.",
+    "rule_name": "The name of the specific operational rule or alarm trigger.",
+    "condition": "The narrative trigger or set of circumstances when a rule applies.",
+    "response": "The required action or system behavior triggered by a condition.",
+    "equipment_system": "The specific component or subsystem of the equipment.",
+    "action": "The maintenance or operational task to be performed.",
+    "interval": "The frequency or cycle count at which a task must be performed.",
+    "tolerance_target": "The acceptable range or target value for a measurement.",
+    "access_requirement": "General requirements or protocols for accessing the area or equipment."
+  },
+  "field_map": {
+    "role": "role",
+    "equipment": "equipment",
+    "access_rights": "access_rights",
+    "rule_name": "rule_name",
+    "condition": "condition",
+    "response": "response",
+    "equipment_system": "equipment_system",
+    "action": "action",
+    "interval": "interval",
+    "tolerance_target": "tolerance_target",
+    "access_requirement": "access_requirement"
+  },
+  "categories": {
+    "AccessConstraint": "Restrictions or requirements regarding equipment access.",
+    "TriggeredResponse": "Actions taken in response to a specific system condition.",
+    "OperationalLimit": "Defined boundaries for system performance or stability.",
+    "ScheduledTask": "Maintenance or calibration tasks performed on a regular interval.",
+    "Procedure": "General operational or administrative procedures."
+  },
+  "category_map": {
+    "access constraint": "AccessConstraint",
+    "triggered response": "TriggeredResponse",
+    "operational limit": "OperationalLimit",
+    "scheduled task": "ScheduledTask",
+    "procedure": "Procedure"
+  },
+  "condition_field": "condition",
+  "action_field": "response",
+  "severity_field": "",
+  "numeric_fields": []
+}

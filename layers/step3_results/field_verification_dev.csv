@@ -1,0 +1,7 @@
+run,prediction_file,gt_threshold_sensors,sensors_recovered,bound_cells,cells_matching_gt,cells_mismatching_gt
+1,ext_multi_agent_generic_dev_production_line_run1_20260806_214547.csv,22,22,88,84,4
+2,ext_multi_agent_generic_dev_production_line_run2_20260806_214630.csv,22,22,88,84,4
+3,ext_multi_agent_generic_dev_production_line_run3_20260806_214724.csv,22,22,88,84,4
+4,ext_multi_agent_generic_dev_production_line_run4_20260806_214816.csv,22,22,88,84,4
+5,ext_multi_agent_generic_dev_production_line_run5_20260806_214854.csv,22,22,88,84,4
+TOTAL,5 runs,22,22,440,420,20

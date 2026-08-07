@@ -1,0 +1,48 @@
+id,category,asset,tag,parameter,condition,action,severity,bound_low,bound_high,unit,source
+R01,NormalOperatingLimit,DGT-101,,Temperature,shall be within bounds,,,35,42,C,SOP-BDG-003
+R02,AlarmControlResponse,DGT-101,,Temperature,<35 C continuously for >2 h,DCS opens heating valve VLV-301,Warning,35,,C,SOP-BDG-003
+R03,NormalOperatingLimit,DGT-101,,pH,shall be within bounds,,,6.8,7.5,pH,SOP-BDG-003
+R04,AlarmControlResponse,DGT-101,,pH,<6.5 at any time,"DCS stops feed pump PMP-201, raises Critical alarm DGT-101 pH Low-Low",Critical,6.5,,pH,SOP-BDG-003
+R05,NormalOperatingLimit,DGT-101,,Pressure,shall be within bounds,,,-5,10,mbar,SOP-BDG-003
+R06,AlarmControlResponse,DGT-101,,Pressure,>+15 mbar,DCS opens vent valve VLV-803 for 30 s,,,15,mbar,SOP-BDG-003
+R07,NormalOperatingLimit,DGT-102,,Temperature,shall be within bounds,,,35,42,C,SOP-BDG-003
+R08,AlarmControlResponse,DGT-102,,Temperature,<35 C continuously for >2 h,DCS opens heating valve VLV-302,Warning,35,,C,SOP-BDG-003
+R09,NormalOperatingLimit,DGT-102,,pH,shall be within bounds,,,6.8,7.5,pH,SOP-BDG-003
+R10,AlarmControlResponse,DGT-102,,pH,<6.5 at any time,"DCS stops feed pump PMP-202, raises Critical alarm",Critical,6.5,,pH,SOP-BDG-003
+R11,NormalOperatingLimit,DGT-102,,Pressure,shall be within bounds,,,-5,10,mbar,SOP-BDG-003
+R12,AlarmControlResponse,DGT-102,,Pressure,>+15 mbar,DCS opens vent valve VLV-804 for 30 s,,,15,mbar,SOP-BDG-003
+R13,NormalOperatingLimit,GSH-401,,Level,shall be within bounds,,,20,90,%,SOP-BDG-003
+R14,AlarmControlResponse,GSH-401,,Level,>95%,DCS starts flare FLR-601 and inhibits CHP gas supply,Critical,,95,%,SOP-BDG-003
+R15,AlarmControlResponse,GSH-401,,Level,<20%,"DCS inhibits CHP gas supply, Warning alarm active",Warning,20,,%,SOP-BDG-003
+R16,NormalOperatingLimit,GSH-401,,Pressure,shall not exceed maximum,,,,50,mbar,SOP-BDG-003
+R17,SafetyDeviceSetpoint,GSH-401,VLV-802,Pressure,reaches 55 mbar,Pressure relief valve VLV-802 opens,,,55,mbar,SOP-BDG-003
+R18,NormalOperatingLimit,BLR-501,,Steam Pressure,shall be within bounds,,,8,12,bar,SOP-BDG-003
+R19,AlarmControlResponse,BLR-501,,Steam Pressure,>=12.5 bar,DCS trips burner and initiates emergency shutdown,Critical,,12.5,bar,SOP-BDG-003
+R20,NormalOperatingLimit,H2S-901,,Outlet H2S,shall not exceed maximum,,,,150,ppm,SOP-BDG-003
+R21,AlarmControlResponse,H2S-901,,Outlet H2S,>150 ppm,"DCS diverts biogas to flare FLR-601, raises High H2S alarm",High,,150,ppm,SOP-BDG-003
+R22,NormalOperatingLimit,FLR-601,,Flame Temperature,shall be at or above minimum,,,850,,C,SOP-BDG-003
+R23,AlarmControlResponse,FLR-601,,Flame Temperature,<850 C,"DCS inhibits waste gas feed, triggers alarm",,850,,C,SOP-BDG-003
+R24,NormalOperatingLimit,CHP-1001,,Jacket Water Temperature,shall be within bounds,,,70,95,C,SOP-BDG-003
+R25,AlarmControlResponse,CHP-1001,,Jacket Water Temperature,>98 C,DCS derates engine to 50% load,,,98,C,SOP-BDG-003
+R26,NormalOperatingLimit,VF-801,,Air Changes per Hour,shall be at or above minimum,,,6,,ACH,SOP-BDG-003
+R27,AlarmControlResponse,VF-801,,Air Changes per Hour,<6 ACH,DCS issues Warning alarm,Warning,6,,ACH,SOP-BDG-003
+R28,AlarmControlResponse,Biogas system,GAS-701,CH4 concentration,<50% vol continuously for >30 minutes,"DCS stops CHP-1001, diverts biogas to flare FLR-601, raises Low CH4 Warning alarm",Warning,50,,% vol,SOP-BDG-003
+R29,AlarmControlResponse,Biogas system,GAS-701,CH4 concentration,<40% vol,"Alarm escalates to Critical, plant siren activates",Critical,40,,% vol,SOP-BDG-003
+R30,StartStopInterlock,Digester Agitator,AGT-301,Digester level,start attempted while level at or below 2.0 m,start inhibited,,2.0,,m,SOP-BDG-003
+R31,StartStopInterlock,Digester Agitator,AGT-301,Digester level,level falls below 2.0 m,DCS stops agitator immediately,,2.0,,m,SOP-BDG-003
+R32,AcknowledgmentDeadline,H2S Scrubber,H2S-901,High H2S alarm state,active and not acknowledged within 5 minutes,"DCS automatically initiates flaring, sends plant-wide alert notification",,,5,min,SOP-BDG-003
+R33,AcknowledgmentDeadline,Control room,,Critical alarm state,any Critical alarm not acknowledged within 3 minutes of annunciation,"escalation to Shift Supervisor pager, facility siren activated",Critical,,3,min,SOP-BDG-003
+R34,MaintenanceTrigger,Digester Agitator,VIB-301,RMS vibration,>7.1 mm/s continuously for >15 minutes,"auto-generate Urgent maintenance work order, address within 24 hours",Urgent,,7.1,mm/s,SOP-BDG-003
+R35,MaintenanceTrigger,Primary Digester 1,TT-101A/B,Temperature difference,absolute difference >1.5 C for >1 hour,inspect and recalibrate both probes within 48 hours; log Probe Drift notification,,,1.5,C,SOP-BDG-003
+R36,MaintenanceTrigger,Biogas analyser,GAS-701,Zero/span drift,zero drift >2% of full scale or span drift >5% of reading,"DCS schedules recalibration within 48 hours, displays Analyzer Cal Required",,,2,% FS,SOP-BDG-003
+R37,MaintenanceTrigger,H2S Scrubber,H2S-901,Differential pressure,>25 mbar,DCS generates maintenance request to replace scrubber media,,,25,mbar,SOP-BDG-003
+R38,ScheduledTask,Steam Boiler,BLR-501,Operating hours / calendar time,"8000 operating hours elapsed or 12 calendar months reached, whichever first",comprehensive inspection must be performed,,,8000,hours,SOP-BDG-003
+R39,ScheduledTask,Steam Boiler,BLR-501,Time to service deadline,30 days before the inspection deadline,DCS issues Boiler Service Due reminder,,,30,days,SOP-BDG-003
+R40,ScheduledTask,Flare,FLR-601,Time elapsed,every 168 hours,flare ignition test conducted; result logged in shift log,,,168,hours,SOP-BDG-003
+R41,ConfinedSpaceProcedure,Digester tanks,,Entry permit,entry required,permit mandatory,,,,,SOP-BDG-003
+R42,ConfinedSpaceProcedure,Digester tanks,,Pre-entry atmosphere,"within 15 min prior to entry: CH4<10% LEL, H2S<10 ppm, O2 19.5-23.5%",entry allowed only if all conditions met,,,10,% LEL,SOP-BDG-003
+R43,ConfinedSpaceProcedure,Digester tanks,,Standby attendant,entry in progress,dedicated standby attendant with continuous radio contact must be posted,,,,,SOP-BDG-003
+R44,AcknowledgmentDeadline,Digester tank entry,,Entry permit activation,not acknowledged by Shift Supervisor within 15 minutes of activation,obtain acknowledgment,,,15,min,SOP-BDG-003
+R45,ConfinedSpaceProcedure,Digester tanks,,CH4 concentration during entry,exceeds 5% LEL at any time during entry,"all personnel evacuate immediately, evacuation alarm sounded",Critical,,5,% LEL,SOP-BDG-003
+R46,AccessRestriction,Gas Holder platform,GSH-401,Gas holder level,>80%,personnel prohibited from accessing maintenance platform; interlocked warning sign illuminates,,,80,%,SOP-BDG-003
+R47,AccessRestriction,Flare area,FLR-601,Flare operation status,flare in operation (flame detected),15-metre radius exclusion zone enforced; no entry without explicit Shift Supervisor authorisation,,,15,m,SOP-BDG-003

@@ -1,0 +1,5 @@
+corpus,runs,f1_reported,f1_reported_sd,f1_null_wrong_gt,f1_null_max,f1_numbers_corrupted,drop_numbers_corrupted,f1_payloads_permuted,drop_payloads_permuted,f1_labels_permuted,drop_labels_permuted,f1_tokens_in_order,drop_tokens_in_order,f1_word_salad,drop_word_salad
+dev_production_line,5,0.756,0.076,0.019,0.056,0.331,0.426,0.772,-0.016,0.765,-0.009,0.72,0.036,0.732,0.024
+external_test_biogas,5,0.806,0.022,0.091,0.213,0.648,0.158,0.815,-0.01,0.796,0.01,0.806,0.0,0.811,-0.005
+external_test_cleanroom,5,0.747,0.0,0.113,0.274,0.347,0.4,0.747,0.0,0.709,0.037,0.693,0.053,0.677,0.069
+external_test_desalination,5,0.82,0.044,0.023,0.081,0.602,0.218,0.82,0.0,0.82,0.0,0.82,0.0,0.82,0.0
