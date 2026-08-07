@@ -1,6 +1,0 @@
-config,notes,anomaly_events_total,anomaly_tp,anomaly_fn_gap,anomaly_fp,anomaly_recall,anomaly_recall_ci95_lo,anomaly_recall_ci95_hi,anomaly_precision,anomaly_f1,total_events_detected
-extracted-rules,LLM-extracted rules; the actual pipeline result,14,13,1,2,0.929,0.685,0.987,0.867,0.897,15
-oracle-thresholds,perfect threshold extraction; no maintenance rules (cannot catch in-range anomalies by construction),14,12,2,0,0.857,0.601,0.96,1.0,0.923,12
-zscore-z2.5,no rules / no KG / no LLM,14,13,1,1862,0.929,0.685,0.987,0.007,0.014,1883
-zscore-z3,no rules / no KG / no LLM,14,12,2,689,0.857,0.601,0.96,0.017,0.034,701
-zscore-z3.5,no rules / no KG / no LLM,14,11,3,172,0.786,0.524,0.924,0.06,0.112,183
