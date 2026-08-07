@@ -1799,11 +1799,18 @@ Two properties of the scout prompt carry the schema-agnosticism:
 \end{itemize}
 
 The prompt ends with a chain-of-thought instruction: reason through the chunk,
-then emit JSON. This is the \texttt{cot\_basic} paradigm, selected by the grid of
-Section~\ref{sec:grid_search} over nine alternatives, and selected on stability
-rather than on mean: the leading paradigms are statistically tied, and
-\texttt{cot\_basic} achieves its result in a single turn where the alternatives
-of comparable mean take three.
+then emit JSON. This is the \texttt{cot\_basic} paradigm, and its selection from
+the grid of Section~\ref{sec:grid_search} is constrained before it is empirical.
+Only three grid paradigms outscore it, and two of them cannot be carried into a
+schema-agnostic scout at all: \texttt{reflexion\_guided}'s final turn is a
+corpus-specific checklist, and \texttt{reflexion} inherits mandatory
+sensor-naming constraints from its \texttt{graph\_informed} base, so in both
+cases the margin is bought with exactly the corpus knowledge this pipeline is
+defined not to have. The third, \texttt{pre\_act}, does transfer and is
+statistically tied with \texttt{cot\_basic} ($0.894 \pm 0.009$ against
+$0.892 \pm 0.005$); \texttt{cot\_basic} is preferred for its lower run-to-run
+variance, and because \texttt{pre\_act}'s preliminary survey of document
+structure has little to survey on the single chunk a scout reads.
 
 \subsection{Stage 3: Schema Induction}
 \label{sec:stage_induce}
