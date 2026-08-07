@@ -144,6 +144,10 @@ os.makedirs(RESULTS_DIR, exist_ok=True)
 DEFAULT_CACHE_PATH = os.path.join(RESULTS_DIR, "llm_response_cache.json")
 _CACHE: LLMResponseCache | None = None
 
+# Models whose endpoint rejects a system-role message; their system prompt is
+# merged into the user turn instead. Empty for the models used here -- the set
+# and its merge path are kept so a model with that restriction can be slotted
+# in without code changes.
 NO_SYSTEM_ROLE: set[str] = set()
 
 # Model assignment. Both models are ones the layer-2 grid actually scored --
@@ -184,10 +188,10 @@ _INTERNAL_KEYS = {"id", "category", "lines", "source_file", "chunk_id", "_key"}
 class CorpusSchema:
     """Produced by the induce stage for ONE corpus. Nothing about field names or
     categories is fixed in code -- this carries whatever the arbiter decided the
-    corpus needs, plus three role pointers (condition_field / action_field /
-    severity_field) so downstream deterministic code can find "the narrative
-    trigger" and "the narrative response" without knowing what this corpus
-    happens to call them."""
+    corpus needs. The three role pointers (condition_field / action_field /
+    severity_field) are induced and serialised for downstream consumers of the
+    saved schema; nothing in this pipeline reads them (numeric_fields is the
+    only role pointer assembly consumes)."""
     fields:          dict[str, str] = field(default_factory=dict)
     field_map:       dict[str, str] = field(default_factory=dict)
     categories:      dict[str, str] = field(default_factory=dict)
@@ -1302,8 +1306,7 @@ def induce_node(state: PipelineState) -> dict:
     if dropped:
         print(f"[Clean] dropped {dropped} document-identity field value(s)")
 
-    return {"schema": induce_schema(scouted, state["inducer_model"],
-                                    )}
+    return {"schema": induce_schema(scouted, state["inducer_model"])}
 
 
 def assemble_node(state: PipelineState) -> dict:

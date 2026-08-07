@@ -34,7 +34,7 @@ STAGE="$ROOT/.eval_stage"
 # ground truths populate their id column on every row and detect correctly.
 # The first entry is the DEVELOPMENT corpus: the four Production Line A SOPs the
 # pipeline was built and debugged against. Its directory is still called "texts"
-# because layer 1, run_pipeline.py and the grid all write to or read from that
+# because layer 1 and the grid both write to or read from that
 # path by name; the label is set with --corpus-name instead, so results tables
 # say what the corpus is and what role it played rather than "texts".
 CORPORA=(
