@@ -1245,10 +1245,14 @@ Section~\ref{sec:worked_example} and is declared rather than silently corrected:
 a hyphen inside an asset tag reads as a minus sign, so \texttt{DGT-101}
 contributes $-101$. Such values are about $15\%$ of all numbers extracted from
 these ground truths. They are counted, because a shared asset tag is genuine
-evidence that two rows concern the same equipment, and because excluding them
-changes reported figures; the choice is exposed as a parameter
-(Table~\ref{tab:free_params}) so that it is auditable rather than buried in a
-regular expression.
+evidence that two rows concern the same equipment; the choice is exposed as a
+parameter (Table~\ref{tab:free_params}) so that it is auditable rather than
+buried in a regular expression. Rescoring every corpus with these values
+excluded measures what the choice costs: the development corpus and biogas do
+not move at all, while cleanroom rises from $0.747$ to $0.987$ and desalination
+from $0.820$ to $0.925$. The default is therefore the \emph{conservative}
+setting: where it matters, it lowers the reported figures rather than raising
+them, for a reason traced in Section~\ref{sec:lim_threshold}.
 
 When a ground-truth row contains no numbers at all
 the numeric term is undefined rather than zero, and the agreement is the semantic
@@ -1461,6 +1465,16 @@ number. Cleanroom moves $0.213$ in F1 across one $0.05$ step near the operating
 point, whereas the other three move between $0.000$ and $0.052$. Relatedly, the ranking of corpora by
 $F1_{\text{content}}$ is not stable across the sweep, so no claim that one corpus
 is intrinsically harder than another is supported by these results.
+
+The semantic weight is swept by the same discipline. Holding $\tau = 0.6$ and
+varying $w_{\text{sem}}$ from $0.4$ to $0.8$, biogas and desalination are flat
+through $w_{\text{sem}} = 0.4$--$0.7$; the development corpus reports
+\emph{higher} with more numeric weight ($0.816$ at $w_{\text{sem}} = 0.4$) and
+cleanroom reports higher with more semantic weight ($0.987$ at
+$w_{\text{sem}} = 0.7$, for the reason identified in
+Section~\ref{sec:lim_threshold}). The two sensitive corpora pull in opposite
+directions, so no single weighting flatters all four, and the default of
+$0.6/0.4$ is a peak on none of them.
 
 \subsection{Reviewability: The Per-Record Audit Trail}
 \label{sec:audit_trail}
@@ -2009,7 +2023,9 @@ with no corpus spared) exceeds some of the within-batch standard deviations,
 which is an argument for reading every figure in Table~\ref{tab:main_results}
 as a draw from a wider distribution than five repeats reveal, and it is why two
 configurations whose intervals overlap are treated as tied throughout this
-thesis.
+thesis. Separately from its variance, cleanroom's absolute level is depressed
+by an identified annotation-encoding artefact, analysed in
+Section~\ref{sec:lim_threshold}.
 
 \subsection{Field-Level Verification Against the Source Documents}
 \label{sec:field_verification}
@@ -2073,6 +2089,34 @@ non-empty value among candidate columns \emph{per row}, not choose one column pe
 file. This is the naming drift discussed in Section~\ref{sec:stage_induce},
 appearing exactly where the source document does not print an explicit header for
 the concept.
+
+\subsubsection{A Weaker Binding Check That Does Reach the External Corpora}
+\label{sec:binding_check}
+The verification above requires a column-name correspondence and therefore stops
+at the development corpus. A weaker form of the same question can be asked of
+every corpus without constructing any correspondence, using only two things
+neither side must be told: which of the ground truth's \emph{own} columns holds
+each role (its low bound is whatever its low-bound column contains), and the
+internal structure of the predicted record. For every pair the assignment
+accepted, each populated ground-truth role value is located inside the paired
+record: in exactly one scalar field, inside a free-text field, in several
+fields, or nowhere. If the extractor binds values to slots, the same discovered
+field should receive a given role in every pair, corpus-wide.
+
+It does. On biogas, the ground truth's low bound lands in the record field the
+document calls \texttt{ll} in $30$ of $30$ slot-bound cases and the high bound
+in \texttt{hl} in $15$ of $15$; on desalination the min and max bounds land in
+one consistent field in $20$ of $20$ cases each; on the development corpus the
+modal consistency per threshold role is $0.95$--$1.00$. Cleanroom's records are
+textual (matrix cells carry sentences, not scalar fields), so slot binding does
+not apply there; instead the ground-truth value appears within the text of the
+\emph{matched} record in $80$ of $85$ checks, which is binding at record rather
+than slot granularity. Across the three external corpora, $94$--$100\%$ of
+ground-truth role values are present in the record the metric paired them with.
+The check is deliberately weaker than the development-corpus verification (a
+consistent receiving field is not proof the field is semantically the right
+one), but it closes most of the gap between a corpus where field placement is
+verified and three where it previously was not examined at all.
 
 \subsection{The Cost of Requiring No Schema}
 \label{sec:results_grid}
@@ -2186,7 +2230,20 @@ nonsensical arrangement is scored almost as highly as a coherent one. And
 category-label correctness is essentially unpriced, which is consistent with
 the design argument that category exact-match is unwinnable across vocabularies,
 but means the pipeline's category discovery is not evaluated by the headline
-figure at all.
+figure at all. What the metric leaves unchecked about binding is examined by
+separate means: directly against the ground truth's fields on the development
+corpus (Section~\ref{sec:field_verification}) and by the slot-consistency check
+on all four corpora (Section~\ref{sec:binding_check}).
+
+A further, related gap is that the acceptance boundary itself is not calibrated
+against human judgment: no study here measures whether $\tau = 0.6$ separates
+pairs a person would call the same rule from pairs they would not. The
+perturbation results show the metric responds to damage, which is a different
+property. The audit trail was built so that this check is executable rather
+than hypothetical (a stratified, blinded sample of assigned pairs, with both
+blobs and no scores, is included in the accompanying repository as an
+annotation instrument), but no human labels have been collected, and the
+threshold's agreement with human judgment remains unmeasured.
 
 \subsection{The Metric Has a Non-Zero Floor}
 \label{sec:lim_floor}
@@ -2199,7 +2256,8 @@ $0.27$ for a large ground truth rather than against $0$, and a system scoring
 below that floor would not be distinguishable from one extracting the wrong
 document entirely.
 
-\subsection{One Corpus Is Threshold-Unstable}
+\subsection{One Corpus Is Threshold-Unstable, and the Instability Has an
+Identified Cause}
 \label{sec:lim_threshold}
 The acceptance threshold $\tau = 0.6$ is a strict local maximum on none of the
 four corpora (the curve declines through it on two and is flat through it on
@@ -2210,6 +2268,30 @@ reported figure is therefore contingent on the threshold in a way the others are
 not, and should be quoted with its curve. Relatedly, the ranking of corpora by
 $F1_{\text{content}}$ is not stable across the threshold sweep, so no claim that
 one corpus is intrinsically harder than another is supported.
+
+The instability is traceable to specific pairs and, through them, to a specific
+cause. In every cleanroom run the same nine assigned pairs are rejected, at
+combined scores of $0.549$--$0.590$ and semantic cosines up to $0.858$: pairs
+whose text agrees and whose numeric term fails. The numeric failure is a
+character-encoding asymmetry, not a wrong value. The cleanroom document prints
+the hyphen inside its equipment tags (\texttt{AOI-04}, \texttt{EM-05}) as a
+non-breaking hyphen (Unicode U+2011), which the records copy verbatim and which
+the number extractor does not read as a minus sign; the ground truth types an
+ASCII hyphen, which it does. The same tag therefore contributes $+4$ on one side
+and $-4$ on the other, and values of opposite sign score zero
+(Equation~\ref{eq:numoverlap}). Rescoring with
+tag-derived numbers excluded (the declared toggle of
+Table~\ref{tab:free_params}) removes the asymmetry, and cleanroom scores
+$0.987 \pm 0.000$ at recall $1.000$, exactly at its precision ceiling; the same
+rescoring raises desalination from $0.820$ to $0.925$, where the analogous
+mismatch is that the ground truth's text repeats the printed rule codes and the
+records' content fields do not. The reported figures nonetheless remain those of
+the default configuration, because switching a declared parameter after
+observing that the alternative scores higher is precisely the adaptive choice
+this evaluation is designed to exclude. The consequence for reading
+Table~\ref{tab:main_results} is that cleanroom's $0.747$, and to a lesser degree
+desalination's $0.820$, are lower bounds depressed by an annotation-encoding
+artefact rather than by extraction error.
 
 \subsection{Ground-Truth Incompleteness}
 \label{sec:lim_gt}

@@ -73,6 +73,13 @@ python3 layers/layer_3/step3_field_verification.py
 # Aggregate audit-trail statistics (thesis §Reviewability):
 python3 layers/layer_3/step3_audit_stats.py
 
+# Slot-binding check on all four corpora, no field mapping (thesis §Binding Check):
+python3 layers/layer_3/step3_binding_check.py
+
+# Human-calibration instrument: blinded 60-pair annotation sheet + kappa scorer:
+python3 layers/layer_3/step3_calibration_sample.py sample
+python3 layers/layer_3/step3_calibration_sample.py score <filled_sheet.csv>
+
 # Re-score the grid-search predictions with the current metric:
 zsh layers/evaluate_grid.sh
 
@@ -96,6 +103,8 @@ Every free parameter of the metric is a CLI flag.
 | Field-level verification (420/440 bound cells) | `layers/step3_results/field_verification_dev.csv` (+ `_mismatches.csv`) |
 | Audit-trail aggregate stats (927 pairs, 73%/27%/18%) | `layers/step3_results/audit_trail_stats.csv` |
 | Earlier run batch cited in §Results (variance discussion) | `logs/final_run.log` |
+| Robustness: tag-number toggle, weight sweep, binding check | `layers/step3_results/robustness/` |
+| Calibration instrument (blinded sheet + key) | `layers/step3_results/calibration/` |
 | Raw pipeline predictions | `layers/layer_2/step2_results_generic/` |
 | Raw grid predictions (100 runs) | `layers/layer_2/step2_results/` |
 

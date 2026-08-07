@@ -130,9 +130,12 @@ class EvalConfig:
     # Number extraction. A hyphen inside an asset tag reads as a minus sign, so
     # "GSH-401" yields -401 on both sides of the comparison; such values are 15%
     # of all numbers extracted from these ground truths. Counting them is the
-    # default because they are genuine asset-identity evidence and dropping them
-    # CHANGES reported figures (one corpus moves +0.08). Declared here so the
-    # choice is visible and reversible rather than buried in a regex.
+    # default because they are genuine asset-identity evidence, and it is the
+    # CONSERVATIVE setting: dropping them raises cleanroom +0.240 and
+    # desalination +0.105 F1 (dev and biogas unchanged), because those two
+    # ground truths encode tag hyphens differently from the documents
+    # (ASCII "-" vs U+2011). Declared here so the choice is visible and
+    # reversible rather than buried in a regex.
     drop_tag_derived_numbers: bool = False
     # Embedding backend. all-MiniLM-L6-v2 is English-only, which matches this
     # project's stated scope (all evaluated documents are English). Exposed so
