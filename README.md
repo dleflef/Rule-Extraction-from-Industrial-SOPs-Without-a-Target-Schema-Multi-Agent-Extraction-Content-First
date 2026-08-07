@@ -119,10 +119,10 @@ pdflatex main.tex && bibtex main && pdflatex main.tex && pdflatex main.tex
 `layers/layer_4/` contains downstream tooling (Neo4j knowledge-graph population
 and sensor-stream anomaly detection over extracted rules). It is not integrated
 with the pipeline evaluated in the thesis and none of its output is reported
-there; the thesis's §Limitations states this explicitly. Earlier project
-iterations (a coursework-era `Preliminary/` directory and a retired
-`run_pipeline.py` orchestrator) were removed from the working tree and remain
-available in git history.
+there; the thesis's §Limitations states this explicitly. `Preliminary/` holds
+early exploratory notebooks predating the thesis pipeline and is not an entry
+point for anything the thesis reports. A retired `run_pipeline.py` orchestrator
+was removed from the working tree and remains in git history.
 
 `layers/state/grid_search_metadata.csv` additionally records an exploratory
 application of the unmodified (dev-schema) grid prompts to the desalination

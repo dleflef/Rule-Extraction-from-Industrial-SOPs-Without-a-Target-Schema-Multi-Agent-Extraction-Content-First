@@ -1,0 +1,74 @@
+[
+    {
+        "agent_name": "Data Ingestion Agent",
+        "execution_time_seconds": 0.0318,
+        "input_tokens": 32,
+        "output_tokens": 65,
+        "total_tokens": 97,
+        "input_size_bytes": 117,
+        "output_size_bytes": 244
+    },
+    {
+        "agent_name": "IoT Payload Agent",
+        "execution_time_seconds": 0.0214,
+        "input_tokens": 92,
+        "output_tokens": 87,
+        "total_tokens": 179,
+        "input_size_bytes": 343,
+        "output_size_bytes": 263
+    },
+    {
+        "agent_name": "PLC Log Agent",
+        "execution_time_seconds": 0.0214,
+        "input_tokens": 92,
+        "output_tokens": 3354,
+        "total_tokens": 3446,
+        "input_size_bytes": 343,
+        "output_size_bytes": 10699
+    },
+    {
+        "agent_name": "OCR Document Agent",
+        "execution_time_seconds": 0.2087,
+        "input_tokens": 92,
+        "output_tokens": 161,
+        "total_tokens": 253,
+        "input_size_bytes": 343,
+        "output_size_bytes": 660
+    },
+    {
+        "agent_name": "Sensor Data Agent",
+        "execution_time_seconds": 0.2415,
+        "input_tokens": 92,
+        "output_tokens": 638,
+        "total_tokens": 730,
+        "input_size_bytes": 343,
+        "output_size_bytes": 1674
+    },
+    {
+        "agent_name": "Neo4j Knowledge Graph Agent",
+        "execution_time_seconds": 3.1996,
+        "input_tokens": 4312,
+        "output_tokens": 21,
+        "total_tokens": 4333,
+        "input_size_bytes": 13560,
+        "output_size_bytes": 101
+    },
+    {
+        "agent_name": "Industrial Analysis Agent",
+        "execution_time_seconds": 213.8605,
+        "input_tokens": 4312,
+        "output_tokens": 1163,
+        "total_tokens": 5475,
+        "input_size_bytes": 13560,
+        "output_size_bytes": 3177
+    },
+    {
+        "agent_name": "Industrial Analysis Agent",
+        "execution_time_seconds": 86.0958,
+        "input_tokens": 5490,
+        "output_tokens": 883,
+        "total_tokens": 6373,
+        "input_size_bytes": 16818,
+        "output_size_bytes": 2472
+    }
+]
