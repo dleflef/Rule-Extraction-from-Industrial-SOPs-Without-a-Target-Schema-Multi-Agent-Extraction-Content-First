@@ -13,7 +13,7 @@ to grid_search_metadata.csv.
 Usage
 -----
     python3 step2_grid_search_extraction.py
-    python3 step2_grid_search_extraction.py --models qemma3:4b
+    python3 step2_grid_search_extraction.py --models gemma-3-4b-it
     python3 step2_grid_search_extraction.py --paradigms naive few_shot_static
     python3 step2_grid_search_extraction.py --force    # re-run all, ignore registry
     python3 step2_grid_search_extraction.py --abox data/seed_rules/dataset/kg_seeds/nodes_factory.csv
@@ -23,6 +23,12 @@ Output
     results/ext_<model>_<paradigm>_run1.csv   -- extracted rules
     grid_search_metadata.csv                  -- one row per completed run
     experiment_registry.json                  -- resume checkpoint
+
+Backend
+    All models are served by Ollama Cloud through its OpenAI-compatible API,
+    configured via OLLAMA_BASE_URL and OLLAMA_API_KEY in the project's .env.
+    Model names must be ones that endpoint serves; list them with
+    `curl -H "Authorization: Bearer $OLLAMA_API_KEY" https://ollama.com/api/tags`.
 """
 
 from __future__ import annotations
@@ -48,12 +54,15 @@ _PROJECT_ROOT = os.path.normpath(os.path.join(_SCRIPT_DIR, "..", ".."))  # proje
 
 # ── MODELS AND PARADIGMS ──────────────────────────────────────────────────────
 
+# Only models whose internal reasoning can be switched OFF entirely (see
+# REASONING_EFFORT below for why that matters). gpt-oss:20b was dropped for
+# exactly this reason: it is reasoning-native, "none" does not disable its
+# thinking pass (and costs more than the default), and even "low" still
+# returns a populated reasoning field -- so its hidden reasoning could not be
+# held constant against the paradigms being compared.
 MODELS: list[str] = [
-    "ministral-3:14b",
-    "gemma3:12b",
-    "ministral-3:8b",
-    "qwen/qwen3-4b-2507",
-    "gpt-oss:20b",
+    "nemotron-3-nano:30b",          # mid tier (30B) -- reasoning suppressed via effort="none"
+    "gemma4:31b",                   # mid tier (33B) -- no thinking pass at all by default
 ]
 
 PARADIGMS: list[str] = [
@@ -87,15 +96,57 @@ PARADIGM_LEVEL: dict[str, int] = {
 # The <think> block is stripped by parse_rules() before JSON parsing.
 REASONING_NATIVE: set[str] = set()
 
+# Internal-reasoning suppression, per model.
+#
+# EXPERIMENTAL rationale first: the paradigms under comparison here
+# (cot_basic, cot_structured, reflexion, self_consistency, ...) exist to supply
+# reasoning EXPLICITLY. A model that also reasons internally would be doing
+# hidden, uncontrolled reasoning on top of the paradigm's, confounding exactly
+# the effect this grid measures. Suppressing it isolates the paradigm's own
+# contribution.
+#
+# The setting is per model because they behave differently -- measured against
+# this endpoint, not assumed:
+#   nemotron-3-nano:30b  "none" switches reasoning off cleanly (57 -> 6 output
+#                        tokens on a probe, reasoning field empty). "low"
+#                        paradoxically costs MORE than the default here.
+#   gemma4:31b           has no reasoning pass at all by default -- passing any
+#                        effort value TURNS IT ON (6 -> 79 tokens), so it is
+#                        deliberately absent from this dict.
+# Absent from this dict means "send no reasoning_effort at all".
+REASONING_EFFORT: dict[str, str] = {
+    "nemotron-3-nano:30b": "none",
+}
+
 # Models whose chat template does not support the system role.
 # The system message is merged into the first user message automatically.
-NO_SYSTEM_ROLE: set[str] = {"ministral-3:3b", "ministral-3:8b", "ministral-3:14b"}
+# (Empty -- Ollama's packaged chat templates handle the system role
+# correctly for every model in MODELS.)
+NO_SYSTEM_ROLE: set[str] = set()
 
 
 # ── EXPERIMENT PARAMETERS ─────────────────────────────────────────────────────
 
-N_RUNS = 1  # runs per (model, paradigm)
-SEED   = 42  # default RNG seed passed to Ollama via extra_body={"options":{"seed":N}}
+# Runs per (model, paradigm). MUST stay > 1.
+#
+# A single run is one draw from a stochastic process, not a measurement. The
+# hosted endpoint is not deterministic for long generations even at
+# temperature=0 with a fixed seed: requests are batched with other traffic,
+# which changes floating-point summation order, and over a long generation
+# those differences compound into different token choices. Measured on this
+# endpoint, one document's schema-discovery call returned 21, 9 and 8 fields
+# on three identical calls, and a single extraction call returned 26, 25 and
+# 25 items.
+#
+# So a one-run F1 cannot distinguish a real difference between paradigms from
+# endpoint noise, and the paradigm comparison this grid exists to make is
+# exactly that distinction. Repeats give a mean and a standard deviation:
+# report the interval, and treat two paradigms whose intervals overlap as
+# tied rather than ranked. Each repeat is an independent call (run_n is part
+# of the run_id and this script uses no response cache), so the spread across
+# repeats is the endpoint's own variance.
+N_RUNS = 5
+SEED   = 42  # default RNG seed passed to the API as the top-level "seed" param
 # Three seeds used in evaluation for seed-independence verification: 42, 123, 7
 # Run with: python3 step2_grid_search_extraction_en.py --seeds 42 123 7
 # With T=0.0 + fixed seed, outputs are bitwise identical within a seed across runs.
@@ -125,16 +176,40 @@ MAX_REACT_TURNS = 5
 
 # ── LLM CONNECTION PARAMETERS ─────────────────────────────────────────────────
 
-LLM_TIMEOUT_SEC = 600  # API call timeout (10 min) -- llama3.2:1b does ~3 tok/s on CPU
+# API call timeout. 600s is generous for this endpoint -- the slowest observed
+# call in a full grid was under 300s -- while still catching a dead connection
+# quickly. The previous value of 3600 was sized for local models that could
+# genuinely spend 40 minutes on one turn with weights split across VRAM and
+# RAM; against a hosted endpoint it only means that a connection dropped by a
+# network blip blocks for a full hour before the first retry, and up to three
+# hours across all MAX_RETRIES attempts, with no output in between to show
+# that anything is wrong. A hung call should be detected in minutes and
+# retried, not waited out.
+LLM_TIMEOUT_SEC = 600
 LLM_NUM_CTX = 16384   # context window: 2k input + 1k output
-MAX_OUTPUT_TOKENS = 16384 
+# Output budget for a single call. A dense SOP yields ~70 rules of 13 verbose
+# fields each (~150-250 tokens per rule), which alone approaches 16k; reasoning
+# models then spend hidden thinking tokens from this SAME budget before the
+# answer begins. At 16384 that combination truncated mid-JSON, and parse_rules()
+# repaired the dangling brackets -- producing a VALID file that silently held
+# fewer rules than the model would have written. Every served model here has a
+# context of 131k or more, so the headroom is affordable and cheap insurance
+# against a paradigm looking worse than it is purely from a lost tail.
+MAX_OUTPUT_TOKENS = 32768
 MAX_RETRIES = 3  # attempts before giving up on a single call
 RETRY_BASE_DELAY = 15.0  # seconds before first retry; doubles each attempt
 
 
 # ── FILE PATHS ────────────────────────────────────────────────────────────────
 
-TEXTS_DIR = os.path.join(_PROJECT_ROOT, "layers", "layer_1", "texts")          # layers/layer_1/texts/
+# Default DEVELOPMENT corpus. Overridable with --texts-dir, which is what makes
+# selection and evaluation separable at all: while this was a hardcoded
+# constant, every paradigm could only ever be scored on the same four documents
+# it was chosen on, which is precisely the objection that "the configuration was
+# calibrated by observing performance on the very documents the pipeline is then
+# evaluated on". With the corpus a parameter, a paradigm can be selected here
+# and then evaluated on a corpus that took no part in the selection.
+TEXTS_DIR = os.path.join(_PROJECT_ROOT, "layers", "layer_1", "texts")
 ABOX_DEFAULT_PATH = os.path.join(
     _PROJECT_ROOT, "data", "dataset", "kg_seed", "nodes_factory.csv"
 )
@@ -148,65 +223,23 @@ HEARTBEAT_FILE = os.path.join(_SCRIPT_DIR, "..", "heartbeat.txt")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 os.makedirs(STATE_DIR, exist_ok=True)
 
-# LLM response cache — populated on first run, replayed on every subsequent run.
-# Keyed by SHA-256(model, messages) so the same prompt always returns the same text.
-_GRID_CACHE: "LLMResponseCache | None" = None  # type: ignore[name-defined]
+# Ollama Cloud endpoint (OpenAI-compatible API)
+_OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "https://ollama.com/v1")
+_OLLAMA_API_KEY  = os.environ.get("OLLAMA_API_KEY", "")
 
+if not _OLLAMA_API_KEY:
+    sys.exit("OLLAMA_API_KEY is not set. Add it to the project's .env "
+             "(get a key at https://ollama.com/settings/keys).")
 
-def _get_grid_cache() -> "LLMResponseCache":  # type: ignore[name-defined]
-    global _GRID_CACHE
-    if _GRID_CACHE is None:
-        import sys as _sys
-        _sys.path.insert(0, _SCRIPT_DIR)
-        from llm_cache import LLMResponseCache
-        _GRID_CACHE = LLMResponseCache(os.path.join(RESULTS_DIR, "grid_search_cache.json"))
-    return _GRID_CACHE
-
-
-_RESULT_CACHE_GS: "ResultCache | None" = None  # type: ignore[name-defined]
-_RESULT_CACHE_GS_LOADED = False
-
-
-def _get_result_cache() -> "ResultCache | None":  # type: ignore[name-defined]
-    global _RESULT_CACHE_GS, _RESULT_CACHE_GS_LOADED
-    if not _RESULT_CACHE_GS_LOADED:
-        _RESULT_CACHE_GS_LOADED = True
-        _path = os.path.join(RESULTS_DIR, "step2_result_cache.json")
-        if os.path.exists(_path):
-            import sys as _sys
-            _sys.path.insert(0, _SCRIPT_DIR)
-            from llm_cache import ResultCache
-            _RESULT_CACHE_GS = ResultCache(_path)
-    return _RESULT_CACHE_GS
-
-
-# Ollama endpoint (cloud or local)
-_OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434/v1")
-_OLLAMA_API_KEY  = os.environ.get("OLLAMA_API_KEY",  "ollama")
-
-# LM Studio endpoint — for models loaded locally in LM Studio
-_LMSTUDIO_BASE_URL = os.environ.get("LMSTUDIO_BASE_URL", "http://localhost:1234/v1")
-_LMSTUDIO_API_KEY  = os.environ.get("LMSTUDIO_API_KEY",  "lm-studio")
-
-# Comma-separated model names to route to LM Studio instead of Ollama.
-# Set in .env:  LMSTUDIO_MODELS=qwen3-4B-2507
-LMSTUDIO_MODELS: set[str] = set(
-    m.strip() for m in os.environ.get("LMSTUDIO_MODELS", "").split(",") if m.strip()
-)
-
-_ollama_client = OpenAI(
+_client = OpenAI(
     api_key=_OLLAMA_API_KEY,
     base_url=_OLLAMA_BASE_URL,
     timeout=LLM_TIMEOUT_SEC,
 )
-_lmstudio_client = OpenAI(
-    api_key=_LMSTUDIO_API_KEY,
-    base_url=_LMSTUDIO_BASE_URL,
-    timeout=LLM_TIMEOUT_SEC,
-)
+
 
 def _client_for(model: str) -> OpenAI:
-    return _lmstudio_client if model in LMSTUDIO_MODELS else _ollama_client
+    return _client
 
 
 # ── PROMPT CONSTANTS ──────────────────────────────────────────────────────────
@@ -224,53 +257,82 @@ _BASE_SYSTEM = (
     'For all other classes leave those fields empty ("").'
 )
 
-# graph_informed: adds mandatory sensor naming and numeric field mapping
+# graph_informed: adds mandatory sensor naming and numeric field mapping.
+# Illustrative IDs below come from the fictional facility used throughout this
+# file's examples (see _FEW_SHOT_EXAMPLE), never from a document this grid is
+# evaluated on -- naming the real stations here would hand the model the
+# entity inventory it is supposed to recover from the text.
 _GRAPH_CONSTRAINT = (
     " MANDATORY CONSTRAINT: the 'sensor' field MUST follow the pattern "
-    "STATION_TYPE (e.g. ST01_FILLING_TMP, WRH01_WAREHOUSE_HUM). "
-    "The 'station' field contains only the station ID (e.g. ST01_FILLING). "
+    "STATION_TYPE (e.g. ENC07_AVIARY_LUX, HLD02_NIGHTDEN_NH3). "
+    "The 'station' field contains only the station ID (e.g. ENC07_AVIARY). "
     "ruleIds must faithfully reflect the SOP document. "
     "For ThresholdRule entries (tables with CRIT_LO/WARN_LO/WARN_HI/CRIT_HI columns) "
     "you MUST populate critLo, warnLo, warnHi, critHi, unit "
-    'with the pure numeric values from the table (e.g. critHi="30.0", unit="C").'
+    'with the pure numeric values from the table (e.g. critHi="812.0", unit="lx").'
 )
 
 # few_shot_static: two concrete output examples, one per main rule class.
+#
+# Both examples describe a FICTIONAL animal-enclosure facility that shares no
+# station, sensor, identifier, or numeric value with any document this grid is
+# evaluated on. They teach the OUTPUT SHAPE only. Drawing the examples from an
+# evaluation document instead -- as an earlier version of this constant did --
+# is prompt contamination in the strict sense: the demonstration then states
+# an answer the run is scored on, so few_shot_static scores partly for
+# reproducing its own instructions rather than for reading the document.
 _FEW_SHOT_EXAMPLE = (
-    " Follow these style examples:"
+    " Follow these style examples. They come from an unrelated facility and are "
+    "shown only to fix the output format -- never reuse their stations, sensors, "
+    "identifiers, or numbers:"
     "\n\nExample 1 -- OperationalRule (narrative rule):"
-    ' {"ruleId":"RULE-ST01-01","class":"OperationalRule",'
-    '"station":"ST01_FILLING","sensor":"ST01_FILLING_FLW","sensorType":"FLW",'
-    '"condition":"FLW MUST be between 112 and 128 L/min",'
-    '"action":"Inspect and notify maintenance","severity":"MANDATORY",'
+    ' {"ruleId":"RULE-ENC07-01","class":"OperationalRule",'
+    '"station":"ENC07_AVIARY","sensor":"ENC07_AVIARY_LUX","sensorType":"LUX",'
+    '"condition":"LUX MUST be maintained between 300 and 750 lx",'
+    '"action":"Adjust the daylight lamps and notify the keeper on duty",'
+    '"severity":"MANDATORY",'
     '"critHi":"","warnHi":"","warnLo":"","critLo":"","unit":""}.'
     "\n\nExample 2 -- ThresholdRule (numeric threshold from table):"
-    ' {"ruleId":"RULE-THR-ST01-TMP-CRIT","class":"ThresholdRule",'
-    '"station":"ST01_FILLING","sensor":"ST01_FILLING_TMP","sensorType":"TMP",'
-    '"condition":"TMP critical thresholds for ST01_FILLING",'
-    '"action":"Inspect and notify maintenance","severity":"CRITICAL",'
-    '"critHi":"30.0","warnHi":"26.0","warnLo":"18.0","critLo":"15.0","unit":"C"}.'
+    ' {"ruleId":"RULE-THR-ENC07-LUX-CRIT","class":"ThresholdRule",'
+    '"station":"ENC07_AVIARY","sensor":"ENC07_AVIARY_LUX","sensorType":"LUX",'
+    '"condition":"LUX critical thresholds for ENC07_AVIARY",'
+    '"action":"Adjust the daylight lamps and notify the keeper on duty",'
+    '"severity":"CRITICAL",'
+    '"critHi":"812.0","warnHi":"747.0","warnLo":"303.0","critLo":"249.0","unit":"lx"}.'
     "\n\nFor ThresholdRule: map CRIT_LO to critLo, WARN_LO to warnLo, "
     "WARN_HI to warnHi, CRIT_HI to critHi. "
-    'Always use the pure numeric value (e.g. "30.0", not "30.0C").'
+    'Always use the pure numeric value (e.g. "812.0", not "812.0lx").'
 )
 
-# reflexion_guided turn 3: domain-specific completeness checklist
-REFLEXION_CHECKLIST = """Verify the following rule categories in your output:
-1. STATIONS: have you extracted rules for all stations?
-   ST01_FILLING, ST02_SEALING, ST03_LABELLING, ST04_PACKAGING,
-   SRV01_SERVERROOM, WRH01_WAREHOUSE, CHM01_CHEMICALSTORAGE,
-   RND01_RDLAB, CAF01_CAFETERIA
-2. CROSS-STATION DEPENDENCIES: have you included rules linking different stations?
-   (e.g. current ST02 -> speed ST04, temperature SRV01 -> line halt)
-3. ANOMALIES: have you extracted rules for all temporal patterns?
-   SPIKE, DRIFT, STUCK, OUT_OF_RANGE, CORRELATED
-4. MAINTENANCE: have you included predictive/corrective rules?
-   MAINT-01 to MAINT-08
-5. ACCESS AND OCCUPANCY: have you included access control and zone occupancy limits?
-   RULE-ACCESS-01 to RULE-ACCESS-04 and occupancy rules for each zone
-6. NUMERIC VALUES: are the thresholds (critHi, warnHi, critLo, warnLo) correct?
-For each missing or imprecise category, add or correct the rules in the final JSON."""
+# reflexion_guided turn 3: completeness checklist.
+#
+# Every item is STRUCTURAL -- it asks the model to re-read the document and
+# account for whatever that document itself names. No station, identifier,
+# anomaly type, or rule-ID range is listed here. An earlier version enumerated
+# them, which meant the checklist supplied the entity inventory the run was
+# scored on recovering: the paradigm then measured how well the model could
+# copy a list out of its own instructions, not how completely it read the SOP.
+# Enumerating them would also break this paradigm on any other document, since
+# the named entities would not exist there.
+REFLEXION_CHECKLIST = """Re-read the document, then verify the following in your output.
+Judge each point ONLY against what this document itself states -- do not assume
+any station, sensor, identifier, or category that it does not name.
+1. SUBJECT COVERAGE: for every station, asset, or zone the document names,
+   have you extracted every rule it states about that subject?
+2. CROSS-SUBJECT DEPENDENCIES: does the document state any rule linking two
+   different subjects (a condition at one propagating to another)?
+   Have you included each one?
+3. TEMPORAL AND PATTERN RULES: does the document define named anomaly patterns
+   or time-based triggers? Have you extracted a rule for each one it defines?
+4. MAINTENANCE: does the document state recurring or condition-triggered
+   maintenance requirements? Have you included each?
+5. ACCESS AND OCCUPANCY: does the document state access permissions or
+   occupancy limits? Have you included each?
+6. IDENTIFIERS: where the document prints its own identifier for a rule, does
+   your entry carry that identifier verbatim?
+7. NUMERIC VALUES: are all thresholds (critHi, warnHi, critLo, warnLo) copied
+   exactly as printed, with the unit separated out?
+For each gap or imprecision, add or correct the rules in the final JSON."""
 
 
 # ── TOKEN TRACKING ────────────────────────────────────────────────────────────
@@ -314,6 +376,29 @@ def _get_tokens() -> LLMUsage:
 def _add_tokens(u: LLMUsage) -> None:
     acc = getattr(_tls, "acc", LLMUsage())
     _tls.acc = acc + u
+
+
+# Truncation accounting, per run, alongside the token accumulator.
+#
+# A call that stops because it hit MAX_OUTPUT_TOKENS returns finish_reason
+# "length" and, typically, JSON cut off mid-object. parse_rules() repairs the
+# dangling brackets, so the run still writes a well-formed CSV -- one that
+# silently holds fewer rules than the model was in the middle of producing.
+# Without this counter that loss is invisible in the results: a truncated
+# paradigm simply looks less complete than it is, which would bias exactly the
+# paradigm comparison this grid exists to make. Recorded per run in
+# grid_search_metadata.csv so any affected cell can be spotted and re-run
+# instead of being read as a real score.
+def _reset_truncations() -> None:
+    _tls.trunc = 0
+
+
+def _get_truncations() -> int:
+    return getattr(_tls, "trunc", 0)
+
+
+def _note_truncation() -> None:
+    _tls.trunc = getattr(_tls, "trunc", 0) + 1
 
 
 # ── HEARTBEAT THREAD ──────────────────────────────────────────────────────────
@@ -382,7 +467,20 @@ signal.signal(signal.SIGTERM, _save_and_exit)
 # "completed" means the run finished and its CSV was saved -- it will be skipped.
 
 
-def make_run_id(model: str, paradigm: str, run_n: int, seed: int | None = None) -> str:
+def corpus_tag(texts_dir: str) -> str:
+    """Short identifier for the corpus a run was executed over.
+
+    Part of the run_id and therefore of the registry key and output filename.
+    Without it a run over a second corpus would overwrite the first one's CSV
+    and be skipped as "already completed" by the resume registry, silently
+    reporting one corpus's numbers as the other's.
+    """
+    return re.sub(r"[^A-Za-z0-9]+", "_",
+                  os.path.basename(os.path.normpath(texts_dir))).strip("_").lower()
+
+
+def make_run_id(model: str, paradigm: str, run_n: int, seed: int | None = None,
+                 texts_dir: str | None = None) -> str:
     """
     Canonical ID for a single run.
     Format: <model_normalised>_<paradigm>_s<SEED>_run<N>
@@ -390,7 +488,8 @@ def make_run_id(model: str, paradigm: str, run_n: int, seed: int | None = None) 
     """
     base = f"{model}_{paradigm}".replace(":", "-").replace(".", "_").replace("/", "-")
     seed_part = f"_s{seed}" if seed is not None else ""
-    return f"{base}{seed_part}_run{run_n}"
+    corpus_part = f"_c{corpus_tag(texts_dir)}" if texts_dir else ""
+    return f"{base}{corpus_part}{seed_part}_run{run_n}"
 
 
 def make_exp_id(model: str, paradigm: str) -> str:
@@ -457,24 +556,18 @@ def _llm_call_raw(
     """
     Single API call with exponential-backoff retry.
 
-    Handles timeout, connection refused (Ollama not yet ready),
+    Handles timeout, connection refused,
     and transient API errors. Raises the last exception after MAX_RETRIES
     failed attempts.
 
-    num_ctx is forwarded to Ollama via extra_body so the context window
-    is always LLM_NUM_CTX regardless of the server's default setting.
+    The context window is whatever the served model provides; it is not a
+    client-side setting. LLM_NUM_CTX is retained only for logging.
     """
     last_exc: Exception | None = None
     delay = RETRY_BASE_DELAY
 
     if model in NO_SYSTEM_ROLE:
         messages = _merge_system_into_user(messages)
-
-    # Cache check — returns immediately on hit, bypassing the LLM entirely.
-    _cache = _get_grid_cache()
-    _hit = _cache.get(model, messages)
-    if _hit is not None:
-        return _hit, LLMUsage()
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
@@ -486,16 +579,29 @@ def _llm_call_raw(
                 flush=True,
             )
             t_call = time.time()
+            extra = ({"reasoning_effort": REASONING_EFFORT[model]}
+                     if model in REASONING_EFFORT else {})
             resp = _client_for(model).chat.completions.create(
                 model=model,
                 messages=messages,
                 temperature=temperature,
                 max_tokens=MAX_OUTPUT_TOKENS,
-                extra_body={"options": {"seed": SEED, "num_ctx": LLM_NUM_CTX}},
+                seed=SEED,
+                **extra,
             )
             elapsed = time.time() - t_call
             ts_end = time.strftime("%H:%M:%S")
-            content = resp.choices[0].message.content
+            choice = resp.choices[0]
+            content = choice.message.content
+            finish_reason = getattr(choice, "finish_reason", None)
+            if finish_reason == "length":
+                _note_truncation()
+                print(
+                    f"      [LLM {ts_end}] WARNING: output hit max_tokens "
+                    f"({MAX_OUTPUT_TOKENS}) -- reply is CUT OFF and any rules after the "
+                    f"cut are lost. Recorded as truncated_calls in the run metadata.",
+                    flush=True,
+                )
             usage = LLMUsage()
             if resp.usage is not None:
                 usage = LLMUsage(
@@ -511,7 +617,6 @@ def _llm_call_raw(
             print(
                 f"      [LLM raw reply]\n{content}\n      [/LLM raw reply]", flush=True
             )
-            _cache.set(model, messages, content)
             return content, usage
 
         except Exception as exc:
@@ -585,7 +690,7 @@ def parse_rules(raw: str) -> list[dict]:
             try:
                 rules = _extract(repaired)
                 print(
-                    f"      [parse] repaired truncated JSON → {len(rules)} rules",
+                    f"      [parse] repaired truncated JSON : {len(rules)} rules",
                     flush=True,
                 )
                 return rules
@@ -1040,13 +1145,30 @@ def run_react_abox(
 
     Returns (rules, number_of_turns_used).
     """
+    # The protocol is stated as two MANDATORY phases, and the first user turn
+    # below forbids JSON outright.
+    #
+    # An earlier version appended an optional tool offer ("you MAY write
+    # VERIFY: ...") to _BASE_SYSTEM, which opens with "Reply EXCLUSIVELY with a
+    # JSON structured as follows". Faced with a mandatory instruction and an
+    # optional one, the model always did the mandatory thing: it emitted JSON on
+    # the first turn, the loop found no VERIFY line, broke immediately, and the
+    # ABox was never consulted. Measured over 5 runs that produced
+    # avg_llm_turns = 1.17 against MAX_REACT_TURNS = 5, the fastest runtime of
+    # any paradigm, and the lowest token count -- so whatever it scored was a
+    # single-call extraction, not ReAct with ABox verification.
     sys_p = (
         _BASE_SYSTEM
         + _GRAPH_CONSTRAINT
-        + "\n\nAvailable tool: to verify a sensor name, write on a single line:\n"
+        + "\n\nYou answer in TWO phases, and phase 1 is mandatory.\n"
+        "PHASE 1 -- verification. Read the SOP and list every sensor name you "
+        "intend to put in the 'sensor' field, one per line, each exactly:\n"
         "  VERIFY: <sensor_name>\n"
-        "The system will reply with SENSOR_OK or SENSOR_NOT_FOUND before you "
-        "produce the final JSON. You may verify multiple sensors before the JSON."
+        "Output NOTHING ELSE in phase 1 -- no JSON, no prose, no explanation.\n"
+        "PHASE 2 -- extraction. The system replies with SENSOR_OK or "
+        "SENSOR_NOT_FOUND for each name, the latter with suggested "
+        "alternatives. Only then produce the final JSON, using the corrected "
+        "names the verification returned."
     )
 
     def verify_sensor(name: str) -> str:
@@ -1077,7 +1199,12 @@ def run_react_abox(
 
     messages: list[dict] = [
         {"role": "system", "content": sys_p},
-        {"role": "user", "content": f"SOP text:\n{sop_text}"},
+        {"role": "user", "content": (
+            f"SOP text:\n{sop_text}\n\n"
+            "PHASE 1 now. List every sensor name you intend to use, one per "
+            "line, each exactly 'VERIFY: <sensor_name>'. Do NOT output JSON "
+            "yet -- the verification results come first."
+        )},
     ]
     turns = 0
     final_rules: list[dict] = []
@@ -1147,7 +1274,7 @@ def load_abox_sensors(nodes_path: str) -> set[str]:
 # ── RESULT SAVING ─────────────────────────────────────────────────────────────
 
 
-def save_partial_results(run_id: str, rules: list[dict]) -> None:
+def save_partial_results(run_id: str, rules: list[dict], run_date: str = "") -> None:
     """
     Save intermediate results after each SOP to a _partial.csv checkpoint.
     Overwritten after each document; replaced by the final file on completion.
@@ -1162,9 +1289,9 @@ def save_partial_results(run_id: str, rules: list[dict]) -> None:
         writer.writerows(rules)
 
 
-def save_results(run_id: str, rules: list[dict]) -> None:
+def save_results(run_id: str, rules: list[dict], run_date: str = "") -> None:
     """
-    Save the final results for a run as ext_<run_id>.csv.
+    Save the final results for a run as ext_<run_id>_<YYYYMMDD_HHMMSS>.csv.
 
     Guarantees consistent column order across all output files.
     Strips unit suffixes from numeric fields (e.g. "30.0C" -> "30.0")
@@ -1206,7 +1333,8 @@ def save_results(run_id: str, rules: list[dict]) -> None:
         for f in RULE_FIELDS:
             r.setdefault(f, "")
 
-    out = os.path.join(RESULTS_DIR, f"ext_{run_id}.csv")
+    ts = time.strftime("%Y%m%d_%H%M%S")
+    out = os.path.join(RESULTS_DIR, f"ext_{run_id}_{ts}.csv")
     with open(out, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
@@ -1240,6 +1368,11 @@ CANONICAL_FIELDS = [
     "completion_tokens",
     "total_tokens",
     "tokens_per_rule",
+    # >0 means at least one reply in this run was cut off at MAX_OUTPUT_TOKENS,
+    # so total_rules is a FLOOR rather than a measurement. append_metadata uses
+    # extrasaction="ignore", so a field missing from this list is dropped
+    # silently -- any new metric must be added here to be written at all.
+    "truncated_calls",
 ]
 
 
@@ -1262,6 +1395,7 @@ def run_single_experiment(
     txt_files: list[str],
     abox_sensors: set[str],
     run_id: str,
+    texts_dir: str = TEXTS_DIR,
 ) -> tuple[list[dict], int, float, LLMUsage]:
     """
     Execute one (model, paradigm) combination across all SOP documents.
@@ -1276,9 +1410,10 @@ def run_single_experiment(
     level = PARADIGM_LEVEL[paradigm]
     t_start = time.time()
     _reset_tokens()
+    _reset_truncations()
 
     for filename in txt_files:
-        filepath = os.path.join(os.path.abspath(TEXTS_DIR), filename)
+        filepath = os.path.join(os.path.abspath(texts_dir), filename)
         try:
             with open(filepath, "r", encoding="utf-8") as f:
                 sop_text = f.read()
@@ -1339,7 +1474,7 @@ def run_single_experiment(
             errors += 1
             print(f"ERROR: {e}")
 
-    return all_rules, errors, time.time() - t_start, _get_tokens()
+    return all_rules, errors, time.time() - t_start, _get_tokens(), _get_truncations()
 
 
 # ── MAIN GRID LOOP ────────────────────────────────────────────────────────────
@@ -1351,7 +1486,9 @@ def run_experiment(
     abox_path: str = ABOX_DEFAULT_PATH,
     force_redo: bool = True,
     n_runs: int = N_RUNS,
+    run_start: int = 1,
     seed: int = SEED,
+    texts_dir: str = TEXTS_DIR,
 ) -> None:
     """
     Outer loop over models x paradigms x run_n.
@@ -1359,6 +1496,8 @@ def run_experiment(
     Always re-runs every condition (force_redo=True by default).
     Pass force_redo=False or use --no-force to skip already-completed runs.
     Marks each run "partial" before starting and "completed" after saving.
+    run_n values produced are range(run_start, run_start + n_runs) -- pass
+    --run-start 2 to label a whole independent pass "run2" instead of "run1".
     """
     global _registry_ref, SEED
     SEED = seed
@@ -1366,7 +1505,7 @@ def run_experiment(
     _models = models or MODELS
     _paradigms = paradigms or PARADIGMS
 
-    abs_texts = os.path.abspath(TEXTS_DIR)
+    abs_texts = os.path.abspath(texts_dir)
     if not os.path.isdir(abs_texts):
         print(f"SOP directory not found: {abs_texts}")
         return
@@ -1380,7 +1519,18 @@ def run_experiment(
     _registry_ref = registry
 
     total_runs = len(_models) * len(_paradigms) * n_runs
-    done_runs = sum(1 for v in registry.values() if v == "completed")
+    # Count only the runs THIS invocation is responsible for. Counting every
+    # completed entry in the registry instead makes a segmented run (one model
+    # at a time, say) report "50/50 already completed, to run 0" while it is in
+    # fact about to execute 50 fresh cells -- the per-cell skip keys on the full
+    # run_id, which includes the model, so the work happens regardless and only
+    # the banner lies.
+    _planned = {
+        make_run_id(m, p, r, seed=seed, texts_dir=abs_texts)
+        for m in _models for p in _paradigms
+        for r in range(run_start, run_start + n_runs)
+    }
+    done_runs = sum(1 for k, v in registry.items() if v == "completed" and k in _planned)
 
     print(f"  ABox loaded: {len(abox_sensors)} sensors")
     print(f"  SOP dir:     {abs_texts}")
@@ -1393,32 +1543,23 @@ def run_experiment(
     print(f"  To run:   {total_runs - done_runs}")
     print()
 
+    import glob as _glob
+
     for model in _models:
         for paradigm in _paradigms:
             level = PARADIGM_LEVEL[paradigm]
-            for run_n in range(1, n_runs + 1):
-                run_id = make_run_id(model, paradigm, run_n, seed=seed)
+            for run_n in range(run_start, run_start + n_runs):
+                run_id = make_run_id(model, paradigm, run_n, seed=seed, texts_dir=abs_texts)
                 _heartbeat.set_experiment(run_id)
 
                 if not force_redo and is_completed(registry, run_id):
                     print(f"  SKIP {run_id}")
                     continue
 
-                # Result cache — restores exact original CSV without any LLM call.
-                _csv_out  = os.path.join(RESULTS_DIR, f"ext_{run_id}.csv")
-                _rc_fname = f"ext_{run_id}.csv"
-                _rc       = _get_result_cache()
-                if _rc is not None:
-                    _cached = _rc.get(_rc_fname)
-                    if _cached is not None:
-                        with open(_csv_out, "w", encoding="utf-8", newline="") as _f:
-                            _f.write(_cached)
-                        print(f"  CACHE {run_id} — restored from result cache.")
-                        mark_completed(registry, run_id)
-                        continue
-
-                # File-level guard — preserves genuine run results exactly.
-                if os.path.exists(_csv_out):
+                # File-level guard — matches ext_<run_id>_<any_date>.csv or ext_<run_id>.csv.
+                existing = _glob.glob(os.path.join(RESULTS_DIR, f"ext_{run_id}*.csv"))
+                existing = [f for f in existing if "_partial" not in f]
+                if existing:
                     print(f"  SKIP {run_id} — CSV already exists.")
                     mark_completed(registry, run_id)
                     continue
@@ -1432,8 +1573,9 @@ def run_experiment(
                 mark_partial(registry, run_id)
 
                 try:
-                    rules, errors, duration, tokens = run_single_experiment(
-                        model, paradigm, txt_files, abox_sensors, run_id
+                    rules, errors, duration, tokens, truncations = run_single_experiment(
+                        model, paradigm, txt_files, abox_sensors, run_id,
+                        texts_dir=abs_texts
                     )
                 except Exception as e:
                     print(f"  Critical error in {run_id}: {e}")
@@ -1473,6 +1615,10 @@ def run_experiment(
                         "tokens_per_rule": (
                             round(tokens.total_tokens / len(rules), 1) if rules else 0.0
                         ),
+                        # >0 means this cell's rule count is a FLOOR, not a
+                        # measurement: at least one reply was cut off at
+                        # MAX_OUTPUT_TOKENS. Exclude or re-run before comparing.
+                        "truncated_calls": truncations,
                     }
                 )
 
@@ -1486,10 +1632,27 @@ def run_experiment(
                 else:
                     print(f"    Warning: 0 rules extracted -- will be retried.")
 
+
     _heartbeat.set_experiment("completed")
     completed = sum(1 for v in registry.values() if v == "completed")
     print(f"\n{'='*65}")
     print(f"Grid complete: {completed}/{total_runs} runs")
+
+    # Surface truncated cells here as well as in the metadata: a long grid
+    # scrolls hundreds of lines past the per-call warning, and a truncated run
+    # still produces a well-formed CSV, so nothing else would flag it.
+    try:
+        with open(METADATA_FILE, encoding="utf-8", newline="") as f:
+            hit = [r for r in csv.DictReader(f) if int(r.get("truncated_calls") or 0) > 0]
+        if hit:
+            print(f"\n  WARNING: {len(hit)} run(s) had at least one reply cut off at "
+                  f"max_tokens. Their rule counts are FLOORS, not measurements -- "
+                  f"re-run them before comparing paradigms:")
+            for r in hit:
+                print(f"    {r['run_id']}  ({r['truncated_calls']} truncated call(s), "
+                      f"{r['total_rules']} rules kept)")
+    except (OSError, ValueError, KeyError):
+        pass
     print(f"  Registry: {REGISTRY_FILE}")
     print(f"  Metadata: {METADATA_FILE}")
     print(f"  Results:  {RESULTS_DIR}/")
@@ -1510,6 +1673,14 @@ if __name__ == "__main__":
         help=f"Runs per condition (default: {N_RUNS})",
     )
     parser.add_argument(
+        "--run-start",
+        type=int,
+        default=1,
+        help="First run number to label output with (default: 1). "
+        "Use --run-start 2 to produce an independent pass labelled run2 "
+        "instead of run1, e.g. for a reproducibility comparison.",
+    )
+    parser.add_argument(
         "--models",
         nargs="+",
         default=None,
@@ -1524,6 +1695,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--no-force", dest="no_force", action="store_true",
         help="Skip runs already marked completed in the registry",
+    )
+    parser.add_argument(
+        "--texts-dir",
+        default=TEXTS_DIR,
+        help="Corpus of .txt documents to run over (default: the layer-1 development "
+             "corpus). Selecting a paradigm on one corpus and reporting it on another "
+             "is what separates selection from evaluation; the corpus name is recorded "
+             "in every run_id so runs over different corpora cannot overwrite each other.",
     )
     parser.add_argument(
         "--abox",
@@ -1547,7 +1726,9 @@ if __name__ == "__main__":
             models=args.models,
             paradigms=args.paradigms,
             abox_path=args.abox,
+            texts_dir=args.texts_dir,
             force_redo=not args.no_force,
             n_runs=args.runs,
+            run_start=args.run_start,
             seed=seed_val,
         )

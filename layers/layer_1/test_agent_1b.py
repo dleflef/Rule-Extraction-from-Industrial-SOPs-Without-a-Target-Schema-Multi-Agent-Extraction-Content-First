@@ -4,7 +4,9 @@ import os
 from agent_1b_tools import convert_document_to_sop_txt
 
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-RULES_DIR = r"C:\Users\dagha\Desktop\Agentic_KnowledgeGraph_DigitalTwins\Agentic_KnowledgeGraph_DigitalTwins\data\dataset\rules"
+RULES_DIR = os.path.normpath(
+    os.path.join(_SCRIPT_DIR, "..", "..", "data", "dataset", "rules")
+)
 TEXTS_DIR = os.path.join(_SCRIPT_DIR, "texts")
 
 _SUPPORTED = {".pdf", ".txt"}

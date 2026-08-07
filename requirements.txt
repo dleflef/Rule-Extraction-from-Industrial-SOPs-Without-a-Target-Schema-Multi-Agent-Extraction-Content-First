@@ -1,0 +1,10 @@
+openai>=1.0.0
+python-dotenv
+langgraph
+docling
+matplotlib
+numpy
+pandas
+scipy
+sentence-transformers
+neo4j

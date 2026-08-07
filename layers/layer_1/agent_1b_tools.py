@@ -23,6 +23,34 @@ _MIN_CHUNK_CHARS = 200
 _MAX_CHUNK_CHARS = 2000
 
 
+def _collapse_repeated_tokens(cell: str) -> str:
+    """
+    Collapse a cell whose whole token sequence is one block repeated back to
+    back, which is what an overlapping vision bounding box produces
+    ("Inspect and lubricate HIGH Inspect and lubricate HIGH").
+
+    The repeating unit is measured in WHOLE TOKENS, never in characters. A
+    character-level rule cannot tell a duplicated bounding box from a letter
+    that legitimately ends one word and begins the next, so it silently eats
+    characters out of ordinary text: "Conveyor speed drop" -> "Conveyor
+    speedrop", "SRV01_SERVERRO OM" -> "SRV01_SERVERROM". Matching whole
+    tokens has no such failure mode, in any language or document layout.
+    """
+    tokens = cell.split()
+    n = len(tokens)
+    if n < 2:
+        return cell
+
+    # Smallest period p (a proper divisor of n) whose block tiles the sequence.
+    for p in range(1, n // 2 + 1):
+        if n % p:
+            continue
+        if all(tokens[i] == tokens[i % p] for i in range(n)):
+            return " ".join(tokens[:p])
+
+    return cell
+
+
 def _deduplicate_table_cells(text: str) -> str:
     """
     Scans for Markdown table rows and removes repeated substring hallucinations 
@@ -38,12 +66,8 @@ def _deduplicate_table_cells(text: str) -> str:
             cleaned_cells = []
             
             for cell in cells:
-                c = cell.strip()
-                # Regex to find any string of 3+ characters that repeats itself sequentially 
-                # (with or without spaces) and collapse it to a single instance.
-                # Example: "Inspect and lubricate HIGH Inspect and lubricate HIGH" -> "Inspect and lubricate HIGH"
-                c = re.sub(r'(.+?)(?:\s+\1)+', r'\1', c)
-                
+                c = _collapse_repeated_tokens(cell.strip())
+
                 # Re-pad the cell with spaces for clean markdown formatting
                 cleaned_cells.append(f" {c} " if c else "")
                 
@@ -67,7 +91,7 @@ def _normalise(text: str) -> str:
     
     # Clean up repeated table cell content caused by Docling AI overlap
     text = _deduplicate_table_cells(text)
-    
+
     # Clean up excessive spacing within lines to keep tokens low
     text = re.sub(r' {2,}', ' ', text)
     
