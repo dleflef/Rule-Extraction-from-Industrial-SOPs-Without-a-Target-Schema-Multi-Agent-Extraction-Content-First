@@ -49,7 +49,7 @@ Extraction is scored by $F1_{\text{content}}$, a content-first metric that colla
 
 The pipeline is evaluated on one development corpus and three previously unseen external corpora (biogas digestion, cleanroom access control, and reverse-osmosis desalination) with five repeats each and no per-corpus configuration of any kind. It reaches $F1_{\text{content}} = 0.756 \pm 0.077$ on the development corpus and $0.806 \pm 0.022$, $0.747 \pm 0.000$, and $0.820 \pm 0.045$ on the three external corpora. Because the hosted endpoint is non-deterministic for long generations, every figure is reported as a mean and standard deviation over repeats rather than as a single run.
 
-Set against this, a grid search over ten prompting paradigms and two models, in which the prompt is given the development corpus's schema, taxonomy, identifier convention, and worked examples, reaches $0.946 \pm 0.017$ on that corpus, and cannot be run on the other three at all without being rewritten. Notably, the two systems recover the ground truth almost equally well (recall $0.884$ against $0.907$); the gap is overwhelmingly precision, because the two disagree about what constitutes one rule and any surplus record is counted as an error whether or not it is correct. The gap is therefore best read as the measured price of requiring no per-domain configuration, and the schema-specified condition as an instance of the corpus-specific adaptation this work seeks to avoid.
+Set against this, a grid search over ten prompting paradigms and two models, in which the prompt is given the development corpus's schema, taxonomy, identifier convention, and worked examples, reaches $0.946 \pm 0.017$ on that corpus, and cannot be applied to the other three as a comparable condition without being rewritten by hand. Notably, the two systems recover the ground truth almost equally well (recall $0.884$ against $0.907$); the gap is overwhelmingly precision, because the two disagree about what constitutes one rule and any surplus record is counted as an error whether or not it is correct. The gap is therefore best read as the measured price of requiring no per-domain configuration, and the schema-specified condition as an instance of the corpus-specific adaptation this work seeks to avoid.
 \end{abstract}
 
 \tableofcontents
@@ -2133,8 +2133,8 @@ metric could not be placed beside these.
 \centering
 \caption{Schema-specified single-prompt extraction versus the schema-agnostic
 pipeline, both scored by $F1_{\text{content}}$ on the development corpus, five
-repeats each. The grid conditions cannot be run on the three external corpora
-without their prompts being rewritten by hand.}
+repeats each. The grid conditions cannot be applied to the three external
+corpora as comparable conditions without their prompts being rewritten by hand.}
 \label{tab:grid_contrast}
 \small
 \begin{tabular}{lrrrr}
@@ -2175,7 +2175,15 @@ examples containing real station identifiers from the development corpus.
 Applying it to the biogas, cleanroom, or desalination corpora requires a human to
 read those documents and rewrite the prompt, which is the per-domain
 configuration this work exists to eliminate, and, more sharply, is an instance of
-adapting the extractor to the corpus it is scored on.
+adapting the extractor to the corpus it is scored on.\footnote{The claim is
+about comparability, not mechanical executability, and the distinction was
+checked rather than assumed: the run registry in the accompanying repository
+records an exploratory application of the unmodified grid prompts to the
+desalination document. They emitted $7$--$14$ records against $26$ ground-truth
+rows, expressed in the development corpus's vocabulary; the outputs were not
+retained and no figure in this thesis derives from them. The unmodified
+condition transfers as an under-extraction in a foreign schema, not as a
+baseline.}
 
 The honest summary is therefore this: on a corpus for which somebody has already
 written a schema, writing that schema into the prompt is worth roughly $0.19$
@@ -2406,7 +2414,8 @@ Table~\ref{tab:corpora} rather than by score.}
 All conditions below were prompted with the development corpus's schema,
 taxonomy, identifier convention and worked examples
 (Section~\ref{sec:grid_prompt_contents}), and are scored against that corpus only.
-They cannot be run on the external corpora without their prompts being rewritten.
+They cannot be applied to the external corpora as comparable conditions without
+their prompts being rewritten.
 \begin{table}[H]\centering
 \caption{All grid conditions and the regex baseline, rescored by $F1_{\text{content}}$ on the development corpus.}
 \label{tab:app_grid}

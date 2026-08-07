@@ -122,3 +122,10 @@ with the pipeline evaluated in the thesis and none of its output is reported
 there; the thesis's §Limitations states this explicitly. `run_pipeline.py`,
 `run_pipeline.bat` and `Preliminary/` belong to earlier iterations of the
 project and are not entry points for anything the thesis reports.
+
+`layers/state/grid_search_metadata.csv` additionally records an exploratory
+application of the unmodified (dev-schema) grid prompts to the desalination
+document: 7–14 records against 26 ground-truth rows, in the development
+corpus's vocabulary. The outputs were not retained and no thesis figure derives
+from them; the thesis discusses this in a footnote of §The Cost of Requiring No
+Schema.
