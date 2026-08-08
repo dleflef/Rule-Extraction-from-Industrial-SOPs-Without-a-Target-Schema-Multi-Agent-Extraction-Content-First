@@ -1,0 +1,2 @@
+condition,runs,f1_mean,f1_std,f1_min,f1_max,pr_mean,re_mean,items_mean,items_std,max_pr
+ext_single_prompt_external_test_sulfuric_acid,5,0.607,0.014,0.593,0.627,0.746,0.511,48.0,0.0,1.0

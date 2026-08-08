@@ -49,6 +49,8 @@ Extraction is scored by $F1_{\text{content}}$, a content-first metric that colla
 
 The pipeline is evaluated on one development corpus and three previously unseen external corpora (biogas digestion, reverse-osmosis desalination, and sulfuric acid production) with five repeats each and no per-corpus configuration of any kind. It reaches $F1_{\text{content}} = 0.719 \pm 0.000$ on the development corpus and $0.715 \pm 0.023$, $0.850 \pm 0.019$, and $0.649 \pm 0.049$ on the three external corpora. Because the hosted endpoint is non-deterministic for long generations, every figure is reported as a mean and standard deviation over repeats rather than as a single run.
 
+An ablation that removes the orchestration while holding the model, the prompt's extraction discipline and the evaluation constant --- one call per whole document, no chunking, no schema induction, no assembly, no audit --- scores $0.733$, $0.762$, $0.793$ and $0.607$ on the same four corpora, winning on two and losing on two for a mean difference of $0.010$, well inside run-to-run variation, at three to seven times fewer requests. On this material the reported accuracy is therefore attributable to withholding the schema and to the extraction discipline expressed in the prompt, not to the multi-agent graph that runs it; what the graph adds is per-record provenance and a reconciled field vocabulary, neither of which this metric scores.
+
 Set against this, a grid search over ten prompting paradigms and two models, in which the prompt is given the development corpus's schema, taxonomy, identifier convention, and worked examples, reaches $0.949 \pm 0.020$ on that corpus, and cannot be applied to the other three as a comparable condition without being rewritten by hand. Notably, the two systems recover the ground truth equally well (recall $0.907$ and $0.909$); the gap is entirely precision, because the two disagree about what constitutes one rule and any surplus record is counted as an error whether or not it is correct. The gap is therefore best read as the measured price of requiring no per-domain configuration, and the schema-specified condition as an instance of the corpus-specific adaptation this work seeks to avoid.
 \end{abstract}
 
@@ -132,6 +134,15 @@ To address these limitations, this work makes four primary contributions:
           gap quantifies what requiring no per-domain configuration costs, and
           identifies the schema-specified condition as corpus-specific adaptation
           rather than a fair baseline.
+    \item \textbf{An Ablation That Isolates the Architecture, With a Negative
+          Result:} a single schema-free prompt, one call per document, holding
+          the model and the prompt's extraction discipline constant and removing
+          only the orchestration. It matches the pipeline to within $0.010$ mean
+          F1 across the four corpora --- winning on two, losing on two --- at
+          three to seven times fewer requests. The accuracy reported here is
+          therefore attributable to withholding the schema rather than to the
+          graph, a finding reported because it was measured and not because it
+          was wanted.
 \end{itemize}
 
 % § 2  Theoretical Background
@@ -2634,16 +2645,20 @@ bottom group can be run on a corpus nobody has configured it for.}
 Hand-written regex parser              & layouts + ABox & 54.0 & $0.771$ & 1.000 & 0.628 & 0.771 & \textbf{0.000} \\
 \midrule
 \multicolumn{8}{l}{\emph{Nothing supplied}} \\
-\textbf{Multi-agent pipeline}          & --- & 131.0 & $\mathbf{0.719 \pm 0.000}$ & 0.595 & \textbf{0.907} & 0.793 & 0.074 \\
+\textbf{Multi-agent pipeline}          & --- & 131.0 & $\mathbf{0.719 \pm 0.000}$ & 0.595 & 0.907 & 0.793 & 0.074 \\
+Single schema-free prompt              & --- & 134.0 & $0.733 \pm 0.015$ & 0.601 & \textbf{0.937} & 0.782 & 0.049 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-On F1 alone the table ranks the schema-agnostic pipeline last, behind both a
+On F1 alone the table ranks both schema-agnostic conditions last, behind a
 single schema-specified prompt and a hand-written regex parser. The grouping is
 what makes that ordering interpretable: every system above the rule was handed
-something a human produced by reading these four documents, and the one below it
-was not, so the column the table varies is configuration rather than capability.
+something a human produced by reading these four documents, and the two below it
+were not, so the column the table varies is configuration rather than capability.
+The two schema-free conditions differ from each other only in orchestration, and
+are separated by less than either one's distance to the configured group;
+Section~\ref{sec:results_ablation} takes that comparison up directly.
 
 Two comparisons are therefore available, and they answer different questions.
 \emph{Within} the configured group the comparison is like-for-like, and the
@@ -2738,6 +2753,111 @@ rewritten and the parser would have to be extended with a function per document
 --- and the pipeline reports $0.649$--$0.850$. The question the table settles is
 not which system is best, but what the configuration those systems require is
 worth, and what it costs when it is unavailable.
+
+\subsection{What the Orchestration Buys: A Single-Prompt Ablation}
+\label{sec:results_ablation}
+
+Neither condition in Table~\ref{tab:grid_contrast} isolates the architecture.
+Both are told things about the corpus that the pipeline is not, so both measure
+the value of \emph{configuration}. The question left unanswered is narrower and
+more uncomfortable: does the orchestration --- segmentation with line numbering,
+parallel scouts, the corpus-level inducer, deterministic assembly, the grounding
+audit --- do anything that one call per document would not?
+
+The ablation holds everything constant except the graph. The same model,
+endpoint, temperature, seed, retry policy and output budget; the same JSON
+contract and parser; the same evaluator, ground truths and five repeats. The
+prompt is the scout's own prompt with only the passages that depend on chunking
+removed: the record-boundary rules, the attribute-versus-case column test, the
+field-naming discipline, the verbatim-value rule, the category request and the
+explicit refusal to supply a worked example are all carried over word for word,
+because rewriting them would have compared two prompts rather than two
+architectures. What is removed is the pipeline: no chunking, no line numbers,
+no inducer, no assembly, no auditor. One document, one call, one row per
+returned object.
+
+\begin{table}[H]
+\centering
+\caption{The multi-agent pipeline against a single schema-free prompt, five
+repeats each, same evaluator. Both conditions are given nothing about the target
+schema; they differ only in orchestration. \emph{Calls} is LLM requests per run
+(the pipeline issues one scout and one audit per chunk plus one inducer; the
+baseline issues one per document).}
+\label{tab:ablation}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+& \multicolumn{2}{c}{\textbf{Multi-agent}} & \multicolumn{2}{c}{\textbf{Single prompt}} & & \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\textbf{Corpus} & \textbf{$F1$} & \textbf{Calls} & \textbf{$F1$} & \textbf{Calls}
+& \textbf{$\Delta$} & \textbf{Fields} \\
+\midrule
+Production line (dev) & $0.719 \pm 0.000$ & 13 & $\mathbf{0.733 \pm 0.015}$ & 4 & $+0.014$ & 34--44 / 47--55 \\
+Biogas digestion      & $0.715 \pm 0.023$ &  7 & $\mathbf{0.762 \pm 0.007}$ & 1 & $+0.047$ & \\
+RO desalination       & $\mathbf{0.850 \pm 0.019}$ &  7 & $0.793 \pm 0.016$ & 1 & $-0.057$ & \\
+Sulfuric acid         & $\mathbf{0.649 \pm 0.049}$ &  9 & $0.607 \pm 0.014$ & 3 & $-0.042$ & \\
+\midrule
+\textbf{Mean}         & \textbf{0.733} & & \textbf{0.724} & & $\mathbf{-0.010}$ & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{The orchestration does not improve $F1_{\text{content}}$ on these
+corpora.} The single prompt wins on two corpora and loses on two, and the mean
+difference of $0.010$ is far inside the run-to-run variation of the corpora
+themselves, which reaches $0.049$. Two of the four gaps do exceed both
+conditions' spreads and are therefore real --- biogas favours the single prompt
+by $0.047$, desalination favours the pipeline by $0.057$ --- but they point in
+opposite directions, and averaged across the four the two architectures are
+indistinguishable. This is reported as the primary finding of this subsection
+because it is what the measurement shows, and because the opposite result is
+what the architecture was built expecting.
+
+\textbf{Two defences that suggest themselves are not available, having been
+tested.} The first is that the orchestration buys stability rather than
+accuracy. It does not: the single prompt has the \emph{lower} standard deviation
+on three of the four corpora, including $0.014$ against $0.049$ on sulfuric
+acid. Only on the development corpus is the pipeline the steadier of the two,
+and there its zero variance is a property of the score rather than of the
+output (Section~\ref{sec:results_main}). The second is that the pipeline should
+win where a corpus has several documents, since cross-document vocabulary
+reconciliation is the one thing a per-document call structurally cannot do.
+It does not: the pipeline wins on sulfuric acid, which has three documents, and
+loses on the development corpus, which has four. No property of the corpora
+tested here predicts the direction of the difference.
+
+\textbf{What the pipeline does deliver is not visible to this metric.} Two
+things, and both are properties a downstream consumer would care about even
+though $F1_{\text{content}}$ prices them at zero. The first is provenance: every
+pipeline record cites the document and line it was read from, and the baseline
+records cite nothing, because line numbering is exactly what was removed. The
+grounding check of Section~\ref{sec:lim_gt} --- which establishes that all $669$
+values asserted by the surplus records appear in the documents they cite --- is
+not merely harder to perform on the baseline's output, it is impossible, since
+there is no citation to check against. The second is vocabulary: the inducer
+reconciles the corpus onto $34$--$44$ canonical fields on the development
+corpus where the baseline's unreconciled output carries $47$--$55$. A metric
+that discards field names by construction cannot charge for that sprawl, and
+this one does not.
+
+\textbf{The cost is not marginal.} The pipeline issues three to seven times as
+many requests for the same accuracy: $13$ calls against $4$ on the development
+corpus, and $7$ against $1$ on each single-document external corpus. On the
+evidence of these four corpora, a reader whose requirement is a scored rule
+table and nothing else should use the single prompt. The architecture earns its
+cost only if per-record provenance or a reconciled vocabulary is worth
+something to what comes next --- which this thesis does not measure, and which
+Section~\ref{sec:lim_downstream} already declines to claim.
+
+\textbf{What this does and does not settle.} It does not show that multi-agent
+extraction is worthless in general; four small synthetic corpora, one model and
+one prompt family cannot support that. What it settles is narrower and is the
+claim this thesis is entitled to make: on this material, the accuracy reported
+in Table~\ref{tab:main_results} is attributable to withholding the schema and
+to the extraction discipline expressed in the prompt, \emph{not} to the graph
+that runs it. The schema-agnostic result stands --- the baseline is schema-free
+too, and reaches the same place --- but it stands without the architecture as
+its explanation.
 
 \section{Limitations}
 \label{sec:limitations}
@@ -3161,10 +3281,32 @@ and a hand-written regex parser $0.771$. Neither transfers: the grid's prompt
 encodes that corpus's vocabulary, and the parser encodes its layouts and draws
 its entity names from the corpus's own seed knowledge graph. The
 informative comparison is not the F1 ordering but its decomposition. Recall is
-identical between the pipeline and the best schema-specified condition
-($0.907$, 78 of 86 rows in both cases) while the parser reaches $0.628$; the
-entire gap to the grid is precision, and the precision gap is granularity rather
-than error.
+near-identical between the pipeline and the best schema-specified condition
+($0.907$ against $0.909$, 78 of 86 rows in both cases) while the parser reaches
+$0.628$; the entire gap to the grid is precision, and the precision gap is
+granularity rather than error.
+
+\subsection{What the Architecture Turned Out Not to Buy}
+The pipeline's own orchestration was then removed while everything else was
+held constant --- same model, same extraction discipline in the prompt, same
+evaluator, one call per whole document instead of a graph over chunks. It
+scores $0.733$, $0.762$, $0.793$ and $0.607$, beating the pipeline on two
+corpora and losing on two, for a mean difference of $0.010$ against run-to-run
+variation reaching $0.049$, and it does so with three to seven times fewer
+requests. Neither of the two natural defences survives measurement: the single
+prompt is the \emph{steadier} of the two on three corpora, and the pipeline's
+advantage does not appear on the multi-document corpora where cross-document
+reconciliation should have helped.
+
+The consequence for this thesis is stated rather than softened. The
+schema-agnostic result is unaffected --- the baseline withholds the schema too,
+and arrives in the same place --- but the multi-agent architecture is not its
+explanation. What the graph demonstrably provides is per-record provenance,
+without which the grounding check of Section~\ref{sec:lim_gt} could not have
+been performed at all, and a field vocabulary reconciled to $34$--$44$ names
+where the baseline carries $47$--$55$. Both are properties $F1_{\text{content}}$
+prices at zero by construction, and neither has been shown to be worth its cost
+to any downstream consumer, because no downstream consumer is evaluated here.
 
 \subsection{What the Evaluation Establishes About Its Own Metric}
 A schema-agnostic system cannot be scored by a schema-aware metric, so
@@ -3205,6 +3347,11 @@ cross-corpus figures of this kind should be read, in this thesis and elsewhere.
     \item A measurement of what schema specification is worth on a corpus that
           has one ($0.230$ F1) and what it costs on a corpus that does not
           (the condition cannot be run at all without being rewritten).
+    \item An ablation isolating the orchestration from the schema-agnostic
+          prompting it runs, which finds the two indistinguishable in accuracy
+          ($0.010$ mean F1 over four corpora, two won each way) at three to
+          seven times the request count --- a negative result about this
+          thesis's own architecture.
     \item A quantification of two degrees of freedom that evaluations of this
           kind rarely report: annotation granularity, worth $0.147$ on identical
           predictions, and the prompts' illustrative vocabulary, worth up to
@@ -3215,8 +3362,11 @@ cross-corpus figures of this kind should be read, in this thesis and elsewhere.
 The honest summary is that schema-agnostic extraction on these corpora is worth
 roughly $0.23$ F1 less than schema-specified extraction on the one corpus where
 both can run, that most of that difference is a disagreement about what
-constitutes one rule rather than about what the documents say, and that the
-resulting system transfers to a new facility at the cost of running it. Whether
+constitutes one rule rather than about what the documents say, that the
+resulting system transfers to a new facility at the cost of running it, and
+that the multi-agent orchestration is not what delivers any of it --- a single
+prompt withholding the same schema reaches the same accuracy for a fraction of
+the requests. Whether
 that trade is worth making is a deployment question and depends on how many
 facilities there are.
 
@@ -3255,6 +3405,24 @@ Table~\ref{tab:corpora} rather than by score.}
 \texttt{external\_test\_biogas} & 47 & 28.0 & 0.715 & 0.023 & 0.957 & 1.000 & 0.570 \\
 \texttt{external\_test\_desalination} & 26 & 27.2 & 0.850 & 0.019 & 0.831 & 0.956 & 0.869 \\
 \texttt{external\_test\_sulfuric\_acid} & 70 & 49.0 & 0.649 & 0.049 & 0.788 & 1.000 & 0.552 \\
+\bottomrule\end{tabular}\end{table}
+
+\subsection*{Single Schema-Free Prompt (orchestration removed)}
+One call per whole document, no chunking, no schema induction, no assembly and
+no audit, with the model, prompt discipline and evaluator held constant
+(Section~\ref{sec:results_ablation}).
+\begin{table}[H]\centering
+\caption{Single schema-free prompt, five repeats per corpus, scored by
+$F1_{\text{content}}$ against the same ground truths as
+Table~\ref{tab:app_multiagent}.}
+\label{tab:app_singleprompt}
+\small\begin{tabular}{@{}lrrrrrrr@{}}\toprule
+\textbf{Corpus} & \textbf{GT} & \textbf{Records} & \textbf{F1} & \textbf{SD} & \textbf{P} & \textbf{Max~P} & \textbf{R} \\ \midrule
+\texttt{dev\_production\_line} & 86 & 134.0 & 0.733 & 0.015 & 0.601 & 0.642 & 0.937 \\
+\midrule
+\texttt{external\_test\_biogas} & 47 & 33.8 & 0.762 & 0.007 & 0.911 & 1.000 & 0.656 \\
+\texttt{external\_test\_desalination} & 26 & 30.0 & 0.793 & 0.016 & 0.740 & 0.867 & 0.854 \\
+\texttt{external\_test\_sulfuric\_acid} & 70 & 48.0 & 0.607 & 0.014 & 0.746 & 1.000 & 0.511 \\
 \bottomrule\end{tabular}\end{table}
 
 \subsection*{Schema-Specified Grid, Rescored with the Current Metric}
