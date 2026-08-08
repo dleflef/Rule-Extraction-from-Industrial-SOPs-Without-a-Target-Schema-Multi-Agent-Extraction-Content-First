@@ -500,39 +500,16 @@ experimental design rather than the systems themselves.
 \subsection{Research Design and Experimental Overview}
 \label{sec:research_design}
 
-The thesis follows a three-layer experimental design, progressing from raw
-document ingestion through extraction to evaluation across four corpora.
-The layers correspond to the major phases of the work:
-
-\begin{description}
-    \item[\textbf{Layer 1: Document Ingestion and Parsing.}]
-          Source PDF documents are converted into clean, semantically structured
-          plain text using a vision-aware extraction pipeline built on IBM's
-          \texttt{docling} library (Section~\ref{sec:unstructured_parsing}).
-          This layer is a prerequisite for all downstream extraction steps.
-
-    \item[\textbf{Layer 2a: Schema-Specified Baseline.}]
-          A grid over ten prompting paradigms and two models, in which the prompt
-          carries the development corpus's schema, taxonomy, identifier
-          convention and worked examples, establishes what single-prompt
-          extraction achieves when the target schema is known
-          (Section~\ref{sec:grid_search}). Because such a prompt is written
-          around one corpus, this condition also delimits what that accuracy is
-          contingent upon.
-
-    \item[\textbf{Layer 2b: Multi-Agent Extraction Pipeline.}]
-          A LangGraph pipeline that receives no schema: segmentation with line
-          numbering, parallel scout agents that copy each document's own field
-          labels, a corpus-level schema inducer that never sees a document,
-          deterministic assembly, and parallel grounding audit
-          (Section~\ref{sec:pipeline}).
-
-    \item[\textbf{Layer 3: Evaluation.}]
-          Every system is scored by $F1_{\text{content}}$ against each corpus's
-          own ground truth, five repeats per configuration, with the metric's
-          discriminating power established empirically
-          (Section~\ref{sec:metric_validity}).
-\end{description}
+The three layers are those introduced in Section~\ref{sec:overview} and are not
+restated here: document ingestion and parsing
+(Section~\ref{sec:unstructured_parsing}), the schema-specified prompting grid
+and the schema-agnostic multi-agent pipeline
+(Sections~\ref{sec:grid_search} and~\ref{sec:pipeline}), and evaluation by
+$F1_{\text{content}}$ against each corpus's own ground truth
+(Section~\ref{sec:metric_validity}). What this chapter adds to that description
+is the experimental design wrapped around it: which corpora each layer is run
+on, under what conditions, how many times, and by what measure the results are
+judged.
 
 All experiments rely exclusively on prompt engineering and architectural
 design decisions.
@@ -1181,7 +1158,7 @@ appears in the ground-truth row and that some number close to it appears in the
 record. Two things follow, and both are real:
 
 \begin{itemize}
-    \item \textbf{The benefit.} A record is not penalised for naming a field
+    \item \textbf{Semantic flexibility.} A record is not penalised for naming a field
           differently from the annotator, for splitting one field into two, or
           for assigning a category from a vocabulary the ground truth never
           uses. In the worked example the two sides disagree on the category
@@ -1189,7 +1166,7 @@ record. Two things follow, and both are real:
           \texttt{OperatingLimit}, a label the inducer derived
           for this corpus) and the pair is still correctly counted, because
           the operational content agrees.
-    \item \textbf{The cost.} A value placed in the \emph{wrong} field produces
+    \item \textbf{Loss of positional binding.} A value placed in the \emph{wrong} field produces
           the same token in the blob as one placed correctly. If a record
           attached $6.5$ as an upper bound rather than a lower one, the flattened
           strings would be indistinguishable. The metric therefore checks that
@@ -2457,9 +2434,11 @@ annotated rows put a ceiling of $0.656$ on precision before a single comparison
 is made, and the observed $0.595$ must be read against that ceiling rather than
 against $1.0$. The same rules were found each time and only their itemisation
 differs from the annotation's; $F1_{\text{content}}$ charges that difference as
-error. The unpaired records include facts the source documents state and the
+error. The unpaired records state facts the source documents contain and the
 annotation schema has no row for, such as the inter-station dependencies printed
-in a table the ground truth does not cover.
+in a table the ground truth does not cover; every value they assert appears in
+the document they cite, which Section~\ref{sec:lim_gt} measures rather than
+assumes.
 
 \textbf{Variance differs sharply across corpora, and a zero standard deviation
 does not mean determinism.} Sulfuric acid's standard deviation of $0.049$
@@ -2896,12 +2875,38 @@ uniformly favourable, and a reader can see which corpora it reaches.
 Two distinct annotation problems affect the reported figures, and they push in
 the same direction.
 
-\textbf{Omission.} Inspection of the development corpus's unpaired records shows
-that a substantial share state facts the source document contains but the
-annotation schema has no row for: inter-station dependencies recorded in a
-table the ground truth does not cover, or the \texttt{nominal} column of the
-threshold tables, which the documents print and the annotation drops. These are
-counted as false positives.
+\textbf{Omission.} The development corpus's unpaired records state facts the
+source documents contain but the annotation schema has no row for:
+inter-station dependencies recorded in a table the ground truth does not cover,
+or the \texttt{nominal} column of the threshold tables, which the documents
+print and the annotation drops. These are counted as false positives.
+
+That claim is checked rather than asserted, because the alternative explanation
+--- that the surplus is invention --- would undermine every granularity argument
+in this thesis. Each record cites the document and line it was read from, so the
+check is deterministic and needs no model: take the $225$ unpaired records
+across the five development runs, and ask whether the field values they assert
+appear in the source document they cite. \emph{All $669$ values do.} No unpaired
+record asserts a value absent from its own document, and the eight that carry
+numeric values have all $26$ of those values present on the specific line cited.
+
+Two qualifications keep that figure honest. First, at the stricter scope of the
+individual cited line rather than the whole document, $459$ of $669$ values
+($68.6\%$) are quotable; the shortfall is almost entirely matrix records, whose
+subject is a \emph{column header} sitting on a different line from the cell
+they cite --- including the four headers the parser corrupts
+(Section~\ref{sec:lim_parser}), which the records copy faithfully and which
+therefore match nothing spelled correctly. Second, a substring test against a
+whole document could be vacuous, so it is given the same null case as the
+metric: scored against a document they did not come from, the same values match
+at $20.9\%$ rather than $100\%$. The test discriminates, and the grounded
+fraction should be read against that floor.
+
+What this establishes is bounded and worth stating precisely. It shows the
+surplus records are not fabrications, which is what the granularity argument
+requires. It does not show they are \emph{useful}, nor that the annotator was
+wrong to omit them, and Section~\ref{sec:no_field_matching} has already
+conceded the downstream cost of emitting them.
 
 \textbf{Error.} The ground truth is also, in places, simply wrong. Four bound
 cells for the two \texttt{SPD} sensors record values that appear nowhere in the
