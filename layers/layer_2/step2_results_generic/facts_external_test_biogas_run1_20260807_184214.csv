@@ -1,0 +1,158 @@
+record_id,source_file,lines,field,value
+SOPBDG003MID-001,SOP_BDG_003_MiddletonDigester.txt,20,tag,DGT-101
+SOPBDG003MID-001,SOP_BDG_003_MiddletonDigester.txt,20,equipment,Primary Digester 1
+SOPBDG003MID-001,SOP_BDG_003_MiddletonDigester.txt,20,parameter,Temperature
+SOPBDG003MID-001,SOP_BDG_003_MiddletonDigester.txt,20,unit,C
+SOPBDG003MID-001,SOP_BDG_003_MiddletonDigester.txt,20,ll,35
+SOPBDG003MID-001,SOP_BDG_003_MiddletonDigester.txt,20,hl,42
+SOPBDG003MID-001,SOP_BDG_003_MiddletonDigester.txt,20,action_remarks,"If temp <35C for >2 h continuously, DCS opens heating valve VLV-301."
+SOPBDG003MID-002,SOP_BDG_003_MiddletonDigester.txt,21,tag,DGT-101
+SOPBDG003MID-002,SOP_BDG_003_MiddletonDigester.txt,21,equipment,Primary Digester 1
+SOPBDG003MID-002,SOP_BDG_003_MiddletonDigester.txt,21,parameter,pH
+SOPBDG003MID-002,SOP_BDG_003_MiddletonDigester.txt,21,unit,-
+SOPBDG003MID-002,SOP_BDG_003_MiddletonDigester.txt,21,ll,6.8
+SOPBDG003MID-002,SOP_BDG_003_MiddletonDigester.txt,21,hl,7.5
+SOPBDG003MID-002,SOP_BDG_003_MiddletonDigester.txt,21,action_remarks,"If pH <6.5 at any time, DCS stops feed pump PMP-201 and raises Critical alarm ""DGT-101 pH Low-Low""."
+SOPBDG003MID-003,SOP_BDG_003_MiddletonDigester.txt,22,tag,DGT-101
+SOPBDG003MID-003,SOP_BDG_003_MiddletonDigester.txt,22,equipment,Primary Digester 1
+SOPBDG003MID-003,SOP_BDG_003_MiddletonDigester.txt,22,parameter,Pressure (relative to atm)
+SOPBDG003MID-003,SOP_BDG_003_MiddletonDigester.txt,22,unit,mbar
+SOPBDG003MID-003,SOP_BDG_003_MiddletonDigester.txt,22,ll,-5
+SOPBDG003MID-003,SOP_BDG_003_MiddletonDigester.txt,22,hl,+10
+SOPBDG003MID-003,SOP_BDG_003_MiddletonDigester.txt,22,action_remarks,"If pressure >+15 mbar, vent valve VLV-803 opens for 30 s."
+SOPBDG003MID-004,SOP_BDG_003_MiddletonDigester.txt,23,tag,DGT-102
+SOPBDG003MID-004,SOP_BDG_003_MiddletonDigester.txt,23,equipment,Secondary Digester 2
+SOPBDG003MID-004,SOP_BDG_003_MiddletonDigester.txt,23,parameter,Temperature
+SOPBDG003MID-004,SOP_BDG_003_MiddletonDigester.txt,23,unit,C
+SOPBDG003MID-004,SOP_BDG_003_MiddletonDigester.txt,23,ll,35
+SOPBDG003MID-004,SOP_BDG_003_MiddletonDigester.txt,23,hl,42
+SOPBDG003MID-004,SOP_BDG_003_MiddletonDigester.txt,23,action_remarks,Identical response: VLV-302 opens if temp <35C for >2 h.
+SOPBDG003MID-005,SOP_BDG_003_MiddletonDigester.txt,24,tag,DGT-102
+SOPBDG003MID-005,SOP_BDG_003_MiddletonDigester.txt,24,equipment,Secondary Digester 2
+SOPBDG003MID-005,SOP_BDG_003_MiddletonDigester.txt,24,parameter,pH
+SOPBDG003MID-005,SOP_BDG_003_MiddletonDigester.txt,24,unit,-
+SOPBDG003MID-005,SOP_BDG_003_MiddletonDigester.txt,24,ll,6.8
+SOPBDG003MID-005,SOP_BDG_003_MiddletonDigester.txt,24,hl,7.5
+SOPBDG003MID-005,SOP_BDG_003_MiddletonDigester.txt,24,action_remarks,pH <6.5 stops PMP-202 and alarms Critical.
+SOPBDG003MID-006,SOP_BDG_003_MiddletonDigester.txt,25,tag,DGT-102
+SOPBDG003MID-006,SOP_BDG_003_MiddletonDigester.txt,25,equipment,Secondary Digester 2
+SOPBDG003MID-006,SOP_BDG_003_MiddletonDigester.txt,25,parameter,Pressure
+SOPBDG003MID-006,SOP_BDG_003_MiddletonDigester.txt,25,unit,mbar
+SOPBDG003MID-006,SOP_BDG_003_MiddletonDigester.txt,25,ll,-5
+SOPBDG003MID-006,SOP_BDG_003_MiddletonDigester.txt,25,hl,+10
+SOPBDG003MID-006,SOP_BDG_003_MiddletonDigester.txt,25,action_remarks,Same overpressure response as DGT-101 via VLV-804.
+SOPBDG003MID-007,SOP_BDG_003_MiddletonDigester.txt,26,tag,GSH-401
+SOPBDG003MID-007,SOP_BDG_003_MiddletonDigester.txt,26,equipment,Gas Holder
+SOPBDG003MID-007,SOP_BDG_003_MiddletonDigester.txt,26,parameter,Level
+SOPBDG003MID-007,SOP_BDG_003_MiddletonDigester.txt,26,unit,%
+SOPBDG003MID-007,SOP_BDG_003_MiddletonDigester.txt,26,ll,20
+SOPBDG003MID-007,SOP_BDG_003_MiddletonDigester.txt,26,hl,90
+SOPBDG003MID-007,SOP_BDG_003_MiddletonDigester.txt,26,action_remarks,"If level >95%, DCS starts flare FLR-601 and inhibits CHP gas supply."
+SOPBDG003MID-008,SOP_BDG_003_MiddletonDigester.txt,26,tag,GSH-401
+SOPBDG003MID-008,SOP_BDG_003_MiddletonDigester.txt,26,equipment,Gas Holder
+SOPBDG003MID-008,SOP_BDG_003_MiddletonDigester.txt,26,parameter,Level
+SOPBDG003MID-008,SOP_BDG_003_MiddletonDigester.txt,26,unit,%
+SOPBDG003MID-008,SOP_BDG_003_MiddletonDigester.txt,26,ll,20
+SOPBDG003MID-008,SOP_BDG_003_MiddletonDigester.txt,26,hl,90
+SOPBDG003MID-008,SOP_BDG_003_MiddletonDigester.txt,26,action_remarks,"If level <20%, CHP supply inhibited and Warning alarm active."
+SOPBDG003MID-009,SOP_BDG_003_MiddletonDigester.txt,27,tag,GSH-401
+SOPBDG003MID-009,SOP_BDG_003_MiddletonDigester.txt,27,equipment,Gas Holder
+SOPBDG003MID-009,SOP_BDG_003_MiddletonDigester.txt,27,parameter,Pressure
+SOPBDG003MID-009,SOP_BDG_003_MiddletonDigester.txt,27,unit,mbar
+SOPBDG003MID-009,SOP_BDG_003_MiddletonDigester.txt,27,ll,-
+SOPBDG003MID-009,SOP_BDG_003_MiddletonDigester.txt,27,hl,50
+SOPBDG003MID-009,SOP_BDG_003_MiddletonDigester.txt,27,action_remarks,Pressure relief valve VLV-802 set to lift at 55 mbar.
+SOPBDG003MID-010,SOP_BDG_003_MiddletonDigester.txt,28,tag,BLR-501
+SOPBDG003MID-010,SOP_BDG_003_MiddletonDigester.txt,28,equipment,Steam Boiler
+SOPBDG003MID-010,SOP_BDG_003_MiddletonDigester.txt,28,parameter,Steam Pressure
+SOPBDG003MID-010,SOP_BDG_003_MiddletonDigester.txt,28,unit,bar
+SOPBDG003MID-010,SOP_BDG_003_MiddletonDigester.txt,28,ll,8
+SOPBDG003MID-010,SOP_BDG_003_MiddletonDigester.txt,28,hl,12
+SOPBDG003MID-010,SOP_BDG_003_MiddletonDigester.txt,28,action_remarks,High-High alarm at 12.5 bar: DCS trips burner and initiates emergency shutdown (Critical).
+SOPBDG003MID-011,SOP_BDG_003_MiddletonDigester.txt,29,tag,H2S-901
+SOPBDG003MID-011,SOP_BDG_003_MiddletonDigester.txt,29,equipment,H2S Scrubber
+SOPBDG003MID-011,SOP_BDG_003_MiddletonDigester.txt,29,parameter,Outlet H2S
+SOPBDG003MID-011,SOP_BDG_003_MiddletonDigester.txt,29,unit,ppm
+SOPBDG003MID-011,SOP_BDG_003_MiddletonDigester.txt,29,ll,-
+SOPBDG003MID-011,SOP_BDG_003_MiddletonDigester.txt,29,hl,150
+SOPBDG003MID-011,SOP_BDG_003_MiddletonDigester.txt,29,action_remarks,"If >150 ppm, DCS diverts biogas to flare and raises High H2S alarm."
+SOPBDG003MID-012,SOP_BDG_003_MiddletonDigester.txt,30,tag,FLR-601
+SOPBDG003MID-012,SOP_BDG_003_MiddletonDigester.txt,30,equipment,Flare
+SOPBDG003MID-012,SOP_BDG_003_MiddletonDigester.txt,30,parameter,Flame Temperature
+SOPBDG003MID-012,SOP_BDG_003_MiddletonDigester.txt,30,unit,C
+SOPBDG003MID-012,SOP_BDG_003_MiddletonDigester.txt,30,ll,850
+SOPBDG003MID-012,SOP_BDG_003_MiddletonDigester.txt,30,hl,-
+SOPBDG003MID-012,SOP_BDG_003_MiddletonDigester.txt,30,action_remarks,"If <850C, DCS inhibits waste gas feed and triggers alarm."
+SOPBDG003MID-013,SOP_BDG_003_MiddletonDigester.txt,31,tag,CHP-1001
+SOPBDG003MID-013,SOP_BDG_003_MiddletonDigester.txt,31,equipment,CHP Engine
+SOPBDG003MID-013,SOP_BDG_003_MiddletonDigester.txt,31,parameter,Jacket Water Temperature
+SOPBDG003MID-013,SOP_BDG_003_MiddletonDigester.txt,31,unit,C
+SOPBDG003MID-013,SOP_BDG_003_MiddletonDigester.txt,31,ll,70
+SOPBDG003MID-013,SOP_BDG_003_MiddletonDigester.txt,31,hl,95
+SOPBDG003MID-013,SOP_BDG_003_MiddletonDigester.txt,31,action_remarks,"If >98C, DCS derates engine to 50% load."
+SOPBDG003MID-014,SOP_BDG_003_MiddletonDigester.txt,32,tag,VF-801
+SOPBDG003MID-014,SOP_BDG_003_MiddletonDigester.txt,32,equipment,Digester Hall Vent.
+SOPBDG003MID-014,SOP_BDG_003_MiddletonDigester.txt,32,parameter,Air Changes per Hour
+SOPBDG003MID-014,SOP_BDG_003_MiddletonDigester.txt,32,unit,ACH
+SOPBDG003MID-014,SOP_BDG_003_MiddletonDigester.txt,32,ll,6
+SOPBDG003MID-014,SOP_BDG_003_MiddletonDigester.txt,32,hl,-
+SOPBDG003MID-014,SOP_BDG_003_MiddletonDigester.txt,32,action_remarks,"If airflow <6 ACH, DCS issues Warning alarm."
+SOPBDG003MID-015,SOP_BDG_003_MiddletonDigester.txt,"37,38,39",biogas_quality_interlock,"If the methane concentration (CH4) measured by the biogas analyser GAS-701 falls below 50% vol for a period exceeding 30 minutes, the DCS shall stop the CHP-1001 engine and divert all biogas to the flare FLR-601. A ""Low CH4"" Warning alarm is raised."
+SOPBDG003MID-016,SOP_BDG_003_MiddletonDigester.txt,"40,41",biogas_quality_interlock,"If CH4 drops below 40% vol, the alarm escalates to Critical and the plant siren activates."
+3.2,SOP_BDG_003_MiddletonDigester.txt,"44,45,46",digester_agitator,AGT-301
+3.2,SOP_BDG_003_MiddletonDigester.txt,"44,45,46",start_condition,digester level is above the minimum agitator immersion level (2.0 m from tank bottom)
+3.2,SOP_BDG_003_MiddletonDigester.txt,"44,45,46",stop_condition,level falls below 2.0 m
+3.2,SOP_BDG_003_MiddletonDigester.txt,"44,45,46",action,DCS stops the agitator immediately
+3.3,SOP_BDG_003_MiddletonDigester.txt,"49,50,51,52",h2s_alarm,High H2S alarm (H2S-901 outlet >150 ppm)
+3.3,SOP_BDG_003_MiddletonDigester.txt,"49,50,51,52",requirement,control room operator must acknowledge it within 5 minutes
+3.3,SOP_BDG_003_MiddletonDigester.txt,"49,50,51,52",condition,alarm is not acknowledged within 5 minutes
+3.3,SOP_BDG_003_MiddletonDigester.txt,"49,50,51,52",action,DCS automatically initiates flaring and sends a plant-wide alert notification
+3.4,SOP_BDG_003_MiddletonDigester.txt,"55,56,57,58,59",critical_alarm_acknowledgment_deadline,"All alarms designated as ""Critical"" in the alarm list (including DGT-101/102 pH Low-Low, BLR-501 High-High Steam Pressure, GSH-401 Level High-High, and CH4 <40% vol)"
+3.4,SOP_BDG_003_MiddletonDigester.txt,"55,56,57,58,59",requirement,must be acknowledged by the control room operator within 3 minutes of annunciation
+3.4,SOP_BDG_003_MiddletonDigester.txt,"55,56,57,58,59",condition,Failure to acknowledge
+3.4,SOP_BDG_003_MiddletonDigester.txt,"55,56,57,58,59",action,escalates to the Shift Supervisor's pager and activates the facility siren
+4.1,SOP_BDG_003_MiddletonDigester.txt,"64,65,66",agitator_vibration,AGT-301
+4.1,SOP_BDG_003_MiddletonDigester.txt,"64,65,66",sensor,VIB-301
+4.1,SOP_BDG_003_MiddletonDigester.txt,"64,65,66",trigger,RMS vibration exceeds 7.1 mm/s for more than 15 minutes continuously
+4.1,SOP_BDG_003_MiddletonDigester.txt,"64,65,66",action,"maintenance work order shall be auto-generated with priority ""Urgent"""
+4.1,SOP_BDG_003_MiddletonDigester.txt,"64,65,66",deadline,to be addressed within 24 hours
+4.2,SOP_BDG_003_MiddletonDigester.txt,"69,70,71,72",digester_temperature_probe_drift,DGT-101
+4.2,SOP_BDG_003_MiddletonDigester.txt,"69,70,71,72",probes,TT-101A and TT-101B
+4.2,SOP_BDG_003_MiddletonDigester.txt,"69,70,71,72",trigger,absolute difference between the two readings exceeds 1.5C for more than 1 hour
+4.2,SOP_BDG_003_MiddletonDigester.txt,"69,70,71,72",action,both probes must be inspected and recalibrated
+4.2,SOP_BDG_003_MiddletonDigester.txt,"69,70,71,72",deadline,within 48 hours
+4.2,SOP_BDG_003_MiddletonDigester.txt,"69,70,71,72",logging,"A ""Probe Drift"" notification is logged"
+4.3,SOP_BDG_003_MiddletonDigester.txt,"75,76,77,78",gas_analyser_calibration_drift,GAS-701
+4.3,SOP_BDG_003_MiddletonDigester.txt,"75,76,77,78",trigger,zero drift exceeds 2% of full scale (full scale = 100% vol CH4) or the span drift exceeds 5% of the reading
+4.3,SOP_BDG_003_MiddletonDigester.txt,"75,76,77,78",action,DCS shall schedule a recalibration task
+4.3,SOP_BDG_003_MiddletonDigester.txt,"75,76,77,78",deadline,due within 48 hours
+4.3,SOP_BDG_003_MiddletonDigester.txt,"75,76,77,78",display_message,"""Analyzer Cal Required"""
+4.4,SOP_BDG_003_MiddletonDigester.txt,"81,82,83",h2s_scrubber_media_replacement,H2S-901
+4.4,SOP_BDG_003_MiddletonDigester.txt,"81,82,83",trigger,differential pressure across the H2S scrubber H2S-901 exceeds 25 mbar
+4.4,SOP_BDG_003_MiddletonDigester.txt,"81,82,83",action,DCS shall generate a maintenance request to replace the media
+4.4,SOP_BDG_003_MiddletonDigester.txt,"81,82,83",status,"scrubber may remain in service, but the alert indicates imminent bypass"
+4.5,SOP_BDG_003_MiddletonDigester.txt,"86,87,88",boiler_service_interval,BLR-501
+4.5,SOP_BDG_003_MiddletonDigester.txt,"86,87,88",requirement,"comprehensive inspection every 8,000 operating hours or 12 calendar months, whichever occurs first"
+4.5,SOP_BDG_003_MiddletonDigester.txt,"86,87,88",reminder,"DCS shall issue a ""Boiler Service Due"" reminder 30 days before the deadline"
+4.6,SOP_BDG_003_MiddletonDigester.txt,"91,92,93",flare_ignition_test,flare ignition system
+4.6,SOP_BDG_003_MiddletonDigester.txt,"91,92,93",frequency,weekly (every 168 hours)
+4.6,SOP_BDG_003_MiddletonDigester.txt,"91,92,93",logging_requirement,test and result (success/failure) must be logged in the shift log by the maintenance technician
+4.6,SOP_BDG_003_MiddletonDigester.txt,"91,92,93",lines,"[90, 91, 92, 93]"
+5.1,SOP_BDG_003_MiddletonDigester.txt,"98,99,100,101,102,103,104,105",confined_space_entry_digester_tanks,DGT-101 or DGT-102
+5.1,SOP_BDG_003_MiddletonDigester.txt,"98,99,100,101,102,103,104,105",classification,confined space
+5.1,SOP_BDG_003_MiddletonDigester.txt,"98,99,100,101,102,103,104,105",permit,mandatory
+5.1,SOP_BDG_003_MiddletonDigester.txt,"98,99,100,101,102,103,104,105",requirement,atmosphere must be tested within 15 minutes prior to entry
+5.1,SOP_BDG_003_MiddletonDigester.txt,"98,99,100,101,102,103,104,105",limits,"CH4 (<10% LEL), H2S (<10 ppm), and O2 (19.5-23.5%)"
+5.1,SOP_BDG_003_MiddletonDigester.txt,"98,99,100,101,102,103,104,105",personnel_requirement,dedicated standby attendant with continuous radio contact shall be posted
+5.1,SOP_BDG_003_MiddletonDigester.txt,"98,99,100,101,102,103,104,105",entry_supervisor_duty,log the entry permit in the electronic system and obtain acknowledgment from the Shift Supervisor within 15 minutes of permit activation
+5.1,SOP_BDG_003_MiddletonDigester.txt,"98,99,100,101,102,103,104,105",trigger,CH4 concentration exceeds 5% LEL
+5.1,SOP_BDG_003_MiddletonDigester.txt,"98,99,100,101,102,103,104,105",action,all personnel must evacuate immediately and the evacuation alarm sounded
+5.2,SOP_BDG_003_MiddletonDigester.txt,"108,109",gas_holder_platform_access,GSH-401 maintenance platform
+5.2,SOP_BDG_003_MiddletonDigester.txt,"108,109",restriction,Personnel are prohibited from accessing
+5.2,SOP_BDG_003_MiddletonDigester.txt,"108,109",condition,gas holder level exceeds 80%
+5.2,SOP_BDG_003_MiddletonDigester.txt,"108,109",indicator,warning sign interlocked with the level transmitter shall illuminate at the access gate
+5.2,SOP_BDG_003_MiddletonDigester.txt,"108,109",lines,"[107, 108, 109, 110]"
+SOPBDG003MID-017,SOP_BDG_003_MiddletonDigester.txt,"113,114,115",flare_area_exclusion,FLR-601
+SOPBDG003MID-017,SOP_BDG_003_MiddletonDigester.txt,"113,114,115",condition,in operation (flame detected)
+SOPBDG003MID-017,SOP_BDG_003_MiddletonDigester.txt,"113,114,115",exclusion_zone,15-metre radius
+SOPBDG003MID-017,SOP_BDG_003_MiddletonDigester.txt,"113,114,115",entry_requirement,explicit authorisation from the Shift Supervisor

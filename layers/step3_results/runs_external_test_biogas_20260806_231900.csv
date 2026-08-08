@@ -1,6 +1,0 @@
-file_name,total_extracted,gt_rows_total,max_possible_precision,forced_fp_from_row_count,content_f1,content_pr,content_re,content_tp,content_fp,content_fn,gt_ids_found_verbatim,gt_ids_distinct,id_reuse_frac
-ext_multi_agent_generic_external_test_biogas_run5_20260806_215016.csv,36,47,1.0,0,0.843,0.972,0.745,35,1,12,0,47,0.0
-ext_multi_agent_generic_external_test_biogas_run2_20260806_214930.csv,35,47,1.0,0,0.805,0.943,0.702,33,2,14,0,47,0.0
-ext_multi_agent_generic_external_test_biogas_run3_20260806_214946.csv,38,47,1.0,0,0.8,0.895,0.723,34,4,13,0,47,0.0
-ext_multi_agent_generic_external_test_biogas_run4_20260806_215002.csv,36,47,1.0,0,0.795,0.917,0.702,33,3,14,0,47,0.0
-ext_multi_agent_generic_external_test_biogas_run1_20260806_214909.csv,37,47,1.0,0,0.786,0.892,0.702,33,4,14,0,47,0.0

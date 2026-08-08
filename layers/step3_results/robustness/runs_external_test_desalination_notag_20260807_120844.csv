@@ -1,6 +1,0 @@
-file_name,total_extracted,gt_rows_total,max_possible_precision,forced_fp_from_row_count,content_f1,content_pr,content_re,content_tp,content_fp,content_fn,gt_ids_found_verbatim,gt_ids_distinct,id_reuse_frac
-ext_multi_agent_generic_external_test_desalination_run3_20260806_215204.csv,27,26,0.963,1,0.943,0.926,0.962,25,2,1,6,10,0.6
-ext_multi_agent_generic_external_test_desalination_run4_20260806_215218.csv,27,26,0.963,1,0.943,0.926,0.962,25,2,1,6,10,0.6
-ext_multi_agent_generic_external_test_desalination_run5_20260806_215236.csv,28,26,0.929,2,0.926,0.893,0.962,25,3,1,6,10,0.6
-ext_multi_agent_generic_external_test_desalination_run2_20260806_215149.csv,27,26,0.963,1,0.906,0.889,0.923,24,3,2,6,10,0.6
-ext_multi_agent_generic_external_test_desalination_run1_20260806_215134.csv,27,26,0.963,1,0.906,0.889,0.923,24,3,2,6,10,0.6

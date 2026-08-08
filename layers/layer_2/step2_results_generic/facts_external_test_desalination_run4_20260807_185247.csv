@@ -1,0 +1,80 @@
+record_id,source_file,lines,field,value
+OP-ST-001,SOP_RO_V4_HighPressureROSkids.txt,50,high_pressure_reverse_osmosis_skids,The high-pressure intake pump must ramp up at a maximum rate of 0.5 bar per minute to prevent membrane telescoping.
+OP-ST-002,SOP_RO_V4_HighPressureROSkids.txt,51,high_pressure_reverse_osmosis_skids,The anti-scalant dosing pump must be energized and verified active prior to raw water valve actuation.
+OP-ST-003,SOP_RO_V4_HighPressureROSkids.txt,52,high_pressure_reverse_osmosis_skids,"During startup, the permeate bypass valve must remain fully open, and the brine reject flow must be logged every 10 minutes."
+OP-SD-001,SOP_RO_V4_HighPressureROSkids.txt,53,high_pressure_reverse_osmosis_skids,The main feed breaker must be tripped immediately if catastrophic seal failure occurs.
+OP-ST-004,SOP_RO_V4_HighPressureROSkids.txt,54,high_pressure_reverse_osmosis_skids,"If permeate conductivity fails to drop below baseline within 20 minutes, immediately execute the shutdown sequence mandated by [OP-SD-001]."
+SOPROV4HIGHP-001,SOP_RO_V4_HighPressureROSkids.txt,63,requirement,Operators must wear nitrile gloves and splash goggles when handling sodium bisulfite
+SOPROV4HIGHP-002,SOP_RO_V4_HighPressureROSkids.txt,64,requirement,The dosing skid containment bund must be pumped empty within 4 hours of any detected spill
+SOPROV4HIGHP-003,SOP_RO_V4_HighPressureROSkids.txt,65,requirement,All empty chemical carboys require a triple rinse with permeate water before disposal
+OP-AL-001,SOP_RO_V4_HighPressureROSkids.txt,78,parameter,Membrane Feed Pressure
+OP-AL-001,SOP_RO_V4_HighPressureROSkids.txt,78,target,55.0 bar
+OP-AL-001,SOP_RO_V4_HighPressureROSkids.txt,78,threshold,52.0 bar; 50.0 bar; 58.0 bar; 60.0 bar
+OP-AL-001,SOP_RO_V4_HighPressureROSkids.txt,78,consequence,low-tier alert; critical low trip; high-tier alert; critical high trip forces shutdown
+SOPROV4HIGHP-004,SOP_RO_V4_HighPressureROSkids.txt,91,ro_feed_stream,FQ-01
+SOPROV4HIGHP-004,SOP_RO_V4_HighPressureROSkids.txt,91,measurement,Turbidity
+SOPROV4HIGHP-004,SOP_RO_V4_HighPressureROSkids.txt,91,metric_unit,NTU
+SOPROV4HIGHP-004,SOP_RO_V4_HighPressureROSkids.txt,91,min_bound,0.0
+SOPROV4HIGHP-004,SOP_RO_V4_HighPressureROSkids.txt,91,max_bound,0.5
+SOPROV4HIGHP-004,SOP_RO_V4_HighPressureROSkids.txt,91,required_correction,Backwash multimedia filters
+SOPROV4HIGHP-004,SOP_RO_V4_HighPressureROSkids.txt,91,time_allowance,30 mins
+SOPROV4HIGHP-005,SOP_RO_V4_HighPressureROSkids.txt,92,ro_feed_stream,FQ-02
+SOPROV4HIGHP-005,SOP_RO_V4_HighPressureROSkids.txt,92,measurement,ORP
+SOPROV4HIGHP-005,SOP_RO_V4_HighPressureROSkids.txt,92,metric_unit,mV
+SOPROV4HIGHP-005,SOP_RO_V4_HighPressureROSkids.txt,92,min_bound,-200
+SOPROV4HIGHP-005,SOP_RO_V4_HighPressureROSkids.txt,92,max_bound,300
+SOPROV4HIGHP-005,SOP_RO_V4_HighPressureROSkids.txt,92,required_correction,Increase SMBS dosing
+SOPROV4HIGHP-005,SOP_RO_V4_HighPressureROSkids.txt,92,time_allowance,15 mins
+SOPROV4HIGHP-006,SOP_RO_V4_HighPressureROSkids.txt,93,ro_feed_stream,FQ-03
+SOPROV4HIGHP-006,SOP_RO_V4_HighPressureROSkids.txt,93,measurement,Temperature
+SOPROV4HIGHP-006,SOP_RO_V4_HighPressureROSkids.txt,93,metric_unit,degC
+SOPROV4HIGHP-006,SOP_RO_V4_HighPressureROSkids.txt,93,min_bound,15.0
+SOPROV4HIGHP-006,SOP_RO_V4_HighPressureROSkids.txt,93,max_bound,35.0
+SOPROV4HIGHP-006,SOP_RO_V4_HighPressureROSkids.txt,93,required_correction,Adjust VFD speed
+SOPROV4HIGHP-006,SOP_RO_V4_HighPressureROSkids.txt,93,time_allowance,60 mins
+SOPROV4HIGHP-007,SOP_RO_V4_HighPressureROSkids.txt,94,ro_feed_stream,FQ-04
+SOPROV4HIGHP-007,SOP_RO_V4_HighPressureROSkids.txt,94,measurement,pH
+SOPROV4HIGHP-007,SOP_RO_V4_HighPressureROSkids.txt,94,metric_unit,pH_unit
+SOPROV4HIGHP-007,SOP_RO_V4_HighPressureROSkids.txt,94,min_bound,6.5
+SOPROV4HIGHP-007,SOP_RO_V4_HighPressureROSkids.txt,94,max_bound,7.5
+SOPROV4HIGHP-007,SOP_RO_V4_HighPressureROSkids.txt,94,required_correction,Inject Sulfuric Acid
+SOPROV4HIGHP-007,SOP_RO_V4_HighPressureROSkids.txt,94,time_allowance,10 mins
+SOPROV4HIGHP-008,SOP_RO_V4_HighPressureROSkids.txt,104,role,Plant_Operator
+SOPROV4HIGHP-008,SOP_RO_V4_HighPressureROSkids.txt,104,operational_phase,Standby
+SOPROV4HIGHP-008,SOP_RO_V4_HighPressureROSkids.txt,104,access_level,Full access
+SOPROV4HIGHP-009,SOP_RO_V4_HighPressureROSkids.txt,104,role,Plant_Operator
+SOPROV4HIGHP-009,SOP_RO_V4_HighPressureROSkids.txt,104,operational_phase,Startup
+SOPROV4HIGHP-009,SOP_RO_V4_HighPressureROSkids.txt,104,access_level,Full access
+SOPROV4HIGHP-010,SOP_RO_V4_HighPressureROSkids.txt,104,role,Plant_Operator
+SOPROV4HIGHP-010,SOP_RO_V4_HighPressureROSkids.txt,104,operational_phase,Normal_Production
+SOPROV4HIGHP-010,SOP_RO_V4_HighPressureROSkids.txt,104,access_level,Full access
+SOPROV4HIGHP-011,SOP_RO_V4_HighPressureROSkids.txt,104,role,Plant_Operator
+SOPROV4HIGHP-011,SOP_RO_V4_HighPressureROSkids.txt,104,operational_phase,CIP_Cleaning
+SOPROV4HIGHP-011,SOP_RO_V4_HighPressureROSkids.txt,104,access_level,Visual inspection only
+SOPROV4HIGHP-012,SOP_RO_V4_HighPressureROSkids.txt,105,role,Maintenance_Tech
+SOPROV4HIGHP-012,SOP_RO_V4_HighPressureROSkids.txt,105,operational_phase,Standby
+SOPROV4HIGHP-012,SOP_RO_V4_HighPressureROSkids.txt,105,access_level,Maintenance access
+SOPROV4HIGHP-013,SOP_RO_V4_HighPressureROSkids.txt,105,role,Maintenance_Tech
+SOPROV4HIGHP-013,SOP_RO_V4_HighPressureROSkids.txt,105,operational_phase,Startup
+SOPROV4HIGHP-013,SOP_RO_V4_HighPressureROSkids.txt,105,access_level,No access
+SOPROV4HIGHP-014,SOP_RO_V4_HighPressureROSkids.txt,105,role,Maintenance_Tech
+SOPROV4HIGHP-014,SOP_RO_V4_HighPressureROSkids.txt,105,operational_phase,Normal_Production
+SOPROV4HIGHP-014,SOP_RO_V4_HighPressureROSkids.txt,105,access_level,Visual inspection only
+SOPROV4HIGHP-015,SOP_RO_V4_HighPressureROSkids.txt,105,role,Maintenance_Tech
+SOPROV4HIGHP-015,SOP_RO_V4_HighPressureROSkids.txt,105,operational_phase,CIP_Cleaning
+SOPROV4HIGHP-015,SOP_RO_V4_HighPressureROSkids.txt,105,access_level,Full access
+SOPROV4HIGHP-016,SOP_RO_V4_HighPressureROSkids.txt,106,role,Safety_Auditor
+SOPROV4HIGHP-016,SOP_RO_V4_HighPressureROSkids.txt,106,operational_phase,Standby
+SOPROV4HIGHP-016,SOP_RO_V4_HighPressureROSkids.txt,106,access_level,Visual inspection only
+SOPROV4HIGHP-017,SOP_RO_V4_HighPressureROSkids.txt,106,role,Safety_Auditor
+SOPROV4HIGHP-017,SOP_RO_V4_HighPressureROSkids.txt,106,operational_phase,Startup
+SOPROV4HIGHP-017,SOP_RO_V4_HighPressureROSkids.txt,106,access_level,Visual inspection only
+SOPROV4HIGHP-018,SOP_RO_V4_HighPressureROSkids.txt,106,role,Safety_Auditor
+SOPROV4HIGHP-018,SOP_RO_V4_HighPressureROSkids.txt,106,operational_phase,Normal_Production
+SOPROV4HIGHP-018,SOP_RO_V4_HighPressureROSkids.txt,106,access_level,Visual inspection only
+SOPROV4HIGHP-019,SOP_RO_V4_HighPressureROSkids.txt,106,role,Safety_Auditor
+SOPROV4HIGHP-019,SOP_RO_V4_HighPressureROSkids.txt,106,operational_phase,CIP_Cleaning
+SOPROV4HIGHP-019,SOP_RO_V4_HighPressureROSkids.txt,106,access_level,Visual inspection only
+SOPROV4HIGHP-020,SOP_RO_V4_HighPressureROSkids.txt,"136,137",regulatory_compliance,necessitates the retention of all water quality data for a period spanning ten years
+SOPROV4HIGHP-021,SOP_RO_V4_HighPressureROSkids.txt,"141,142",condition,When permeability declines unexpectedly
+SOPROV4HIGHP-021,SOP_RO_V4_HighPressureROSkids.txt,"141,142",action,process engineers conduct membrane autopsies on sacrificial elements

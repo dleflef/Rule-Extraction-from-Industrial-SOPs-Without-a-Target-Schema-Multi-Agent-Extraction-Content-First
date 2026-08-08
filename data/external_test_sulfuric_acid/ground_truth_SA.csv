@@ -1,0 +1,71 @@
+rule_id,document,section_id,section_title,rule_text,numeric_value,unit,equipment_tag,responsible_role,condition
+R001,SOP-ACID-OP-002,2.1,Responsibilities,"The Control Room Operator (CRO) is responsible for monitoring all process parameters, initiating control actions, and logging data.",,,,Control Room Operator,
+R002,SOP-ACID-OP-002,2.2,Responsibilities,"The Field Operator is responsible for physical rounds, sampling, and verification of local gauge readings.",,,,Field Operator,
+R003,SOP-ACID-OP-002,2.3,Responsibilities,The Shift Supervisor has authority to approve deviations from normal operating targets and to authorise interlock bypasses.,,,,Shift Supervisor,
+R004,SOP-ACID-OP-002,3,Pre-Startup Checks,Any condition not met must be reported to the Shift Supervisor.,,,,Field Operator,pre-startup condition not met
+R005,SOP-ACID-OP-002,3.1,Pre-Startup Checks,All safety interlocks tested and enabled with no active trips.,,,,,
+R006,SOP-ACID-OP-002,3.2,Pre-Startup Checks,Sulfur melter S-101 temperature ≥ 135°C.,135,°C,S-101,,
+R007,SOP-ACID-OP-002,3.3,Pre-Startup Checks,Acid circulation pump P-107A available and seal flush water flowing.,,,P-107A,,
+R008,SOP-ACID-OP-002,4.1,Startup Sequence,Start acid circulation pump P-107A and establish a flow rate of at least 600 m³/h through the absorption tower.,600,m³/h,P-107A,,
+R009,SOP-ACID-OP-002,4.2,Startup Sequence,"Initiate combustion air blower B-103 and adjust air flow to 12,000 Nm³/h.",12000,Nm³/h,B-103,,
+R010,SOP-ACID-OP-002,4.3,Startup Sequence,Light sulfur burner F-102 and increase sulfur feed at a rate not exceeding 50 kg/h per minute until reaching 2000 kg/h.,50,kg/h per minute,F-102,,
+R011,SOP-ACID-OP-002,4.4,Startup Sequence,"When converter Bed 1 inlet temperature exceeds 400°C, slowly raise sulfur feed to normal range while adjusting air flow to maintain SO2 concentration at 10.0–10.5% vol.",10.0–10.5,% vol,,,Bed 1 inlet temp >400°C
+R012,SOP-ACID-OP-002,5,Normal Operating Parameters,Maintain 3800–4200 kg/h,3800–4200,kg/h,FIC-101,,
+R013,SOP-ACID-OP-002,5,Normal Operating Parameters,Low alarm at 3500 kg/h,3500,kg/h,FIC-101,,
+R014,SOP-ACID-OP-002,5,Normal Operating Parameters,High alarm at 4500 kg/h,4500,kg/h,FIC-101,,
+R015,SOP-ACID-OP-002,5,Normal Operating Parameters,Trip at 4700 kg/h: close sulfur feed valve XV-101 and initiate automatic water wash of burner.,4700,kg/h,XV-101,,trip at 4700 kg/h
+R016,SOP-ACID-OP-002,5,Normal Operating Parameters,Maintain 580–610°C,580–610,°C,TI-202,,
+R017,SOP-ACID-OP-002,5,Normal Operating Parameters,Low alarm at 550°C,550,°C,TI-202,,
+R018,SOP-ACID-OP-002,5,Normal Operating Parameters,High alarm at 615°C,615,°C,TI-202,,
+R019,SOP-ACID-OP-002,5,Normal Operating Parameters,Trip at 620°C: open converter bypass damper DV-201 and initiate emergency cooling.,620,°C,DV-201,,trip at 620°C
+R020,SOP-ACID-OP-002,5,Normal Operating Parameters,Maintain 98.3–98.7% H₂SO₄,98.3–98.7,% H₂SO₄,CI-301,,
+R021,SOP-ACID-OP-002,5,Normal Operating Parameters,Low alarm at 98.0%,98.0,%,CI-301,,
+R022,SOP-ACID-OP-002,5,Normal Operating Parameters,High alarm at 99.0%,99.0,%,CI-301,,
+R023,SOP-ACID-OP-002,5,Normal Operating Parameters,Trip at 97.5% or 99.2%: close acid product valve and divert to spill tank.,97.5% / 99.2,%,acid product valve,,trip at 97.5% or 99.2%
+R024,SOP-ACID-OP-002,5.1,Normal Operating Parameters,Interlock bypass for any trip function requires written authorisation from the Shift Supervisor and must be recorded in the bypass log.,,,,Shift Supervisor,
+R025,SOP-ACID-OP-002,6.1,Automatic Control and Interlocks,The Burner Management System (BMS) logic performs a pre-purge of the combustion chamber for 60 seconds before allowing ignition.,60,seconds,,,
+R026,SOP-ACID-OP-002,6.2,Automatic Control and Interlocks,All safety interlocks shall be tested every 6 months.,6,months,,,
+R027,SOP-ACID-OP-002,6.3,Automatic Control and Interlocks,"In the event of a loss of instrument air, the fail-safe valves shall move to their safe positions as specified in P&ID 02-01.",,,,,loss of instrument air
+R028,SOP-ACID-OP-002,7.1,Shift Handover and Logging,"The outgoing CRO shall complete the Shift Handover Log (form OP-LOG-001) and verbally brief the incoming CRO on current operating status, alarms, and maintenance activities.",,,,CRO,
+R029,SOP-ACID-OP-002,7.2,Shift Handover and Logging,"The process log shall be updated every 30 minutes with: SO2 feed rate, Bed 1 outlet temperature, acid concentration, and any alarm occurrences.",30,minutes,,,
+R030,SOP-ACID-OP-002,8.1,Routine Sampling and Testing,The Field Operator shall measure absorption acid concentration every 2 hours using the hydrometer and record the value in the log.,2,hours,,Field Operator,
+R031,SOP-ACID-OP-002,8.2,Routine Sampling and Testing,The online SO2 analyzer AI-201 shall be calibrated every 7 days by the Instrument Technician using certified 10.0% SO₂ span gas.,7,days,AI-201,Instrument Technician,
+R032,SOP-ACID-OP-002,9.1,Catalyst Management,"The differential pressure across Bed 1 (ΔP-201) shall be recorded once per shift. If ΔP exceeds 150 mbar, the Shift Supervisor shall be notified.",150,mbar,ΔP-201,,ΔP >150 mbar
+R033,SOP-ACID-OP-002,9.2,Catalyst Management,"Bed 1 catalyst shall be replaced after 30,000 cumulative operating hours or if ΔP persists above 150 mbar after screening.",30000 / 150,hours / mbar,,,ΔP persists >150 mbar
+R034,SOP-ACID-ESD-005,2.1,Responsibilities,The CRO shall immediately execute the actions listed for each trip scenario.,,,,CRO,
+R035,SOP-ACID-ESD-005,2.2,Responsibilities,The Field Operator shall confirm valve positions physically within 10 minutes of a trip.,10,minutes,,Field Operator,
+R036,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,TI-202 ≥ 620°C (2oo3 voting),620,°C,TI-202,,
+R037,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,Open converter bypass damper DV-201; start emergency quench air injection,,,DV-201,,
+R038,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,Confirm DV-201 open and quench air flowing; reduce sulfur feed to zero if not already tripped,,,,,
+R039,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,1 minute,1,minute,,,
+R040,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,FI-401 ≤ 500 m³/h,500,m³/h,FI-401,,
+R041,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,Stop acid pump P-107; close acid valve XV-301,,,P-107 / XV-301,,
+R042,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,Verify pump stopped and valve closed; check pump mechanical seal,,,,,
+R043,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,2 minutes,2,minutes,,,
+R044,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,AI-301 ≥ 50 ppm SO₂,50,ppm SO₂,AI-301,,
+R045,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,Initiate stack emergency scrubber; trip sulfur feed,,,,,
+R046,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,Evacuate downwind area; sound site alarm; notify Environmental Manager,,,,,
+R047,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,1 minute,1,minute,,,
+R048,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,Pressure switch PS-501 ≤ 4.0 bar,4.0,bar,PS-501,,
+R049,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,All control valves fail to safe position per P&ID,,,,,
+R050,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,Verify valve positions; shut down plant manually if needed,,,,,
+R051,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,5 minutes,5,minutes,,,
+R052,SOP-ACID-ESD-005,3,Automatic Trip Scenarios,All trip events shall be logged in the Trip Log (LOG-ESD-001) within 15 minutes of occurrence.,15,minutes,,,
+R053,SOP-ACID-ESD-005,4.1,Manual Emergency Shutdown Procedure,Reduce sulfur feed to zero at a rate not exceeding 100 kg/h per minute.,100,kg/h per minute,,,
+R054,SOP-ACID-ESD-005,4.2,Manual Emergency Shutdown Procedure,Stop combustion air blower after burner temperature drops below 300°C.,300,°C,,,burner temp <300°C
+R055,SOP-ACID-ESD-005,4.3,Manual Emergency Shutdown Procedure,Continue acid circulation for at least 30 minutes to cool the converter.,30,minutes,,,
+R056,SOP-ACID-ESD-005,4.4,Manual Emergency Shutdown Procedure,Close all acid transfer valves to storage.,,,,,
+R057,SOP-ACID-ESD-005,5.1,Sulfuric Acid Spill Control,"If a spill is detected, the Field Operator shall immediately isolate the source and activate the containment sump pump.",,,,Field Operator,spill detected
+R058,SOP-ACID-MNT-008,2.1,Lockout/Tagout Procedure,"Prior to any maintenance work, the equipment must be isolated from all hazardous energy sources and locked out in accordance with Apex LOTO Standard STD-SAF-012.",,,,,
+R059,SOP-ACID-MNT-008,2.2,Lockout/Tagout Procedure,The Maintenance Supervisor shall verify zero energy state and issue a safety work permit before work commences.,,,,Maintenance Supervisor,
+R060,SOP-ACID-MNT-008,3,Scheduled Maintenance Intervals,"Inspect and grease bearings and check seal integrity every 2,000 operating hours; performed by Maintenance Technician.",2000,operating hours,Sulfur melter agitator M-101,Maintenance Technician,
+R061,SOP-ACID-MNT-008,3,Scheduled Maintenance Intervals,"Perform vibration analysis and bearing temperature check, replace oil every 4,000 operating hours; performed by Condition Monitoring Technician.",4000,operating hours,Combustion air blower B-103,Condition Monitoring Technician,
+R062,SOP-ACID-MNT-008,3,Scheduled Maintenance Intervals,"Overhaul (replace mechanical seal, impeller wear rings) every 8,000 operating hours or 12 months, whichever first; performed by Maintenance Fitter.",8000 / 12,operating hours / months,Acid circulation pump P-107A,Maintenance Fitter,
+R063,SOP-ACID-MNT-008,3,Scheduled Maintenance Intervals,Internal inspection and catalyst sampling every 4 years; performed by Inspection Engineer.,4,years,Converter R-104,Inspection Engineer,
+R064,SOP-ACID-MNT-008,3,Scheduled Maintenance Intervals,"Check packing and acid distributor, clean every 2 years; performed by Process Engineer.",2,years,Absorption tower T-106,Process Engineer,
+R065,SOP-ACID-MNT-008,4,Instrument Calibration Schedule,Calibrate every 7 days using span gas at 10.0% SO₂; performed by Instrument Technician.,7,days,SO₂ analyzer AI-201,Instrument Technician,
+R066,SOP-ACID-MNT-008,4,Instrument Calibration Schedule,Calibrate every 3 months by 3-point check vs certified RTD; performed by Instrument Technician.,3,months,Temperature transmitters TI-201 through TI-206,Instrument Technician,
+R067,SOP-ACID-MNT-008,4,Instrument Calibration Schedule,Calibrate every 6 months using deadweight tester; performed by Instrument Technician.,6,months,Differential pressure transmitters ΔP-201 to ΔP-204,Instrument Technician,
+R068,SOP-ACID-MNT-008,4,Instrument Calibration Schedule,Verify calibration every 6 months by clamp-on ultrasonic method; performed by Instrument Technician.,6,months,Flowmeter FI-401,Instrument Technician,
+R069,SOP-ACID-MNT-008,5.1,Permit Requirements,All hot work within 15 m of the sulfur melter requires a hot work permit and continuous gas monitoring for SO₂ and H₂S.,15,m,,,within 15 m of sulfur melter
+R070,SOP-ACID-MNT-008,5.2,Permit Requirements,"Confined space entry into the converter vessel or absorption tower requires a confined space permit, atmospheric testing, and a standby person.",,,,,confined space entry

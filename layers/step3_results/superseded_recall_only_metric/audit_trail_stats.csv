@@ -1,0 +1,2 @@
+audit_files,total_audit_rows,assigned_pairs,tp_pairs,rejected_pairs,unpaired_gt_rows,unpaired_records,own_best_pairs,own_best_frac,yielded_to_optimum_pairs,yielded_frac,within_0.05_of_runner_up,close_call_frac
+20,1376,945,827,118,200,231,729,0.771,216,0.229,154,0.163

@@ -1,0 +1,6 @@
+file_name,total_extracted,gt_rows_total,max_possible_precision,forced_fp_from_row_count,content_f1,content_pr,content_re,content_tp,content_fp,content_fn,gt_ids_found_verbatim,gt_ids_distinct,id_reuse_frac
+ext_multi_agent_generic_external_test_sulfuric_acid_run2_20260807_194417.csv,50,70,1.0,0,0.7,0.84,0.6,42,8,28,0,70,0.0
+ext_multi_agent_generic_external_test_sulfuric_acid_run5_20260807_194735.csv,48,70,1.0,0,0.593,0.729,0.5,35,13,35,0,70,0.0
+ext_multi_agent_generic_external_test_sulfuric_acid_run3_20260807_194546.csv,48,70,1.0,0,0.576,0.708,0.486,34,14,36,0,70,0.0
+ext_multi_agent_generic_external_test_sulfuric_acid_run1_20260807_194330.csv,49,70,1.0,0,0.571,0.694,0.486,34,15,36,0,70,0.0
+ext_multi_agent_generic_external_test_sulfuric_acid_run4_20260807_194647.csv,50,70,1.0,0,0.567,0.68,0.486,34,16,36,0,70,0.0

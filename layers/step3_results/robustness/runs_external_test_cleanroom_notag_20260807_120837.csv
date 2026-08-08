@@ -1,6 +1,0 @@
-file_name,total_extracted,gt_rows_total,max_possible_precision,forced_fp_from_row_count,content_f1,content_pr,content_re,content_tp,content_fp,content_fn,gt_ids_found_verbatim,gt_ids_distinct,id_reuse_frac
-ext_multi_agent_generic_external_test_cleanroom_run5_20260806_215116.csv,38,37,0.974,1,0.987,0.974,1.0,37,1,0,0,37,0.0
-ext_multi_agent_generic_external_test_cleanroom_run4_20260806_215103.csv,38,37,0.974,1,0.987,0.974,1.0,37,1,0,0,37,0.0
-ext_multi_agent_generic_external_test_cleanroom_run3_20260806_215052.csv,38,37,0.974,1,0.987,0.974,1.0,37,1,0,0,37,0.0
-ext_multi_agent_generic_external_test_cleanroom_run2_20260806_215040.csv,38,37,0.974,1,0.987,0.974,1.0,37,1,0,0,37,0.0
-ext_multi_agent_generic_external_test_cleanroom_run1_20260806_215027.csv,38,37,0.974,1,0.987,0.974,1.0,37,1,0,0,37,0.0

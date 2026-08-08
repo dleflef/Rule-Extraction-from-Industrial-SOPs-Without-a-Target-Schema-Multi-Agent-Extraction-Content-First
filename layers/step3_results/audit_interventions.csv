@@ -1,0 +1,6 @@
+corpus,runs,chunk_audits,records_audited,kept,dropped,corrected,intervention_frac,override_chunks
+dev_production_line,5,30,655,655,0,1,0.0015,0
+external_test_biogas,5,15,140,140,0,8,0.0571,0
+external_test_desalination,5,15,136,136,0,0,0.0,0
+external_test_sulfuric_acid,5,20,245,245,0,3,0.0122,0
+ALL_sidecar_runs,20,80,1176,1176,0,12,0.0102,0

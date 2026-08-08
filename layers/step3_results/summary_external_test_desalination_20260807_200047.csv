@@ -1,0 +1,2 @@
+condition,runs,f1_mean,f1_std,f1_min,f1_max,pr_mean,re_mean,items_mean,items_std,max_pr
+ext_multi_agent_generic_external_test_desalination,5,0.827,0.035,0.792,0.868,0.809,0.846,27.2,0.4,0.956

@@ -17,11 +17,15 @@ holistically:
   - semantic similarity of the two blobs (SBERT cosine) -- this is what lets
     "EnvironmentalLimit ... TMP ... 175 195" line up with "ThresholdRule ...
     TMP ... 175.0 195.0" despite neither side knowing the other's vocabulary.
-  - a numeric-overlap bonus: every number written anywhere in the GT row
-    should appear somewhere in the matched prediction row, regardless of
-    which field (or which JSON key inside "attributes") holds it. This is
-    what actually rewards getting bound values right, since sentence
-    embeddings alone are weak at distinguishing "175" from "195".
+  - a numeric-agreement term, scored symmetrically: every number written
+    anywhere in the GT row should appear somewhere in the matched prediction
+    row (regardless of which field holds it), AND every number the prediction
+    carries should be justified by one in the GT row. This is what actually
+    rewards getting bound values right, since sentence embeddings alone are
+    weak at distinguishing "175" from "195". Both directions are needed: a
+    recall-only term prices surplus values at zero, which is exploitable by
+    padding a record with numbers it never extracted -- see
+    EvalConfig.numeric_symmetric for the measured size of that hole.
 Only two columns are treated specially, because they're bookkeeping, not rule
 content: an id column and any source/provenance-like column (a filename match
 is not evidence of content match). Both are found STRUCTURALLY, not by a
@@ -49,14 +53,18 @@ annotator reuse printed identifiers", never as an accuracy figure.
 
 WHAT F1_content DOES NOT MEASURE, established empirically by
 step3_validity_checks.py rather than asserted here:
-  - word order within a record (scrambling tokens costs ~0.005; the comparison
-    behaves as a bag of tokens and numbers)
-  - which record an attribute is bound to (permuting payloads costs ~0.085)
+  - word order within a record (scrambling tokens costs 0.000 against an
+    order-preserving control; the comparison behaves as a bag of tokens)
+  - which record an attribute is bound to (permuting payloads costs -0.001)
+  - which SLOT a value occupies within a record: reversing every bound inside
+    every record costs exactly 0.000 on all four corpora, because the blob
+    retains the values and discards the names
   - category-label correctness, which is unwinnable across vocabularies by the
-    argument above and is priced accordingly
-It does measure numeric correctness (corrupting values costs ~0.29) and it does
-discriminate the right document from a wrong one (predictions scored against a
-foreign ground truth fall to 0.02-0.09, worst pairing 0.25).
+    argument above and is priced accordingly (permuting labels costs +0.007)
+It does measure numeric correctness (corrupting values costs 0.201 on average,
+0.085-0.324 per corpus) and it does discriminate the right document from a wrong
+one (predictions scored against a foreign ground truth fall to 0.014-0.037, worst
+single pairing 0.101).
 
 Usage -- identical for every domain, no per-GT configuration required:
     python step3_evaluation_generic_dynamic.py --pred <csv> --gt <ground_truth.csv>
@@ -121,6 +129,7 @@ class EvalConfig:
     numeric_weight: float = 0.4       # weight on numeric overlap
     # id-column detection
     id_uniqueness_min: float = 0.9    # min distinct-value fraction to qualify as an id
+    id_coverage_min: float = 0.9      # min non-empty fraction: an id is printed on (almost) every row
     id_len_penalty: float = 200.0     # divisor penalising long values (ids are short)
     id_name_hint_bonus: float = 0.05  # nudge for a conventional id name; never decisive alone
     # provenance-column detection (see _detect_noise_fields)
@@ -128,15 +137,54 @@ class EvalConfig:
     noise_distinct_frac: float = 0.1  # ...or this fraction of the rows, whichever is larger
     noise_max_value_len: int = 24     # document codes are short
     # Number extraction. A hyphen inside an asset tag reads as a minus sign, so
-    # "GSH-401" yields -401 on both sides of the comparison; such values are 15%
-    # of all numbers extracted from these ground truths. Counting them is the
-    # default because they are genuine asset-identity evidence, and it is the
-    # CONSERVATIVE setting: dropping them raises cleanroom +0.240 and
-    # desalination +0.105 F1 (dev and biogas unchanged), because those two
-    # ground truths encode tag hyphens differently from the documents
-    # (ASCII "-" vs U+2011). Declared here so the choice is visible and
-    # reversible rather than buried in a regex.
+    # "GSH-401" yields -401 on both sides of the comparison (both sides, because
+    # _fold_unicode has already reconciled U+2011/U+2212 with ASCII "-"); such
+    # values are 15% of all numbers extracted from these ground truths. Counting
+    # them is the default because they are genuine asset-identity evidence, and
+    # it is the CONSERVATIVE setting where the choice is not neutral: dropping
+    # them raises desalination +0.090 (its GT repeats printed rule codes the
+    # records do not carry) but COSTS sulfuric acid -0.037 (its instrument tags
+    # are shared evidence), with dev and biogas unchanged. Declared here so the
+    # choice is visible and reversible rather than buried in a regex.
     drop_tag_derived_numbers: bool = False
+    # Numeric term: symmetric (default) or GT-recall only (legacy).
+    #
+    # The recall-only form asks only "does the record contain each of the ground
+    # truth's numbers", never "does it contain numbers the ground truth does not
+    # justify". Surplus values are therefore free, and the omission is
+    # exploitable rather than merely theoretical: appending to every predicted
+    # record the numbers already present in OTHER records of the same file --
+    # changing no extracted content and using no knowledge of the ground truth
+    # -- RAISES the recall-only figure on all four corpora, by +0.064 (biogas)
+    # to +0.178 (sulfuric acid). A metric that pays for padding is not measuring
+    # numeric correctness, whatever it costs to corrupt a value.
+    #
+    # The symmetric form scores the numbers as an F1: the harmonic mean of that
+    # same GT-recall and the matching precision over the record's own numbers.
+    # It leaves the reported figures essentially where they were (the largest
+    # move across the four corpora is +0.023) and turns the padding gain into a
+    # penalty of -0.031 to -0.177, which is the direction a metric should move
+    # under unjustified values.
+    #
+    # One consequence must be read alongside it: the precision half charges a
+    # record for carrying values the annotation omits, and some such values are
+    # correct extractions of facts the ground truth simply does not record (see
+    # the GT-incompleteness limitation). Tolerance scoring keeps that mild --
+    # a surplus value near an annotated one still scores highly -- and the
+    # measured effect on the headline figures is the +0.023 above, but the
+    # charge is real and is the price of pricing padding at all.
+    numeric_symmetric: bool = True
+    # Blob normalisation (see _fold_unicode). On by default because two
+    # spellings of one character are not two pieces of content, and the fold is
+    # symmetric across ground truth and prediction. Declared as a parameter
+    # rather than hard-wired because it is still a scoring decision a human
+    # made. On the four corpora currently evaluated it is INERT -- turning it
+    # OFF reproduces all four figures exactly -- so it earns nothing here and is
+    # retained only because the condition it guards (a document typeset with
+    # U+2011 or U+2212 where its annotation types ASCII "-") is a property of
+    # typesetting rather than of the extractor, and would otherwise penalise a
+    # corpus for an encoding its annotator never saw.
+    fold_unicode: bool = True
     # Embedding backend. all-MiniLM-L6-v2 is English-only, which matches this
     # project's stated scope (all evaluated documents are English). Exposed so
     # that scope is a declared choice rather than a buried constant.
@@ -148,7 +196,15 @@ def _detect_id_field(gt_df, cfg: "EvalConfig") -> str:
     one has a distinct, short value for (almost) every row -- the
     statistical signature of an identifier -- so a never-before-seen ground
     truth resolves correctly without needing its column name added to a
-    list first. A known common name only nudges a close tie."""
+    list first. A known common name only nudges a close tie.
+
+    Missing cells are treated as EMPTY, never as the literal string "nan"
+    (which pandas' astype(str) would otherwise produce), and both halves of
+    the signature are enforced: uniqueness over the values that exist, AND
+    coverage over the rows. Without the coverage gate a column holding five
+    distinct numbers and twenty-one blanks scores a perfect uniqueness of
+    1.0 and outranks the real id -- sparseness is evidence AGAINST being an
+    identifier, not for it."""
     if cfg.gt_id_field:
         return cfg.gt_id_field
     n = len(gt_df)
@@ -156,9 +212,9 @@ def _detect_id_field(gt_df, cfg: "EvalConfig") -> str:
         return gt_df.columns[0] if len(gt_df.columns) else ""
     scored = []
     for c in gt_df.columns:
-        vals = gt_df[c].astype(str).str.strip()
+        vals = gt_df[c].fillna("").astype(str).str.strip()
         nonempty = vals[vals != ""]
-        if len(nonempty) == 0:
+        if len(nonempty) == 0 or len(nonempty) / n < cfg.id_coverage_min:
             continue
         uniqueness = nonempty.nunique() / len(nonempty)
         if uniqueness < cfg.id_uniqueness_min:
@@ -185,7 +241,7 @@ def _detect_noise_fields(gt_df, cfg: "EvalConfig" = None) -> set[str]:
         return set()
     noise = set()
     for c in gt_df.columns:
-        vals = gt_df[c].astype(str).str.strip()
+        vals = gt_df[c].fillna("").astype(str).str.strip()
         nonempty = vals[vals != ""]
         if len(nonempty) < 2:
             continue
@@ -197,8 +253,13 @@ def _detect_noise_fields(gt_df, cfg: "EvalConfig" = None) -> set[str]:
         # values, so the constant-value test above misses it. It is recognised
         # structurally instead: few distinct values, each looking like a
         # document label rather than rule content (short, no spaces, and
-        # carrying a digit, as document codes almost always do). Predictions
-        # never carry such a column, so leaving it in the blob is a uniform
+        # carrying a digit AND a letter, as document codes almost always do --
+        # "SOP-004", never a bare "35"). The letter requirement is what keeps
+        # a sparse numeric column (a bound populated on a handful of rows) out
+        # of this set: its values are short, spaceless and digit-bearing, but
+        # they are rule CONTENT, and dropping them would delete the very
+        # numbers the metric exists to check. Predictions never carry a
+        # document-label column, so leaving one in the blob is a uniform
         # handicap on every ground-truth row -- it can only add noise to the
         # comparison, never signal. A genuine categorical content field
         # (severity, category) fails the test because its values are words.
@@ -206,7 +267,8 @@ def _detect_noise_fields(gt_df, cfg: "EvalConfig" = None) -> set[str]:
                                      int(len(gt_df) * cfg.noise_distinct_frac)):
             v = nonempty.unique()
             if all(len(str(x)) <= cfg.noise_max_value_len and " " not in str(x)
-                   and any(ch.isdigit() for ch in str(x)) for x in v):
+                   and any(ch.isdigit() for ch in str(x))
+                   and any(ch.isalpha() for ch in str(x)) for x in v):
                 noise.add(c.strip().lower())
     return noise
 
@@ -231,13 +293,55 @@ def _norm_str_id(s: Any) -> str:
     return re.sub(r"[^a-z0-9]", "", str(s).lower())
 
 
+# Unicode folding, applied to BOTH blobs before anything reads them.
+#
+# A document and its annotation routinely encode the same character
+# differently: a typesetter emits the non-breaking hyphen U+2011 inside an
+# asset tag ("AOI-04") where an annotator types ASCII "-", or a true minus
+# U+2212 where an annotator types "-". Nothing semantic distinguishes the two
+# spellings, but every downstream reader treats them as different: the
+# tokeniser sees different tokens and the number regex below matches a minus
+# sign in one and not the other, so one side yields -4 and the other +4 for
+# the same tag. Folding them to a single spelling is text normalisation, not a
+# scoring choice: it is applied identically to ground truth and prediction, is
+# fixed before any corpus is scored, and cannot move a score in a direction
+# that depends on which side happened to use which encoding.
+#
+# The fold is deliberately narrow. Full NFKC normalisation is NOT used, because
+# it rewrites subscripts and superscripts as ordinary digits -- a subscript two
+# in a chemical formula, a superscript three in a unit -- and would manufacture
+# numbers that neither side wrote, corrupting the numeric term this metric
+# relies on.
+# Written as escapes rather than as the characters themselves so that the set
+# is readable, greppable, and cannot be altered invisibly by an editor.
+_DASH_CHARS = (
+    "\u2010\u2011\u2012\u2013\u2014\u2015"   # hyphen, NON-BREAKING HYPHEN, figure/en/em dash, bar
+    "\u2043\u2212\ufe58\ufe63\uff0d"          # hyphen bullet, MINUS SIGN, small/fullwidth hyphens
+)
+_SPACE_CHARS = "\u00a0\u2007\u2009\u202f\u205f\u3000"  # non-breaking and typographic spaces
+_ZERO_WIDTH  = "\u200b\u200c\u200d\u2060\ufeff"         # zero-width marks and BOM
+_UNICODE_FOLD = str.maketrans({
+    **{c: "-" for c in _DASH_CHARS},
+    **{c: " " for c in _SPACE_CHARS},
+    **{c: ""  for c in _ZERO_WIDTH},
+})
+
+
+def _fold_unicode(text: str) -> str:
+    """Collapse encoding-only variants (dashes, spaces, zero-width marks) so
+    that two spellings of the same string compare as the same string."""
+    return (text or "").translate(_UNICODE_FOLD)
+
+
 _NUMBER_RE = re.compile(r"-?\d+\.?\d*")
 
 
 def _extract_numbers(text: str, drop_tag_derived: bool = False) -> list[float]:
     """Numbers written anywhere in a blob. A hyphen inside an asset tag reads as
     a minus sign ("GSH-401" -> -401); drop_tag_derived removes those, see
-    EvalConfig.drop_tag_derived_numbers for why it is off by default."""
+    EvalConfig.drop_tag_derived_numbers for why it is off by default. Blobs
+    reach this function already folded by _fold_unicode, so the hyphen reads
+    the same way on both sides of a comparison."""
     out = []
     for tok in _NUMBER_RE.findall(text or ""):
         try:
@@ -268,20 +372,42 @@ def _numeric_pairing(gt_numbers: list[float], pred_numbers: list[float]
     return out
 
 
-def _numeric_overlap(gt_numbers: list[float], pred_numbers: list[float]) -> float:
+def _numeric_recall(gt_numbers: list[float], pred_numbers: list[float]) -> float:
     """Fraction of the GT row's own numbers that have a close match somewhere
     in the predicted row's numbers, tolerance-scored and averaged -- rewards
     capturing the right values regardless of which field held them."""
-    if not gt_numbers:
-        return 0.0
-    if not pred_numbers:
+    if not gt_numbers or not pred_numbers:
         return 0.0
     pairing = _numeric_pairing(gt_numbers, pred_numbers)
     return sum(s for _, _, s in pairing) / len(pairing)
 
 
+def _numeric_overlap(gt_numbers: list[float], pred_numbers: list[float],
+                      symmetric: bool = True) -> float:
+    """Agreement between the two rows' numbers.
+
+    Symmetric (default): the harmonic mean of
+      - recall    -- each GT number found somewhere in the record, and
+      - precision -- each of the RECORD's numbers justified by some GT number,
+    which is the same computation with the arguments reversed. Both halves are
+    tolerance-scored, so a surplus value close to an annotated one is charged
+    little and a value unrelated to anything annotated is charged fully.
+
+    Recall-only (symmetric=False) is the legacy behaviour, retained so the
+    figures it produced remain reproducible. It prices surplus numbers at zero
+    and is exploitable by padding -- see EvalConfig.numeric_symmetric.
+    """
+    recall = _numeric_recall(gt_numbers, pred_numbers)
+    if not symmetric:
+        return recall
+    precision = _numeric_recall(pred_numbers, gt_numbers)
+    if recall + precision <= 0.0:
+        return 0.0
+    return 2.0 * recall * precision / (recall + precision)
+
+
 # ── Blob construction ──────────────────────────────────────────────────────────
-def _gt_blob(row: Dict, id_field: str, exclude: set[str]) -> str:
+def _gt_blob(row: Dict, id_field: str, exclude: set[str], fold: bool = True) -> str:
     parts = []
     for k, v in row.items():
         if k == id_field or k.strip().lower() in exclude:
@@ -291,7 +417,8 @@ def _gt_blob(row: Dict, id_field: str, exclude: set[str]) -> str:
         s = str(v).strip()
         if s:
             parts.append(s)
-    return " | ".join(parts)
+    blob = " | ".join(parts)
+    return _fold_unicode(blob) if fold else blob
 
 
 def _parse_attributes(raw: Any) -> dict:
@@ -304,7 +431,7 @@ def _parse_attributes(raw: Any) -> dict:
         return {}
 
 
-def _pred_blob(row: Dict) -> str:
+def _pred_blob(row: Dict, fold: bool = True) -> str:
     parts = []
     for k, v in row.items():
         if k in _PRED_BOOKKEEPING or k == "attributes":
@@ -315,7 +442,8 @@ def _pred_blob(row: Dict) -> str:
     for v in attributes.values():
         if v not in (None, ""):
             parts.append(str(v).strip())
-    return " | ".join(parts)
+    blob = " | ".join(parts)
+    return _fold_unicode(blob) if fold else blob
 
 
 def _batch_encode_texts(texts: List[str], model_name: str = _DEFAULT_SBERT) -> Dict[str, Any]:
@@ -350,7 +478,7 @@ def content_agreement(cfg: EvalConfig, gt_blob: str, pred_blob: str,
     semantic = _semantic_similarity(gt_blob, pred_blob, emb_cache, cfg.sbert_model)
     if not gt_numbers:
         return semantic
-    numeric = _numeric_overlap(gt_numbers, pred_numbers)
+    numeric = _numeric_overlap(gt_numbers, pred_numbers, cfg.numeric_symmetric)
     return cfg.semantic_weight * semantic + cfg.numeric_weight * numeric
 
 
@@ -417,8 +545,8 @@ def build_assignment(cfg: EvalConfig, gt_rows: List[Dict], pred_rows: List[Dict]
     empty = Assignment([], [], [], [], [], [], [], [])
     if not gt_rows or not pred_rows:
         return empty
-    gt_blobs = [_gt_blob(r, gt_id, exclude) for r in gt_rows]
-    pred_blobs = [_pred_blob(r) for r in pred_rows]
+    gt_blobs = [_gt_blob(r, gt_id, exclude, cfg.fold_unicode) for r in gt_rows]
+    pred_blobs = [_pred_blob(r, cfg.fold_unicode) for r in pred_rows]
     drop_tags = cfg.drop_tag_derived_numbers
     gt_nums = [_extract_numbers(b, drop_tags) for b in gt_blobs]
     pred_nums = [_extract_numbers(b, drop_tags) for b in pred_blobs]
@@ -435,7 +563,8 @@ def build_assignment(cfg: EvalConfig, gt_rows: List[Dict], pred_rows: List[Dict]
     semantic, numeric, scores = [], [], []
     for i, j in pairs:
         semantic.append(_semantic_similarity(gt_blobs[i], pred_blobs[j], emb_cache, cfg.sbert_model))
-        numeric.append(_numeric_overlap(gt_nums[i], pred_nums[j]) if gt_nums[i] else -1.0)
+        numeric.append(_numeric_overlap(gt_nums[i], pred_nums[j], cfg.numeric_symmetric)
+                       if gt_nums[i] else -1.0)
         scores.append(1.0 - cost_matrix[i, j])
     return Assignment(gt_blobs, pred_blobs, gt_nums, pred_nums, pairs, semantic, numeric,
                       scores, 1.0 - cost_matrix)
@@ -527,6 +656,18 @@ def build_audit_rows(cfg: EvalConfig, gt_rows: List[Dict], pred_rows: List[Dict]
         detail = "; ".join(
             f"{g:g}->{'none' if p is None else format(p, 'g')} ({s:.3f})"
             for g, p, s in _numeric_pairing(a.gt_nums[i], a.pred_nums[j]))
+        # Under the symmetric numeric term the score has a second half -- each of
+        # the RECORD's own numbers scored against the ground truth's -- and an
+        # audit that printed only the recall direction would no longer be a
+        # printout of the number actually used. Both halves and the harmonic
+        # mean they combine into are therefore reported.
+        num_recall = num_prec = detail_rev = ""
+        if numeric_used and cfg.numeric_symmetric:
+            num_recall = round(_numeric_recall(a.gt_nums[i], a.pred_nums[j]), 4)
+            num_prec = round(_numeric_recall(a.pred_nums[j], a.gt_nums[i]), 4)
+            detail_rev = "; ".join(
+                f"{p:g}->{'none' if g is None else format(g, 'g')} ({s:.3f})"
+                for p, g, s in _numeric_pairing(a.pred_nums[j], a.gt_nums[i]))
         jac, shared, gt_only, pred_only = _token_overlap(a.gt_blobs[i], a.pred_blobs[j])
         # The runner-up: the best score this GT row could have got from any OTHER
         # record. Without it the audit shows only what the assignment chose and
@@ -555,7 +696,10 @@ def build_audit_rows(cfg: EvalConfig, gt_rows: List[Dict], pred_rows: List[Dict]
             "margin_over_runner_up": ("" if alt_score == "" else round(score - alt_score, 4)),
             "semantic_cosine": round(sem, 4),
             "numeric_overlap": ("" if not numeric_used else round(num, 4)),
+            "numeric_recall_gt_found": num_recall,
+            "numeric_precision_pred_justified": num_prec,
             "numeric_detail_gt_to_pred": detail,
+            "numeric_detail_pred_to_gt": detail_rev,
             "gt_numbers": _fmt_nums(a.gt_nums[i]),
             "pred_numbers": _fmt_nums(a.pred_nums[j]),
             "word_overlap_jaccard_DIAGNOSTIC": jac,
@@ -580,7 +724,8 @@ def build_audit_rows(cfg: EvalConfig, gt_rows: List[Dict], pred_rows: List[Dict]
             "score_formula": "no record left to assign",
             "runner_up_score": "", "runner_up_pred_row": "", "margin_over_runner_up": "",
             "semantic_cosine": "", "numeric_overlap": "",
-            "numeric_detail_gt_to_pred": "",
+            "numeric_recall_gt_found": "", "numeric_precision_pred_justified": "",
+            "numeric_detail_gt_to_pred": "", "numeric_detail_pred_to_gt": "",
             "gt_numbers": _fmt_nums(a.gt_nums[i]) if a.gt_nums else "",
             "pred_numbers": "",
             "word_overlap_jaccard_DIAGNOSTIC": "", "shared_words_DIAGNOSTIC": "",
@@ -603,7 +748,8 @@ def build_audit_rows(cfg: EvalConfig, gt_rows: List[Dict], pred_rows: List[Dict]
             "score_formula": "no GT row left to assign",
             "runner_up_score": "", "runner_up_pred_row": "", "margin_over_runner_up": "",
             "semantic_cosine": "", "numeric_overlap": "",
-            "numeric_detail_gt_to_pred": "",
+            "numeric_recall_gt_found": "", "numeric_precision_pred_justified": "",
+            "numeric_detail_gt_to_pred": "", "numeric_detail_pred_to_gt": "",
             "gt_numbers": "",
             "pred_numbers": _fmt_nums(a.pred_nums[j]) if a.pred_nums else "",
             "word_overlap_jaccard_DIAGNOSTIC": "", "shared_words_DIAGNOSTIC": "",
@@ -646,6 +792,7 @@ def f1_derivation_row(cfg: EvalConfig, file_name: str, n_gt: int, n_pred: int,
         "threshold": cfg.threshold,
         "semantic_weight": cfg.semantic_weight,
         "numeric_weight": cfg.numeric_weight,
+        "numeric_term": "symmetric" if cfg.numeric_symmetric else "gt_recall_only",
         "sbert_model": cfg.sbert_model,
     }
 
@@ -963,6 +1110,9 @@ if __name__ == "__main__":
                          help=f"Sentence-transformer used for semantic similarity (default: {_DEFAULT_SBERT}, English).")
     parser.add_argument("--id-uniqueness-min", type=float, default=0.9,
                          help="Min distinct-value fraction for a column to qualify as the id column.")
+    parser.add_argument("--id-coverage-min", type=float, default=0.9,
+                         help="Min non-empty row fraction for a column to qualify as the id column "
+                              "(an identifier is printed on almost every row; a sparse column is not one).")
     parser.add_argument("--id-len-penalty", type=float, default=200.0,
                          help="Divisor penalising long values during id-column detection.")
     parser.add_argument("--id-name-hint-bonus", type=float, default=0.05,
@@ -974,6 +1124,17 @@ if __name__ == "__main__":
                          help="Row fraction alternative to --noise-distinct-floor.")
     parser.add_argument("--noise-max-value-len", type=int, default=24,
                          help="Max value length for a column to look like document labels.")
+    parser.add_argument("--no-unicode-fold", action="store_true",
+                         help="Compare blobs without folding Unicode dash/space variants to their "
+                              "ASCII equivalents (see EvalConfig.fold_unicode). Off by default; "
+                              "turning it on CHANGES reported figures on any corpus whose document "
+                              "and annotation encode the same character differently.")
+    parser.add_argument("--numeric-recall-only", action="store_true",
+                         help="Score the numeric term as GT-recall alone (legacy behaviour) "
+                              "instead of the symmetric recall/precision F1 over numbers. "
+                              "Retained for reproducing earlier figures; it prices surplus "
+                              "numbers at zero and is exploitable by padding a record with "
+                              "values it did not extract (see EvalConfig.numeric_symmetric).")
     parser.add_argument("--drop-tag-derived-numbers", action="store_true",
                          help="Ignore negative numbers produced by reading the hyphen in an "
                               "asset tag as a minus sign (GSH-401 -> -401). Off by default; "
@@ -1026,12 +1187,15 @@ if __name__ == "__main__":
         semantic_weight=args.semantic_weight,
         numeric_weight=args.numeric_weight,
         id_uniqueness_min=args.id_uniqueness_min,
+        id_coverage_min=args.id_coverage_min,
         id_len_penalty=args.id_len_penalty,
         id_name_hint_bonus=args.id_name_hint_bonus,
         noise_distinct_floor=args.noise_distinct_floor,
         noise_distinct_frac=args.noise_distinct_frac,
         noise_max_value_len=args.noise_max_value_len,
         drop_tag_derived_numbers=args.drop_tag_derived_numbers,
+        numeric_symmetric=not args.numeric_recall_only,
+        fold_unicode=not args.no_unicode_fold,
         sbert_model=args.sbert_model,
     )
 

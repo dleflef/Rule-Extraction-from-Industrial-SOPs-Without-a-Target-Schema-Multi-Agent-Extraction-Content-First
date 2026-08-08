@@ -242,6 +242,7 @@ class PipelineState(TypedDict, total=False):
     schema:        CorpusSchema
     assembled:     list[dict]
     audited:       Annotated[list[dict], operator.add]
+    audit_log:     Annotated[list[dict], operator.add]
     output_path:   str
     n_records:     int
 
@@ -551,6 +552,17 @@ def render_chunk(chunk: dict, file_lines: dict[str, list[str]]) -> str:
 # ══════════════════════════════════════════════════════════════════════════════
 #  Prompt 1 — Scout (one call per chunk)
 # ══════════════════════════════════════════════════════════════════════════════
+# VOCABULARY HYGIENE, enforced for every prompt in this file: the structural
+# instructions are the mechanism and are stated generically; every ILLUSTRATION
+# in them (example identifier codes, kind-of-subject nouns, category
+# descriptors) is drawn from OUTSIDE the evaluated corpora. No example token may
+# appear as a printed identifier in an evaluated document, as a ground-truth
+# column name, or as a ground-truth category/severity label — otherwise the
+# prompt states part of an answer the run is scored on. Words that DEFINE the
+# task itself ("rule, limit, requirement, or procedure") are task scope, not
+# illustration, and stay. Checked mechanically against all evaluated corpora
+# and ground truths; re-run that check whenever an example here or an evaluated
+# corpus changes.
 _COT_INSTRUCTION = (
     "\n\nBefore producing the JSON, reason step by step: identify each rule, "
     "requirement, limit or procedure the excerpt states, and its logical "
@@ -560,16 +572,16 @@ _COT_INSTRUCTION = (
 
 def scout_prompt() -> str:
     return """You are a precision data-extraction engineer reading ONE excerpt of an
-industrial operating or control document. You are not told the plant, process,
-or equipment ontology in advance — every document names its own assets,
-stations, sensors, zones, phases, roles, or parameters differently, and you
-must not assume any of that vocabulary going in. Every content line of the
+industrial operating or control document. You are not told in advance how the
+plant, its processes, or its vocabulary are organised — every document names
+the things, people, places, processes and codes it governs in its own words,
+and you must not assume any of that vocabulary going in. Every content line of the
 excerpt is numbered (L7, L8, ...). Extract every explicitly stated rule,
 limit, requirement, or procedure.
 
 WHAT COUNTS AS ONE RECORD — the document itself decides, never you:
   - If the document prints its own identifier for a rule (a code such as
-    "RULE-04", "PM-02", "R7", "M001"), everything that identifier introduces is
+    "REQ-9", "K-12", "WQ-77", "B.11"), everything that identifier introduces is
     ONE record, and you copy that identifier verbatim into "id".
   - A row of a data table is ONE record. Its cells are that record's fields.
   - A cell of a cross-reference matrix is ONE record: its row-axis label and
@@ -578,21 +590,21 @@ WHAT COUNTS AS ONE RECORD — the document itself decides, never you:
   - A sentence or bullet that states a rule but prints no identifier of its
     own is ONE record, with "id" left as "".
   - If ONE line states SEVERAL rules — because it prints several identifiers,
-    or because it states genuinely different responses or severities for
-    different situations — emit one record per rule, each citing that same
+    or because it states genuinely different consequences or importance levels
+    for different situations — emit one record per rule, each citing that same
     line. Do not bundle them, and do not split a single rule into pieces.
 
 BEFORE READING ANY TABLE, ASK WHAT ITS COLUMN HEADERS ARE. This decides
 whether a row is one record or several, and it is the single most important
 judgement you make:
   - ATTRIBUTE COLUMNS — each header names a DIFFERENT KIND of information
-    about the row's subject (its unit, a bound, a required response, a
-    deadline, a reference). The headers are not comparable to one another; no
+    about the row's subject (its measuring unit, a numeric ceiling, a required
+    follow-up, a due time, a cross-reference). The headers are not comparable to one another; no
     two could be swapped. Then the ROW is ONE record, and each header is a
     field name holding that row's value for it.
   - CASE COLUMNS — the headers are all instances of ONE KIND of thing
-    (several places, several roles, several severities, several phases,
-    several pieces of equipment), and every cell beneath them holds the same
+    (several sites, several staff groups, several importance grades, several
+    work stages, several machines), and every cell beneath them holds the same
     kind of content as every other. The table is then a cross-reference
     matrix, and each CELL is its own record, because each cell states what
     applies in ITS OWN case and nothing about the others. Give each such
@@ -604,9 +616,9 @@ judgement you make:
     name is always wrong: it produces one bloated record per row instead of
     one record per case, and every case but the first loses its identity.
   - Test the two readings against each other before choosing. If you find
-    yourself creating a field whose name is a place, a role, a phase, or a
-    piece of equipment, you have a matrix and should be emitting one record
-    per cell instead.
+    yourself creating a field whose name is one particular thing — one site,
+    one staff group, one work stage, one machine — you have a matrix and
+    should be emitting one record per cell instead.
 
 FIELD NAMES come from the document, never from you:
   - In an attribute-column table, a field's name is ITS OWN COLUMN HEADER,
@@ -630,8 +642,8 @@ than guess at it.
 
 CARRY THE SUBJECT DOWN FROM THE HEADING. A document states a rule's subject
 once, in the heading above it, and then never repeats it on the rows beneath —
-a table under a heading naming an asset, zone, phase, or piece of equipment is
-a table ABOUT that thing, and every row of it inherits it. Whenever a record's
+a table under a heading naming one specific thing is a table ABOUT that thing,
+and every row of it inherits it. Whenever a record's
 own line does not name the entity it concerns but the "[Section: ...]" marker
 governing that line does, copy that entity into a field of the record, named
 after whatever the document calls that kind of entity. A record that cannot say
@@ -649,8 +661,8 @@ rule and must be left out.
 
 Also give each record:
   "category" — what the rule FUNCTIONALLY IS, in two or three words of your
-  own (a static limit, a triggered response, an access constraint, a scheduled
-  task...), judged by what it does and never by where on the page it sits: a
+  own (a standing cap, an automatic reaction, a rule about who may enter, a
+  recurring duty...), judged by what it does and never by where on the page it sits: a
   table and a paragraph can state the same kind of rule.
   "lines" — the numbers of the excerpt lines this record was read from, as
   integers. Cite only line numbers printed in the excerpt below. A record read
@@ -666,13 +678,13 @@ document title. Lines reading "[Section: ...]" are the document's own headings,
 shown in the position they occupy and carrying no line number. They are
 context, never records: every numbered line below such a marker belongs to that
 section until the next marker appears, so use them to fill fields that depend
-on section context — which asset, zone, or phase the rows beneath them are
-about — and never extract one as a record of its own.
+on section context — which subject the rows beneath them are about — and never
+extract one as a record of its own.
 
 No worked example is given, deliberately. Any example would demonstrate one
-particular document shape — tiered bounds, a role/zone matrix, a recurrence
-interval — and a model shown such an example reproduces its vocabulary and its
-structure on documents that have neither. The only thing to work from is the
+particular document shape — a tiered numeric table, a cross-reference matrix,
+a recurring schedule — and a model shown such an example reproduces its
+vocabulary and its structure on documents that have neither. The only thing to work from is the
 excerpt itself.
 
 Reply EXCLUSIVELY with JSON:
@@ -704,8 +716,8 @@ merely look alike, sit near each other, or share a word are NOT synonyms:
     destroys the distinction the document went to the trouble of printing.
   - A field holding a NUMBER and a field holding the PROSE that describes it
     are different fields.
-  - A field naming an entity and a field naming a measurement taken on that
-    entity are different fields.
+  - A field naming a thing and a field holding a quantity observed on that
+    thing are different fields.
 When in doubt, keep them separate: an unmerged pair costs one redundant column,
 while a wrongly merged pair silently overwrites real values.
 
@@ -719,14 +731,14 @@ observed category in "category_map".
 CANONICAL NAMES must be drawn from the observed names themselves — pick the
 clearest of the synonyms being merged. Do not coin a new vocabulary.
 
-Then identify three roles, using canonical names from your own schema, or "" if
-the corpus has no such field at all:
+Then identify three special fields, using canonical names from your own schema,
+or "" if the corpus has no such field at all:
   "condition_field"  — whichever field holds the prose stating WHEN a rule
                        applies. It must be the narrative trigger, not a bare
                        number: if the only candidate holds numeric values,
                        leave this "".
   "action_field"     — whichever field holds what the rule REQUIRES or CAUSES.
-  "severity_field"   — whichever field holds a priority or criticality label.
+  "severity_field"   — whichever field holds an importance or criticality label.
   "numeric_fields"   — every canonical field whose values are pure numbers.
 
 Reply ONLY with JSON in exactly this shape:
@@ -806,10 +818,9 @@ content and return one verdict:
     distinguishing detail.
 
 DO NOT DROP A RECORD FOR LOOKING LIKE ANOTHER ONE. Documents routinely restate
-a similar-sounding rule for many different entities — a different row, role,
-zone, or piece of equipment each getting its own, otherwise identical-looking
-rule. Each one is real and stays, however repetitive the set looks in
-aggregate.
+a similar-sounding rule for many different entities — a different row or a
+different subject each getting its own, otherwise identical-looking rule. Each
+one is real and stays, however repetitive the set looks in aggregate.
 
 DO NOT DROP A RECORD FOR HAVING NO SENTENCE OF ITS OWN. Many records come from
 a table row or a matrix cell that prints only labels and values and never forms
@@ -900,7 +911,24 @@ def build_inventory(records: list[dict]) -> tuple[dict, dict]:
             entry["count"] += 1
             if len(entry["samples"]) < INDUCTION_SAMPLES_PER_FIELD and value not in entry["samples"]:
                 entry["samples"].append(value[:80])
-    ordered = dict(sorted(field_stats.items(), key=lambda kv: -kv[1]["count"])[:INDUCTION_MAX_FIELDS])
+    # The cap bounds one prompt's size, but it truncates BY FREQUENCY, so the
+    # names it would discard first are the rarest -- exactly the ones the
+    # arbiter's own instructions say must be preserved, since a field used by
+    # three records out of two hundred is the only place those three records'
+    # information lives. Silently dropping them would make the implementation
+    # contradict its specification with no error and no trace, so the event is
+    # announced. It does not fire on any corpus evaluated here (the largest
+    # observed inventory is well under the cap); at a scale where it does, the
+    # fix is the hierarchical merge of per-document inventories, not a larger
+    # constant.
+    by_count = sorted(field_stats.items(), key=lambda kv: -kv[1]["count"])
+    if len(by_count) > INDUCTION_MAX_FIELDS:
+        dropped = [name for name, _ in by_count[INDUCTION_MAX_FIELDS:]]
+        print(f"  [WARN] observed inventory has {len(by_count)} field name(s); the arbiter "
+              f"sees only the {INDUCTION_MAX_FIELDS} most frequent. {len(dropped)} rare "
+              f"name(s) are DISCARDED before induction and their values will be lost: "
+              f"{', '.join(dropped[:10])}{' ...' if len(dropped) > 10 else ''}", flush=True)
+    ordered = dict(by_count[:INDUCTION_MAX_FIELDS])
     return ordered, dict(sorted(category_stats.items(), key=lambda kv: -kv[1]))
 
 
@@ -1054,9 +1082,15 @@ def assemble_records(records: list[dict], schema: CorpusSchema) -> list[dict]:
 #  Stage 5 — Grounding audit fan-out
 # ══════════════════════════════════════════════════════════════════════════════
 def audit_chunk(chunk: dict, group: list[dict], file_lines: dict[str, list[str]],
-                model: str) -> list[dict]:
+                model: str) -> tuple[list[dict], list[dict]]:
+    """Returns (kept records, verdict log). The log exists because the printed
+    per-chunk summary was previously the only trace of what the auditor did:
+    stdout is not an artifact, so the audit stage's intervention rate could not
+    be reported from a finished run. Every verdict is now written to a sidecar
+    CSV by save_outputs, making the stage's contribution measurable after the
+    fact without changing what it does."""
     if not group:
-        return []
+        return [], []
     rendered = render_chunk(chunk, file_lines)
     payload = [{"key": g["_key"], "id": g["id"], "category": g["category"],
                 "lines": g["lines"], "fields": g["fields"]} for g in group]
@@ -1071,6 +1105,14 @@ def audit_chunk(chunk: dict, group: list[dict], file_lines: dict[str, list[str]]
         if key:
             verdicts[key] = item
 
+    def log_row(g: dict, decision: str, outcome: str, corrected_fields: str = "",
+                override: bool = False) -> dict:
+        return {"chunk_id": chunk["chunk_id"], "source_file": g["source_file"],
+                "record_key": g["_key"], "record_id": g.get("id", ""),
+                "category": g.get("category", ""), "verdict": decision,
+                "outcome": outcome, "corrected_fields": corrected_fields,
+                "chunk_audit_override": override}
+
     dropped = [g for g in group if str(verdicts.get(g["_key"], {}).get("verdict", "keep")).lower() == "drop"]
     # An auditor that rejects a whole chunk is far likelier to be malfunctioning
     # -- a misread instruction, a truncated reply -- than to be right that every
@@ -1079,24 +1121,43 @@ def audit_chunk(chunk: dict, group: list[dict], file_lines: dict[str, list[str]]
     if len(dropped) == len(group) and len(group) >= 3:
         print(f"  [audit] {chunk['chunk_id']}: rejected all {len(group)} records "
               f"-- treated as audit failure, keeping all", flush=True)
-        return group
+        return group, [log_row(g, "drop", "kept", override=True) for g in group]
 
     kept: list[dict] = []
+    log: list[dict] = []
     corrected = 0
     for g in group:
         verdict = verdicts.get(g["_key"], {})
         decision = str(verdict.get("verdict", "keep")).lower()
         if decision == "drop":
+            log.append(log_row(g, decision, "dropped"))
             continue
+        corrected_names = ""
         if decision == "correct" and isinstance(verdict.get("corrections"), dict):
-            for name, value in verdict["corrections"].items():
-                if value not in (None, ""):
-                    g["fields"][_snake(name)] = str(value).strip()
+            # KNOWN DEFECT, left in place deliberately and disclosed in the
+            # thesis rather than patched after the fact. _INTERNAL_KEYS is
+            # filtered on the scout path but not here, so an auditor that
+            # returns a correction keyed "lines" writes the record's own
+            # provenance into its content fields, where it becomes a CSV column
+            # and enters the scored blob. It happened on 8 records of one corpus
+            # across the reported batch; rescoring those runs with the field
+            # excluded moves that corpus's F1 by 0.0000, so no reported figure
+            # depends on it. Filtering it here would change extraction output
+            # and invalidate the batch every number in the thesis is computed
+            # from, which is not a trade worth making for a measured effect of
+            # zero -- fix it together with the next full re-run.
+            applied = [name for name, value in verdict["corrections"].items()
+                       if value not in (None, "")]
+            for name in applied:
+                g["fields"][_snake(name)] = str(verdict["corrections"][name]).strip()
+            corrected_names = "|".join(_snake(n) for n in applied)
             corrected += 1
+        log.append(log_row(g, decision if verdict else "unmentioned", "kept",
+                           corrected_names))
         kept.append(g)
     print(f"  [audit] {chunk['chunk_id']}: {len(kept)}/{len(group)} kept, "
           f"{corrected} corrected", flush=True)
-    return kept
+    return kept, log
 
 
 def audit_groups(chunks: list[dict], assembled: list[dict]) -> list[tuple[dict, list[dict]]]:
@@ -1120,8 +1181,9 @@ def audit_groups(chunks: list[dict], assembled: list[dict]) -> list[tuple[dict, 
 
 def audit_node(payload: dict) -> dict:
     """One branch of the audit fan-out."""
-    return {"audited": audit_chunk(payload["chunk"], payload["group"],
-                                   payload["file_lines"], payload["model"])}
+    kept, log = audit_chunk(payload["chunk"], payload["group"],
+                            payload["file_lines"], payload["model"])
+    return {"audited": kept, "audit_log": log}
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1217,7 +1279,8 @@ def to_rows(assembled: list[dict], schema: CorpusSchema,
 
 
 def save_outputs(rows: list[dict], facts: list[dict], schema: CorpusSchema,
-                 input_dir: str, run_index: int, corpus_name: str = "") -> str:
+                 input_dir: str, run_index: int, corpus_name: str = "",
+                 audit_log: list[dict] | None = None) -> str:
     ts = time.strftime("%Y%m%d_%H%M%S")
     # The corpus name goes in the filename because the evaluator groups repeated
     # runs by stripping the timestamp: without it, runs over DIFFERENT corpora
@@ -1260,6 +1323,21 @@ def save_outputs(rows: list[dict], facts: list[dict], schema: CorpusSchema,
     with open(schema_path, "w", encoding="utf-8") as f:
         json.dump(schema.to_json(), f, indent=2, ensure_ascii=False)
     print(f"[Save] induced corpus schema -> {schema_path}")
+
+    # One row per audited record, verdicts included. Without this file the
+    # auditor's interventions exist only in stdout, and the stage's measured
+    # contribution cannot be reported from a finished run's artifacts.
+    if audit_log:
+        audit_path = os.path.join(RESULTS_DIR, f"audit_log_{stem}.csv")
+        with open(audit_path, "w", encoding="utf-8", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=["chunk_id", "source_file",
+                                                   "record_key", "record_id",
+                                                   "category", "verdict", "outcome",
+                                                   "corrected_fields",
+                                                   "chunk_audit_override"])
+            writer.writeheader()
+            writer.writerows(audit_log)
+        print(f"[Save] {len(audit_log)} audit verdict(s) -> {audit_path}")
     return out_path
 
 
@@ -1333,7 +1411,8 @@ def save_node(state: PipelineState) -> dict:
     rows, facts = to_rows(assembled, state["schema"], state["file_lines"])
     out_path = save_outputs(rows, facts, state["schema"],
                             state["input_dir"], state.get("run_index", 1),
-                            state.get("corpus_name", ""))
+                            state.get("corpus_name", ""),
+                            state.get("audit_log", []))
     return {"output_path": out_path, "n_records": len(rows)}
 
 
@@ -1382,6 +1461,7 @@ def run_pipeline(input_dir: str,
         "chunk_chars":  chunk_chars,
         "scouted":      [],
         "audited":      [],
+        "audit_log":    [],
         **{k: v for k, v in overrides.items() if v},   # type: ignore[typeddict-item]
     }
     graph = build_graph().compile()

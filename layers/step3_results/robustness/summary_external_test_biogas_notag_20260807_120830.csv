@@ -1,2 +1,0 @@
-condition,runs,f1_mean,f1_std,f1_min,f1_max,pr_mean,re_mean,items_mean,items_std,max_pr
-ext_multi_agent_generic_external_test_biogas,5,0.806,0.022,0.786,0.843,0.924,0.715,36.4,1.1,1.0

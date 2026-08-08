@@ -45,11 +45,11 @@ Extracting operating rules from industrial Standard Operating Procedures (SOPs) 
 
 This thesis asks what rule extraction costs when nothing about the target schema is supplied. We present a multi-agent pipeline, implemented in LangGraph, that assumes only that its input is an operating document. It segments each document and numbers every content line; parallel \emph{scout} agents read the numbered chunks and emit records whose field names are copied from the document's own labels; a single \emph{inducer} call reconciles those labels into one corpus-level schema without ever seeing a document; deterministic assembly emits one row per rule; and parallel \emph{audit} agents re-read each record against the lines it cites and drop what is not stated there. No stage is given a target schema, a rule taxonomy, or a worked example.
 
-Extraction is scored by $F1_{\text{content}}$, a content-first metric that collapses each ground-truth row and each predicted record into a text blob, blends SBERT cosine similarity with numeric overlap, and pairs the two sides by Hungarian optimal assignment, so that identifier and field-name conventions never enter the score. Because such a metric can flatter a system without measuring it, its validity is established empirically rather than asserted: predictions scored against a foreign corpus's ground truth collapse to $0.02$--$0.11$, corrupting every numeric value costs $0.30$ F1, and the reported operating point is a strict local maximum on none of the four corpora.
+Extraction is scored by $F1_{\text{content}}$, a content-first metric that collapses each ground-truth row and each predicted record into a text blob, blends SBERT cosine similarity with a symmetric numeric agreement term, and pairs the two sides by Hungarian optimal assignment, so that identifier and field-name conventions never enter the score. The metric's discriminating power is measured rather than assumed: predictions scored against a foreign corpus's ground truth collapse to $0.01$--$0.10$, corrupting every numeric value costs $0.20$ F1, padding a record with numbers it did not extract is penalised rather than rewarded, and the reported operating point is not a local maximum on any of the four corpora.
 
-The pipeline is evaluated on one development corpus and three previously unseen external corpora (biogas digestion, cleanroom access control, and reverse-osmosis desalination) with five repeats each and no per-corpus configuration of any kind. It reaches $F1_{\text{content}} = 0.756 \pm 0.077$ on the development corpus and $0.806 \pm 0.022$, $0.747 \pm 0.000$, and $0.820 \pm 0.045$ on the three external corpora. Because the hosted endpoint is non-deterministic for long generations, every figure is reported as a mean and standard deviation over repeats rather than as a single run.
+The pipeline is evaluated on one development corpus and three previously unseen external corpora (biogas digestion, reverse-osmosis desalination, and sulfuric acid production) with five repeats each and no per-corpus configuration of any kind. It reaches $F1_{\text{content}} = 0.719 \pm 0.000$ on the development corpus and $0.715 \pm 0.023$, $0.850 \pm 0.019$, and $0.649 \pm 0.049$ on the three external corpora. Because the hosted endpoint is non-deterministic for long generations, every figure is reported as a mean and standard deviation over repeats rather than as a single run.
 
-Set against this, a grid search over ten prompting paradigms and two models, in which the prompt is given the development corpus's schema, taxonomy, identifier convention, and worked examples, reaches $0.946 \pm 0.017$ on that corpus, and cannot be applied to the other three as a comparable condition without being rewritten by hand. Notably, the two systems recover the ground truth almost equally well (recall $0.884$ against $0.907$); the gap is overwhelmingly precision, because the two disagree about what constitutes one rule and any surplus record is counted as an error whether or not it is correct. The gap is therefore best read as the measured price of requiring no per-domain configuration, and the schema-specified condition as an instance of the corpus-specific adaptation this work seeks to avoid.
+Set against this, a grid search over ten prompting paradigms and two models, in which the prompt is given the development corpus's schema, taxonomy, identifier convention, and worked examples, reaches $0.949 \pm 0.020$ on that corpus, and cannot be applied to the other three as a comparable condition without being rewritten by hand. Notably, the two systems recover the ground truth equally well (recall $0.907$ and $0.909$); the gap is entirely precision, because the two disagree about what constitutes one rule and any surplus record is counted as an error whether or not it is correct. The gap is therefore best read as the measured price of requiring no per-domain configuration, and the schema-specified condition as an instance of the corpus-specific adaptation this work seeks to avoid.
 \end{abstract}
 
 \tableofcontents
@@ -62,17 +62,17 @@ Set against this, a grid search over ten prompting paradigms and two models, in 
 
 % § 1.1  Motivates LLM-based KE for industrial SOPs; structural heterogeneity and evaluation blind spot.
 \subsection{Context and Motivation}
-A radical paradigm shift has been undergone by the field of Knowledge Extraction (KE), evolving from rigid, domain-specific architectures toward fluid, generative paradigms. Historically, the identification of predefined entities and relations within unstructured text was heavily reliant on fixed ontologies, which created significant bottlenecks when processing the vast volume and variety of modern digital data. With the widespread adoption of transformer architectures, manual heuristics have been progressively replaced by deep contextual representations. Consequently, a robust technical foundation has been provided for the conversion of raw digital signals and textual documentation into structured Knowledge Graphs (KGs).
+The field of Knowledge Extraction (KE) has undergone a radical paradigm shift, evolving from rigid, domain-specific architectures toward fluid, generative paradigms. Historically, the identification of predefined entities and relations within unstructured text was heavily reliant on fixed ontologies, which created significant bottlenecks when processing the vast volume and variety of modern digital data. With the widespread adoption of transformer architectures, manual heuristics have been progressively replaced by deep contextual representations. Consequently, a robust technical foundation has been provided for the conversion of raw digital signals and textual documentation into structured Knowledge Graphs (KGs).
 
 Within modern industrial manufacturing facilities, KGs serve as the critical cognitive backbone for intelligent Digital Twins (DTs). However, high-quality KG construction represents a critical bottleneck for knowledge-driven digital twins, as traditional approaches such as manual ontology engineering or centralized natural language processing (NLP) pipelines fail to scale while maintaining semantic richness. To construct these KGs, operational knowledge must be systematically extracted from heterogeneous sources, primarily Standard Operating Procedures (SOPs). These documents encode essential parameters, including alarm thresholds, maintenance rules, and access policies. Theoretically, all operational logic required to synchronize a digital twin with its physical counterpart is encoded within these texts. In practice, however, the automated extraction of this knowledge is severely obstructed by multiple challenges.
 
 First, a high degree of structural heterogeneity is exhibited by SOPs within a single facility. Critical information is frequently dispersed across fundamentally different layouts; for instance, modern industrial facilities generate knowledge simultaneously in natural language documents, numerical sensor streams, and manufacturer datasheets. The effective processing of these distinct formats cannot be consistently achieved by a single, monolithic extraction prompt, as the information is spatially and semantically structured in fundamentally divergent ways. 
 
-Second, the evaluation of automated extraction in industrial contexts is highly complex. A phenomenon defined as ``semantic aliasing'' is frequently observed, where identical operational constraints are mapped to disparate identifiers. In ground-truth annotations, rule identifiers, such as \texttt{RULE-ST01-01} or \texttt{MAINT-01}, are often established as annotator conventions that rarely appear verbatim in the source text. When evaluation relies on exact-match F1 over identifiers, taxonomic nomenclature is confused with true semantic accuracy. Consequently, an ``evaluation blind spot'' is created, which risks penalizing operationally valid extractions while simultaneously failing to detect hallucinated but syntactically correct numeric thresholds.
+Second, the evaluation of automated extraction in industrial contexts is highly complex. Throughout this thesis, ``semantic aliasing'' denotes the phenomenon whereby one and the same operational constraint appears under different surface forms in different places: the document states the rule in prose or in a table cell, the annotator records it under an identifier and field vocabulary of their own convention, and an extractor may emit it under yet another name, so that several renderings of a single rule share no exact string. In ground-truth annotations, rule identifiers, such as \texttt{RULE-ST01-01} or \texttt{MAINT-01}, are often established as annotator conventions that rarely appear verbatim in the source text. When evaluation relies on exact-match F1 over identifiers, taxonomic nomenclature is confused with true semantic accuracy. Consequently, an ``evaluation blind spot'' is created, which risks penalizing operationally valid extractions while simultaneously failing to detect hallucinated but syntactically correct numeric thresholds.
 
-Large Language Models (LLMs) are considered highly attractive for this extraction task, given their capacity to interpret complex natural-language instructions and adapt to new extraction patterns. Nonetheless, significant reliability issues persist; LLMs are prone to hallucinating numeric values absent from the source text and possess a ``black-box'' nature that obscures their decision-making processes. To mitigate the limitations of monolithic generative models, research is increasingly being directed toward collaborative multi-agent architectures. In these advanced frameworks, a collaborative multi-agent paradigm is proposed where specialized software agents, such as document parsers, entity extractors, and ontology alignment agents, are orchestrated to extract, validate, and integrate knowledge across heterogeneous formats. Recent literature highlights several successful implementations of this paradigm; for example, the KARMA framework deploys nine collaborative LLM agents for entity discovery and conflict resolution, while Tag2Graph is explicitly designed to mine KGs from industrial time-series data and tag definitions. 
+Large Language Models (LLMs) are considered highly attractive for this extraction task, given their capacity to interpret complex natural-language instructions and adapt to new extraction patterns. Nonetheless, significant reliability issues persist; LLMs are prone to hallucinating numeric values absent from the source text and possess a ``black-box'' nature that obscures their decision-making processes. To mitigate the limitations of monolithic generative models, recent research proposes collaborative multi-agent architectures, in which specialized software agents --- document parsers, entity extractors, ontology alignment agents --- are orchestrated to extract, validate, and integrate knowledge across heterogeneous formats. Recent literature highlights several successful implementations of this paradigm; for example, the KARMA framework deploys nine collaborative LLM agents for entity discovery and conflict resolution, while Tag2Graph is explicitly designed to mine KGs from industrial time-series data and tag definitions. 
 
-Bridging the gap between the generative flexibility of LLMs and the deterministic rigor required by industrial SOPs remains a primary experimental frontier. This thesis investigates the design, implementation and evaluation of a collaborative multi-agent system for that task, on four corpora from unrelated industrial domains: a nine-station packaging facility used for development, and three previously unseen corpora covering biogas digestion, cleanroom access control and reverse-osmosis desalination.
+Bridging the gap between the generative flexibility of LLMs and the deterministic rigor required by industrial SOPs remains a primary experimental frontier. This thesis investigates the design, implementation and evaluation of a collaborative multi-agent system for that task, on four corpora from unrelated industrial domains: a nine-station packaging facility used for development, and three previously unseen corpora covering biogas digestion, reverse-osmosis desalination and sulfuric acid production.
 
 % § 1.2  Gap summary; detailed survey is in Section~\ref{sec:related_work}.
 \subsection{Research Gaps}
@@ -102,31 +102,33 @@ To address these limitations, this work makes four primary contributions:
           runs unchanged on a facility it has never seen.
     \item \textbf{Content-First Evaluation Metric:} \(F1_{\text{content}}\),
           which collapses each ground-truth row and predicted record into a text
-          blob, blends SBERT cosine similarity~\cite{reimers2019sbert} with
-          numeric overlap, and pairs the two sides by Hungarian optimal
-          assignment. Neither side's field names or identifier conventions enter
+          blob, blends SBERT cosine similarity~\cite{reimers2019sbert} with a
+          symmetric numeric agreement term, and pairs the two sides by Hungarian
+          optimal assignment. Neither side's field names or identifier conventions enter
           the score, which is what makes a comparison possible at all when the
           extractor discovers its own vocabulary.
     \item \textbf{Empirical Validation of the Metric Itself:} A metric built on
           sentence embeddings can post a respectable score without discriminating
           anything, so its validity is measured rather than argued. Predictions
-          scored against a foreign corpus's ground truth fall to $0.02$--$0.11$;
-          corrupting every numeric value costs $0.30$ F1; and the reported
-          threshold is a strict local maximum on none of the four corpora, so it
-          cannot have been chosen to flatter the system. The same study reports,
-          with equal prominence, what the metric does \emph{not} measure: word
-          order within a record, which value is bound to which record, and the
+          scored against a foreign corpus's ground truth fall to $0.01$--$0.04$;
+          corrupting every numeric value costs $0.20$ F1; padding a record with
+          numbers it did not extract lowers its score rather than raising it;
+          and the reported threshold is not a local maximum on any of the four
+          corpora, so it cannot have been chosen to flatter the system. The same
+          study reports, with equal prominence, what the metric does \emph{not}
+          measure: word order within a record, which value is bound to which
+          record, which slot a value occupies inside a record, and the
           correctness of the discovered category label.
     \item \textbf{Cross-Corpus Evaluation and the Cost of Schema-Agnosticism:}
           Evaluation on one development corpus and three previously unseen
-          external corpora (biogas digestion, cleanroom access control,
-          reverse-osmosis desalination), five repeats each, with no per-corpus
+          external corpora (biogas digestion, reverse-osmosis desalination,
+          sulfuric acid production), five repeats each, with no per-corpus
           configuration. Against this, a grid search over ten prompting paradigms
           and two models whose prompt is given the development corpus's schema,
           taxonomy, identifier convention and worked examples scores markedly
           higher on that corpus and is inapplicable to the others without being
           rewritten. Because both systems recover the ground truth to within
-          $0.023$ recall and differ chiefly in how finely they itemise it, the
+          $0.002$ recall and differ chiefly in how finely they itemise it, the
           gap quantifies what requiring no per-domain configuration costs, and
           identifies the schema-specified condition as corpus-specific adaptation
           rather than a fair baseline.
@@ -144,11 +146,11 @@ In this chapter, the foundational concepts and computational tools upon which th
 
 Large Language Models (LLMs) are characterized as advanced deep learning models that have been extensively pre-trained on massive textual corpora to understand context and generate human-like responses. The foundational architecture of nearly all modern LLMs is the transformer, which utilizes a self-attention mechanism to process sequences more efficiently and accurately by relating any token in an input to any other token. Various architectures have been developed within this paradigm, including encoder-only models (e.g., BERT) for deep contextual understanding, decoder-only models (e.g., GPT) for text generation, and encoder-decoder models (e.g., T5) for highly flexible text-to-text transformations.
 
-Two properties of particular relevance to this thesis are zero-shot and few-shot in-context learning~\cite{brown2020gpt3}. In zero-shot settings, a model follows task instructions expressed entirely in natural language without any worked examples, enabling novel extraction tasks with no labeled data. Few-shot in-context learning extends this by embedding a small number of worked examples directly in the prompt, guiding the model toward the desired output format or extraction pattern without task-specific fine-tuning or weight updates. Both capabilities render LLMs attractive for knowledge extraction in industrial settings where annotated training corpora are scarce, a direct constraint here, where the four evaluation corpora provide between 26 and 86 annotated rules each, 196 in total. Chain-of-Thought prompting~\cite{wei2022cot}, which requires the model to produce explicit intermediate reasoning steps before its final answer, is a complementary technique that improves extraction reliability by making intermediate decisions inspectable. Together, zero-shot prompting, few-shot in-context learning, and Chain-of-Thought reasoning represent application-level enhancements that improve LLM utility without modifying model weights~\cite{katanforoosh2025cs230}, the paradigm this thesis operates within entirely, as no fine-tuning or weight adaptation of any model is performed.
+Two properties of particular relevance to this thesis are zero-shot and few-shot in-context learning~\cite{brown2020gpt3}. In zero-shot settings, a model follows task instructions expressed entirely in natural language without any worked examples, enabling novel extraction tasks with no labeled data. Few-shot in-context learning extends this by embedding a small number of worked examples directly in the prompt, guiding the model toward the desired output format or extraction pattern without task-specific fine-tuning or weight updates. Both capabilities render LLMs attractive for knowledge extraction in industrial settings where annotated training corpora are scarce, a direct constraint here, where the four evaluation corpora provide between 26 and 86 annotated rules each, 229 in total. Chain-of-Thought prompting~\cite{wei2022cot}, which requires the model to produce explicit intermediate reasoning steps before its final answer, is a complementary technique that improves extraction reliability by making intermediate decisions inspectable. Together, zero-shot prompting, few-shot in-context learning, and Chain-of-Thought reasoning represent application-level enhancements that improve LLM utility without modifying model weights~\cite{katanforoosh2025cs230}, the paradigm this thesis operates within entirely, as no fine-tuning or weight adaptation of any model is performed.
 
 Despite these capabilities, LLMs exhibit significant limitations that are especially consequential in industrial contexts. The most critical is the generation of \emph{hallucinations}~\cite{ji2023hallucination}. Two distinct hallucination modes are distinguished in the literature: \emph{intrinsic hallucination}, where the output directly contradicts information present in the source document, and \emph{extrinsic hallucination}, where the output introduces content that cannot be verified against the source at all. Both are dangerous for industrial SOP extraction, but extrinsic hallucination is particularly insidious: a numeric threshold value invented by the model and absent from the source text will not be flagged by any input-grounding check, yet could cause a safety alarm to fire at an incorrect value or fail to trigger when it should. A second limitation is difficulty with precise numerical reasoning: numeric values embedded in multi-column threshold tables with engineering units are susceptible to transcription errors in which adjacent row values are transposed or incorrect unit suffixes are appended. Third, the ``black-box'' nature of LLM inference makes it difficult to trace why a specific prediction was produced, complicating systematic debugging of extraction errors. The mitigation of these limitations (hallucination control, numeric grounding, and reasoning transparency) are primary design concerns addressed by the multi-agent pipeline proposed in Section~\ref{sec:pipeline}.
 
-Models are served through an OpenAI-compatible endpoint (Section~\ref{sec:endpoint}); nothing in the pipeline depends on that endpoint being remote rather than local, and the same code runs against either. The choice does carry one methodological consequence that shapes every reported figure: a shared endpoint batches requests with other traffic, so long generations are not reproducible under a fixed seed, and results must be reported as a mean with a standard deviation over repeats rather than as a single run. Section~\ref{sec:determinism} develops this point, which is why no result in this thesis is presented as a single number.
+Models are served through an OpenAI-compatible endpoint (Section~\ref{sec:endpoint}); nothing in the pipeline depends on that endpoint being remote rather than local, and the same code runs against either. The choice carries one methodological consequence that shapes every reported figure: long generations are not reproducible under a fixed seed, so no result in this thesis is presented as a single number. Section~\ref{sec:determinism} gives the mechanism and the consequences that follow from it.
 
 % § 2.2  Knowledge Graphs: triples, ontologies, TBox/ABox, Neo4j, Cypher.
 \subsection{Knowledge Graphs and Graph Databases}
@@ -292,9 +294,10 @@ Furthermore, applying knowledge extraction to industrial SOPs remains challengin
 Hallucination control is a known challenge in LLM-based extraction that has
 received relatively little attention in the literature for numeric fields
 specifically. Populating knowledge graphs from unstructured technical text remains highly error-prone due to "hallucinations" in natural language generation.
-In general NLP extraction tasks, a hallucinated entity name is often recoverable
-from context; in industrial settings, a hallucinated temperature threshold could
-cause a safety alarm to fire at the wrong value or not at all.
+The cost of such errors is domain-dependent, and in industrial settings it is
+not tolerable: a hallucinated temperature threshold could cause a safety alarm
+to fire at the wrong value or not at all, so an invented numeric is a safety
+defect rather than a noise term.
 The grounding discipline used in this thesis
 (Section~\ref{sec:stage_audit}) addresses the most dangerous hallucination
 patterns for this task: inventing numeric threshold values, appending units not
@@ -370,6 +373,7 @@ organised in three layers, each described in a dedicated section:
           states what it does not measure.
 \end{description}
 
+\label{sec:layer_separation}
 The layers are separable by design. Layer 2b never reads a ground truth, so it
 cannot be tuned to one; Layer 3 never reads a document, so it cannot exploit
 knowledge of how a rule was extracted. Because every agent role is served by a
@@ -561,8 +565,8 @@ without any per-corpus configuration, prompt change, or field mapping.}
 \midrule
 Production line (iMAKS)   & development   & 4 & 86 & narrative, table, mixed, matrix \\
 Biogas digestion          & external test & 1 & 47 & parameter table + triggered responses \\
-Cleanroom access control  & external test & 1 & 37 & role/zone permission matrix \\
 RO desalination           & external test & 1 & 26 & printed rule codes + intervals \\
+Sulfuric acid production  & external test & 3 & 70 & numbered prose clauses + attribute tables \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -668,8 +672,12 @@ and a sentence's subject all become field names by the same mechanism
 
 \subsubsection{External Test Corpora}
 \label{sec:external_corpora}
-The three external corpora were held out entirely during development. Each is a
-single document from a domain unrelated to packaging:
+No external corpus took part in selecting any prompt, parameter, model, or field
+name; every such choice was made against the development corpus alone. The three
+differ, however, in how much of the pipeline's development they were visible
+for, and Section~\ref{sec:lim_exposure} states that gradient precisely rather
+than describing all three as equally held out. Each comes from a domain
+unrelated to packaging:
 
 \begin{itemize}
     \item \textbf{Biogas digestion (47 ground-truth rows).} A digester operating
@@ -680,17 +688,24 @@ single document from a domain unrelated to packaging:
           response) and numbers them \texttt{R01}, \texttt{R02}, codes that
           appear nowhere in the document.
 
-    \item \textbf{Cleanroom access control (37 ground-truth rows).} A permission
-          matrix over roles and equipment zones, together with environmental
-          limits and acknowledgement deadlines. Its ground truth annotates one
-          row per matrix cell and numbers them \texttt{M001}, \texttt{M002}.
-
     \item \textbf{Reverse-osmosis desalination (26 ground-truth rows).} A
           high-pressure skid procedure whose rules carry identifiers printed in
           the document itself (\texttt{OP-ST-001}), unlike the other three
           corpora. Its ground truth leaves the identifier column blank on rows
           with no printed code, which has consequences for identifier-based
           scoring discussed in Section~\ref{sec:id_reuse}.
+
+    \item \textbf{Sulfuric acid production (70 ground-truth rows).} Three
+          procedures for one contact-process plant --- normal operation,
+          emergency shutdown, and maintenance --- covering startup sequencing,
+          alarm and trip setpoints, shutdown response times, maintenance
+          intervals and permit requirements. It is the only corpus of more than
+          one document besides the development set, so it is the only external
+          corpus that exercises the schema arbiter's reconciliation of
+          vocabulary across documents. Its annotation splits the two attribute
+          tables cell by cell rather than row by row, a granularity convention
+          whose measured cost is quantified in
+          Section~\ref{sec:granularity}.
 \end{itemize}
 
 The three corpora disagree with the development corpus and with each other about
@@ -783,9 +798,9 @@ Assigning one model to every role is a deliberate choice supported by the grid
 rather than a simplification. Over 100 grid runs, rescored with the metric of Section~\ref{sec:metrics},
 \texttt{gemma4:31b} scored higher than \texttt{nemotron-3-nano:30b} on all ten
 prompting paradigms, and by a margin comparable to the spread between paradigms
-themselves: the spread across paradigms within \texttt{gemma4:31b} is $0.132$
-($0.814$--$0.946$), while the same paradigm across the two models differs by up
-to $0.128$. Model choice therefore matters about as much
+themselves: the spread across paradigms within \texttt{gemma4:31b} is $0.135$
+($0.814$--$0.949$), while the same paradigm across the two models differs by up
+to $0.145$. Model choice therefore matters about as much
 as prompting strategy, and there is no measured basis for handing any role to the
 weaker model. Role independence between the extracting and auditing agents (an
 auditor that does not share the scout's failure modes) is available through a
@@ -862,7 +877,7 @@ annotation rather than of any system.
 Ground-truth identifiers are typically annotator-assigned naming conventions
 absent from the source text. Three of the four corpora used here number their
 rules with codes that appear nowhere in the documents (\texttt{RULE-ST01-01},
-\texttt{R01}, \texttt{M001}) while the fourth reuses codes the document itself
+\texttt{R01}, \texttt{R001}) while the fourth reuses codes the document itself
 prints. An extraction system cannot reproduce an invented convention without
 being told what it is, regardless of how accurately it captures the operational
 content, so identifier agreement on those three corpora is exactly zero for any
@@ -918,6 +933,33 @@ designed around four principles:
           low-quality near-matches.
 \end{enumerate}
 
+\paragraph{Why not an LLM judge?}
+The obvious alternative to the construction above is to ask a language model
+whether each predicted record expresses the same rule as a ground-truth row.
+That design would satisfy the first two principles more directly than blob
+comparison does, and would probably read attribute binding, which this metric
+demonstrably does not (Section~\ref{sec:lim_metric_blind}). It is not adopted
+here for three reasons specific to this study rather than for any general
+objection. First, reproducibility: Section~\ref{sec:determinism} documents that
+the hosted endpoint is not reproducible under a fixed seed for long generations,
+so a judge built on it would make the \emph{measuring instrument} as variable as
+the system measured, and the run-to-run movement reported in
+Section~\ref{sec:results_main} could no longer be attributed to the pipeline
+rather than to the judge.
+The metric used here is deterministic: rescoring the same predictions reproduces
+every figure in this thesis exactly. Second, independence: the pipeline's scouts,
+inducer and auditor are served by \texttt{gemma4:31b}, and a judge drawn from the
+same family would share its blind spots, exactly the objection raised against
+the shared-model auditor in Section~\ref{sec:stage_audit}. Third, auditability:
+every acceptance decision here is a number a reader can recompute from the audit
+trail (Section~\ref{sec:audit_trail}), whereas a judge's verdict can be
+inspected but not recomputed. The two approaches are complementary rather than
+exclusive, and the audit trail was written in a form that makes the comparison
+executable: the stratified blinded pair sample of
+Section~\ref{sec:lim_metric_blind} can be labelled by a judge as readily as by a
+person. Neither labelling has been collected, so no claim is made here about
+which agrees better with human judgment.
+
 % § 3.5  Two-Tier Metric Definitions
 \subsection{The Metric: Content Agreement over Optimally Assigned Pairs}
 \label{sec:metrics}
@@ -972,7 +1014,7 @@ plays no part in steps 4--7.
 \subsubsection{A Worked Example}
 \label{sec:worked_example}
 The following is a real comparison, taken verbatim from the audit trail for
-run~1 of the biogas corpus, and is reproducible by opening that file.
+run~4 of the biogas corpus, and is reproducible by opening that file.
 
 \paragraph{A pair that is counted.} Ground-truth row \texttt{R04} and predicted
 record \texttt{SOPBDG003MID-002} produce these two blobs after step~2:
@@ -981,79 +1023,82 @@ record \texttt{SOPBDG003MID-002} produce these two blobs after step~2:
 GT   AlarmControlResponse | DGT-101 | pH | <6.5 at any time |
      DCS stops feed pump PMP-201, raises Critical alarm
      DGT-101 pH Low-Low | Critical | 6.5 | pH
-PRED StaticLimitAndTriggeredResponse | If pH <6.5 at any time, DCS stops
-     feed pump PMP-201 and raises Critical alarm "DGT-101 pH Low-Low". |
+PRED OperatingLimit | If pH <6.5 at any time, DCS stops feed pump
+     PMP-201 and raises Critical alarm "DGT-101 pH Low-Low". |
      Primary Digester 1 | 7.5 | 6.8 | pH | DGT-101 | -
 \end{lstlisting}
 
 Note what the two sides disagree about. The ground truth calls this rule an
-\texttt{AlarmControlResponse}; the record calls it a
-\texttt{StaticLimitAndTriggeredResponse}, a label from a vocabulary the inducer
-derived for this corpus and which the ground truth never uses. The record also
-carries the equipment name and the normal operating band ($6.8$--$7.5$) that the
-ground-truth row omits, and the two sides order their fields differently, because
-each follows its own column order. Under exact matching on any field this pair
-fails. The metric proceeds as follows.
+\texttt{AlarmControlResponse}; the record calls it an \texttt{OperatingLimit}, a
+label from a vocabulary the inducer derived for this corpus and which the ground
+truth never uses. The record also carries the equipment name and the normal
+operating band ($6.8$--$7.5$) that the ground-truth row omits, and the two sides
+order their fields differently, because each follows its own column order. Under
+exact matching on any field this pair fails. The metric proceeds as follows.
 
 \emph{Step 3, numbers.} The ground truth yields
 $N_g = \{-101,\, 6.5,\, -201,\, -101,\, 6.5\}$ and the record
-$N_p = \{-101,\, 1,\, 6.8,\, 7.5,\, 6.5,\, -201,\, -101\}$. The negative values
+$N_p = \{6.5,\, -201,\, -101,\, 1,\, 7.5,\, 6.8,\, -101\}$. The negative values
 are asset tags: the number extractor reads the hyphen in \texttt{DGT-101} as a
 minus sign, so the tag contributes $-101$ on both sides
 (Section~\ref{sec:numeric} discusses this).
 
 \emph{Step 4, agreement.} Each ground-truth number finds an exact counterpart in
-the record, so every per-number score in Equation~\ref{eq:numoverlap} is $1.000$
-and $\mathrm{numOverlap} = 1.000$. The sentence embeddings give a cosine of
-$0.855$. Therefore
+the record, so $\mathrm{cover}(N_g,N_p) = 1.000$. The reverse direction is
+weaker: the record's $1$ (from ``Primary Digester 1'') answers to nothing in the
+ground-truth row, and its $6.8$ and $7.5$ are the unannotated operating band, so
+$\mathrm{cover}(N_p,N_g) = 0.854$. Their harmonic mean is
+$\mathrm{numOverlap} = 0.921$. The sentence embeddings give a cosine of $0.836$.
+Therefore
 \[
-\mathrm{agree} = 0.6 \times 0.855 + 0.4 \times 1.000 = 0.913,
+\mathrm{agree} = 0.6 \times 0.836 + 0.4 \times 0.921 = 0.870,
 \]
 which is the value the audit trail records, along with the per-number pairing
-(\texttt{6.5->6.5 (1.000)}, and so on) that produced the numeric term.
+(\texttt{6.5->6.5 (1.000)}, and so on) that produced each direction.
 
-\emph{Steps 5--6.} The assignment selects this pair, and $0.913 \ge 0.6$, so it
+\emph{Steps 5--6.} The assignment selects this pair, and $0.870 \ge 0.6$, so it
 is a true positive. For orientation the audit also notes that the two blobs share
-18 words at a Jaccard overlap of $0.667$, a number that played no part in the
+words at a Jaccard overlap of $0.667$, a number that played no part in the
 decision.
 
 \paragraph{A pair that is rejected.} The assignment is exhaustive over
 $\min(|G|,|P|)$ pairs, so it pairs rows even when no good partner remains.
-Ground-truth row \texttt{R15} was assigned to record
-\texttt{SOPBDG003MID-036}:
+Ground-truth row \texttt{R22} was assigned to record
+\texttt{SOPBDG003MID-017}:
 
 \begin{lstlisting}
-GT   AlarmControlResponse | GSH-401 | Level | <20% |
-     DCS inhibits CHP gas supply, Warning alarm active | Warning | 20.0 | %
-PRED TriggeredResponse | A warning sign interlocked with the level
-     transmitter shall illuminate at the access gate.
+GT   NormalOperatingLimit | FLR-601 | Flame Temperature |
+     shall be at or above minimum | 850.0 | C
+PRED AccessRestriction | FLR-601 | No personnel entry is permitted
+     without explicit authorisation from the Shift Supervisor
 \end{lstlisting}
 
-Both rows concern a level signal and both mention a warning, which is why the
-assignment paired them once better partners were taken. But the cosine is only
-$0.476$, and the record contains no number at all, so
-$\mathrm{numOverlap} = 0.000$ against a ground-truth row that states a $20\%$
-threshold. The blended score is
-$0.6 \times 0.476 + 0.4 \times 0.000 = 0.286$, far below $\tau = 0.6$. The pair is
-recorded as \texttt{REJECTED (below threshold)} and counts as a false negative for
-\texttt{R15} and a false positive for the record. This is the correct outcome, and
-it illustrates why the numeric term is load-bearing: on semantic similarity alone
-the two rows are not obviously unrelated, and it is the absence of the threshold
-value that decides the case.
+Both rows concern the same asset, \texttt{FLR-601}, which is why the assignment
+paired them once better partners were taken. But they state entirely different
+kinds of rule, and the cosine is only $0.231$. The numeric term is instructive
+here: every number the record carries is justified, so
+$\mathrm{cover}(N_p,N_g) = 1.000$, but the record carries only the asset tag and
+misses the $850$ the ground truth states, so $\mathrm{cover}(N_g,N_p) = 0.500$
+and their harmonic mean is $0.667$. The blended score is
+$0.6 \times 0.231 + 0.4 \times 0.667 = 0.405$, well below $\tau = 0.6$. The pair
+is recorded as \texttt{REJECTED (below threshold)} and counts as a false negative
+for \texttt{R22} and a false positive for the record. This is the correct
+outcome, and it illustrates why both directions of the numeric term are needed:
+a record cannot clear the threshold merely by carrying nothing unjustified.
 
-\paragraph{From decisions to the reported figure.} That run produced 37 records
-against 47 ground-truth rows. The assignment formed 37 pairs, of which 33 cleared
-the threshold and 4 did not, leaving 10 ground-truth rows unpaired for want of a
+\paragraph{From decisions to the reported figure.} That run produced 28 records
+against 47 ground-truth rows. The assignment formed 28 pairs, of which 26 cleared
+the threshold and 2 did not, leaving 19 ground-truth rows unpaired for want of a
 record. Step~7 then gives
 \[
-\mathrm{TP} = 33, \quad
-\mathrm{FP} = 37 - 33 = 4, \quad
-\mathrm{FN} = 47 - 33 = 14,
+\mathrm{TP} = 26, \quad
+\mathrm{FP} = 28 - 26 = 2, \quad
+\mathrm{FN} = 47 - 26 = 21,
 \]
 \[
-P = \tfrac{33}{33+4} = 0.892, \quad
-R = \tfrac{33}{33+14} = 0.702, \quad
-F1_{\text{content}} = \tfrac{2 \times 0.892 \times 0.702}{0.892 + 0.702} = 0.786.
+P = \tfrac{26}{26+2} = 0.929, \quad
+R = \tfrac{26}{26+21} = 0.553, \quad
+F1_{\text{content}} = \tfrac{2 \times 0.929 \times 0.553}{0.929 + 0.553} = 0.693.
 \]
 Every quantity in this derivation is written to
 \texttt{f1\_derivation\_<corpus>.csv} with the substitution shown, so the
@@ -1112,7 +1157,7 @@ observed to carry. The record matched to \texttt{R04} populates eight:
 
 \begin{lstlisting}
 id             = SOPBDG003MID-002  -> dropped (bookkeeping)
-category       = StaticLimitAndTriggeredResponse  -> kept
+category       = OperatingLimit                   -> kept
 action_remarks = If pH <6.5 at any time, DCS ...  -> kept
 equipment      = Primary Digester 1               -> kept
 hl             = 7.5                              -> kept
@@ -1141,7 +1186,7 @@ record. Two things follow, and both are real:
           for assigning a category from a vocabulary the ground truth never
           uses. In the worked example the two sides disagree on the category
           outright (\texttt{AlarmControlResponse} against
-          \texttt{StaticLimitAndTriggeredResponse}, a label the inducer derived
+          \texttt{OperatingLimit}, a label the inducer derived
           for this corpus) and the pair is still correctly counted, because
           the operational content agrees.
     \item \textbf{The cost.} A value placed in the \emph{wrong} field produces
@@ -1150,10 +1195,16 @@ record. Two things follow, and both are real:
           strings would be indistinguishable. The metric therefore checks that
           the right values are present, not that each is bound to the right slot.
           This is not a conjecture: permuting quantities between records (so
-          that every rule carries another rule's bound) costs $-0.007$ F1
+          that every rule carries another rule's bound) costs $-0.001$ F1
           (Table~\ref{tab:perturbations}), which is to say the metric does not
-          detect it at all. The blind spot is carried into the limitations as
-          Section~\ref{sec:lim_metric_blind}.
+          detect it at all. The mechanism is the assignment itself, behaving as
+          designed: the Hungarian step is free to re-pair each record with
+          whichever ground-truth row its post-permutation content now resembles,
+          so the damage is absorbed by re-assignment rather than priced.
+          Freezing the assignment before perturbing would measure a stricter
+          property than the metric possesses; the figure reported is the one
+          that applies to a metric which assigns optimally. The blind spot is carried
+          into the limitations as Section~\ref{sec:lim_metric_blind}.
 \end{itemize}
 
 The design is therefore a deliberate trade: field-name independence, which is
@@ -1162,11 +1213,32 @@ field-level precision. A metric that recovered the latter without reimposing a
 per-corpus schema mapping would be a genuine improvement, and none is offered
 here.
 
+This framing has a limit, and the results should not be read past it.
+Throughout, surplus records are attributed to granularity rather
+than to error, and the evidence supports that: the development corpus's
+unpaired records state facts the documents contain, and regrouping the sulfuric
+acid annotation moves its figure by $0.147$ without changing a prediction. But
+``not an error'' is not the same as ``not a problem''. A pipeline that emits
+$131$ records where an annotator wrote $86$ imposes a real cost on whatever
+consumes them: a knowledge graph populated from that output carries redundant
+nodes, a human reviewing it reads the same rule stated three ways, and
+deduplication becomes a downstream task that someone must specify. The
+granularity argument establishes that the surplus is not fabrication. It does
+not establish that the surplus is free.
+
 \subsubsection{Blob Construction (Steps 1--2)}
 \label{sec:blob}
-Each ground-truth row and each predicted record is collapsed into a single text
-blob: every column's value, whatever the column is called, joined in order with
-`` \texttt{|} ''. Two kinds of column are removed first, and both are identified
+The operation is easiest to state as an example. A ground-truth row
+\texttt{\{min\_temp: 50, unit: C\}} and a predicted record
+\texttt{\{low\_limit: 50, uom: C\}} describe the same rule in two vocabularies
+that share no column name. Collapsed, both become \texttt{50 | C}, and they
+compare as identical. That is the whole idea: the column names are discarded and
+only what they held is compared, which is what allows a corpus that invented its
+own field names to be scored against an annotation that invented different ones.
+
+Concretely, each ground-truth row and each predicted record is collapsed into a
+single text blob: every column's value, whatever the column is called, joined in
+order with `` \texttt{|} ''. Two kinds of column are removed first, and both are identified
 structurally rather than from a list of known names, so that a corpus using an
 unfamiliar column name still resolves correctly:
 
@@ -1198,8 +1270,41 @@ unfamiliar column name still resolves correctly:
 Both thresholds above are declared parameters rather than inline constants, and
 are listed with the other free parameters in Table~\ref{tab:free_params}.
 
+Each finished blob then passes through one fixed normalisation step, applied
+identically to both sides. Documents and annotations routinely encode the same
+character differently: a typesetter emits the non-breaking hyphen U+2011 inside
+an asset tag where an annotator types an ASCII hyphen, or the true minus sign
+U+2212 where an annotator types the same ASCII hyphen. Nothing semantic
+distinguishes the spellings, but every reader downstream of the blob treats them
+as distinct tokens, and the numeric extractor of
+Section~\ref{sec:numeric} reads a minus sign in one and not in the other. Dash
+variants are therefore folded to the ASCII hyphen, non-breaking and typographic
+spaces to the ASCII space, and zero-width marks removed. The fold is a
+character-level identity, not a scoring decision: it is fixed before any corpus
+is scored, is applied to ground truth and prediction alike, and cannot move a
+score in a direction that depends on which side used which encoding. It is
+deliberately narrower than the standard NFKC normalisation, which additionally
+rewrites subscripts and superscripts as digits and would manufacture numbers
+that neither side wrote (\texttt{CO\textsubscript{2}} becoming
+\texttt{CO2}), corrupting the very term the metric relies on.
+
+On the four corpora reported here the fold is inert: rescoring every corpus with
+normalisation disabled reproduces all four figures exactly
+($0.719$, $0.715$, $0.850$, $0.649$). It is retained not because it earns
+anything on this evidence but because the condition it guards against is a
+property of how a document was typeset rather than of the extractor, and a
+corpus exhibiting it would otherwise be penalised for an encoding difference its
+annotator never saw. Reporting a normalisation step that changes nothing is the
+honest outcome of testing it; the step is declared in
+Table~\ref{tab:free_params} so that a reader can verify the claim by turning it
+off.
+
 The predicted side drops the pipeline's own fixed bookkeeping columns by the same
-principle. In particular the recorded source span, which names the line a record
+principle: \texttt{id}, \texttt{source\_file}, and \texttt{source\_span} (plus
+\texttt{chunk\_id}, accepted defensively although the saved output does not
+carry it), the columns that hold a record's identity and provenance rather than
+extracted content. In particular the recorded source
+span, which names the line a record
 was read from, is excluded: no ground truth carries such a column, so every token
 it contributes is unmatchable by construction and can only dilute the comparison.
 
@@ -1228,31 +1333,88 @@ applied to the whole string, so a value is found wherever it was written and
 whichever column held it. Writing $N_g$ and $N_p$ for the numbers so obtained:
 
 \begin{equation}
-\label{eq:numoverlap}
-\mathrm{numOverlap}(g,p) \;=\; \frac{1}{|N_g|}\sum_{x \in N_g}\;\max_{y \in N_p}\;
+\label{eq:numcover}
+\mathrm{cover}(A,B) \;=\; \frac{1}{|A|}\sum_{x \in A}\;\max_{y \in B}\;
 \max\!\left(0,\; 1 - \frac{|x-y|}{\max(|x|,|y|)}\right).
 \end{equation}
 
-The score for one ground-truth number is therefore $1$ for an exact match and
-decays with relative error, reaching $0$ only when the nearest predicted value is
-of opposite sign or more than twice as far from zero. The per-number pairing that
+The score for one number is therefore $1$ for an exact match and decays with
+relative error, reaching $0$ only when the nearest value on the other side is of
+opposite sign or more than twice as far from zero. The per-number pairing that
 produced the average is written to the audit trail, so a reader can see which
 predicted value was credited against which ground-truth value and how close it
 had to be.
 
-One artefact of this extraction is visible in the worked example of
-Section~\ref{sec:worked_example} and is declared rather than silently corrected:
-a hyphen inside an asset tag reads as a minus sign, so \texttt{DGT-101}
-contributes $-101$. Such values are about $15\%$ of all numbers extracted from
+The two sides are then combined symmetrically, as an F1 over numbers:
+
+\begin{equation}
+\label{eq:numoverlap}
+\mathrm{numOverlap}(g,p) \;=\;
+\frac{2 \cdot \mathrm{cover}(N_g,N_p) \cdot \mathrm{cover}(N_p,N_g)}
+     {\mathrm{cover}(N_g,N_p) + \mathrm{cover}(N_p,N_g)}.
+\end{equation}
+
+Both directions are required, and the reason is not symmetry for its own sake.
+$\mathrm{cover}(N_g,N_p)$ alone asks only whether the record contains each of the
+ground truth's values; it prices surplus values at zero, so a record can improve
+its score by carrying numbers it never extracted. That is not a theoretical
+concern but a measured one: appending to every predicted record the numbers
+already present in \emph{other records of the same file} --- changing no
+extracted content, and using no knowledge of the ground truth --- raises the
+recall-only figure on all four corpora, by $+0.021$ on biogas to $+0.178$ on
+sulfuric acid. Under Equation~\ref{eq:numoverlap} the same padding costs between
+$0.030$ and $0.177$ instead. A metric that pays for padding is not measuring
+numeric correctness, whatever it charges for corrupting a value, so the
+symmetric form is the one reported throughout.
+
+The second direction has a cost that must be stated alongside it. Its precision
+half charges a record for carrying values the annotation omits, and some of those
+values are correct extractions of facts the ground truth simply does not record
+(Section~\ref{sec:lim_gt}). Tolerance scoring keeps the charge mild, since a
+surplus value near an annotated one still scores highly, and the measured effect
+on the reported figures is small --- the largest movement across the four corpora
+is $+0.023$ --- but the charge is real, and it is the price of pricing padding at
+all.
+
+One consequence of this extraction is visible in the worked example of
+Section~\ref{sec:worked_example} and is declared as a parameter rather than
+resolved silently: a hyphen inside an asset tag reads as a minus sign, so
+\texttt{DGT-101} contributes $-101$. It contributes $-101$ on both sides,
+because the normalisation of Section~\ref{sec:blob} has already reconciled the
+two encodings of that hyphen; what remains open is not which side reads a minus
+but whether such values should count at all. Such values are about $15\%$ of all numbers extracted from
 these ground truths. They are counted, because a shared asset tag is genuine
 evidence that two rows concern the same equipment; the choice is exposed as a
 parameter (Table~\ref{tab:free_params}) so that it is auditable rather than
 buried in a regular expression. Rescoring every corpus with these values
-excluded measures what the choice costs: the development corpus and biogas do
-not move at all, while cleanroom rises from $0.747$ to $0.987$ and desalination
-from $0.820$ to $0.925$. The default is therefore the \emph{conservative}
-setting: where it matters, it lowers the reported figures rather than raising
-them, for a reason traced in Section~\ref{sec:lim_threshold}.
+excluded measures what the choice costs: the development corpus does not move at
+all, biogas rises slightly from $0.715$ to $0.725$, sulfuric acid falls from
+$0.649$ to $0.601$, and desalination rises from $0.850$ to $0.917$. The two
+larger moves have different sources. Sulfuric acid's instrument tags are printed
+in the documents and reused verbatim by the annotator, so there the tag-derived
+values are shared evidence and discarding them discards signal. Desalination's
+ground truth repeats its printed rule codes inside the annotated rule text where
+the pipeline's content fields do not, so there the tag-derived values are
+one-sided and cost the reported figure $0.067$. Counting them therefore lowers
+the reported figure on the corpus where the choice most favours the system,
+which is why it is the setting reported throughout: the alternative would raise
+the headline number on desalination by $0.067$ on the strength of a scoring
+decision rather than an extraction one.
+
+The conceptual objection to counting them at all should be conceded rather than
+argued away. A hyphen read as a minus sign is an artifact of the number
+extractor, not a designed feature: an asset tag is an identifier, and
+\texttt{DGT-101} is not the quantity $-101$ in any sense the document intends.
+That a shared tag is genuine evidence two rows concern the same equipment is
+true, but it argues for entity agreement being its own term in
+Equation~\ref{eq:agreement}, scored separately and on its own scale, rather than
+for smuggling identifiers into a term that exists to check thresholds. The
+present treatment is defensible because it is symmetric, declared, and measured
+in both settings, and because the setting reported is the one that costs the
+system rather than favours it; it is not defensible as a design. Separating
+entity matching from numeric agreement is left to future work, and until it is
+done the numeric term should be read as mixing two kinds of evidence that
+happen to share a notation.
 
 When a ground-truth row contains no numbers at all
 the numeric term is undefined rather than zero, and the agreement is the semantic
@@ -1310,13 +1472,14 @@ operating point sits on the threshold curve.}
 \midrule
 $\tau$ (threshold)        & $0.6$   & agreement required for an assigned pair to count as a true positive \\
 $w_{\text{sem}}$          & $0.6$   & weight on the SBERT cosine term \\
-$w_{\text{num}}$          & $0.4$   & weight on the numeric-overlap term \\
+$w_{\text{num}}$          & $0.4$   & weight on the numeric-agreement term \\
+numeric term              & symmetric & whether numeric agreement is an F1 over both sides' numbers or the ground truth's recall alone (Equation~\ref{eq:numoverlap}) \\
 embedding model           & \texttt{all-MiniLM-L6-v2} & sentence embeddings; English-only, matching the corpora \\
 id uniqueness minimum     & $0.9$   & distinct-value fraction below which a column cannot be the identifier \\
 id length penalty divisor & $200$   & how strongly long values disqualify a column from being the identifier \\
 id name-hint bonus        & $0.05$  & tie-break nudge for a conventional identifier name \\
 provenance distinct floor & $6$     & maximum distinct values for a document-label column \\
-provenance distinct frac. & $0.1$   & row-fraction alternative to the floor, whichever is larger \\
+provenance distinct frac. & $0.1$   & row-fraction alternative to the floor; the larger of the two limits applies \\
 provenance max value len. & $24$    & maximum length of a value that still looks like a document code \\
 drop tag-derived numbers  & off     & whether to discard negative values arising from hyphenated asset tags \\
 \bottomrule
@@ -1342,8 +1505,7 @@ constitutes one rule (Section~\ref{sec:external_corpora}). A system whose
 granularity differs from the annotator's is penalised for the difference, in
 either direction.
 
-It is worth being precise that the mismatch does \emph{not} reduce to the pipeline
-being uniformly more verbose. On the development corpus it runs both ways at once.
+The mismatch does \emph{not} reduce to the pipeline being uniformly more verbose. On the development corpus it runs both ways at once.
 For threshold rules the ground truth is the \emph{finer} of the two: its 22
 threshold sensors are annotated as 50 rows (ten sensors carry three rows each,
 eight carry two) because one printed table row is split into an operational
@@ -1353,8 +1515,40 @@ dependencies) the pipeline is finer. The two effects net out to more records
 than rows overall, but no single collapse or split rule could reconcile them,
 which is why none is applied. The
 ceiling is reported alongside the precision it caps in every results table, since
-a precision of $0.668$ against a ceiling of $0.756$ and the same figure against a
+a precision of $0.595$ against a ceiling of $0.656$ and the same figure against a
 ceiling of $1.0$ describe entirely different systems.
+
+The sulfuric acid corpus allows the size of this effect to be measured directly
+rather than argued, because there the disagreement is isolated to two tables and
+can be undone without touching the predictions. Both tables have
+\emph{attribute} columns --- headers naming different kinds of information about
+one subject (a detection setpoint, an automatic action, a required operator
+response, a deadline), which are not interchangeable and could not be swapped
+--- and the annotation records one row per \emph{cell} rather than per table
+row. The three threshold rows of the operating procedure's parameter table
+become twelve annotated rules, and the four trip scenarios of the emergency
+procedure become sixteen, four of which consist of nothing but a duration
+(\texttt{1 minute}, \texttt{2 minutes}) with no subject attached. The pipeline
+reads those tables the other way: for the sulfur feed tag it emits a single
+record carrying the normal band, the low alarm, the high alarm and the trip
+action as four separate fields, so every printed value is captured and the
+record is nonetheless scored as one true positive against four annotated rows.
+
+Regrouping only those two tables to one row per table row --- $70$ annotated
+rows becoming $49$, with no change whatever to the predictions being scored ---
+raises $F1_{\text{content}}$ from $0.649 \pm 0.049$ to $0.796 \pm 0.065$, and
+recall from $0.552$ to $0.796$. The difference of $0.147$ is the price of a
+single annotation convention, paid by a system that extracted the same content
+either way. Two things follow. First, the $0.649$ reported in
+Table~\ref{tab:main_results} is the figure against the annotation as delivered,
+and it is the figure this thesis reports: regrouping a ground truth after seeing
+how a system reads it is exactly the adjustment that makes a benchmark
+unfalsifiable, and the regrouped variant is retained in the repository as a
+labelled diagnostic rather than as a result. Second, and more generally, a
+$0.147$ swing from a convention that no metric of this family can observe places
+a floor on how finely any cross-corpus comparison of these numbers should be
+read --- larger than the gap between two of the four corpora in
+Table~\ref{tab:main_results}.
 
 \subsubsection{Identifier Reuse as a Diagnostic, Not a Score}
 \label{sec:id_reuse}
@@ -1362,13 +1556,13 @@ Identifier agreement is reported, but deliberately not as a precision/recall/F1
 triple. What it measures is whether the corpus's annotator reused codes printed
 in the source document or invented their own numbering, which is a property of
 the annotation and not of the system under test. A ground truth numbering its
-rules \texttt{R01} and \texttt{M001} (strings appearing nowhere in the
+rules \texttt{R01} and \texttt{R001} (strings appearing nowhere in the
 document) yields zero identifier agreement for any extractor whatsoever, while
 one reusing printed codes such as \texttt{OP-ST-001} yields high agreement for
 any extractor that copies what it reads.
 
 Expressed as an F1 and placed beside $F1_{\text{content}}$, this quantity invites
-the reading that the system's honest score is near zero on the corpora where it
+the reading that the system's true score is near zero on the corpora where it
 is zero. It is therefore reported as a fraction of the ground truth's distinct
 identifiers recovered verbatim, labelled as a diagnostic, with the distinct-identifier
 count given alongside, necessary because a ground truth leaving its identifier
@@ -1381,7 +1575,7 @@ otherwise be read against the wrong denominator.
 A metric built on sentence embeddings can report a respectable score while
 discriminating nothing, because embeddings place any two documents of the same
 genre at a non-trivial cosine similarity. A reported $F1_{\text{content}}$ of
-$0.7$--$0.8$ is therefore not self-interpreting, and this section establishes
+$0.75$--$0.99$ is therefore not self-interpreting, and this section establishes
 what it is worth by measurement rather than by argument. All figures come from
 the same evaluator that produces the headline results, run over the same five
 repeats per corpus, with deterministic seeded perturbations.
@@ -1392,14 +1586,23 @@ possibly be right. Each corpus's predictions are scored against every \emph{othe
 corpus's ground truth: nothing is correct, so a metric reading content must fall
 towards zero, while one reading genre similarity will not.
 
-Pooled per corpus, the null score is $0.019$--$0.113$, far below every reported
+Pooled per corpus, the null score is $0.014$--$0.037$, far below every reported
 figure. The worst individual pairing is higher and must be reported as such:
-cleanroom predictions scored against the development corpus's ground truth reach
-$0.274$, and biogas predictions against the same ground truth $0.213$. Both
-involve the largest and most varied ground truth, where an assignment may select
-its best $36$ of $86$ rows. The practical consequence is that reported figures
-should be read against a floor of roughly $0.27$ for a large ground truth rather
-than against $0$.
+development-corpus predictions scored against the biogas ground truth reach
+$0.101$, and sulfuric acid predictions against the same ground truth $0.084$.
+The practical consequence is that reported figures should be read against a
+floor of roughly $0.10$ rather than against $0$; the floor measured on each
+ground truth individually, and the effect of subtracting it, are given in
+Section~\ref{sec:lim_floor}.
+
+The symmetric numeric term of Equation~\ref{eq:numoverlap} is what makes this
+floor as low as it is. Under the recall-only alternative the same test returned
+$0.000$--$0.193$, with a worst pairing of $0.193$: a foreign corpus's records
+were not charged for the numbers they carried that the ground truth never
+mentions, and a large annotation therefore offered the assignment enough
+accidental agreement to reach a fifth of a usable score. Pricing unjustified
+values roughly halves the floor, which is the clearest evidence that the second
+direction is doing work rather than adding symmetry for its own sake.
 
 \subsubsection{Perturbation Tests}
 Each perturbation damages one aspect of the predictions, so the score it costs is
@@ -1410,37 +1613,69 @@ lost across the four corpora.
 \centering
 \caption{Mean $F1_{\text{content}}$ lost under targeted degradation of the
 predictions. A perturbation that costs nothing marks something the metric does
-not check, and is reported as a limitation rather than omitted.}
+not check, and is reported as a limitation rather than omitted. A negative
+entry means the score rose slightly under the perturbation; movements within
+$\pm 0.01$ are inside run-to-run noise and read as ``not detected''.}
 \label{tab:perturbations}
 \small
 \begin{tabular}{lrl}
 \toprule
 \textbf{Perturbation} & \textbf{F1 lost} & \textbf{Interpretation} \\
 \midrule
-Every numeric value corrupted        & $\mathbf{0.300}$ & bound values are genuinely verified \\
-Numeric values permuted between records & $-0.007$ & value-to-rule binding is \emph{not} checked \\
-Category label permuted between records & $0.009$ & the discovered label carries no weight \\
+Every numeric value corrupted        & $\mathbf{0.201}$ & bound values are genuinely verified \\
+Records padded with the corpus's other numbers & $\mathbf{0.097}$ & surplus values are charged, not free \\
+Bounds reversed \emph{within} each record & $\mathbf{0.000}$ & slot binding is \emph{not} checked at all \\
+Numeric values permuted between records & $-0.001$ & value-to-rule binding is \emph{not} checked \\
+Category label permuted between records & $+0.007$ & the discovered label carries almost no weight \\
 Token order scrambled (vs.\ control)    & $0.000$ & word order is \emph{not} read \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The first row is the one that licenses the metric's use for rule extraction:
-replacing every number with a different number costs $0.300$ on average, and up
-to $0.426$ on the corpus where it costs most. Bound values are not decoration in this
-score.
+The first two rows are the ones that license the metric's use for rule
+extraction, and they are complementary. Replacing every number with a different
+number costs $0.201$ on average, from $0.085$ on the corpus where it costs least
+to $0.324$ on the corpus where it costs most: bound values are not decoration in
+this score. Padding each record with the numbers carried by other records of the
+same file --- a perturbation that adds no wrong values, only unjustified ones,
+and uses no knowledge of the ground truth --- costs a further $0.097$ on
+average. The two together say that the metric charges both for stating a value
+wrongly and for stating one it cannot support, which is what distinguishes
+verifying numbers from merely finding them.
 
-The remaining three rows are limitations, and together they are more restrictive
-than the first row alone suggests. Taking another record's quantities while
-keeping one's own subject and prose (the failure in which the right rule
-carries the wrong bound) costs nothing at all ($-0.007$): the assignment
+The third row is the sharpest statement of what this metric cannot do, and it
+deserves to be read before the others. Reversing the order of a record's own
+numeric values --- so that a row printing a critical low bound of $0.65$ and a
+critical high bound of $1.05$ now reports $1.05$ as its low bound and $0.65$ as
+its high --- costs \textbf{exactly zero} on every one of the four corpora, to
+four decimal places. This is not the assignment recovering by re-pairing, as it
+is in the row below: the multiset of values inside each record is untouched, so
+there is nothing for the assignment to recover from. The agreement function
+simply cannot see which slot a value occupies, because the blob it compares
+retains the values and discards the names. A plant configured from records
+perturbed this way would alarm at the wrong end of every range, and
+$F1_{\text{content}}$ would report the corpus unchanged.
+
+The consequence must be stated without softening: \emph{no figure in this
+thesis is evidence that an extracted value sits in the correct slot}. The
+headline metric measures whether the right content was recovered, which is a
+necessary condition for a usable extraction and not a sufficient one. Slot
+correctness is a separate property, it is measured separately in
+Sections~\ref{sec:field_verification} and~\ref{sec:binding_check}, and it is
+measurably imperfect where it can be measured at all.
+
+The remaining rows are limitations of the same family, and together they are
+more restrictive than the first two rows alone suggest. Taking another record's
+quantities while keeping one's own subject and prose (the failure in which the
+right rule carries the wrong bound) costs nothing at all ($-0.001$; the score in
+fact rises slightly, by $0.017$ on the development corpus): the assignment
 simply re-pairs, recovering by reallocation what the corruption removed.
-Permuting the discovered category label between records likewise costs nothing
-($0.009$), because after flattening the label is one column among several dozen.
+Permuting the discovered category label between records costs almost nothing
+($+0.007$), because after flattening the label is one column among several dozen.
 And scrambling token order, measured against an order-preserving control that
 isolates the cost of the rewrite itself, costs $0.000$.
 
-The honest summary is therefore narrow: $F1_{\text{content}}$ verifies that the
+The summary is therefore narrow: $F1_{\text{content}}$ verifies that the
 right \emph{values} are present somewhere in the extracted set, and verifies
 essentially nothing else: not which record holds them, not the label attached
 to them, not the order in which they are written. It is a set-membership measure
@@ -1452,29 +1687,30 @@ discrimination the metric reliably has.
 The acceptance threshold $\tau = 0.6$ is a human choice and therefore a
 researcher degree of freedom. What matters is not that it is defensible in the
 abstract but where it sits on the curve. Sweeping $\tau$ from $0.4$ to $0.9$
-shows that it is a strict local maximum on \emph{no} corpus: there is no
+shows that it is a local maximum on \emph{no} corpus: there is no
 corpus where $0.6$ scores better than both $0.55$ and $0.65$, which is the shape
-a threshold chosen to flatter the system would have. On the development and
-cleanroom corpora the curve is declining, so every lower threshold would report a
-higher figure. On biogas and desalination it is flat: $0.806$ at both $0.55$ and
-$0.6$, and $0.820$ across $0.55$--$0.65$ respectively, meaning the reported figure
-there is insensitive to the choice.
+a threshold chosen to flatter the system would have. All four curves decline
+through the operating point, so on every corpus a lower threshold would report a
+higher figure --- at $\tau = 0.4$ the four report $0.793$, $0.747$, $0.917$ and
+$0.810$ against the $0.719$, $0.715$, $0.850$ and $0.649$ reported at $0.6$.
+That the reported operating point is the more conservative choice on all four
+corpora is the relevant property here.
 
-One corpus must nonetheless be reported with its curve rather than as a single
-number. Cleanroom moves $0.213$ in F1 across one $0.05$ step near the operating
-point, whereas the other three move between $0.000$ and $0.052$. Relatedly, the ranking of corpora by
-$F1_{\text{content}}$ is not stable across the sweep, so no claim that one corpus
-is intrinsically harder than another is supported by these results.
+The largest movement any corpus shows across a single $0.05$ step near the
+operating point is $0.023$, on desalination; the development corpus moves
+$0.015$, biogas $0.016$ and sulfuric acid $0.020$. The ranking of corpora
+by $F1_{\text{content}}$ is nonetheless not stable across the full sweep, so no
+claim that one corpus is intrinsically harder than another is supported by these
+results.
 
 The semantic weight is swept by the same discipline. Holding $\tau = 0.6$ and
-varying $w_{\text{sem}}$ from $0.4$ to $0.8$, biogas and desalination are flat
-through $w_{\text{sem}} = 0.4$--$0.7$; the development corpus reports
-\emph{higher} with more numeric weight ($0.816$ at $w_{\text{sem}} = 0.4$) and
-cleanroom reports higher with more semantic weight ($0.987$ at
-$w_{\text{sem}} = 0.7$, for the reason identified in
-Section~\ref{sec:lim_threshold}). The two sensitive corpora pull in opposite
-directions, so no single weighting flatters all four, and the default of
-$0.6/0.4$ is a peak on none of them.
+varying $w_{\text{sem}}$ from $0.4$ to $0.8$, the development corpus reports
+\emph{higher} with more numeric weight ($0.747$ at $w_{\text{sem}} = 0.4$,
+against $0.719$ at the default) while biogas, desalination and sulfuric acid all
+report higher with more semantic weight ($0.725$, $0.887$ and $0.722$ at
+$w_{\text{sem}} = 0.8$, against $0.715$, $0.850$ and $0.649$). The corpora pull
+in opposite directions, so no single weighting flatters all four, and the
+default of $0.6/0.4$ is a peak on none of them.
 
 \subsection{Reviewability: The Per-Record Audit Trail}
 \label{sec:audit_trail}
@@ -1502,10 +1738,13 @@ in any score.}
 \texttt{pred\_row}, \texttt{pred\_id} & the paired record and its identifier \\
 \texttt{semantic\_cosine} & the SBERT term of Equation~\ref{eq:agreement} \\
 \texttt{numeric\_overlap} & the numeric term, or blank when the row has no numbers \\
+\texttt{numeric\_recall\_gt\_found} & $\mathrm{cover}(N_g,N_p)$: the ground truth's values found in the record \\
+\texttt{numeric\_precision\_pred\_justified} & $\mathrm{cover}(N_p,N_g)$: the record's values justified by the row \\
 \texttt{combined\_score} & the blended agreement \\
 \texttt{score\_formula} & the arithmetic written out, e.g.\ \texttt{0.6*0.855 + 0.4*1.000 = 0.913} \\
 \texttt{threshold} & the $\tau$ in force \\
 \texttt{numeric\_detail\_gt\_to\_pred} & which predicted number was credited against which ground-truth number, with its score \\
+\texttt{numeric\_detail\_pred\_to\_gt} & the same pairing in the reverse direction, behind the precision half \\
 \texttt{gt\_numbers}, \texttt{pred\_numbers} & the extracted number sets \\
 \texttt{runner\_up\_score}, \texttt{margin\_over\_runner\_up} & the best score obtainable from any \emph{other} record, and the margin \\
 \texttt{gt\_text\_compared}, \texttt{pred\_text\_compared} & the two blobs, verbatim \\
@@ -1522,9 +1761,9 @@ trail is emitted from the same assignment object the metric is computed from, so
 it cannot drift from the reported figure; recomputing F1 from the audit files
 alone reproduces every reported value exactly. Second, each ground-truth row's
 \emph{runner-up} is recorded (the best score obtainable from any other record) so a reader can see whether a pairing was decisive or a near-tie. Across the
-927 assigned pairs of all twenty runs, $73\%$ of rows receive their own
-best-scoring record and $27\%$ yield it to another row that the global optimum
-needs it for; $18\%$ of pairs sit within $\pm 0.05$ of their runner-up and should
+945 assigned pairs of all twenty runs, $82.5\%$ of rows receive their own
+best-scoring record and $17.5\%$ yield it to another row that the global optimum
+needs it for; $16.8\%$ of pairs sit within $\pm 0.05$ of their runner-up and should
 be read as close calls rather than confident matches.
 
 For orientation the audit also reports a word-level view of the same two blobs (shared tokens and Jaccard overlap) explicitly marked as diagnostic and
@@ -1569,7 +1808,7 @@ carries the development corpus's answer format. Specifically, the prompt supplie
 This is a strong and entirely legitimate configuration for a system deployed on a
 corpus whose schema somebody has already written down. It is reported here as
 such. What it cannot do is transfer: applying any of these conditions to the
-biogas, cleanroom, or desalination corpora requires a human to read those
+biogas, desalination, or sulfuric acid corpora requires a human to read those
 documents and rewrite all five elements above. The grid therefore measures
 schema-specified extraction, not general extraction, and Section~\ref{sec:results_grid}
 treats it accordingly.
@@ -1848,19 +2087,119 @@ where the canonical form is the better output. This stage is therefore included
 on output-quality grounds, and no claim is made here about its effect on
 $F1_{\text{content}}$.
 
+What can be measured without a field-name ground truth is whether the induction
+behaves as a stable function of the corpus or as a fresh invention on every run,
+and the five production repeats answer this, because each run saved its induced
+schema. Stability tracks how much discretion the documents leave the scouts. The
+development corpus is the most stable of the four: $34$--$44$ canonical fields
+per run, a mean pairwise Jaccard overlap of $0.813$ between the runs' field
+sets, a core of $31$ of $50$ union fields present in every run, and the same
+choice of all three role pointers on every repeat. The three external corpora
+leave the scouts more discretion and the induced vocabulary varies
+correspondingly (mean pairwise Jaccard $0.447$--$0.476$), around a smaller core
+($9$ of $47$ union fields on desalination, $15$ of $71$ on biogas, $19$ of $86$
+on sulfuric acid), and on those corpora the role pointers are not always chosen
+identically across repeats. The variation originates upstream rather than in the
+arbiter: the inducer sees only the inventory that run's scouts reported, so what
+varies is what was observed, not what was reconciled. This inherited vocabulary
+variation is also precisely what a field-name-sensitive score would convert into
+noise; the content-first metric's indifference to field names is what keeps the
+reported spread at $\pm 0.043$ or below despite a canonical vocabulary that
+overlaps run-to-run by less than one half on three corpora.
+
 Withholding the documents from this stage is deliberate. An arbiter that could
 read the source text would be able to introduce fields no scout reported, which
 would make the schema a product of the arbiter's priors rather than of the
 corpus. Restricting it to the observed inventory means the schema cannot contain
 anything the corpus did not exhibit.
 
+\paragraph{What this stage's cost scales with.}
+Because the inducer reads the inventory rather than the corpus, its input is
+bounded by the number of \emph{distinct} field names and category labels the
+scouts reported, not by the number of documents or their length. On the
+development corpus, four documents totalling about $13{,}500$ characters yield
+$449$ extracted facts but only $36$--$51$ distinct field names and $11$ distinct
+category labels across the five runs, which with counts and sample values is a
+prompt of a few hundred tokens. Every other stage is per-chunk and parallel, so
+this single global call is the only place where a corpus-wide quantity enters
+one context window.
+
+That bound is a property of the architecture; whether it stays small on a
+facility-scale corpus is not established by four documents, and the growth
+observed here does not yet flatten. Accumulating the distinct field names
+document by document on the development corpus gives $9$, $22$, $28$, $41$ in
+one representative run: still rising at the fourth document. The inventory
+therefore grows with vocabulary diversity, and the point at which vocabulary
+diversity saturates for a real facility is unmeasured. What can be said is that
+the quantity at risk is the inventory rather than the text, that it is one to
+two orders of magnitude smaller than the corpus at this scale, and that its
+format (a bag of names with counts) admits hierarchical merging of per-document
+inventories should it ever exceed a context window. No such merging is
+implemented or tested here, and the scale limitation is restated in
+Section~\ref{sec:lim_scale}.
+
+One implementation detail must be declared alongside that argument, because it
+would bind before the context window does. The inventory handed to the arbiter
+is truncated to the $120$ most frequent field names. On the corpora evaluated
+here the cap never engages --- the largest inventory any single run produced is
+$44$ names --- so no reported figure is affected by it. But the truncation is
+by frequency, which means the first names discarded at scale would be the rarest
+ones, and those are precisely the names the arbiter's own instructions tell it to
+preserve: a field used by three records out of two hundred is the only place
+those three records' information lives. Past roughly $120$ distinct field names
+the implementation would therefore contradict its own specification, silently and
+without error, discarding rare vocabulary before the arbiter is ever consulted.
+This is a property of the current implementation rather than of the design ---
+the cap exists to bound one prompt's size and could be replaced by the
+hierarchical merge described above --- but it is the concrete point at which
+this stage stops scaling, and it is nearer than the context window.
+
+No claim of scalability is made anywhere in this thesis, and this is the reason.
+The pipeline is demonstrated on nine documents across four corpora; what happens
+at a facility holding thousands of procedures is untested, and the paragraph
+above identifies the specific mechanism that would fail first and the specific
+class of information it would discard --- the rarest fields, which in a safety
+setting are frequently the ones carrying edge-case triggers. Naming that
+mechanism is not the same as having solved it.
+
+\paragraph{The shape a scalable version would take.} The route out is described
+here because a limitation is more useful when the reader can see what would
+remove it, and it is described as a sketch because none of it is implemented or
+evaluated in this thesis. The single global call would become a reduction over
+a tree. Each document's scouts emit a local inventory; inventories are merged
+pairwise, each merge reconciling exactly two vocabularies and emitting canonical
+names together with the aliases that were folded into them; the merged result is
+itself an inventory, so the operation composes, and the root sees a bounded
+number of canonical names rather than the union of every raw one. The number of
+rounds is logarithmic in the document count, and the input to any single call is
+bounded by the width of one merge rather than by the size of the corpus, which
+is the property the current implementation lacks.
+
+Two things would have to hold for that to be an improvement rather than a
+rearrangement. Retaining the alias list at every level is what keeps the mapping
+from a document's own label to the canonical name recoverable, without which the
+provenance guarantee of Section~\ref{sec:stage_segment} would not survive the
+merge. And rarity would have to stop being the discard criterion: a name should
+be removed only when a merge finds it synonymous with a name that is kept, never
+because it was infrequent, which is the precise inversion of what the $120$-name
+truncation does today. Whether pairwise merging preserves vocabulary as well as
+one global view does is an empirical question this thesis does not answer.
+
 \subsection{Stage 4: Deterministic Assembly}
 \label{sec:stage_assemble}
 No LLM. Records are grouped by the document's own record boundary, each field is
 renamed to its canonical name from the induced schema, and one row per rule is
-emitted. Because the boundary is the printed identifier or the physical line the
-record was read from, granularity is decided by evidence printed in the document
-rather than by any convention the pipeline carries.
+emitted. The boundary is defined concretely. Where the document prints an
+identifier for a rule (a rule code such as \texttt{OP-ST-001}, a coded table
+row), that identifier is the boundary: two scouted readings carrying the same
+printed identifier merge into one record, which is what reunites a rule restated
+on both sides of a chunk boundary. Where no identifier is printed, the boundary
+is the physical source line together with the order the record was read in, and
+id-less records are never merged, because one line may legitimately state
+several distinct rules (a matrix line holds one per cell) and a redundant record
+is recoverable downstream whereas a silently merged one is not. Granularity is
+thus decided by evidence printed in the document rather than by any convention
+the pipeline carries.
 
 This is the stage that gives rise to the granularity mismatch analysed in
 Section~\ref{sec:granularity}. Extraction proceeds at the finest granularity the
@@ -1881,10 +2220,13 @@ discrepancy checkable in principle.
 One safeguard applies. A whole-chunk rejection (an auditor claiming that every
 record from a chunk is ungrounded) is treated as an audit failure rather than
 as a finding whenever the chunk carried three or more records, and the records
-are retained. An auditor asserting that nothing in a sizeable chunk is supported
-is more likely to be malfunctioning, or to have misunderstood its instructions,
-than to be correct; without this guard a single bad audit response can silently
-delete a document's entire contribution. For a chunk carrying only one or two
+are retained. The reasoning is a declared design assumption rather than a
+measured frequency: a verdict rejecting every record in a sizeable chunk is more
+plausibly a failure of the audit call itself --- a malformed or truncated reply,
+or a verdict list that did not follow the requested form --- than a correct
+judgement that a whole section of an operating document states nothing.
+Without the guard, one bad audit response silently deletes a document's entire
+contribution. For a chunk carrying only one or two
 records the guard does not apply and the rejection stands, because at that size
 rejecting everything is indistinguishable from the auditor doing its job on a
 record or two, and no inference of malfunction is available.
@@ -1893,8 +2235,115 @@ The foregoing states the stage's purpose and mechanism. It is not a claim that
 the stage raises $F1_{\text{content}}$: what the audit targets is whether a
 record asserts something its cited line does not support, and
 Section~\ref{sec:lim_metric_blind} establishes that the metric used here checks
-that property only weakly. Its contribution is therefore not quantified by the
-figures reported in this thesis.
+that property only weakly. How often the stage intervenes is therefore measured
+directly instead. The pipeline writes every auditor verdict to a per-run
+sidecar file, so the rate is read off the reported batch itself rather than
+inferred: across the 20 runs behind Table~\ref{tab:main_results}, 1176 records
+were audited in 80 chunk audits, \emph{none} was dropped, and 12 were
+corrected --- an intervention rate of $1.02\%$. No chunk-level rejection
+override was triggered on any run. The rate is not uniform across corpora: it is
+$0.15\%$ on the development corpus and $0\%$ on desalination, against $5.71\%$
+on biogas and $1.22\%$ on sulfuric acid, so what the stage does depends on the
+document rather than being a constant property of the configuration. The
+aggregation is produced by a script over the retained sidecars and is in the
+accompanying repository.
+
+Three conclusions follow. The first bounds the stage's effect on the reported
+figures, the second says what the stage nonetheless does, and the third
+restrains what may be inferred from either.
+
+First, the arithmetic isolates which stages drive the reported performance, and
+it does so without an ablation run. A record's contribution to
+$F1_{\text{content}}$ can be altered by the audit only if the audit drops that
+record or changes any part of its content. Zero were dropped and $12$ of $1176$
+were corrected, so at most $1.02\%$ of records differ from what assembly
+produced. Inspecting those twelve is informative in itself: eight rewrote the
+field \texttt{lines}, which holds a record's own provenance rather than any rule
+content, and only four altered a field carrying extracted content. The eight are
+not excluded from the bound --- the defect described below puts that provenance
+into the scored blob, so they could in principle move a score --- but rescoring
+with the field removed shows they do not, which leaves the auditor's substantive
+intervention across the entire reported batch at four records in $1176$.
+
+What these figures establish is attribution. The extraction performance reported
+in Table~\ref{tab:main_results} is produced almost entirely by the scout and
+assembly stages, with the audit contributing negligibly to $F1_{\text{content}}$
+on these corpora; the headline numbers therefore stand on the scouts' and
+assembly's output essentially unedited. The same bound disposes of the converse
+worry --- that the precision in Table~\ref{tab:main_results} might be an
+artifact of aggressive silent filtering --- since an auditor that removes
+nothing filters nothing.
+
+Second, the stage is not inert, and the per-corpus rates are what show it. An
+intervention rate of $0\%$ on desalination against $5.71\%$ on biogas is not
+noise around a constant; it is the stage responding to different documents
+differently, which is the behaviour a conditional safeguard should exhibit. What
+it never did, on any corpus, was drop a record.
+
+The eight provenance rewrites noted above are a defect rather than a behaviour,
+and are declared here because the audit log in the accompanying repository shows
+them plainly. The pipeline maintains a set of internal keys --- a record's
+identifier, its category, its cited lines, its source file --- which are
+bookkeeping rather than extracted content, and the scout stage filters them out
+of the fields it reports. The auditor's correction path does not apply the same
+filter, so a verdict returning a correction keyed \texttt{lines} writes that
+record's own line numbers into its content, where they become a column of the
+output and enter the scored blob. Because the metric extracts numbers from that
+blob, the concern is specific: injected line numbers are numbers, and the
+numeric term carries $40\%$ of the agreement score. The effect was therefore
+measured rather than presumed. It reaches eight records of one corpus across the
+twenty reported runs --- three each on two biogas runs and two on a third ---
+and rescoring those runs with the field excluded returns $0.725 \pm 0.012$
+against the reported $0.715 \pm 0.023$. The defect therefore costs the biogas
+figure $0.011$, carried entirely by the two runs where the injected field is
+populated, each of which loses $0.027$.
+
+That cost is itself a consequence of the numeric term being symmetric
+(Equation~\ref{eq:numoverlap}), and the comparison is worth stating because it
+is the clearest demonstration of what the second direction buys. Under the
+recall-only alternative the same defect costs \emph{exactly nothing}: the
+injected line numbers are surplus values, a recall-only term prices surplus
+values at zero, and the corpus scores $0.725 \pm 0.012$ whether the field is
+present or not. A metric that cannot see a record asserting numbers its source
+line never contained is not one that should be trusted to detect a hallucinated
+threshold either, and this defect --- introduced by accident --- is the closest
+thing to a controlled injection test these corpora provide.
+
+The direction of the bias should be stated plainly: the reported biogas figure
+is \emph{depressed} by $0.011$ relative to what the pipeline would score without
+the defect, so it is conservative rather than flattering. The repair is one line
+--- the correction path must apply the same internal-key filter the scout path
+already applies --- and it is not applied here because doing so changes
+extraction output, which requires re-running every corpus, and a fresh batch
+differs from this one by the endpoint's own run-to-run variation: up to $0.049$
+on the corpora reported here. Re-running would move every figure in this thesis
+by more than the defect it removes, and in an unknown direction, so the defect is
+disclosed and bounded instead, and carried in the code with a comment recording
+all of the above. It should be fixed together with the next full re-run, when the
+cost of re-measurement is being paid for other reasons anyway.
+
+Third, and restraining both of the above, a drop count of exactly zero across
+$1176$ audited records is consistent with two different
+explanations, and the measurement alone does not separate them: either there was
+almost nothing to find, or an auditor served by the same model as the scout
+cannot see what the scout got wrong. The two are not equally supported here. The
+field-level verification of Section~\ref{sec:field_verification} is an
+independent check on the same records, performed against the source documents by
+deterministic code rather than by a model, and on the three runs where a
+correspondence can be established it finds every bound cell carrying the printed
+value in the printed column; the only cells where the pipeline and the
+annotation disagree are four where the annotation is wrong. On those runs there
+was in fact little for the auditor to catch, which is what its
+intervention rate of $0.15\%$ would predict. That argument reaches one corpus and
+one failure mode. It does not show that a shared-model auditor would catch
+hallucinations produced by a scout that had, for whatever reason, misread a
+noisier document: a checker drawn from the same weights as the writer is a
+correlated check, and correlated checks fail together. Role independence is
+available as a command-line override
+(Section~\ref{sec:model_assignment}); measuring whether it raises the
+intervention rate would require a second model of comparable strength, which
+this study does not have, and injecting hallucinations deliberately to see
+whether the stage catches them is an experiment these corpora do not pose.
 
 \subsection{Model Assignment}
 \label{sec:model_assignment}
@@ -1943,9 +2392,11 @@ imposes on it, since the two are not comparable across corpora without it.
 \label{sec:results_main}
 
 Table~\ref{tab:main_results} reports the pipeline on the development corpus and
-on the three external corpora it had never seen. No prompt, parameter, field
-mapping, or threshold was changed between the four; the pipeline was invoked
-identically in each case, differing only in the input directory.
+on the three external corpora, none of which contributed to any configuration
+choice. No prompt, parameter, field mapping, or threshold was changed between the
+four; the pipeline was invoked identically in each case, differing only in the
+input directory. The corpora do differ in how much of the pipeline's development
+they were visible for, which Section~\ref{sec:lim_exposure} sets out.
 
 \begin{table}[H]
 \centering
@@ -1963,11 +2414,11 @@ than against $1.0$.}
 \textbf{Corpus} & \textbf{Role} & \textbf{GT} & \textbf{Records} &
 \textbf{$F1_{\text{content}}$} & \textbf{P} & \textbf{Max~P} & \textbf{R} \\
 \midrule
-Production line (iMAKS)  & dev      & 86 & $116.6 \pm 19.7$ & $0.756 \pm 0.077$ & 0.668 & 0.756 & 0.884 \\
+Production line (iMAKS)  & dev      & 86 & $131.0 \pm 0.0$ & $0.719 \pm 0.000$ & 0.595 & 0.656 & 0.907 \\
 \midrule
-Biogas digestion         & external & 47 & $36.4 \pm 1.1$ & $0.806 \pm 0.022$ & 0.924 & 1.000 & 0.715 \\
-Cleanroom access         & external & 37 & $38.0 \pm 0.0$ & $0.747 \pm 0.000$ & 0.737 & 0.974 & 0.757 \\
-RO desalination          & external & 26 & $27.2 \pm 0.4$ & $0.820 \pm 0.045$ & 0.802 & 0.956 & 0.839 \\
+Biogas digestion         & external & 47 & $28.0 \pm 0.0$ & $0.715 \pm 0.023$ & 0.957 & 1.000 & 0.570 \\
+RO desalination          & external & 26 & $27.2 \pm 0.4$ & $0.850 \pm 0.019$ & 0.831 & 0.956 & 0.869 \\
+Sulfuric acid            & external & 70 & $49.0 \pm 1.0$ & $0.649 \pm 0.049$ & 0.788 & 1.000 & 0.552 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1976,56 +2427,59 @@ Four observations follow. The first fixes the reference point, the second is the
 central result, and the last two constrain how the table should be read.
 
 \textbf{The development corpus, where the pipeline was built, scores
-$0.756 \pm 0.077$.} This is the figure every other number in the table should be
+$0.719 \pm 0.000$.} This is the figure every other number in the table should be
 compared against, because it is the only corpus whose documents were available
 while the pipeline was being written. It is reported first for that reason rather
-than because of where it falls in the ranking. Its recall of $0.884$ is the
-highest of the four and its precision of $0.668$ the lowest, a pattern the second
+than because of where it falls in the ranking. Its recall of $0.907$ is the
+highest of the four and its precision of $0.595$ the lowest, a pattern the second
 and third observations explain.
 
-\textbf{Performance does not degrade on the three unseen corpora.} They score
-$0.747$, $0.806$ and $0.820$, against the development corpus's $0.756$: two above
-it, one $0.009$ below and well within its spread of $0.077$. This is the central
-result. It is what one expects from a system that received no corpus-specific
-configuration, and it is not what one would expect from a system whose apparent
-quality came from having been shaped around its evaluation data. The claim being
-made is deliberately modest: not that the pipeline performs \emph{better} on
-unseen material, which the intervals do not support, but that it does not fall
-away, which is the failure mode a development corpus is meant to expose.
+\textbf{Performance does not fall away on unseen material, but neither is it
+uniform.} The three external corpora score $0.715$, $0.850$ and $0.649$ against
+the development corpus's $0.719$. One sits above it, one essentially level with
+it, and the third, sulfuric acid, sits $0.070$ below. The honest reading is
+therefore not that unseen corpora are handled as well as the development corpus
+in every case, but that the development corpus holds no privileged position: it
+is neither the best nor the worst of the four, which is the pattern a system
+shaped around its evaluation data would not produce. The spread across the four
+corpora, $0.649$ to $0.850$,
+is wider than any single corpus's run-to-run variation, so the differences
+between corpora are real and demand explanation rather than averaging. The two
+observations that follow supply it, and in both cases the explanation is
+annotation granularity rather than extraction error.
 
 \textbf{The development corpus is precision-limited by granularity, not by
 error, and one observation demonstrates this outright.} Across the five dev
-repeats the number of true positives is \emph{identical}: 76 of 86
-ground-truth rows matched, every run, giving a recall of $0.884$ with zero
-variance. What differs is verbosity: two runs emitted 95 records and three
-emitted 131. That alone moves the precision ceiling between $0.905$ and $0.656$
-and the reported F1 between $0.840$ and $0.700$. The same rules were found each
-time; only how finely they were itemised changed, and $F1_{\text{content}}$
-charged the difference as error. Inspection of the unpaired records confirms that
-many state facts the document contains and the ground truth simply does not
-itemise, such as inter-station dependencies recorded in a table that the
-annotation schema has no row for.
+repeats both the number of true positives and the number of records emitted are
+\emph{identical}: 78 of 86 ground-truth rows matched from 131 records, every
+run, giving $F1 = 0.719$ with zero variance. The 131 records against 86
+annotated rows put a ceiling of $0.656$ on precision before a single comparison
+is made, and the observed $0.595$ must be read against that ceiling rather than
+against $1.0$. The same rules were found each time and only their itemisation
+differs from the annotation's; $F1_{\text{content}}$ charges that difference as
+error. The unpaired records include facts the source documents state and the
+annotation schema has no row for, such as the inter-station dependencies printed
+in a table the ground truth does not cover.
 
-\textbf{Variance differs sharply across corpora and is not always small.}
-The development corpus's standard deviation of $0.077$ (range
-$0.700$--$0.840$) is the largest of the four, for the granularity reason just
-given. Cleanroom by contrast returned an identical $0.747$ on all five repeats.
-A zero standard deviation should not be read as determinism, and a batch of five
-repeats should not be read as capturing the full variation. An earlier complete
-batch of five runs per corpus returned different means on \emph{all four}
-corpora: $0.706$ on the development corpus, $0.828$ on biogas, $0.720$ on
-cleanroom (again five identical scores), and $0.844$ on desalination, against
-the $0.756$, $0.806$, $0.747$ and $0.820$ of Table~\ref{tab:main_results}. The
-log of that batch is retained in the accompanying repository
-(\texttt{logs/final\_run.log}); its per-run files were overwritten by the batch
-reported here. The between-batch movement (up to $0.050$, in both directions,
-with no corpus spared) exceeds some of the within-batch standard deviations,
-which is an argument for reading every figure in Table~\ref{tab:main_results}
-as a draw from a wider distribution than five repeats reveal, and it is why two
+\textbf{Variance differs sharply across corpora, and a zero standard deviation
+does not mean determinism.} Sulfuric acid's standard deviation of $0.049$
+(range $0.610$--$0.733$) is the largest of the four; biogas's is $0.023$
+and desalination's $0.019$. The development corpus returned an identical $0.719$ on
+all five repeats, and biogas an identical record count on all five. Neither is
+evidence of a deterministic pipeline. The five runs behind each figure are
+genuinely independent calls --- the response cache is disabled automatically
+whenever repeats are requested, precisely so that a warm cache cannot replay one
+run five times and report the result as zero variance --- and the underlying
+prediction files differ from one another in every case. What converges is the
+score, not the output: on the development corpus all five runs recovered the
+same 78 ground-truth rows from the same number of records, so the differences
+between them fell entirely in field naming and category labelling, which
+$F1_{\text{content}}$ is designed not to charge for. A corpus can therefore
+report a zero standard deviation and still be varying underneath, and a batch of
+five repeats should not be read as capturing the full spread of a hosted
+endpoint that is non-deterministic for long generations. This is why two
 configurations whose intervals overlap are treated as tied throughout this
-thesis. Separately from its variance, cleanroom's absolute level is depressed
-by an identified annotation-encoding artefact, analysed in
-Section~\ref{sec:lim_threshold}.
+thesis.
 
 \subsection{Field-Level Verification Against the Source Documents}
 \label{sec:field_verification}
@@ -2044,13 +2498,32 @@ folding and separator removal) which maps the ground truth's \texttt{critLo},
 \texttt{warnLo}, \texttt{warnHi}, \texttt{critHi} onto the pipeline's
 \texttt{crit\_lo}, \texttt{warn\_lo}, \texttt{warn\_hi}, \texttt{crit\_hi}. No
 vocabulary is consulted; the match is a string operation. Records are keyed by
-station and sensor, and every one of the ground truth's 22 threshold sensors is
-recovered in every run.
+station and sensor, which makes the check conditional on the extraction having
+attached a station to its threshold records --- and that turns out to be the
+finding rather than a precondition.
 
-\textbf{Result: $420/440$ bound cells ($95.5\%$) sit in the field the ground truth
-assigns them to}, identically in all five runs. The remaining 20 are the same four
-cells repeated across runs, and they are worth examining, because they are not
-extraction errors.
+\textbf{Result: the check succeeds completely on three of five runs and not at
+all on the other two.} On runs three, four and five all $22$ of the ground
+truth's threshold sensors are recovered and $84$ of $88$ bound cells sit in the
+field the annotation assigns them to, the same $84$ in each run. On runs one and
+two the threshold records carry no station value, no record can be keyed against
+the annotation, and the check recovers nothing: $0$ of $22$ sensors. Pooled over
+all five runs the figure is therefore $252/440$ bound cells, or $57.3\%$, and
+that pooled number describes a bimodal outcome rather than an average one.
+
+This is the sharpest available demonstration of what
+Section~\ref{sec:lim_metric_blind} claims in the abstract. The five runs differ
+enough that field-level correspondence is impossible to establish on two of
+them, and $F1_{\text{content}}$ reports $0.719$ on all five, identically, with a
+standard deviation of zero. A difference that destroys slot-level checkability
+on $40\%$ of runs is completely invisible to the headline metric, because the
+values are still present in the record and the metric reads a bag of values. Any
+deployment that needs slot-level guarantees must therefore verify them
+separately, as this section does, and must expect that verification to fail on
+runs the headline number cannot distinguish.
+
+The four cells that do mismatch on the three keyable runs are worth examining,
+because they are not extraction errors.
 
 \textbf{The residual disagreements are ground-truth errors.} The source table for
 \texttt{ST03\_LABELLING} reads, under the printed header
@@ -2068,18 +2541,21 @@ the annotation assigns \texttt{critLo} and \texttt{critHi} the same value
 ($1.05$), which is not a well-formed threshold range. The same pattern holds for
 \texttt{ST04\_PACKAGING}, where the source states $\texttt{CRIT\_LO}=0.85$ and the
 annotation records $1.25$. Scored against the source documents rather than the
-annotation, field placement on these cells is $440/440$.
+annotation, field placement on the three keyable runs is $88/88$ in each ---
+every bound cell the extraction produced carries the value the source document
+prints, in the column the source document prints it in.
 
 Two conclusions follow, and both bear on how the headline figures should be read.
-First, the extraction places values correctly at a rate the row-level metric
-cannot express: a corpus-level $F1_{\text{content}}$ of $0.756$ coexists with
-essentially exact field placement on the rules that carry numeric bounds. The two
-measure different things, and the lower number is not evidence of misplaced
-values. Second, the ground truth against which every figure in this thesis is
-computed contains errors of its own. This is not a hypothetical concern raised to
-soften a result: it is four specific cells, in a document any reader can open,
-and it means reported precision is a lower bound on correctness rather than a
-measurement of it (Section~\ref{sec:lim_gt}).
+First, where the correspondence can be established at all, the extraction places
+values correctly at a rate the row-level metric cannot express: a corpus-level
+$F1_{\text{content}}$ of $0.719$ coexists with exact field placement against the
+source documents on the rules that carry numeric bounds. The two measure
+different things, and the lower number is not evidence of misplaced values ---
+though neither, as the bimodal result above shows, is the higher one evidence
+that placement is reliable run to run. Second, the ground truth against which every figure in this thesis is
+computed contains errors of its own: four specific cells, in a document any
+reader can open. Reported precision is therefore a lower bound on correctness
+rather than a measurement of it (Section~\ref{sec:lim_gt}).
 
 \textbf{One practical caveat for any consumer of these records.} The column
 holding the station identifier is not stable across runs: in one run it is
@@ -2104,19 +2580,46 @@ fields, or nowhere. If the extractor binds values to slots, the same discovered
 field should receive a given role in every pair, corpus-wide.
 
 It does. On biogas, the ground truth's low bound lands in the record field the
-document calls \texttt{ll} in $30$ of $30$ slot-bound cases and the high bound
-in \texttt{hl} in $15$ of $15$; on desalination the min and max bounds land in
+document calls \texttt{ll} in $26$ of $26$ slot-bound cases and the high bound
+in \texttt{hl} in $10$ of $10$; on desalination the min and max bounds land in
 one consistent field in $20$ of $20$ cases each; on the development corpus the
-modal consistency per threshold role is $0.95$--$1.00$. Cleanroom's records are
-textual (matrix cells carry sentences, not scalar fields), so slot binding does
-not apply there; instead the ground-truth value appears within the text of the
-\emph{matched} record in $80$ of $85$ checks, which is binding at record rather
-than slot granularity. Across the three external corpora, $94$--$100\%$ of
-ground-truth role values are present in the record the metric paired them with.
-The check is deliberately weaker than the development-corpus verification (a
-consistent receiving field is not proof the field is semantically the right
-one), but it closes most of the gap between a corpus where field placement is
-verified and three where it previously was not examined at all.
+modal consistency per threshold role is $0.95$--$1.00$. The sulfuric acid
+annotation poses no slot-binding question at all: it records every quantity in a
+single \texttt{numeric\_value} column, so there are no distinct numeric roles
+that could be swapped, and the check degenerates. What can be asked there is the
+weaker record-level question, and the ground-truth value appears within the text
+of the \emph{matched} record in $121$ of $136$ checks. Across the three external
+corpora, $89$--$100\%$ of ground-truth role values are present in the record the
+metric paired them with.
+The check is deliberately weaker than the development-corpus verification, and
+the weakness has a precise form worth naming: consistency is not correctness. An
+extractor that placed every low bound in the high slot would do so consistently,
+and would score a perfect modal share on this test. Consistency establishes that
+values are bound to slots rather than scattered; it does not establish that the
+slot is the right one.
+
+That stronger question can be asked wherever the two vocabularies happen to
+coincide without being made to, which they do on two corpora: the development
+corpus (\texttt{critLo}, \texttt{warnLo}, \texttt{warnHi}, \texttt{critHi} against
+the pipeline's \texttt{crit\_lo}, \texttt{warn\_lo}, \texttt{warn\_hi},
+\texttt{crit\_hi}) and desalination (\texttt{min\_bound}, \texttt{max\_bound}).
+For every accepted pair, each ground-truth numeric value is first sought
+anywhere in the paired record, and only then asked whether it sits under the
+matching name. The two questions are kept apart deliberately, because a value
+the extraction never produced is a recall miss and a value it produced but filed
+elsewhere is a binding error, and adding them together would report the first as
+the second.
+
+On the development corpus $600$ of $920$ ground-truth numeric cells are present
+somewhere in their paired record, and of those $420$ --- $0.70$ --- sit in the
+correspondingly named slot. On desalination all $50$ are present and $40$ ---
+$0.80$ --- are correctly placed. These are the only direct measurements of slot
+correctness this thesis can make, and they should be read as the honest ceiling
+on what the extraction offers a downstream consumer: roughly three quarters of
+the values it recovers are where a consumer would look for them, and the
+remaining quarter are somewhere else in the record. That figure is invisible to
+$F1_{\text{content}}$ by construction, which is why it is measured here rather
+than inferred from a headline score.
 
 \subsection{The Cost of Requiring No Schema}
 \label{sec:results_grid}
@@ -2131,48 +2634,110 @@ metric could not be placed beside these.
 
 \begin{table}[H]
 \centering
-\caption{Schema-specified single-prompt extraction versus the schema-agnostic
-pipeline, both scored by $F1_{\text{content}}$ on the development corpus, five
-repeats each. The grid conditions cannot be applied to the three external
-corpora as comparable conditions without their prompts being rewritten by hand.}
+\caption{All three approaches on the development corpus, five repeats each,
+scored by $F1_{\text{content}}$. Rows are grouped by \emph{what each system was
+given}, not by score, because that is the variable the table actually
+manipulates. \emph{Ceiling} is the highest $F1_{\text{content}}$ each system
+could reach at its own record count (Equation~\ref{eq:ceiling}) if every record
+it emitted were correct; \emph{head} is the distance left to it. Only the
+bottom group can be run on a corpus nobody has configured it for.}
 \label{tab:grid_contrast}
 \small
-\begin{tabular}{lrrrr}
+\begin{tabular}{llrrrrrr}
 \toprule
-\textbf{System} & \textbf{Records} & \textbf{$F1_{\text{content}}$} & \textbf{P} & \textbf{R} \\
+\textbf{System} & \textbf{Given} & \textbf{Recs} & \textbf{$F1_{\text{content}}$} &
+\textbf{P} & \textbf{R} & \textbf{Ceil.} & \textbf{Head} \\
 \midrule
-\texttt{gemma4:31b}, reflexion\_guided (schema given) & 78.8 & $0.946 \pm 0.017$ & 0.990 & 0.907 \\
-\texttt{gemma4:31b}, reflexion (schema given)         & 77.2 & $0.939 \pm 0.008$ & 0.993 & 0.891 \\
-\texttt{gemma4:31b}, cot\_basic (schema given)        & 70.4 & $0.892 \pm 0.005$ & 0.992 & 0.812 \\
-Hand-written regex parser                             & 54.0 & $0.771$           & 1.000 & 0.628 \\
-\textbf{Multi-agent pipeline (no schema)}             & 116.6 & $\mathbf{0.756 \pm 0.077}$ & 0.668 & \textbf{0.884} \\
+\multicolumn{8}{l}{\emph{Per-corpus configuration supplied by a human}} \\
+\texttt{gemma4:31b}, reflexion\_guided & schema & 78.8 & $0.949 \pm 0.020$ & 0.993 & 0.909 & 0.956 & 0.007 \\
+\texttt{gemma4:31b}, reflexion         & schema & 77.2 & $0.939 \pm 0.008$ & 0.993 & 0.891 & 0.946 & 0.007 \\
+\texttt{gemma4:31b}, cot\_basic        & schema & 70.4 & $0.892 \pm 0.005$ & 0.992 & 0.812 & 0.900 & 0.008 \\
+Hand-written regex parser              & layouts + ABox & 54.0 & $0.771$ & 1.000 & 0.628 & 0.771 & \textbf{0.000} \\
+\midrule
+\multicolumn{8}{l}{\emph{Nothing supplied}} \\
+\textbf{Multi-agent pipeline}          & --- & 131.0 & $\mathbf{0.719 \pm 0.000}$ & 0.595 & \textbf{0.907} & 0.793 & 0.074 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Read naively, the table says the schema-agnostic pipeline is beaten by a single
-prompt and by a regex parser. That reading is wrong in a specific and measurable
-way, and the correct one is more informative.
+On F1 alone the table ranks the schema-agnostic pipeline last, behind both a
+single schema-specified prompt and a hand-written regex parser. The grouping is
+what makes that ordering interpretable: every system above the rule was handed
+something a human produced by reading these four documents, and the one below it
+was not, so the column the table varies is configuration rather than capability.
 
-\textbf{Recall is close to equal.} The pipeline recovers $0.884$ of the ground
-truth against the best schema-specified condition's $0.907$, 76 of 86 rows
-against roughly 78. The two systems find nearly the same rules, and the residual
-gap is an order of magnitude smaller than the F1 gap. Whatever the pipeline
+Two comparisons are therefore available, and they answer different questions.
+\emph{Within} the configured group the comparison is like-for-like, and the
+result is that schema-specified prompting beats hand-written parsing by
+$0.178$ ($0.949$ against $0.771$) --- when a human is going to encode the corpus
+either way, encoding it as a prompt recovers $24$ more of the $86$ rules than
+encoding it as regular expressions. \emph{Across} the rule the comparison is not
+like-for-like and should not be read as one. Four observations develop what it
+does and does not measure.
+
+\textbf{Recall is equal.} The pipeline recovers $0.907$ of the ground
+truth against the best schema-specified condition's $0.909$: 78 of 86 rows on
+every repeat in the first case, a mean of 78.2 in the second. The two systems
+find the same number of rules, and the entire F1
+gap opens elsewhere. Whatever the pipeline
 mainly lacks, it is not coverage of the ground truth.
 
 \textbf{The entire gap is precision, and the precision gap is granularity.} The
-grid conditions were told what a row looks like, so they emit $70$--$79$ rows
-against a ground truth of $86$ and enjoy a precision ceiling of $1.0$. The
-pipeline was not told, extracts at the finest granularity the documents support,
-emits $95$--$131$ records depending on the run, and is capped between $0.905$ and
-$0.656$ before any content is examined. The
-comparison is therefore between a system that was given the annotator's
-granularity convention and one that had to guess it.
+grid conditions are given the shape of a row, emit $70$--$79$ rows against a
+ground truth of $86$, and carry a precision ceiling of $1.0$. The pipeline
+extracts one record per atomic fact, emits $131$ records on every run, and is
+capped by Equation~\ref{eq:ceiling} at $0.656$
+before any content is examined. The comparison is therefore between a system
+given the annotator's granularity convention and one that had to infer it.
+
+\textbf{The regex parser is not beaten on F1, and no such claim is made.} Its
+$0.771$ sits above the pipeline's $0.719 \pm 0.000$, so on this corpus the
+parser reports the higher F1 and that is stated plainly rather than explained
+away. What separates them is what each
+one is. The parser's precision is perfect for a reason that is worth stating
+exactly: its author read these documents and encoded their layouts by hand, and
+the parser additionally references \emph{only entities the seed knowledge graph
+declares}, which it reads from that graph's node file --- four stations, their
+twelve sensors, and seven zones. A parser that can emit no name outside a
+declared twelve-sensor inventory cannot mis-name an entity, so its $1.000$ is a
+property of what it was given rather than of what it read. This is per-corpus
+configuration in its purest form, and it is given more of it than either LLM
+condition: the schema-specified grid is told the shape of a rule but must still
+recover the entity names from the text, and the pipeline is told neither. The
+cost is the recall of $0.628$: every rule outside the encoded layouts is
+invisible to it, silently and unrecoverably.
+
+Two structural facts finish the comparison, and both matter more than the
+ordering. The first is that the parser is \emph{saturated}. Because every record
+it emits is correct, its $0.771$ is exactly the ceiling of
+Equation~\ref{eq:ceiling} for a system emitting $54$ records against $86$ rows:
+its headroom is $0.000$. It is not a system that is currently performing at
+$0.771$ and might perform better; it is a system that cannot improve by any
+amount without a human writing more parsing code. The pipeline, at $0.719$
+against a ceiling of $0.793$ at its own record count, retains headroom that
+belongs to granularity rather than to error.
+
+The second is what ``the parser'' actually is. It is not one parser applied to
+four documents but four hand-written functions, one per document, dispatched on
+the filename --- \texttt{parse\_sop001} through \texttt{parse\_sop004}, some
+$480$ lines for four files. A fifth document produces nothing at all until
+somebody writes a fifth function. The unit of effort is therefore the document,
+not the corpus and not the domain, which is the property that decides where each
+approach belongs: for a fixed and small set of documents that will not change,
+hand-written parsing is the correct engineering choice and this thesis does not
+argue otherwise. The pipeline's case rests entirely on that condition failing. The pipeline,
+given none of that, recovers $0.907$ of the ground truth --- half again as much
+as the parser, on a corpus the parser's author had read and the pipeline had
+not been configured for. The comparison the
+parser supports is therefore not ``LLM pipeline versus simple baseline'' but a
+measurement of what coverage costs when the extraction patterns must be
+discovered rather than authored; and unlike the pipeline, the parser transfers
+to a new corpus only by being rewritten.
 
 \textbf{The schema-specified condition is not a transferable baseline.} Its
 prompt hardcodes field names, class labels, an identifier format, and worked
 examples containing real station identifiers from the development corpus.
-Applying it to the biogas, cleanroom, or desalination corpora requires a human to
+Applying it to the biogas, desalination, or sulfuric acid corpora requires a human to
 read those documents and rewrite the prompt, which is the per-domain
 configuration this work exists to eliminate, and, more sharply, is an instance of
 adapting the extractor to the corpus it is scored on.\footnote{The claim is
@@ -2185,10 +2750,15 @@ retained and no figure in this thesis derives from them. The unmodified
 condition transfers as an under-extraction in a foreign schema, not as a
 baseline.}
 
-The honest summary is therefore this: on a corpus for which somebody has already
-written a schema, writing that schema into the prompt is worth roughly $0.19$
-F1. On a corpus for which nobody has, the schema-specified approach has no score
-at all, and the pipeline reports $0.747$--$0.820$.
+The summary is therefore this. Where a human has already read the documents,
+that reading is worth roughly $0.23$ F1 if it is written into a prompt and
+$0.05$ if it is written as regular expressions, and the prompt is the better
+use of the same human effort by $0.178$. Where nobody has read them, neither
+configured condition has a score at all --- the grid prompt would have to be
+rewritten and the parser would have to be extended with a function per document
+--- and the pipeline reports $0.649$--$0.850$. The question the table settles is
+not which system is best, but what the configuration those systems require is
+worth, and what it costs when it is unavailable.
 
 \section{Limitations}
 \label{sec:limitations}
@@ -2208,16 +2778,26 @@ development corpus does for threshold rules, splitting one printed table row int
 up to three annotated rows) ground-truth rows go unmatched and become false
 negatives instead. Both occur in the same corpus simultaneously
 (Section~\ref{sec:granularity}), so the discrepancy cannot be removed by a single
-merge or split rule. On the development corpus the cap moves with the record
-count (between $0.905$ and $0.656$ across the five repeats) and the observed
-precision of $0.668$ sits near its lower end.
+merge or split rule. On the development corpus the cap is $0.656$ on every
+repeat and the observed precision of $0.595$ sits just beneath it. The effect is
+not a marginal one: on the sulfuric acid corpus, undoing a single annotation
+convention while leaving the predictions untouched moves the reported figure by
+$0.147$ (Section~\ref{sec:granularity}), which is larger than the gap between
+several of the corpora in Table~\ref{tab:main_results}.
+
+No claim is made that the pipeline's itemisation is the correct one. Splitting a
+threshold row into an operational band and a critical trip, or keeping them
+together, are both defensible schema designs, and which is right depends on what
+the rows will be used for. The point is only that the two designs are
+incompatible under a bijective assignment, and that the resulting penalty is
+charged to whichever side emits more rows regardless of content.
 
 The consequence is that $F1_{\text{content}}$ as reported here conflates two
 distinct things: whether the pipeline found the right rules, and whether it
 itemised them the way a particular annotator did. Recall separates them
 partially (it is unaffected by surplus records) which is why the
-near-equal recall between the pipeline and the schema-specified baseline
-($0.884$ against $0.907$, Section~\ref{sec:results_grid}) is the more informative
+equal recall between the pipeline and the schema-specified baseline
+($0.907$ against $0.909$, Section~\ref{sec:results_grid}) is the more informative
 comparison. A metric
 that scored a set of atomic facts against a set of composite rows without
 requiring a bijection would measure the first thing alone; constructing one is
@@ -2230,8 +2810,11 @@ measures, and the same study establishes what it does not. Scrambling token
 order within a record, against an order-preserving control, costs $0.000$; the
 comparison behaves as a bag of tokens and numbers rather than as a reading of a
 sentence. Moving quantities between records (the right rule carrying the wrong
-bound) costs $-0.007$, and permuting the category label costs $0.009$, so
-neither value-to-rule binding nor label correctness is checked at all.
+bound) costs $-0.001$ -- the optimal assignment simply re-pairs each record with
+the row its new content resembles, absorbing the damage by design, and on the
+development corpus the score actually \emph{rises} by $0.017$ under the
+perturbation -- and permuting the category label costs $+0.007$, so
+neither value-to-rule binding nor label correctness is meaningfully checked.
 
 Two consequences follow. A record that contains the right words and numbers in a
 nonsensical arrangement is scored almost as highly as a coherent one. And
@@ -2256,50 +2839,57 @@ threshold's agreement with human judgment remains unmeasured.
 \subsection{The Metric Has a Non-Zero Floor}
 \label{sec:lim_floor}
 Predictions scored against a foreign corpus's ground truth do not fall to zero.
-Pooled per corpus the null score is $0.019$--$0.113$, but the worst pairing
-reaches $0.274$, cleanroom predictions against the development corpus's ground
-truth, where a large and varied annotation offers the assignment many rows to
-choose from. Reported figures should therefore be read against a floor of roughly
-$0.27$ for a large ground truth rather than against $0$, and a system scoring
+Pooled per corpus the null score is $0.014$--$0.037$, and the worst pairing
+reaches $0.101$, development-corpus predictions against the biogas ground
+truth. Reported figures should therefore be read against a floor of roughly
+$0.10$ rather than against $0$, and a system scoring
 below that floor would not be distinguishable from one extracting the wrong
 document entirely.
 
-\subsection{One Corpus Is Threshold-Unstable, and the Instability Has an
-Identified Cause}
-\label{sec:lim_threshold}
-The acceptance threshold $\tau = 0.6$ is a strict local maximum on none of the
-four corpora (the curve declines through it on two and is flat through it on
-two) so it cannot have been chosen to flatter the system. But the cleanroom
-corpus moves $0.213$ in F1 across a single $0.05$ step near that point, where the
-other three move between $0.000$ and $0.052$. Its
-reported figure is therefore contingent on the threshold in a way the others are
-not, and should be quoted with its curve. Relatedly, the ranking of corpora by
-$F1_{\text{content}}$ is not stable across the threshold sweep, so no claim that
-one corpus is intrinsically harder than another is supported.
+The floor is a property of the ground truth being scored against, not a constant,
+so the usable interval differs per corpus and can be stated exactly. Taking each
+ground truth's own floor (the highest score any foreign corpus's predictions
+reach against it: $0.101$ for biogas, $0.059$ for the development corpus,
+$0.050$ for sulfuric acid, $0.027$ for desalination) and rescaling the reported
+figure onto $[\text{floor},\,1]$ gives $0.683$, $0.701$, $0.631$ and $0.846$
+respectively, against the raw $0.715$, $0.719$, $0.649$ and $0.850$. Every one of
+those adjustments is \emph{downward}, by between $0.004$ and $0.032$: the rescaling
+subtracts the credit a wrong extraction would receive for free, so by construction
+it can only lower a reported figure, never raise one. It moves biogas most,
+because that annotation is the one a foreign extraction scores highest against. It is a reading aid rather
+than a second metric, and no figure elsewhere in this thesis is rescaled; the
+headline numbers are the raw ones throughout. Its practical consequence is that
+scores must be compared within a corpus and not across corpora whose ground
+truths differ in size.
 
-The instability is traceable to specific pairs and, through them, to a specific
-cause. In every cleanroom run the same nine assigned pairs are rejected, at
-combined scores of $0.549$--$0.590$ and semantic cosines up to $0.858$: pairs
-whose text agrees and whose numeric term fails. The numeric failure is a
-character-encoding asymmetry, not a wrong value. The cleanroom document prints
-the hyphen inside its equipment tags (\texttt{AOI-04}, \texttt{EM-05}) as a
-non-breaking hyphen (Unicode U+2011), which the records copy verbatim and which
-the number extractor does not read as a minus sign; the ground truth types an
-ASCII hyphen, which it does. The same tag therefore contributes $+4$ on one side
-and $-4$ on the other, and values of opposite sign score zero
-(Equation~\ref{eq:numoverlap}). Rescoring with
-tag-derived numbers excluded (the declared toggle of
-Table~\ref{tab:free_params}) removes the asymmetry, and cleanroom scores
-$0.987 \pm 0.000$ at recall $1.000$, exactly at its precision ceiling; the same
-rescoring raises desalination from $0.820$ to $0.925$, where the analogous
-mismatch is that the ground truth's text repeats the printed rule codes and the
-records' content fields do not. The reported figures nonetheless remain those of
-the default configuration, because switching a declared parameter after
-observing that the alternative scores higher is precisely the adaptive choice
-this evaluation is designed to exclude. The consequence for reading
-Table~\ref{tab:main_results} is that cleanroom's $0.747$, and to a lesser degree
-desalination's $0.820$, are lower bounds depressed by an annotation-encoding
-artefact rather than by extraction error.
+\subsection{The Reported Figures Move With the Acceptance Threshold}
+\label{sec:lim_threshold}
+The acceptance threshold $\tau = 0.6$ is not a local maximum on any of the four
+corpora, so it cannot have been chosen to flatter the system, but it is still a
+choice the figures depend on. All four curves decline through the operating
+point, at between $0.015$ and $0.023$ per $0.05$ step. At $\tau = 0.4$ the four
+report $0.793$, $0.747$, $0.917$ and $0.810$ against the $0.719$, $0.715$,
+$0.850$ and $0.649$ reported at $\tau = 0.6$, and at $\tau = 0.75$ the
+development corpus reports $0.627$. Every figure should be read as one point on
+a curve; all four collapse above $\tau = 0.8$, where almost no pair clears
+acceptance. On no corpus is the operating point
+a local maximum, which is the specific form of threshold-fitting the sweep exists
+to exclude, and on every corpus the reported operating point is the more
+conservative of the choices available.
+
+Two further consequences follow. The ranking of corpora by $F1_{\text{content}}$
+is not stable across the sweep, so no claim that one corpus is intrinsically
+harder than another is supported. And a single threshold is applied to corpora
+whose curves have different slopes, which means the four figures in
+Table~\ref{tab:main_results} are not equally contingent: desalination moves half
+again as fast through the operating point as the development corpus does.
+
+A related dependence is the tag-derived numbers of
+Section~\ref{sec:numeric}. Excluding them leaves the development corpus
+unmoved, raises biogas by $0.010$ and desalination by $0.067$, and lowers
+sulfuric acid by $0.048$. The reported figures are those of the declared default in every case;
+the point of measuring the toggle is that its effect is neither uniform nor
+uniformly favourable, and a reader can see which corpora it reaches.
 
 \subsection{Ground-Truth Incompleteness}
 \label{sec:lim_gt}
@@ -2334,21 +2924,69 @@ mean over five runs with its standard deviation. Exact replay is available only
 through the response cache, which is keyed on the request content and is disabled
 whenever repeats are requested, so the reported spreads are real, but no single
 number in this thesis can be reproduced exactly without that cache. The
-development corpus's standard deviation of $0.077$, spanning $0.700$--$0.840$,
-shows the spread is not always negligible. Nor do five repeats bound the
-variation: a complete earlier batch of five runs per corpus returned means
-differing from the reported ones by up to $0.050$, on every corpus
-(Section~\ref{sec:results_main}).
+sulfuric acid corpus's standard deviation of $0.049$, spanning $0.610$--$0.733$,
+shows the spread is not always negligible, and a corpus reporting a standard
+deviation of zero is not thereby deterministic: on the development corpus the
+five runs differ from one another in field naming and category labelling while
+converging on the same score, because those are precisely the differences
+$F1_{\text{content}}$ is built not to charge for
+(Section~\ref{sec:results_main}). Five repeats therefore bound neither the
+spread of the endpoint nor the spread of the underlying outputs. The
+irreproducibility is in the extraction and not in the scoring: the evaluator is
+deterministic, so rescoring the retained predictions reproduces every figure in
+this thesis exactly, and the accompanying repository contains the predictions
+that make that check possible.
+
+\subsection{The Document Parser Is Unmeasured and Barely Exercised}
+\label{sec:lim_parser}
+Section~\ref{sec:unstructured_parsing} describes the layout-aware conversion that turns a
+source PDF into the numbered text every later stage reads. No figure in this
+thesis measures how faithful that conversion is, and two facts make the omission
+worth stating rather than leaving implicit.
+
+The first is coverage. Only the development corpus passes through the parser;
+the three external corpora are plain text as authored, so every transfer result
+reported here exercises the extraction pipeline but not the component that feeds
+it. Whatever the parser contributes to or subtracts from the development
+figures, it contributes nothing to the external ones, and the two are therefore
+not produced by identical toolchains.
+
+The second is that the conversion demonstrably introduces errors. The access
+matrix in the development corpus's fourth document has seven zone columns, and
+four of their headers are corrupted in the parsed text: a space is inserted
+inside the last word of three of them (\texttt{Gen.\ Warehous e},
+\texttt{Main Entranc e}, \texttt{Chem.\ Stora ge}) and a spurious semicolon
+appears in the fourth (\texttt{R\&D; Lab}). These are the column labels of the
+matrix whose cells state the $42$ role--zone authorisations discussed in
+Section~\ref{sec:lim_gt}, so the damage falls on the subject of a substantial
+block of rules. The extraction copies them faithfully, which is the behaviour
+the scout prompt demands and the only behaviour that keeps provenance honest,
+and is then compared against an annotation that spells the same zones correctly.
+The resulting mismatch is charged to the extractor.
+
+No claim is made here about the size of that effect, because it was not
+measured; the point is that the reported figures for the development corpus
+include an unquantified contribution from a preprocessing step, that no external
+figure includes it at all, and that improving extraction accuracy on scanned or
+PDF-native documents may be a question about the parser rather than about the
+pipeline. Establishing parser fidelity against a hand-transcribed reference is
+the obvious missing measurement and is left to future work.
 
 \subsection{Corpus Scale and Composition}
 \label{sec:lim_scale}
-The four corpora comprise seven documents and 196 annotated rules in total, with
-three of the four external corpora consisting of a single document each. This is
+The four corpora comprise nine documents and 229 annotated rules in total, with
+two of the three external corpora consisting of a single document each. This is
 enough to show that performance does not collapse on unseen material, and not
 enough to characterise how performance varies with document length, corpus size,
 or domain distance. All documents are synthetic and English; real industrial SOPs
 would introduce annotation noise, inconsistent formatting, and multilingual
-content that this evaluation does not probe.
+content that this evaluation does not probe. One further composition limit
+should be stated plainly: the documents and their annotations were authored by
+the same process, so the annotations agree with their documents about what a
+rule is far more closely than an independently annotated corpus would. The
+sulfuric acid corpus is the one case where document and annotation were produced
+without the pipeline's conventions in view, and it is also the lowest-scoring of
+the four --- which is the direction that observation would predict.
 
 \subsection{Five Repeats Bound the Statistical Claims}
 \label{sec:lim_repeats}
@@ -2357,6 +2995,108 @@ and supports declaring two overlapping intervals tied. It does not support
 significance testing, and no such test is claimed. Where two figures differ by
 less than the standard deviations separating them, this thesis reports them as
 indistinguishable rather than ranking them.
+
+\subsection{The External Corpora Were Not Equally Held Out}
+\label{sec:lim_exposure}
+``Held out'' admits degrees, and describing all three external corpora with the
+same phrase would overstate two of them. No external corpus ever contributed to
+a configuration choice: every prompt, parameter, model and threshold in this
+thesis was selected against the development corpus, and the selection is
+separable from the evaluation for the structural reason given in
+Section~\ref{sec:layer_separation}. That is a weaker guarantee than never having
+been looked at, and the difference matters.
+
+Biogas and desalination were scored at several points while the pipeline was
+being developed. No number they produced was used to tune a parameter, but their
+scores were visible to the author between revisions, and a component reworked
+after seeing a disappointing external figure has been influenced by that figure
+whether or not any constant was edited. This is adaptive exposure rather than
+tuning, and it cannot be undone retrospectively; it can only be declared. The
+sulfuric acid corpus is the one case free of it. It was constructed after the
+prompts, parameters and evaluator had been frozen, scored once with five repeats,
+and reported --- and it returns the lowest figure of the four, $0.649$, which is
+the direction adaptive exposure predicts for the corpora that had it.
+
+A second property of the material must be declared alongside this. Every
+document in this evaluation is synthetic. The development corpus comes from a
+published synthetic benchmark; the sulfuric acid corpus and its annotation were
+both generated by a language model from a specification that fixed the container
+format --- documents as plain text, annotation as one row per rule --- and fixed
+nothing about the schema, the layout, or the vocabulary, which the generator
+chose for itself. That construction is what allowed a genuinely unseen corpus to
+be added after freezing, and it is also its principal weakness: a generated
+document is more internally consistent than a real one, and a generated
+annotation agrees with its document about what a rule is more readily than an
+independent human annotator would. Neither the documents nor the annotation were
+inspected against the pipeline's behaviour before being scored.
+
+What the four corpora do establish should be stated as precisely as what they do
+not, because the distinction is the difference between a weak benchmark and a
+narrow one. The variable this thesis manipulates is \emph{structural
+heterogeneity} --- whether rules arrive as prose clauses, as attribute tables,
+as printed-identifier blocks, or as a mixture --- and on that variable the four
+corpora genuinely differ, which is why they produce four different failure
+modes rather than four instances of one. A synthetic document can vary its
+layout as freely as a real one, and the pipeline's indifference to layout is
+therefore tested here in the way it is claimed. What a synthetic corpus cannot
+supply is the disagreement between a document and an annotator who did not write
+it: the transcription noise, the inconsistent conventions, and the genuine
+ambiguity about what constitutes one rule that a real facility's paperwork
+carries. Those are precisely the conditions under which the granularity effect
+of Section~\ref{sec:granularity} would be largest, so the figures here should be
+read as an upper bound with respect to annotation agreement, and no claim about
+real deployment should be read out of them.
+
+\subsection{The Figures Move With the Prompts' Illustrative Vocabulary}
+\label{sec:lim_prompt_vocab}
+No stage is given a target schema, a rule taxonomy, or a worked example, but the
+prompts are not vocabulary-free: they must illustrate what a printed rule
+identifier looks like, what kinds of subject a table's axes might range over, and
+what a functional category is, and every such illustration is a word a human
+chose. Those illustrations are drawn from outside the evaluated material, and the
+constraint is enforced mechanically rather than by inspection --- no example
+token may appear as a printed identifier in an evaluated document, as a column
+name of any annotation, or as an annotation's category or severity label.
+
+The choice is not cost-free, and its cost is measured rather than asserted. A
+variant of the prompts whose illustrations instead share vocabulary with the
+corpora's annotations --- example identifier codes of the shape those documents
+print, and kind-of-subject nouns matching those annotations' column names ---
+scores \emph{higher} on two of the four corpora: $+0.081$ on biogas and $+0.037$
+on the development corpus, against $+0.007$ on desalination, which is inside its
+run-to-run spread. On biogas the mechanism is visible in the outputs rather than
+merely inferred: the variant emits $36.4$ records against the compliant prompts'
+$28.0$, itemising at a granularity closer to that annotation's own instead of
+bundling several rules into one record.\footnote{These four figures are the one
+group in this thesis still computed under the earlier, recall-only form of the
+numeric term (Section~\ref{sec:numeric}). The variant's predictions were not
+retained, so they cannot be rescored without re-running extraction, which would
+confound the comparison with the endpoint's own run-to-run variation. They are
+reported as measured and should be read as indicative of the direction and rough
+size of the effect rather than as directly comparable with the figures in
+Table~\ref{tab:main_results}.}
+
+Three things follow, and the last is the uncomfortable one. The first is a
+distinction the result should not be allowed to blur: schema-agnostic is a claim
+about what the pipeline is \emph{given} --- no target schema, no rule taxonomy,
+no worked example, and no token appearing as a field name or category label in
+any evaluated annotation --- and that claim is enforced mechanically and remains
+exactly true. It is not a claim that the pipeline is \emph{insensitive} to how
+its instructions are worded, and this measurement shows it is not. Agnostic and
+insensitive are different properties; only the first is claimed, and conflating
+them would overstate the result in one direction as surely as ignoring the
+$0.081$ would in the other. Second, reported figures are a lower bound with
+respect to this degree of freedom, since the alternative was measured and is
+higher. But it also means a reported figure on
+this kind of task is partly a function of how well an illustration in a prompt
+happens to match an annotator's vocabulary --- a quantity no metric in this
+thesis observes, that a reader cannot see from a results table, and that is
+easily supplied without any intent to do so. The comparison is a package
+difference rather than a controlled ablation: the two prompt variants differ at
+roughly eight sites simultaneously, so the $0.081$ cannot be attributed to any
+one substitution, and part of it may be ordinary wording quality rather than
+vocabulary overlap. Separating them would require varying one illustration at a
+time, which is left to future work.
 
 \subsection{Single Model, Single Endpoint}
 \label{sec:lim_model}
@@ -2383,6 +3123,108 @@ here and none of its output is reported in this thesis. Establishing
 operational sufficiency requires closing that loop and is left to future work.
 
 
+\section{Conclusion}
+\label{sec:conclusion}
+This thesis asked what rule extraction from industrial operating documents costs
+when nothing about the target schema is supplied. The question is worth asking
+because the alternative is well understood and does not scale: an extractor given
+a facility's field names, rule taxonomy, identifier convention and worked
+examples performs very well on that facility and cannot be moved to the next one
+without a human reading its documents and rewriting the prompt. The measurement
+reported here puts a number on that trade rather than assuming its direction.
+
+\subsection{What Was Built and What Was Measured}
+The pipeline segments each document and numbers every content line in code, so
+that provenance is something the system knows rather than something a model must
+remember to report. Parallel scouts read the numbered chunks and name fields from
+the document's own labels; a single inducer call reconciles those labels into one
+corpus-level schema while never seeing a document; deterministic assembly emits
+one row per rule; and parallel auditors re-read each record against the lines it
+cites. No stage receives a target schema, a rule taxonomy, or a worked example.
+
+Across one development corpus and three external corpora, five repeats each and
+no per-corpus configuration, it reaches $F1_{\text{content}}$ of $0.719$ on the
+development corpus and $0.715$, $0.850$ and $0.649$ on the three external ones.
+The development corpus is neither the best nor the worst of the four. That is the
+central result, and it is deliberately a modest one: it shows that performance
+does not fall away on material the system was not built against, which is the
+failure a development corpus exists to expose, and it does not show that unseen
+corpora are handled uniformly, because they are not.
+
+Against this, a schema-specified grid reaches $0.949$ on the development corpus,
+and a hand-written regex parser $0.771$. Neither transfers: the grid's prompt
+encodes that corpus's vocabulary, and the parser encodes its layouts and draws
+its entity names from the corpus's own seed knowledge graph. The
+informative comparison is not the F1 ordering but its decomposition. Recall is
+identical between the pipeline and the best schema-specified condition
+($0.907$, 78 of 86 rows in both cases) while the parser reaches $0.628$; the
+entire gap to the grid is precision, and the precision gap is granularity rather
+than error.
+
+\subsection{What the Evaluation Establishes About Its Own Metric}
+A schema-agnostic system cannot be scored by a schema-aware metric, so
+$F1_{\text{content}}$ was built alongside it and then tested rather than trusted.
+It discriminates: predictions scored against a foreign corpus's ground truth fall
+to between $0.01$ and $0.04$, corrupting every numeric value costs $0.20$, and
+padding a record with numbers it did not extract costs a further $0.10$ rather
+than earning anything --- the last of these only because the numeric term scores
+both directions, a property whose absence in an earlier form of the metric made
+padding profitable.
+It is also blind in ways that are stated rather than discovered by a reader ---
+it does not read word order, it does not check which record a quantity is bound
+to, it prices category labels at almost nothing, and, most consequentially for an
+industrial setting, reversing every bound inside every record costs it exactly
+nothing. Attribute binding is therefore
+verified outside the metric, deterministically. On the one corpus where a field
+correspondence exists without inventing one, that check returns a bimodal
+result: on three of five runs every bound cell sits in the column the source
+document prints it in, and on the other two the threshold records carry no
+station and cannot be keyed at all --- a difference the headline metric, which
+reports an identical $0.719$ on all five, cannot see.
+
+The most consequential finding about the metric is that it cannot see annotation
+granularity. Regrouping two attribute tables in the sulfuric acid annotation ---
+changing no prediction whatever --- moves the reported figure by $0.147$. Any
+one-to-one row-matching metric shares this property. It bounds how finely
+cross-corpus figures of this kind should be read, in this thesis and elsewhere.
+
+\subsection{Contributions}
+\begin{itemize}
+    \item A rule-extraction pipeline that assumes only that its input is an
+          operating document, whose field vocabulary, record boundary and
+          category set are derived from the corpus rather than supplied, and
+          which runs unchanged across four unrelated industrial domains.
+    \item A schema-agnostic evaluation metric, together with the perturbation,
+          null-pairing and sensitivity studies that establish what it measures
+          and the four things it does not.
+    \item A measurement of what schema specification is worth on a corpus that
+          has one ($0.230$ F1) and what it costs on a corpus that does not
+          (the condition cannot be run at all without being rewritten).
+    \item A quantification of two degrees of freedom that evaluations of this
+          kind rarely report: annotation granularity, worth $0.147$ on identical
+          predictions, and the prompts' illustrative vocabulary, worth up to
+          $0.081$.
+\end{itemize}
+
+\subsection{Closing Assessment}
+The honest summary is that schema-agnostic extraction on these corpora is worth
+roughly $0.23$ F1 less than schema-specified extraction on the one corpus where
+both can run, that most of that difference is a disagreement about what
+constitutes one rule rather than about what the documents say, and that the
+resulting system transfers to a new facility at the cost of running it. Whether
+that trade is worth making is a deployment question and depends on how many
+facilities there are.
+
+Two things would most improve confidence in these numbers, and neither is a
+larger model. The first is corpora that are real rather than synthetic and
+annotated by people who did not also write the documents, which would test the
+granularity agreement this evaluation cannot. The second is a metric that scores
+a set of atomic facts against a set of composite rows without requiring a
+bijection; the $0.147$ measurement above is a lower bound on what such a metric
+would be worth, and constructing one would remove the largest source of
+ambiguity in every figure reported here.
+
+
 % Appendix, Complete Evaluation Results: all grid-search runs grouped by model,
 %             sorted by F1_content descending within each group.
 \appendix
@@ -2403,11 +3245,11 @@ Table~\ref{tab:corpora} rather than by score.}
 \label{tab:app_multiagent}
 \small\begin{tabular}{@{}lrrrrrrr@{}}\toprule
 \textbf{Corpus} & \textbf{GT} & \textbf{Records} & \textbf{F1} & \textbf{SD} & \textbf{P} & \textbf{Max~P} & \textbf{R} \\ \midrule
-\texttt{dev\_production\_line} & 86 & 116.6 & 0.756 & 0.077 & 0.668 & 0.756 & 0.884 \\
+\texttt{dev\_production\_line} & 86 & 131.0 & 0.719 & 0.000 & 0.595 & 0.656 & 0.907 \\
 \midrule
-\texttt{external\_test\_biogas} & 47 & 36.4 & 0.806 & 0.022 & 0.924 & 1.000 & 0.715 \\
-\texttt{external\_test\_cleanroom} & 37 & 38.0 & 0.747 & 0.000 & 0.737 & 0.974 & 0.757 \\
-\texttt{external\_test\_desalination} & 26 & 27.2 & 0.820 & 0.045 & 0.802 & 0.956 & 0.839 \\
+\texttt{external\_test\_biogas} & 47 & 28.0 & 0.715 & 0.023 & 0.957 & 1.000 & 0.570 \\
+\texttt{external\_test\_desalination} & 26 & 27.2 & 0.850 & 0.019 & 0.831 & 0.956 & 0.869 \\
+\texttt{external\_test\_sulfuric\_acid} & 70 & 49.0 & 0.649 & 0.049 & 0.788 & 1.000 & 0.552 \\
 \bottomrule\end{tabular}\end{table}
 
 \subsection*{Schema-Specified Grid, Rescored with the Current Metric}
@@ -2421,7 +3263,7 @@ their prompts being rewritten.
 \label{tab:app_grid}
 \small\begin{tabular}{@{}lrrrrr@{}}\toprule
 \textbf{Condition} & \textbf{Runs} & \textbf{Records} & \textbf{F1} & \textbf{P} & \textbf{R} \\ \midrule
-\texttt{gemma4-31b\_reflexion\_guided} & 5 & 78.8 & 0.946 & 0.990 & 0.907 \\
+\texttt{gemma4-31b\_reflexion\_guided} & 5 & 78.8 & 0.949 & 0.993 & 0.909 \\
 \texttt{gemma4-31b\_reflexion} & 5 & 77.2 & 0.939 & 0.993 & 0.891 \\
 \texttt{gemma4-31b\_pre\_act} & 5 & 70.6 & 0.894 & 0.992 & 0.814 \\
 \texttt{gemma4-31b\_cot\_basic} & 5 & 70.4 & 0.892 & 0.992 & 0.812 \\
@@ -2429,18 +3271,18 @@ their prompts being rewritten.
 \texttt{gemma4-31b\_cot\_structured} & 5 & 63.6 & 0.850 & 1.000 & 0.740 \\
 \texttt{gemma4-31b\_self\_consistency} & 5 & 63.0 & 0.846 & 1.000 & 0.733 \\
 \texttt{gemma4-31b\_few\_shot\_static} & 5 & 62.2 & 0.840 & 1.000 & 0.723 \\
-\texttt{gemma4-31b\_graph\_informed} & 5 & 62.0 & 0.835 & 0.997 & 0.719 \\
-\texttt{nemotron-3-nano-30b\_reflexion\_guided} & 5 & 67.6 & 0.833 & 0.949 & 0.744 \\
+\texttt{nemotron-3-nano-30b\_reflexion\_guided} & 5 & 67.6 & 0.840 & 0.957 & 0.751 \\
+\texttt{gemma4-31b\_graph\_informed} & 5 & 62.0 & 0.838 & 1.000 & 0.721 \\
 \texttt{nemotron-3-nano-30b\_self\_consistency} & 5 & 60.4 & 0.825 & 1.000 & 0.702 \\
 \texttt{nemotron-3-nano-30b\_cot\_basic} & 5 & 62.0 & 0.822 & 0.983 & 0.709 \\
 \texttt{nemotron-3-nano-30b\_naive} & 5 & 60.4 & 0.819 & 0.993 & 0.698 \\
 \texttt{gemma4-31b\_react\_abox} & 5 & 59.2 & 0.814 & 1.000 & 0.688 \\
-\texttt{nemotron-3-nano-30b\_reflexion} & 5 & 79.0 & 0.811 & 0.888 & 0.774 \\
-\texttt{nemotron-3-nano-30b\_few\_shot\_static} & 5 & 67.2 & 0.786 & 0.924 & 0.702 \\
-\texttt{nemotron-3-nano-30b\_pre\_act} & 5 & 97.8 & 0.783 & 0.804 & 0.828 \\
+\texttt{nemotron-3-nano-30b\_reflexion} & 5 & 79.0 & 0.794 & 0.871 & 0.756 \\
 \texttt{baseline\_b0} & 1 & 54.0 & 0.771 & 1.000 & 0.628 \\
-\texttt{nemotron-3-nano-30b\_graph\_informed} & 5 & 57.4 & 0.767 & 0.961 & 0.642 \\
-\texttt{nemotron-3-nano-30b\_cot\_structured} & 5 & 78.4 & 0.729 & 0.859 & 0.695 \\
+\texttt{nemotron-3-nano-30b\_pre\_act} & 5 & 97.8 & 0.768 & 0.795 & 0.805 \\
+\texttt{nemotron-3-nano-30b\_few\_shot\_static} & 5 & 67.2 & 0.767 & 0.906 & 0.681 \\
+\texttt{nemotron-3-nano-30b\_graph\_informed} & 5 & 57.4 & 0.754 & 0.947 & 0.630 \\
+\texttt{nemotron-3-nano-30b\_cot\_structured} & 5 & 78.4 & 0.729 & 0.859 & 0.693 \\
 \texttt{nemotron-3-nano-30b\_react\_abox} & 5 & 49.8 & 0.707 & 0.972 & 0.563 \\
 \bottomrule\end{tabular}\end{table}
 

@@ -1,0 +1,546 @@
+record_id,source_file,lines,field,value
+SOP001OPERAT-001,SOP_001_OperatingProcedures.txt,9,station_dependencies,ST01_FILLING → ST02_SEALING → ST03_LABELLING → ST04_PACKAGING
+SOP001OPERAT-001,SOP_001_OperatingProcedures.txt,9,fault_propagation,A fault at any station propagates downstream unless the line is halted
+SOP001OPERAT-002,SOP_001_OperatingProcedures.txt,13,station,ST01_FILLING
+SOP001OPERAT-002,SOP_001_OperatingProcedures.txt,13,zone,Production Area
+SOP001OPERAT-002,SOP_001_OperatingProcedures.txt,13,depends_on,-
+SOP001OPERAT-002,SOP_001_OperatingProcedures.txt,13,downstream_effect,Feeds ST02_SEALING
+SOP001OPERAT-003,SOP_001_OperatingProcedures.txt,14,station,ST02_SEALING
+SOP001OPERAT-003,SOP_001_OperatingProcedures.txt,14,zone,Production Area
+SOP001OPERAT-003,SOP_001_OperatingProcedures.txt,14,depends_on,ST01
+SOP001OPERAT-003,SOP_001_OperatingProcedures.txt,14,downstream_effect,Feeds ST03; thermal fault → ST04 speed reduction
+SOP001OPERAT-004,SOP_001_OperatingProcedures.txt,15,station,ST03_LABELLING
+SOP001OPERAT-004,SOP_001_OperatingProcedures.txt,15,zone,Production Area
+SOP001OPERAT-004,SOP_001_OperatingProcedures.txt,15,depends_on,ST02
+SOP001OPERAT-004,SOP_001_OperatingProcedures.txt,15,downstream_effect,Feeds ST04_PACKAGING
+SOP001OPERAT-005,SOP_001_OperatingProcedures.txt,16,station,ST04_PACKAGING
+SOP001OPERAT-005,SOP_001_OperatingProcedures.txt,16,zone,Production Area
+SOP001OPERAT-005,SOP_001_OperatingProcedures.txt,16,depends_on,ST03
+SOP001OPERAT-005,SOP_001_OperatingProcedures.txt,16,downstream_effect,Final output
+SOP001OPERAT-006,SOP_001_OperatingProcedures.txt,17,station,SRV01_SERVERROOM
+SOP001OPERAT-006,SOP_001_OperatingProcedures.txt,17,zone,Server Room
+SOP001OPERAT-006,SOP_001_OperatingProcedures.txt,17,depends_on,HVAC
+SOP001OPERAT-006,SOP_001_OperatingProcedures.txt,17,downstream_effect,SCADA control; failure → line halt
+SOP001OPERAT-007,SOP_001_OperatingProcedures.txt,18,station,WRH01_WAREHOUSE
+SOP001OPERAT-007,SOP_001_OperatingProcedures.txt,18,zone,General Warehouse
+SOP001OPERAT-007,SOP_001_OperatingProcedures.txt,18,depends_on,COMPRESSOR
+SOP001OPERAT-007,SOP_001_OperatingProcedures.txt,18,downstream_effect,Cold storage - product quality
+SOP001OPERAT-008,SOP_001_OperatingProcedures.txt,19,station,CHM01_CHEMICALSTORAGE
+SOP001OPERAT-008,SOP_001_OperatingProcedures.txt,19,zone,Chemical Storage
+SOP001OPERAT-008,SOP_001_OperatingProcedures.txt,19,depends_on,HVAC
+SOP001OPERAT-008,SOP_001_OperatingProcedures.txt,19,downstream_effect,Hazardous materials - safety critical
+SOP001OPERAT-009,SOP_001_OperatingProcedures.txt,20,station,RND01_RDLAB
+SOP001OPERAT-009,SOP_001_OperatingProcedures.txt,20,zone,R&D; Lab
+SOP001OPERAT-009,SOP_001_OperatingProcedures.txt,20,depends_on,HVAC
+SOP001OPERAT-009,SOP_001_OperatingProcedures.txt,20,downstream_effect,Precision experiments - climate sensitive
+SOP001OPERAT-010,SOP_001_OperatingProcedures.txt,21,station,CAF01_CAFETERIA
+SOP001OPERAT-010,SOP_001_OperatingProcedures.txt,21,zone,Cafeteria
+SOP001OPERAT-010,SOP_001_OperatingProcedures.txt,21,depends_on,HVAC
+SOP001OPERAT-010,SOP_001_OperatingProcedures.txt,21,downstream_effect,Occupant comfort - food safety
+RULE-ST01-01,SOP_001_OperatingProcedures.txt,27,station,ST01_FILLING
+RULE-ST01-01,SOP_001_OperatingProcedures.txt,27,flw_requirement,MUST be maintained between 112 and 128 L/min
+RULE-ST01-02,SOP_001_OperatingProcedures.txt,29,station,ST01_FILLING
+RULE-ST01-02,SOP_001_OperatingProcedures.txt,29,condition,TMP exceeds 26°C
+RULE-ST01-02,SOP_001_OperatingProcedures.txt,29,action,reduce speed by 10% and notify QC
+RULE-ST01-03,SOP_001_OperatingProcedures.txt,31,station,ST01_FILLING
+RULE-ST01-03,SOP_001_OperatingProcedures.txt,31,condition,PRS drop below 3.3 bar
+RULE-ST01-03,SOP_001_OperatingProcedures.txt,31,action,inspect inlet valve within 5 min
+RULE-ST02-01,SOP_001_OperatingProcedures.txt,35,station,ST02_SEALING
+RULE-ST02-01,SOP_001_OperatingProcedures.txt,35,tmp_requirement,MUST remain between 175°C and 195°C
+RULE-ST02-02,SOP_001_OperatingProcedures.txt,37,station,ST02_SEALING
+RULE-ST02-02,SOP_001_OperatingProcedures.txt,37,condition,TMP > 210°C (CRITICAL)
+RULE-ST02-02,SOP_001_OperatingProcedures.txt,37,action,"emergency stop ST02, ST03, ST04"
+RULE-ST02-03,SOP_001_OperatingProcedures.txt,39,station,ST02_SEALING
+RULE-ST02-03,SOP_001_OperatingProcedures.txt,39,condition,CUR increase >1.5 A above nominal sustained >5 min
+RULE-ST02-03,SOP_001_OperatingProcedures.txt,39,action,schedule maintenance
+RULE-ST02-04,SOP_001_OperatingProcedures.txt,41,station,ST02_SEALING
+RULE-ST02-04,SOP_001_OperatingProcedures.txt,41,correlation,CUR drift at ST02_SEALING CORRELATES with speed reduction at ST04_PACKAGING due to shared electrical coupling
+RULE-ST02-04,SOP_001_OperatingProcedures.txt,41,action,Monitor ST04_PACKAGING-SPD whenever ST02_SEALING-CUR triggers a WARNING
+RULE-ST03-01,SOP_001_OperatingProcedures.txt,45,station,ST03_LABELLING
+RULE-ST03-01,SOP_001_OperatingProcedures.txt,45,ten_requirement,MUST be between 1.8 and 2.6 N
+RULE-ST03-02,SOP_001_OperatingProcedures.txt,47,station,ST03_LABELLING
+RULE-ST03-02,SOP_001_OperatingProcedures.txt,47,condition,CNT below 110 pcs/min; Below 100 (CRITICAL)
+RULE-ST03-02,SOP_001_OperatingProcedures.txt,47,action,check for label jam; halt
+RULE-ST03-03,SOP_001_OperatingProcedures.txt,49,station,ST03_LABELLING
+RULE-ST03-03,SOP_001_OperatingProcedures.txt,49,condition,TEN STUCK >10 consecutive samples
+RULE-ST03-03,SOP_001_OperatingProcedures.txt,49,diagnosis,sensor failure
+RULE-ST04-01,SOP_001_OperatingProcedures.txt,53,station,ST04_PACKAGING
+RULE-ST04-01,SOP_001_OperatingProcedures.txt,53,condition,VIB > 0.20 mm/s (WARNING)
+RULE-ST04-01,SOP_001_OperatingProcedures.txt,53,action,schedule maintenance within 24 h
+RULE-ST04-02,SOP_001_OperatingProcedures.txt,55,station,ST04_PACKAGING
+RULE-ST04-02,SOP_001_OperatingProcedures.txt,55,condition,VIB > 0.35 mm/s (CRITICAL)
+RULE-ST04-02,SOP_001_OperatingProcedures.txt,55,action,emergency stop; inspect bearings
+RULE-ST04-03,SOP_001_OperatingProcedures.txt,57,station,ST04_PACKAGING
+RULE-ST04-03,SOP_001_OperatingProcedures.txt,57,condition,SPD drops below 1.00 m/s without operator command
+RULE-ST04-03,SOP_001_OperatingProcedures.txt,57,action,verify RULE-ST02-04
+RULE-SRV01-01,SOP_001_OperatingProcedures.txt,61,station,SRV01_SERVERROOM
+RULE-SRV01-01,SOP_001_OperatingProcedures.txt,61,tmp_requirement,MUST NOT exceed 25°C
+RULE-SRV01-02,SOP_001_OperatingProcedures.txt,61,station,SRV01_SERVERROOM
+RULE-SRV01-02,SOP_001_OperatingProcedures.txt,61,condition,TMP > 28°C (CRITICAL)
+RULE-SRV01-02,SOP_001_OperatingProcedures.txt,61,action,automatic controlled shutdown of all PLC nodes
+RULE-WRH01-01,SOP_001_OperatingProcedures.txt,65,station,WRH01_WAREHOUSE (General Warehouse)
+RULE-WRH01-01,SOP_001_OperatingProcedures.txt,65,tmp_requirement,MUST remain between 0.5°C and 8°C
+RULE-WRH01-01,SOP_001_OperatingProcedures.txt,65,condition,above 12°C
+RULE-WRH01-01,SOP_001_OperatingProcedures.txt,65,action,notify QC and quarantine batch
+RULE-WRH01-02,SOP_001_OperatingProcedures.txt,65,station,WRH01_WAREHOUSE (General Warehouse)
+RULE-WRH01-02,SOP_001_OperatingProcedures.txt,65,condition,HUM above 85%RH
+RULE-WRH01-02,SOP_001_OperatingProcedures.txt,65,action,inspect door seals and activate dehumidifier
+RULE-CHM01-01,SOP_001_OperatingProcedures.txt,69,station,CHM01_CHEMICALSTORAGE (Chemical Storage)
+RULE-CHM01-01,SOP_001_OperatingProcedures.txt,69,tmp_requirement,MUST remain between 10°C and 20°C
+RULE-CHM01-01,SOP_001_OperatingProcedures.txt,69,condition,above 25°C
+RULE-CHM01-01,SOP_001_OperatingProcedures.txt,69,action,activate emergency ventilation and notify safety officer immediately
+RULE-CHM01-02,SOP_001_OperatingProcedures.txt,69,station,CHM01_CHEMICALSTORAGE (Chemical Storage)
+RULE-CHM01-02,SOP_001_OperatingProcedures.txt,69,hum_requirement,MUST NOT exceed 50%RH
+RULE-CHM01-02,SOP_001_OperatingProcedures.txt,69,action,Activate desiccant system if HUM >45%RH
+RULE-CHM01-03,SOP_001_OperatingProcedures.txt,69,station,CHM01_CHEMICALSTORAGE (Chemical Storage)
+RULE-CHM01-03,SOP_001_OperatingProcedures.txt,69,authorized_personnel,personnel with hazmat training (technician/supervisor/manager role)
+RULE-CHM01-03,SOP_001_OperatingProcedures.txt,69,action,UNAUTHORIZED_ACCESS must be escalated within 2 minutes
+RULE-RND01-01,SOP_001_OperatingProcedures.txt,73,station,RND01_RDLAB (R&D; Lab)
+RULE-RND01-01,SOP_001_OperatingProcedures.txt,73,tmp_requirement,MUST remain between 18°C and 26°C for experimental validity
+RULE-RND01-02,SOP_001_OperatingProcedures.txt,73,station,RND01_RDLAB (R&D; Lab)
+RULE-RND01-02,SOP_001_OperatingProcedures.txt,73,condition,HUM drift above 65%RH; Above 75%RH (CRITICAL)
+RULE-RND01-02,SOP_001_OperatingProcedures.txt,73,action,activate dehumidifier; suspend sensitive experiments and inspect HVAC system
+RULE-CAF01-01,SOP_001_OperatingProcedures.txt,77,station,CAF01_CAFETERIA
+RULE-CAF01-01,SOP_001_OperatingProcedures.txt,77,condition,TMP above 26°C
+RULE-CAF01-01,SOP_001_OperatingProcedures.txt,77,action,check ventilation system
+RULE-CAF01-01,SOP_001_OperatingProcedures.txt,77,primary_criterion,Occupant comfort
+RULE-CAF01-02,SOP_001_OperatingProcedures.txt,77,station,CAF01_CAFETERIA
+RULE-CAF01-02,SOP_001_OperatingProcedures.txt,77,condition,HUM above 70%RH
+RULE-CAF01-02,SOP_001_OperatingProcedures.txt,77,action,inspect drainage and activate ventilation
+SOP002ALARMT-001,SOP_002_AlarmThresholds.txt,5,threshold_hierarchy,CRIT_LO < WARN_LO < NOMINAL < WARN_HI < CRIT_HI
+SOP002ALARMT-002,SOP_002_AlarmThresholds.txt,11,station,ST01_FILLING
+SOP002ALARMT-002,SOP_002_AlarmThresholds.txt,11,sensor,TMP
+SOP002ALARMT-002,SOP_002_AlarmThresholds.txt,11,unit,°C
+SOP002ALARMT-002,SOP_002_AlarmThresholds.txt,11,crit_lo,15
+SOP002ALARMT-002,SOP_002_AlarmThresholds.txt,11,warn_lo,18
+SOP002ALARMT-002,SOP_002_AlarmThresholds.txt,11,nominal,22.0 ± 0.4
+SOP002ALARMT-002,SOP_002_AlarmThresholds.txt,11,warn_hi,26
+SOP002ALARMT-002,SOP_002_AlarmThresholds.txt,11,crit_hi,30
+SOP002ALARMT-002,SOP_002_AlarmThresholds.txt,11,critical_response,Inspect and notify maintenance
+SOP002ALARMT-003,SOP_002_AlarmThresholds.txt,12,station,ST01_FILLING
+SOP002ALARMT-003,SOP_002_AlarmThresholds.txt,12,sensor,PRS
+SOP002ALARMT-003,SOP_002_AlarmThresholds.txt,12,unit,bar
+SOP002ALARMT-003,SOP_002_AlarmThresholds.txt,12,crit_lo,3
+SOP002ALARMT-003,SOP_002_AlarmThresholds.txt,12,warn_lo,3.3
+SOP002ALARMT-003,SOP_002_AlarmThresholds.txt,12,nominal,3.8 ± 0.05
+SOP002ALARMT-003,SOP_002_AlarmThresholds.txt,12,warn_hi,4.2
+SOP002ALARMT-003,SOP_002_AlarmThresholds.txt,12,crit_hi,4.8
+SOP002ALARMT-003,SOP_002_AlarmThresholds.txt,12,critical_response,Inspect and notify maintenance
+SOP002ALARMT-004,SOP_002_AlarmThresholds.txt,13,station,ST01_FILLING
+SOP002ALARMT-004,SOP_002_AlarmThresholds.txt,13,sensor,FLW
+SOP002ALARMT-004,SOP_002_AlarmThresholds.txt,13,unit,L/min
+SOP002ALARMT-004,SOP_002_AlarmThresholds.txt,13,crit_lo,105
+SOP002ALARMT-004,SOP_002_AlarmThresholds.txt,13,warn_lo,112
+SOP002ALARMT-004,SOP_002_AlarmThresholds.txt,13,nominal,120.0 ± 1.5
+SOP002ALARMT-004,SOP_002_AlarmThresholds.txt,13,warn_hi,128
+SOP002ALARMT-004,SOP_002_AlarmThresholds.txt,13,crit_hi,135
+SOP002ALARMT-004,SOP_002_AlarmThresholds.txt,13,critical_response,Inspect and notify maintenance
+SOP002ALARMT-005,SOP_002_AlarmThresholds.txt,19,station,ST02_SEALING
+SOP002ALARMT-005,SOP_002_AlarmThresholds.txt,19,sensor,TMP
+SOP002ALARMT-005,SOP_002_AlarmThresholds.txt,19,unit,°C
+SOP002ALARMT-005,SOP_002_AlarmThresholds.txt,19,crit_lo,165
+SOP002ALARMT-005,SOP_002_AlarmThresholds.txt,19,warn_lo,175
+SOP002ALARMT-005,SOP_002_AlarmThresholds.txt,19,nominal,185.0 ± 1.2
+SOP002ALARMT-005,SOP_002_AlarmThresholds.txt,19,warn_hi,195
+SOP002ALARMT-005,SOP_002_AlarmThresholds.txt,19,crit_hi,210
+SOP002ALARMT-005,SOP_002_AlarmThresholds.txt,19,critical_response,E-STOP ST02/ST03/ST04; inspect element
+SOP002ALARMT-006,SOP_002_AlarmThresholds.txt,20,station,ST02_SEALING
+SOP002ALARMT-006,SOP_002_AlarmThresholds.txt,20,sensor,PRS
+SOP002ALARMT-006,SOP_002_AlarmThresholds.txt,20,unit,bar
+SOP002ALARMT-006,SOP_002_AlarmThresholds.txt,20,crit_lo,4.2
+SOP002ALARMT-006,SOP_002_AlarmThresholds.txt,20,warn_lo,4.6
+SOP002ALARMT-006,SOP_002_AlarmThresholds.txt,20,nominal,5.2 ± 0.08
+SOP002ALARMT-006,SOP_002_AlarmThresholds.txt,20,warn_hi,5.7
+SOP002ALARMT-006,SOP_002_AlarmThresholds.txt,20,crit_hi,6.2
+SOP002ALARMT-006,SOP_002_AlarmThresholds.txt,20,critical_response,Inspect and notify maintenance
+SOP002ALARMT-007,SOP_002_AlarmThresholds.txt,21,station,ST02_SEALING
+SOP002ALARMT-007,SOP_002_AlarmThresholds.txt,21,sensor,CUR
+SOP002ALARMT-007,SOP_002_AlarmThresholds.txt,21,unit,A
+SOP002ALARMT-007,SOP_002_AlarmThresholds.txt,21,crit_lo,9.5
+SOP002ALARMT-007,SOP_002_AlarmThresholds.txt,21,warn_lo,11
+SOP002ALARMT-007,SOP_002_AlarmThresholds.txt,21,nominal,12.4 ± 0.3
+SOP002ALARMT-007,SOP_002_AlarmThresholds.txt,21,warn_hi,13.5
+SOP002ALARMT-007,SOP_002_AlarmThresholds.txt,21,crit_hi,15
+SOP002ALARMT-007,SOP_002_AlarmThresholds.txt,21,critical_response,E-STOP; inspect load; verify ST04-SPD (RULE-ST02-04)
+SOP002ALARMT-008,SOP_002_AlarmThresholds.txt,27,station,ST03_LABELLING
+SOP002ALARMT-008,SOP_002_AlarmThresholds.txt,27,sensor,SPD
+SOP002ALARMT-008,SOP_002_AlarmThresholds.txt,27,unit,m/s
+SOP002ALARMT-008,SOP_002_AlarmThresholds.txt,27,crit_lo,0.65
+SOP002ALARMT-008,SOP_002_AlarmThresholds.txt,27,warn_lo,0.75
+SOP002ALARMT-008,SOP_002_AlarmThresholds.txt,27,nominal,0.85 ± 0.01
+SOP002ALARMT-008,SOP_002_AlarmThresholds.txt,27,warn_hi,0.95
+SOP002ALARMT-008,SOP_002_AlarmThresholds.txt,27,crit_hi,1.05
+SOP002ALARMT-008,SOP_002_AlarmThresholds.txt,27,critical_response,Inspect and notify maintenance
+SOP002ALARMT-009,SOP_002_AlarmThresholds.txt,28,station,ST03_LABELLING
+SOP002ALARMT-009,SOP_002_AlarmThresholds.txt,28,sensor,TEN
+SOP002ALARMT-009,SOP_002_AlarmThresholds.txt,28,unit,N
+SOP002ALARMT-009,SOP_002_AlarmThresholds.txt,28,crit_lo,1.5
+SOP002ALARMT-009,SOP_002_AlarmThresholds.txt,28,warn_lo,1.8
+SOP002ALARMT-009,SOP_002_AlarmThresholds.txt,28,nominal,2.2 ± 0.05
+SOP002ALARMT-009,SOP_002_AlarmThresholds.txt,28,warn_hi,2.6
+SOP002ALARMT-009,SOP_002_AlarmThresholds.txt,28,crit_hi,3
+SOP002ALARMT-009,SOP_002_AlarmThresholds.txt,28,critical_response,Inspect and notify maintenance
+SOP002ALARMT-010,SOP_002_AlarmThresholds.txt,29,station,ST03_LABELLING
+SOP002ALARMT-010,SOP_002_AlarmThresholds.txt,29,sensor,CNT
+SOP002ALARMT-010,SOP_002_AlarmThresholds.txt,29,unit,pcs/m in
+SOP002ALARMT-010,SOP_002_AlarmThresholds.txt,29,crit_lo,100
+SOP002ALARMT-010,SOP_002_AlarmThresholds.txt,29,warn_lo,110
+SOP002ALARMT-010,SOP_002_AlarmThresholds.txt,29,nominal,120 ± 2.0
+SOP002ALARMT-010,SOP_002_AlarmThresholds.txt,29,warn_hi,130
+SOP002ALARMT-010,SOP_002_AlarmThresholds.txt,29,crit_hi,140
+SOP002ALARMT-010,SOP_002_AlarmThresholds.txt,29,critical_response,E-STOP labelling; inspect label path
+SOP002ALARMT-011,SOP_002_AlarmThresholds.txt,35,station,ST04_PACKAGING
+SOP002ALARMT-011,SOP_002_AlarmThresholds.txt,35,sensor,VIB
+SOP002ALARMT-011,SOP_002_AlarmThresholds.txt,35,unit,mm/s
+SOP002ALARMT-011,SOP_002_AlarmThresholds.txt,35,crit_lo,0.01
+SOP002ALARMT-011,SOP_002_AlarmThresholds.txt,35,warn_lo,0.02
+SOP002ALARMT-011,SOP_002_AlarmThresholds.txt,35,nominal,0.12 ± 0.005
+SOP002ALARMT-011,SOP_002_AlarmThresholds.txt,35,warn_hi,0.2
+SOP002ALARMT-011,SOP_002_AlarmThresholds.txt,35,crit_hi,0.35
+SOP002ALARMT-011,SOP_002_AlarmThresholds.txt,35,critical_response,E-STOP; inspect main bearing
+SOP002ALARMT-012,SOP_002_AlarmThresholds.txt,36,station,ST04_PACKAGING
+SOP002ALARMT-012,SOP_002_AlarmThresholds.txt,36,sensor,CUR
+SOP002ALARMT-012,SOP_002_AlarmThresholds.txt,36,unit,A
+SOP002ALARMT-012,SOP_002_AlarmThresholds.txt,36,crit_lo,6.5
+SOP002ALARMT-012,SOP_002_AlarmThresholds.txt,36,warn_lo,7.5
+SOP002ALARMT-012,SOP_002_AlarmThresholds.txt,36,nominal,8.7 ± 0.2
+SOP002ALARMT-012,SOP_002_AlarmThresholds.txt,36,warn_hi,9.8
+SOP002ALARMT-012,SOP_002_AlarmThresholds.txt,36,crit_hi,11
+SOP002ALARMT-012,SOP_002_AlarmThresholds.txt,36,critical_response,Inspect and notify maintenance
+SOP002ALARMT-013,SOP_002_AlarmThresholds.txt,37,station,ST04_PACKAGING
+SOP002ALARMT-013,SOP_002_AlarmThresholds.txt,37,sensor,SPD
+SOP002ALARMT-013,SOP_002_AlarmThresholds.txt,37,unit,m/s
+SOP002ALARMT-013,SOP_002_AlarmThresholds.txt,37,crit_lo,0.85
+SOP002ALARMT-013,SOP_002_AlarmThresholds.txt,37,warn_lo,1
+SOP002ALARMT-013,SOP_002_AlarmThresholds.txt,37,nominal,1.2 ± 0.02
+SOP002ALARMT-013,SOP_002_AlarmThresholds.txt,37,warn_hi,1.4
+SOP002ALARMT-013,SOP_002_AlarmThresholds.txt,37,crit_hi,1.6
+SOP002ALARMT-013,SOP_002_AlarmThresholds.txt,37,critical_response,Inspect and notify maintenance
+SOP002ALARMT-014,SOP_002_AlarmThresholds.txt,43,station,SRV01_SERVERROOM
+SOP002ALARMT-014,SOP_002_AlarmThresholds.txt,43,sensor,TMP
+SOP002ALARMT-014,SOP_002_AlarmThresholds.txt,43,unit,°C
+SOP002ALARMT-014,SOP_002_AlarmThresholds.txt,43,crit_lo,16
+SOP002ALARMT-014,SOP_002_AlarmThresholds.txt,43,warn_lo,18
+SOP002ALARMT-014,SOP_002_AlarmThresholds.txt,43,nominal,21.0 ± 0.3
+SOP002ALARMT-014,SOP_002_AlarmThresholds.txt,43,warn_hi,25
+SOP002ALARMT-014,SOP_002_AlarmThresholds.txt,43,crit_hi,28
+SOP002ALARMT-014,SOP_002_AlarmThresholds.txt,43,critical_response,Activate backup cooling; prepare controlled PLC shutdown
+SOP002ALARMT-015,SOP_002_AlarmThresholds.txt,45,station,SRV01_SERVERROOM
+SOP002ALARMT-015,SOP_002_AlarmThresholds.txt,45,sensor,HUM
+SOP002ALARMT-015,SOP_002_AlarmThresholds.txt,45,unit,%RH
+SOP002ALARMT-015,SOP_002_AlarmThresholds.txt,45,crit_lo,25.0
+SOP002ALARMT-015,SOP_002_AlarmThresholds.txt,45,warn_lo,30.0
+SOP002ALARMT-015,SOP_002_AlarmThresholds.txt,45,nominal,45.0 ± 1.0
+SOP002ALARMT-015,SOP_002_AlarmThresholds.txt,45,warn_hi,60.0
+SOP002ALARMT-015,SOP_002_AlarmThresholds.txt,45,crit_hi,70.0
+SOP002ALARMT-015,SOP_002_AlarmThresholds.txt,45,critical_response,Inspect and notify maintenance
+SOP002ALARMT-016,SOP_002_AlarmThresholds.txt,52,station,WRH01_WAREHOUSE
+SOP002ALARMT-016,SOP_002_AlarmThresholds.txt,52,sensor,TMP
+SOP002ALARMT-016,SOP_002_AlarmThresholds.txt,52,unit,°C
+SOP002ALARMT-016,SOP_002_AlarmThresholds.txt,52,crit_lo,-1
+SOP002ALARMT-016,SOP_002_AlarmThresholds.txt,52,warn_lo,0.5
+SOP002ALARMT-016,SOP_002_AlarmThresholds.txt,52,nominal,4.0 ± 0.5
+SOP002ALARMT-016,SOP_002_AlarmThresholds.txt,52,warn_hi,8
+SOP002ALARMT-016,SOP_002_AlarmThresholds.txt,52,crit_hi,12
+SOP002ALARMT-016,SOP_002_AlarmThresholds.txt,52,critical_response,Activate backup refrigeration; notify
+SOP002ALARMT-017,SOP_002_AlarmThresholds.txt,53,station,WRH01_WAREHOUSE
+SOP002ALARMT-017,SOP_002_AlarmThresholds.txt,53,sensor,HUM
+SOP002ALARMT-017,SOP_002_AlarmThresholds.txt,53,unit,%RH
+SOP002ALARMT-017,SOP_002_AlarmThresholds.txt,53,crit_lo,55
+SOP002ALARMT-017,SOP_002_AlarmThresholds.txt,53,warn_lo,60
+SOP002ALARMT-017,SOP_002_AlarmThresholds.txt,53,nominal,75.0 ± 1.5
+SOP002ALARMT-017,SOP_002_AlarmThresholds.txt,53,warn_hi,85
+SOP002ALARMT-017,SOP_002_AlarmThresholds.txt,53,crit_hi,90
+SOP002ALARMT-017,SOP_002_AlarmThresholds.txt,53,critical_response,Inspect and notify maintenance
+SOP002ALARMT-018,SOP_002_AlarmThresholds.txt,59,station,CHM01_CHEMICALSTORAGE
+SOP002ALARMT-018,SOP_002_AlarmThresholds.txt,59,sensor,TMP
+SOP002ALARMT-018,SOP_002_AlarmThresholds.txt,59,unit,°C
+SOP002ALARMT-018,SOP_002_AlarmThresholds.txt,59,crit_lo,5
+SOP002ALARMT-018,SOP_002_AlarmThresholds.txt,59,warn_lo,10
+SOP002ALARMT-018,SOP_002_AlarmThresholds.txt,59,nominal,15.0 ± 0.3
+SOP002ALARMT-018,SOP_002_AlarmThresholds.txt,59,warn_hi,20
+SOP002ALARMT-018,SOP_002_AlarmThresholds.txt,59,crit_hi,25
+SOP002ALARMT-018,SOP_002_AlarmThresholds.txt,59,critical_response,Activate emergency ventilation; notify safety officer immediately
+SOP002ALARMT-019,SOP_002_AlarmThresholds.txt,60,station,CHM01_CHEMICALSTORAGE
+SOP002ALARMT-019,SOP_002_AlarmThresholds.txt,60,sensor,HUM
+SOP002ALARMT-019,SOP_002_AlarmThresholds.txt,60,unit,%RH
+SOP002ALARMT-019,SOP_002_AlarmThresholds.txt,60,crit_lo,15
+SOP002ALARMT-019,SOP_002_AlarmThresholds.txt,60,warn_lo,20
+SOP002ALARMT-019,SOP_002_AlarmThresholds.txt,60,nominal,35.0 ± 1.0
+SOP002ALARMT-019,SOP_002_AlarmThresholds.txt,60,warn_hi,50
+SOP002ALARMT-019,SOP_002_AlarmThresholds.txt,60,crit_hi,60
+SOP002ALARMT-019,SOP_002_AlarmThresholds.txt,60,critical_response,Activate desiccant system; inspect storage containers for leaks
+SOP002ALARMT-020,SOP_002_AlarmThresholds.txt,66,station,RND01_RDLAB
+SOP002ALARMT-020,SOP_002_AlarmThresholds.txt,66,sensor,TMP
+SOP002ALARMT-020,SOP_002_AlarmThresholds.txt,66,unit,°C
+SOP002ALARMT-020,SOP_002_AlarmThresholds.txt,66,crit_lo,15
+SOP002ALARMT-020,SOP_002_AlarmThresholds.txt,66,warn_lo,18
+SOP002ALARMT-020,SOP_002_AlarmThresholds.txt,66,nominal,22.0 ± 0.2
+SOP002ALARMT-020,SOP_002_AlarmThresholds.txt,66,warn_hi,26
+SOP002ALARMT-020,SOP_002_AlarmThresholds.txt,66,crit_hi,30
+SOP002ALARMT-020,SOP_002_AlarmThresholds.txt,66,critical_response,Inspect and notify maintenance
+SOP002ALARMT-021,SOP_002_AlarmThresholds.txt,67,station,RND01_RDLAB
+SOP002ALARMT-021,SOP_002_AlarmThresholds.txt,67,sensor,HUM
+SOP002ALARMT-021,SOP_002_AlarmThresholds.txt,67,unit,%RH
+SOP002ALARMT-021,SOP_002_AlarmThresholds.txt,67,crit_lo,25
+SOP002ALARMT-021,SOP_002_AlarmThresholds.txt,67,warn_lo,35
+SOP002ALARMT-021,SOP_002_AlarmThresholds.txt,67,nominal,50.0 ± 1.0
+SOP002ALARMT-021,SOP_002_AlarmThresholds.txt,67,warn_hi,65
+SOP002ALARMT-021,SOP_002_AlarmThresholds.txt,67,crit_hi,75
+SOP002ALARMT-021,SOP_002_AlarmThresholds.txt,67,critical_response,Suspend experiments; inspect HVAC system
+SOP002ALARMT-022,SOP_002_AlarmThresholds.txt,73,station,CAF01_CAFETERIA
+SOP002ALARMT-022,SOP_002_AlarmThresholds.txt,73,sensor,TMP
+SOP002ALARMT-022,SOP_002_AlarmThresholds.txt,73,unit,°C
+SOP002ALARMT-022,SOP_002_AlarmThresholds.txt,73,crit_lo,14
+SOP002ALARMT-022,SOP_002_AlarmThresholds.txt,73,warn_lo,17
+SOP002ALARMT-022,SOP_002_AlarmThresholds.txt,73,nominal,21.0 ± 0.4
+SOP002ALARMT-022,SOP_002_AlarmThresholds.txt,73,warn_hi,26
+SOP002ALARMT-022,SOP_002_AlarmThresholds.txt,73,crit_hi,30
+SOP002ALARMT-022,SOP_002_AlarmThresholds.txt,73,critical_response,Inspect and notify maintenance
+SOP002ALARMT-023,SOP_002_AlarmThresholds.txt,74,station,CAF01_CAFETERIA
+SOP002ALARMT-023,SOP_002_AlarmThresholds.txt,74,sensor,HUM
+SOP002ALARMT-023,SOP_002_AlarmThresholds.txt,74,unit,%RH
+SOP002ALARMT-023,SOP_002_AlarmThresholds.txt,74,crit_lo,25
+SOP002ALARMT-023,SOP_002_AlarmThresholds.txt,74,warn_lo,35
+SOP002ALARMT-023,SOP_002_AlarmThresholds.txt,74,nominal,55.0 ± 1.5
+SOP002ALARMT-023,SOP_002_AlarmThresholds.txt,74,warn_hi,70
+SOP002ALARMT-023,SOP_002_AlarmThresholds.txt,74,crit_hi,80
+SOP002ALARMT-023,SOP_002_AlarmThresholds.txt,74,critical_response,Inspect and notify maintenance
+SOP002ALARMT-024,SOP_002_AlarmThresholds.txt,80,anomaly_type,SPIKE
+SOP002ALARMT-024,SOP_002_AlarmThresholds.txt,80,definition,"Transient deviation >3 s , <5 min"
+SOP002ALARMT-024,SOP_002_AlarmThresholds.txt,80,detection_criterion,Single reading >CRIT
+SOP002ALARMT-024,SOP_002_AlarmThresholds.txt,80,ontology_class,AnomalyEvent::Spike
+SOP002ALARMT-025,SOP_002_AlarmThresholds.txt,81,anomaly_type,DRIFT
+SOP002ALARMT-025,SOP_002_AlarmThresholds.txt,81,definition,Monotonic deviation >15 min
+SOP002ALARMT-025,SOP_002_AlarmThresholds.txt,81,detection_criterion,Slope >0.1 s /min for 5+ readings
+SOP002ALARMT-025,SOP_002_AlarmThresholds.txt,81,ontology_class,AnomalyEvent::Drift
+SOP002ALARMT-026,SOP_002_AlarmThresholds.txt,82,anomaly_type,STUCK
+SOP002ALARMT-026,SOP_002_AlarmThresholds.txt,82,definition,Unchanged >10 consecutive readings
+SOP002ALARMT-026,SOP_002_AlarmThresholds.txt,82,detection_criterion,std(last 10)<0.001×nominal
+SOP002ALARMT-026,SOP_002_AlarmThresholds.txt,82,ontology_class,AnomalyEvent::StuckSensor
+SOP002ALARMT-027,SOP_002_AlarmThresholds.txt,83,anomaly_type,OUT_OF_RAN GE
+SOP002ALARMT-027,SOP_002_AlarmThresholds.txt,83,definition,Sustained WARN violation >10 min
+SOP002ALARMT-027,SOP_002_AlarmThresholds.txt,83,detection_criterion,>WARN for 20+ readings
+SOP002ALARMT-027,SOP_002_AlarmThresholds.txt,83,ontology_class,AnomalyEvent::OutOfRange
+SOP002ALARMT-028,SOP_002_AlarmThresholds.txt,84,anomaly_type,CORRELATED
+SOP002ALARMT-028,SOP_002_AlarmThresholds.txt,84,definition,Causally linked to another station
+SOP002ALARMT-028,SOP_002_AlarmThresholds.txt,84,detection_criterion,Onset within 90 min of cause
+SOP002ALARMT-028,SOP_002_AlarmThresholds.txt,84,ontology_class,AnomalyEvent::Correlated
+MAINT-01,SOP_003_MaintenanceRules.txt,9,sensor,VIB
+MAINT-01,SOP_003_MaintenanceRules.txt,9,station,ST04_PACKAGING
+MAINT-01,SOP_003_MaintenanceRules.txt,9,condition,VIB DRIFT >0.05 mm/s over 60 min
+MAINT-01,SOP_003_MaintenanceRules.txt,9,action,Inspect and lubricate bearing
+MAINT-01,SOP_003_MaintenanceRules.txt,9,priority,HIGH
+MAINT-02,SOP_003_MaintenanceRules.txt,10,sensor,CUR
+MAINT-02,SOP_003_MaintenanceRules.txt,10,station,ST02_SEALING
+MAINT-02,SOP_003_MaintenanceRules.txt,10,condition,CUR DRIFT >1.0 A for 30+ min
+MAINT-02,SOP_003_MaintenanceRules.txt,10,action,Inspect sealing jaw
+MAINT-02,SOP_003_MaintenanceRules.txt,10,priority,HIGH
+MAINT-03,SOP_003_MaintenanceRules.txt,11,sensor,TEN
+MAINT-03,SOP_003_MaintenanceRules.txt,11,station,ST03_LABELLING
+MAINT-03,SOP_003_MaintenanceRules.txt,11,condition,TEN STUCK >10 samples
+MAINT-03,SOP_003_MaintenanceRules.txt,11,action,Replace sensor
+MAINT-03,SOP_003_MaintenanceRules.txt,11,priority,MEDIUM
+MAINT-04,SOP_003_MaintenanceRules.txt,12,sensor,PRS
+MAINT-04,SOP_003_MaintenanceRules.txt,12,station,ST01_FILLING
+MAINT-04,SOP_003_MaintenanceRules.txt,12,condition,PRS <3.3 bar for >15 min
+MAINT-04,SOP_003_MaintenanceRules.txt,12,action,Inspect filter and pump
+MAINT-04,SOP_003_MaintenanceRules.txt,12,priority,MEDIUM
+MAINT-05,SOP_003_MaintenanceRules.txt,13,sensor,TMP
+MAINT-05,SOP_003_MaintenanceRules.txt,13,station,SRV01_SERVERRO OM
+MAINT-05,SOP_003_MaintenanceRules.txt,13,condition,TMP >25°C for >5 min
+MAINT-05,SOP_003_MaintenanceRules.txt,13,action,Activate secondary cooling
+MAINT-05,SOP_003_MaintenanceRules.txt,13,priority,CRITICAL
+MAINT-06,SOP_003_MaintenanceRules.txt,14,sensor,TMP
+MAINT-06,SOP_003_MaintenanceRules.txt,14,station,WRH01_WAREHOU SE
+MAINT-06,SOP_003_MaintenanceRules.txt,14,condition,TMP DRIFT >2°C over 2 h
+MAINT-06,SOP_003_MaintenanceRules.txt,14,action,Inspect compressor; notify QC
+MAINT-06,SOP_003_MaintenanceRules.txt,14,priority,CRITICAL
+MAINT-07,SOP_003_MaintenanceRules.txt,15,sensor,TMP
+MAINT-07,SOP_003_MaintenanceRules.txt,15,station,CHM01_CHEMICALS TORAGE
+MAINT-07,SOP_003_MaintenanceRules.txt,15,condition,TMP >20°C for >10 min
+MAINT-07,SOP_003_MaintenanceRules.txt,15,action,Emergency ventilation; notify safety officer
+MAINT-07,SOP_003_MaintenanceRules.txt,15,priority,CRITICAL
+MAINT-08,SOP_003_MaintenanceRules.txt,16,sensor,HUM
+MAINT-08,SOP_003_MaintenanceRules.txt,16,station,RND01_RDLAB
+MAINT-08,SOP_003_MaintenanceRules.txt,16,condition,HUM DRIFT >10%RH over 60 min
+MAINT-08,SOP_003_MaintenanceRules.txt,16,action,Activate dehumidifier; check HVAC drain
+MAINT-08,SOP_003_MaintenanceRules.txt,16,priority,HIGH
+SOP003MAINTE-001,SOP_003_MaintenanceRules.txt,22,pattern,ST02_SEALING-CUR › → ST04_PACKAGING- SPD ↓
+SOP003MAINTE-001,SOP_003_MaintenanceRules.txt,22,primary_fault,Sealing motor overload
+SOP003MAINTE-001,SOP_003_MaintenanceRules.txt,22,secondary_effect,Conveyor speed drop via electrical coupling
+SOP003MAINTE-001,SOP_003_MaintenanceRules.txt,22,resolution,1.Verify ST02-CUR trend. 2.Inspect sealing 3.Reset ST04 speed setpoint.
+SOP003MAINTE-002,SOP_003_MaintenanceRules.txt,23,pattern,SRV01-TMP › → SCADA latency ›
+SOP003MAINTE-002,SOP_003_MaintenanceRules.txt,23,primary_fault,Server Room overheating
+SOP003MAINTE-002,SOP_003_MaintenanceRules.txt,23,secondary_effect,Increased scan time → apparent STUCK readings
+SOP003MAINTE-002,SOP_003_MaintenanceRules.txt,23,resolution,1.Reduce SRV01-TMP <25°C. 2.Verify PLC heartbeats. 3.Clear STUCK alarms.
+SOP003MAINTE-003,SOP_003_MaintenanceRules.txt,24,pattern,WRH01-TMP › → QC HOLD
+SOP003MAINTE-003,SOP_003_MaintenanceRules.txt,24,primary_fault,Cold warehouse drift
+SOP003MAINTE-003,SOP_003_MaintenanceRules.txt,24,secondary_effect,Product quality risk
+SOP003MAINTE-003,SOP_003_MaintenanceRules.txt,24,resolution,1.Restore WRH01-TMP <8°C. 2.Notify QC. 3.Place batch on HOLD in ERP.
+SOP004PERSON-001,SOP_004_PersonnelZoneAccess.txt,9,role,operator
+SOP004PERSON-001,SOP_004_PersonnelZoneAccess.txt,9,zone,Prod. Area
+SOP004PERSON-001,SOP_004_PersonnelZoneAccess.txt,9,authorization,YES
+SOP004PERSON-002,SOP_004_PersonnelZoneAccess.txt,9,role,operator
+SOP004PERSON-002,SOP_004_PersonnelZoneAccess.txt,9,zone,Server Room
+SOP004PERSON-002,SOP_004_PersonnelZoneAccess.txt,9,authorization,NO
+SOP004PERSON-003,SOP_004_PersonnelZoneAccess.txt,9,role,operator
+SOP004PERSON-003,SOP_004_PersonnelZoneAccess.txt,9,zone,Gen. Warehous e
+SOP004PERSON-003,SOP_004_PersonnelZoneAccess.txt,9,authorization,YES
+SOP004PERSON-004,SOP_004_PersonnelZoneAccess.txt,9,role,operator
+SOP004PERSON-004,SOP_004_PersonnelZoneAccess.txt,9,zone,Main Entranc e
+SOP004PERSON-004,SOP_004_PersonnelZoneAccess.txt,9,authorization,YES
+SOP004PERSON-005,SOP_004_PersonnelZoneAccess.txt,9,role,operator
+SOP004PERSON-005,SOP_004_PersonnelZoneAccess.txt,9,zone,Chem. Stora ge
+SOP004PERSON-005,SOP_004_PersonnelZoneAccess.txt,9,authorization,NO
+SOP004PERSON-006,SOP_004_PersonnelZoneAccess.txt,9,role,operator
+SOP004PERSON-006,SOP_004_PersonnelZoneAccess.txt,9,zone,R&D; Lab
+SOP004PERSON-006,SOP_004_PersonnelZoneAccess.txt,9,authorization,NO
+SOP004PERSON-007,SOP_004_PersonnelZoneAccess.txt,9,role,operator
+SOP004PERSON-007,SOP_004_PersonnelZoneAccess.txt,9,zone,Cafeteria
+SOP004PERSON-007,SOP_004_PersonnelZoneAccess.txt,9,authorization,YES
+SOP004PERSON-008,SOP_004_PersonnelZoneAccess.txt,10,role,technician
+SOP004PERSON-008,SOP_004_PersonnelZoneAccess.txt,10,zone,Prod. Area
+SOP004PERSON-008,SOP_004_PersonnelZoneAccess.txt,10,authorization,YES
+SOP004PERSON-009,SOP_004_PersonnelZoneAccess.txt,10,role,technician
+SOP004PERSON-009,SOP_004_PersonnelZoneAccess.txt,10,zone,Server Room
+SOP004PERSON-009,SOP_004_PersonnelZoneAccess.txt,10,authorization,YES
+SOP004PERSON-010,SOP_004_PersonnelZoneAccess.txt,10,role,technician
+SOP004PERSON-010,SOP_004_PersonnelZoneAccess.txt,10,zone,Gen. Warehous e
+SOP004PERSON-010,SOP_004_PersonnelZoneAccess.txt,10,authorization,YES
+SOP004PERSON-011,SOP_004_PersonnelZoneAccess.txt,10,role,technician
+SOP004PERSON-011,SOP_004_PersonnelZoneAccess.txt,10,zone,Main Entranc e
+SOP004PERSON-011,SOP_004_PersonnelZoneAccess.txt,10,authorization,YES
+SOP004PERSON-012,SOP_004_PersonnelZoneAccess.txt,10,role,technician
+SOP004PERSON-012,SOP_004_PersonnelZoneAccess.txt,10,zone,Chem. Stora ge
+SOP004PERSON-012,SOP_004_PersonnelZoneAccess.txt,10,authorization,YES
+SOP004PERSON-013,SOP_004_PersonnelZoneAccess.txt,10,role,technician
+SOP004PERSON-013,SOP_004_PersonnelZoneAccess.txt,10,zone,R&D; Lab
+SOP004PERSON-013,SOP_004_PersonnelZoneAccess.txt,10,authorization,YES
+SOP004PERSON-014,SOP_004_PersonnelZoneAccess.txt,10,role,technician
+SOP004PERSON-014,SOP_004_PersonnelZoneAccess.txt,10,zone,Cafeteria
+SOP004PERSON-014,SOP_004_PersonnelZoneAccess.txt,10,authorization,YES
+SOP004PERSON-015,SOP_004_PersonnelZoneAccess.txt,11,role,supervisor
+SOP004PERSON-015,SOP_004_PersonnelZoneAccess.txt,11,zone,Prod. Area
+SOP004PERSON-015,SOP_004_PersonnelZoneAccess.txt,11,authorization,YES
+SOP004PERSON-016,SOP_004_PersonnelZoneAccess.txt,11,role,supervisor
+SOP004PERSON-016,SOP_004_PersonnelZoneAccess.txt,11,zone,Server Room
+SOP004PERSON-016,SOP_004_PersonnelZoneAccess.txt,11,authorization,YES
+SOP004PERSON-017,SOP_004_PersonnelZoneAccess.txt,11,role,supervisor
+SOP004PERSON-017,SOP_004_PersonnelZoneAccess.txt,11,zone,Gen. Warehous e
+SOP004PERSON-017,SOP_004_PersonnelZoneAccess.txt,11,authorization,YES
+SOP004PERSON-018,SOP_004_PersonnelZoneAccess.txt,11,role,supervisor
+SOP004PERSON-018,SOP_004_PersonnelZoneAccess.txt,11,zone,Main Entranc e
+SOP004PERSON-018,SOP_004_PersonnelZoneAccess.txt,11,authorization,YES
+SOP004PERSON-019,SOP_004_PersonnelZoneAccess.txt,11,role,supervisor
+SOP004PERSON-019,SOP_004_PersonnelZoneAccess.txt,11,zone,Chem. Stora ge
+SOP004PERSON-019,SOP_004_PersonnelZoneAccess.txt,11,authorization,YES
+SOP004PERSON-020,SOP_004_PersonnelZoneAccess.txt,11,role,supervisor
+SOP004PERSON-020,SOP_004_PersonnelZoneAccess.txt,11,zone,R&D; Lab
+SOP004PERSON-020,SOP_004_PersonnelZoneAccess.txt,11,authorization,YES
+SOP004PERSON-021,SOP_004_PersonnelZoneAccess.txt,11,role,supervisor
+SOP004PERSON-021,SOP_004_PersonnelZoneAccess.txt,11,zone,Cafeteria
+SOP004PERSON-021,SOP_004_PersonnelZoneAccess.txt,11,authorization,YES
+SOP004PERSON-022,SOP_004_PersonnelZoneAccess.txt,12,role,manager
+SOP004PERSON-022,SOP_004_PersonnelZoneAccess.txt,12,zone,Prod. Area
+SOP004PERSON-022,SOP_004_PersonnelZoneAccess.txt,12,authorization,YES
+SOP004PERSON-023,SOP_004_PersonnelZoneAccess.txt,12,role,manager
+SOP004PERSON-023,SOP_004_PersonnelZoneAccess.txt,12,zone,Server Room
+SOP004PERSON-023,SOP_004_PersonnelZoneAccess.txt,12,authorization,YES
+SOP004PERSON-024,SOP_004_PersonnelZoneAccess.txt,12,role,manager
+SOP004PERSON-024,SOP_004_PersonnelZoneAccess.txt,12,zone,Gen. Warehous e
+SOP004PERSON-024,SOP_004_PersonnelZoneAccess.txt,12,authorization,YES
+SOP004PERSON-025,SOP_004_PersonnelZoneAccess.txt,12,role,manager
+SOP004PERSON-025,SOP_004_PersonnelZoneAccess.txt,12,zone,Main Entranc e
+SOP004PERSON-025,SOP_004_PersonnelZoneAccess.txt,12,authorization,YES
+SOP004PERSON-026,SOP_004_PersonnelZoneAccess.txt,12,role,manager
+SOP004PERSON-026,SOP_004_PersonnelZoneAccess.txt,12,zone,Chem. Stora ge
+SOP004PERSON-026,SOP_004_PersonnelZoneAccess.txt,12,authorization,YES
+SOP004PERSON-027,SOP_004_PersonnelZoneAccess.txt,12,role,manager
+SOP004PERSON-027,SOP_004_PersonnelZoneAccess.txt,12,zone,R&D; Lab
+SOP004PERSON-027,SOP_004_PersonnelZoneAccess.txt,12,authorization,YES
+SOP004PERSON-028,SOP_004_PersonnelZoneAccess.txt,12,role,manager
+SOP004PERSON-028,SOP_004_PersonnelZoneAccess.txt,12,zone,Cafeteria
+SOP004PERSON-028,SOP_004_PersonnelZoneAccess.txt,12,authorization,YES
+SOP004PERSON-029,SOP_004_PersonnelZoneAccess.txt,13,role,security
+SOP004PERSON-029,SOP_004_PersonnelZoneAccess.txt,13,zone,Prod. Area
+SOP004PERSON-029,SOP_004_PersonnelZoneAccess.txt,13,authorization,YES
+SOP004PERSON-030,SOP_004_PersonnelZoneAccess.txt,13,role,security
+SOP004PERSON-030,SOP_004_PersonnelZoneAccess.txt,13,zone,Server Room
+SOP004PERSON-030,SOP_004_PersonnelZoneAccess.txt,13,authorization,YES
+SOP004PERSON-031,SOP_004_PersonnelZoneAccess.txt,13,role,security
+SOP004PERSON-031,SOP_004_PersonnelZoneAccess.txt,13,zone,Gen. Warehous e
+SOP004PERSON-031,SOP_004_PersonnelZoneAccess.txt,13,authorization,YES
+SOP004PERSON-032,SOP_004_PersonnelZoneAccess.txt,13,role,security
+SOP004PERSON-032,SOP_004_PersonnelZoneAccess.txt,13,zone,Main Entranc e
+SOP004PERSON-032,SOP_004_PersonnelZoneAccess.txt,13,authorization,YES
+SOP004PERSON-033,SOP_004_PersonnelZoneAccess.txt,13,role,security
+SOP004PERSON-033,SOP_004_PersonnelZoneAccess.txt,13,zone,Chem. Stora ge
+SOP004PERSON-033,SOP_004_PersonnelZoneAccess.txt,13,authorization,YES
+SOP004PERSON-034,SOP_004_PersonnelZoneAccess.txt,13,role,security
+SOP004PERSON-034,SOP_004_PersonnelZoneAccess.txt,13,zone,R&D; Lab
+SOP004PERSON-034,SOP_004_PersonnelZoneAccess.txt,13,authorization,YES
+SOP004PERSON-035,SOP_004_PersonnelZoneAccess.txt,13,role,security
+SOP004PERSON-035,SOP_004_PersonnelZoneAccess.txt,13,zone,Cafeteria
+SOP004PERSON-035,SOP_004_PersonnelZoneAccess.txt,13,authorization,YES
+SOP004PERSON-036,SOP_004_PersonnelZoneAccess.txt,14,role,visitor
+SOP004PERSON-036,SOP_004_PersonnelZoneAccess.txt,14,zone,Prod. Area
+SOP004PERSON-036,SOP_004_PersonnelZoneAccess.txt,14,authorization,YES
+SOP004PERSON-037,SOP_004_PersonnelZoneAccess.txt,14,role,visitor
+SOP004PERSON-037,SOP_004_PersonnelZoneAccess.txt,14,zone,Server Room
+SOP004PERSON-037,SOP_004_PersonnelZoneAccess.txt,14,authorization,NO
+SOP004PERSON-038,SOP_004_PersonnelZoneAccess.txt,14,role,visitor
+SOP004PERSON-038,SOP_004_PersonnelZoneAccess.txt,14,zone,Gen. Warehous e
+SOP004PERSON-038,SOP_004_PersonnelZoneAccess.txt,14,authorization,NO
+SOP004PERSON-039,SOP_004_PersonnelZoneAccess.txt,14,role,visitor
+SOP004PERSON-039,SOP_004_PersonnelZoneAccess.txt,14,zone,Main Entranc e
+SOP004PERSON-039,SOP_004_PersonnelZoneAccess.txt,14,authorization,YES
+SOP004PERSON-040,SOP_004_PersonnelZoneAccess.txt,14,role,visitor
+SOP004PERSON-040,SOP_004_PersonnelZoneAccess.txt,14,zone,Chem. Stora ge
+SOP004PERSON-040,SOP_004_PersonnelZoneAccess.txt,14,authorization,NO
+SOP004PERSON-041,SOP_004_PersonnelZoneAccess.txt,14,role,visitor
+SOP004PERSON-041,SOP_004_PersonnelZoneAccess.txt,14,zone,R&D; Lab
+SOP004PERSON-041,SOP_004_PersonnelZoneAccess.txt,14,authorization,NO
+SOP004PERSON-042,SOP_004_PersonnelZoneAccess.txt,14,role,visitor
+SOP004PERSON-042,SOP_004_PersonnelZoneAccess.txt,14,zone,Cafeteria
+SOP004PERSON-042,SOP_004_PersonnelZoneAccess.txt,14,authorization,YES
+SOP004PERSON-043,SOP_004_PersonnelZoneAccess.txt,20,zone,Production Area
+SOP004PERSON-043,SOP_004_PersonnelZoneAccess.txt,20,max_persons,12
+SOP004PERSON-043,SOP_004_PersonnelZoneAccess.txt,20,enforcement,WARNING above 10; CRITICAL above 12
+SOP004PERSON-044,SOP_004_PersonnelZoneAccess.txt,21,zone,Server Room
+SOP004PERSON-044,SOP_004_PersonnelZoneAccess.txt,21,max_persons,2
+SOP004PERSON-044,SOP_004_PersonnelZoneAccess.txt,21,enforcement,CRITICAL above 2; access badge required
+SOP004PERSON-045,SOP_004_PersonnelZoneAccess.txt,22,zone,General Warehouse
+SOP004PERSON-045,SOP_004_PersonnelZoneAccess.txt,22,max_persons,4
+SOP004PERSON-045,SOP_004_PersonnelZoneAccess.txt,22,enforcement,WARNING above 3
+SOP004PERSON-046,SOP_004_PersonnelZoneAccess.txt,23,zone,Main Entrance
+SOP004PERSON-046,SOP_004_PersonnelZoneAccess.txt,23,max_persons,8
+SOP004PERSON-046,SOP_004_PersonnelZoneAccess.txt,23,enforcement,Monitoring only
+SOP004PERSON-047,SOP_004_PersonnelZoneAccess.txt,24,zone,Chemical Storage
+SOP004PERSON-047,SOP_004_PersonnelZoneAccess.txt,24,max_persons,4
+SOP004PERSON-047,SOP_004_PersonnelZoneAccess.txt,24,enforcement,CRITICAL above 4; hazmat training required - see RULE-CHM01-03
+SOP004PERSON-048,SOP_004_PersonnelZoneAccess.txt,25,zone,R&D; Lab
+SOP004PERSON-048,SOP_004_PersonnelZoneAccess.txt,25,max_persons,6
+SOP004PERSON-048,SOP_004_PersonnelZoneAccess.txt,25,enforcement,WARNING above 5; precision experiments may be disturbed
+SOP004PERSON-049,SOP_004_PersonnelZoneAccess.txt,26,zone,Cafeteria
+SOP004PERSON-049,SOP_004_PersonnelZoneAccess.txt,26,max_persons,20
+SOP004PERSON-049,SOP_004_PersonnelZoneAccess.txt,26,enforcement,Monitoring only - occupant comfort
+SOP004PERSON-050,SOP_004_PersonnelZoneAccess.txt,32,role,operator
+SOP004PERSON-050,SOP_004_PersonnelZoneAccess.txt,32,max_ack_warning_min,15
+SOP004PERSON-050,SOP_004_PersonnelZoneAccess.txt,32,max_ack_critical_min,3
+SOP004PERSON-051,SOP_004_PersonnelZoneAccess.txt,33,role,technician
+SOP004PERSON-051,SOP_004_PersonnelZoneAccess.txt,33,max_ack_warning_min,10
+SOP004PERSON-051,SOP_004_PersonnelZoneAccess.txt,33,max_ack_critical_min,2
+SOP004PERSON-052,SOP_004_PersonnelZoneAccess.txt,34,role,supervisor
+SOP004PERSON-052,SOP_004_PersonnelZoneAccess.txt,34,max_ack_warning_min,5
+SOP004PERSON-052,SOP_004_PersonnelZoneAccess.txt,34,max_ack_critical_min,1
+SOP004PERSON-053,SOP_004_PersonnelZoneAccess.txt,35,role,manager
+SOP004PERSON-053,SOP_004_PersonnelZoneAccess.txt,35,max_ack_warning_min,15
+SOP004PERSON-053,SOP_004_PersonnelZoneAccess.txt,35,max_ack_critical_min,5
+SOP004PERSON-054,SOP_004_PersonnelZoneAccess.txt,36,role,security
+SOP004PERSON-054,SOP_004_PersonnelZoneAccess.txt,36,max_ack_warning_min,20
+SOP004PERSON-054,SOP_004_PersonnelZoneAccess.txt,36,max_ack_critical_min,5
+RULE-ACCESS-01,SOP_004_PersonnelZoneAccess.txt,40,requirement,"Any entry by an unauthorised role MUST be logged as OccupancyEvent::UnauthorisedAccess with person_id, zone, and timestamp."
+RULE-ACCESS-02,SOP_004_PersonnelZoneAccess.txt,42,requirement,Security personnel MUST be notified within 2 minutes of detection.
+RULE-ACCESS-03,SOP_004_PersonnelZoneAccess.txt,44,requirement,The KG node MUST include authorized=NO and a reference to this rule.
+RULE-ACCESS-04,SOP_004_PersonnelZoneAccess.txt,46,requirement,Chemical Storage has zero-tolerance policy. Any UNAUTHORIZED_ACCESS triggers immediate escalation to the Safety Officer regardless of role.

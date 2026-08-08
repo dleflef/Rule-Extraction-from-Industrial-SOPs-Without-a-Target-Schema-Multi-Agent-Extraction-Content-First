@@ -1,0 +1,93 @@
+record_id,source_file,lines,field,value
+2.1,SOP_SA_ESD_005.txt,23,responsibilities,The CRO shall immediately execute the actions listed for each trip scenario.
+2.2,SOP_SA_ESD_005.txt,24,responsibilities,The Field Operator shall confirm valve positions physically within 10 minutes of a trip.
+SOPSAESD005-001,SOP_SA_ESD_005.txt,31,automatic_trip_scenarios,High converter bed temperature
+SOPSAESD005-001,SOP_SA_ESD_005.txt,31,trip_cause,High converter bed temperature
+SOPSAESD005-001,SOP_SA_ESD_005.txt,31,detection_setpoint,TI-202 ≥ 620°C (2oo3 voting)
+SOPSAESD005-001,SOP_SA_ESD_005.txt,31,automatic_action,Open converter bypass damper DV-201; start emergency quench air injection
+SOPSAESD005-001,SOP_SA_ESD_005.txt,31,operator_response_required,Confirm DV-201 open and quench air flowing; reduce sulfur feed to zero if not already tripped
+SOPSAESD005-001,SOP_SA_ESD_005.txt,31,max_response_time,1 minute
+SOPSAESD005-002,SOP_SA_ESD_005.txt,32,automatic_trip_scenarios,Low acid circulation flow
+SOPSAESD005-002,SOP_SA_ESD_005.txt,32,trip_cause,Low acid circulation flow
+SOPSAESD005-002,SOP_SA_ESD_005.txt,32,detection_setpoint,FI-401 ≤ 500 m³/h
+SOPSAESD005-002,SOP_SA_ESD_005.txt,32,automatic_action,Stop acid pump P-107; close acid valve XV-301
+SOPSAESD005-002,SOP_SA_ESD_005.txt,32,operator_response_required,Verify pump stopped and valve closed; check pump mechanical seal
+SOPSAESD005-002,SOP_SA_ESD_005.txt,32,max_response_time,2 minutes
+SOPSAESD005-003,SOP_SA_ESD_005.txt,33,automatic_trip_scenarios,High SO₂ concentration in stack
+SOPSAESD005-003,SOP_SA_ESD_005.txt,33,trip_cause,High SO₂ concentration in stack
+SOPSAESD005-003,SOP_SA_ESD_005.txt,33,detection_setpoint,AI-301 ≥ 50 ppm SO₂
+SOPSAESD005-003,SOP_SA_ESD_005.txt,33,automatic_action,Initiate stack emergency scrubber; trip sulfur feed
+SOPSAESD005-003,SOP_SA_ESD_005.txt,33,operator_response_required,Evacuate downwind area; sound site alarm; notify Environmental Manager
+SOPSAESD005-003,SOP_SA_ESD_005.txt,33,max_response_time,1 minute
+SOPSAESD005-004,SOP_SA_ESD_005.txt,34,automatic_trip_scenarios,Loss of instrument air
+SOPSAESD005-004,SOP_SA_ESD_005.txt,34,trip_cause,Loss of instrument air
+SOPSAESD005-004,SOP_SA_ESD_005.txt,34,detection_setpoint,Pressure switch PS-501 ≤ 4.0 bar
+SOPSAESD005-004,SOP_SA_ESD_005.txt,34,automatic_action,All control valves fail to safe position per P&ID
+SOPSAESD005-004,SOP_SA_ESD_005.txt,34,operator_response_required,Verify valve positions; shut down plant manually if needed
+SOPSAESD005-004,SOP_SA_ESD_005.txt,34,max_response_time,5 minutes
+SOPSAESD005-005,SOP_SA_ESD_005.txt,36,automatic_trip_scenarios,All trip events shall be logged in the Trip Log (LOG-ESD-001) within 15 minutes of occurrence.
+4.1,SOP_SA_ESD_005.txt,40,manual_emergency_shutdown_procedure,Reduce sulfur feed to zero at a rate not exceeding 100 kg/h per minute.
+4.2,SOP_SA_ESD_005.txt,41,manual_emergency_shutdown_procedure,Stop combustion air blower after burner temperature drops below 300°C.
+4.3,SOP_SA_ESD_005.txt,42,manual_emergency_shutdown_procedure,Continue acid circulation for at least 30 minutes to cool the converter.
+4.4,SOP_SA_ESD_005.txt,43,manual_emergency_shutdown_procedure,Close all acid transfer valves to storage.
+5.1,SOP_SA_ESD_005.txt,46,sulfuric_acid_spill_control,"If a spill is detected, the Field Operator shall immediately isolate the source and activate the containment sump pump."
+SOPSAMNT008-001,SOP_SA_MNT_008.txt,23,requirement,the equipment must be isolated from all hazardous energy sources and locked out in accordance with Apex LOTO Standard STD-SAF-012
+SOPSAMNT008-002,SOP_SA_MNT_008.txt,24,responsible_party,Maintenance Supervisor
+SOPSAMNT008-002,SOP_SA_MNT_008.txt,24,action,verify zero energy state and issue a safety work permit before work commences
+SOPSAMNT008-003,SOP_SA_MNT_008.txt,31,equipment,Sulfur melter agitator M-101
+SOPSAMNT008-003,SOP_SA_MNT_008.txt,31,maintenance_requirement,"Inspect and grease bearings and check seal integrity every 2,000 operating hours; performed by Maintenance Technician."
+SOPSAMNT008-004,SOP_SA_MNT_008.txt,32,equipment,Combustion air blower B-103
+SOPSAMNT008-004,SOP_SA_MNT_008.txt,32,maintenance_requirement,"Perform vibration analysis and bearing temperature check, replace oil every 4,000 operating hours; performed by Condition Monitoring Technician."
+SOPSAMNT008-005,SOP_SA_MNT_008.txt,33,equipment,Acid circulation pump P-107A
+SOPSAMNT008-005,SOP_SA_MNT_008.txt,33,maintenance_requirement,"Overhaul (replace mechanical seal, impeller wear rings) every 8,000 operating hours or 12 months, whichever first; performed by Maintenance Fitter."
+SOPSAMNT008-006,SOP_SA_MNT_008.txt,34,equipment,Converter R-104
+SOPSAMNT008-006,SOP_SA_MNT_008.txt,34,maintenance_requirement,Internal inspection and catalyst sampling every 4 years; performed by Inspection Engineer.
+SOPSAMNT008-007,SOP_SA_MNT_008.txt,35,equipment,Absorption tower T-106
+SOPSAMNT008-007,SOP_SA_MNT_008.txt,35,maintenance_requirement,"Check packing and acid distributor, clean every 2 years; performed by Process Engineer."
+SOPSAMNT008-008,SOP_SA_MNT_008.txt,42,instrument,SO₂ analyzer AI-201
+SOPSAMNT008-008,SOP_SA_MNT_008.txt,42,calibration_requirement,Calibrate every 7 days using span gas at 10.0% SO₂; performed by Instrument Technician.
+SOPSAMNT008-009,SOP_SA_MNT_008.txt,43,instrument,Temperature transmitters TI-201 through TI-206
+SOPSAMNT008-009,SOP_SA_MNT_008.txt,43,calibration_requirement,Calibrate every 3 months by 3-point check vs certified RTD; performed by Instrument Technician.
+SOPSAMNT008-010,SOP_SA_MNT_008.txt,44,instrument,Differential pressure transmitters ΔP-201 to ΔP-204
+SOPSAMNT008-010,SOP_SA_MNT_008.txt,44,calibration_requirement,Calibrate every 6 months using deadweight tester; performed by Instrument Technician.
+SOPSAMNT008-011,SOP_SA_MNT_008.txt,45,instrument,Flowmeter FI-401
+SOPSAMNT008-011,SOP_SA_MNT_008.txt,45,calibration_requirement,Verify calibration every 6 months by clamp-on ultrasonic method; performed by Instrument Technician.
+SOPSAMNT008-012,SOP_SA_MNT_008.txt,48,condition,All hot work within 15 m of the sulfur melter
+SOPSAMNT008-012,SOP_SA_MNT_008.txt,48,requirement,requires a hot work permit and continuous gas monitoring for SO₂ and H₂S
+5.2,SOP_SA_MNT_008.txt,49,condition,Confined space entry into the converter vessel or absorption tower
+5.2,SOP_SA_MNT_008.txt,49,requirement,"requires a confined space permit, atmospheric testing, and a standby person"
+SOPSAOP002-001,SOP_SA_OP_002.txt,24,control_room_operator,"responsible for monitoring all process parameters, initiating control actions, and logging data"
+SOPSAOP002-002,SOP_SA_OP_002.txt,25,field_operator,"responsible for physical rounds, sampling, and verification of local gauge readings"
+2.3,SOP_SA_OP_002.txt,26,shift_supervisor,has authority to approve deviations from normal operating targets and to authorise interlock bypasses
+3.1,SOP_SA_OP_002.txt,30,pre_startup_checks,All safety interlocks tested and enabled with no active trips
+3.2,SOP_SA_OP_002.txt,31,pre_startup_checks,Sulfur melter S-101 temperature ≥ 135°C
+3.3,SOP_SA_OP_002.txt,32,pre_startup_checks,Acid circulation pump P-107A available and seal flush water flowing
+SOPSAOP002-003,SOP_SA_OP_002.txt,35,startup_sequence,Start acid circulation pump P-107A and establish a flow rate of at least 600 m³/h through the absorption tower
+SOPSAOP002-004,SOP_SA_OP_002.txt,36,startup_sequence,"Initiate combustion air blower B-103 and adjust air flow to 12,000 Nm³/h"
+SOPSAOP002-005,SOP_SA_OP_002.txt,37,startup_sequence,Light sulfur burner F-102 and increase sulfur feed at a rate not exceeding 50 kg/h per minute until reaching 2000 kg/h
+SOPSAOP002-006,SOP_SA_OP_002.txt,38,startup_sequence,"When converter Bed 1 inlet temperature exceeds 400°C, slowly raise sulfur feed to normal range while adjusting air flow to maintain SO2 concentration at 10.0–10.5% vol"
+SOPSAOP002-007,SOP_SA_OP_002.txt,45,tag_parameter,FIC-101 Sulfur feed flow
+SOPSAOP002-007,SOP_SA_OP_002.txt,45,normal_operating_range,Maintain 3800–4200 kg/h
+SOPSAOP002-007,SOP_SA_OP_002.txt,45,low_alarm_setpoint,Low alarm at 3500 kg/h
+SOPSAOP002-007,SOP_SA_OP_002.txt,45,high_alarm_setpoint,High alarm at 4500 kg/h
+SOPSAOP002-007,SOP_SA_OP_002.txt,45,high_high_trip_interlock_action,Trip at 4700 kg/h: close sulfur feed valve XV-101 and initiate automatic water wash of burner
+SOPSAOP002-008,SOP_SA_OP_002.txt,46,tag_parameter,TI-202 Bed 1 outlet temperature
+SOPSAOP002-008,SOP_SA_OP_002.txt,46,normal_operating_range,Maintain 580–610°C
+SOPSAOP002-008,SOP_SA_OP_002.txt,46,low_alarm_setpoint,Low alarm at 550°C
+SOPSAOP002-008,SOP_SA_OP_002.txt,46,high_alarm_setpoint,High alarm at 615°C
+SOPSAOP002-008,SOP_SA_OP_002.txt,46,high_high_trip_interlock_action,Trip at 620°C: open converter bypass damper DV-201 and initiate emergency cooling
+SOPSAOP002-009,SOP_SA_OP_002.txt,47,tag_parameter,CI-301 Absorption acid concentration
+SOPSAOP002-009,SOP_SA_OP_002.txt,47,normal_operating_range,Maintain 98.3–98.7% H₂SO₄
+SOPSAOP002-009,SOP_SA_OP_002.txt,47,low_alarm_setpoint,Low alarm at 98.0%
+SOPSAOP002-009,SOP_SA_OP_002.txt,47,high_alarm_setpoint,High alarm at 99.0%
+SOPSAOP002-009,SOP_SA_OP_002.txt,47,high_high_trip_interlock_action,Trip at 97.5% or 99.2%: close acid product valve and divert to spill tank
+SOPSAOP002-010,SOP_SA_OP_002.txt,49,interlock_bypass,requires written authorisation from the Shift Supervisor and must be recorded in the bypass log
+6.1,SOP_SA_OP_002.txt,52,burner_management_system,logic performs a pre-purge of the combustion chamber for 60 seconds before allowing ignition
+6.2,SOP_SA_OP_002.txt,53,safety_interlocks,shall be tested every 6 months
+6.3,SOP_SA_OP_002.txt,54,fail_safe_valves,"In the event of a loss of instrument air, the fail-safe valves shall move to their safe positions as specified in P&ID 02-01"
+7.1,SOP_SA_OP_002.txt,57,outgoing_cro,"shall complete the Shift Handover Log (form OP-LOG-001) and verbally brief the incoming CRO on current operating status, alarms, and maintenance activities"
+7.2,SOP_SA_OP_002.txt,58,process_log,"shall be updated every 30 minutes with: SO2 feed rate, Bed 1 outlet temperature, acid concentration, and any alarm occurrences"
+8.1,SOP_SA_OP_002.txt,61,field_operator,shall measure absorption acid concentration every 2 hours using the hydrometer and record the value in the log
+8.2,SOP_SA_OP_002.txt,62,online_so2_analyzer_ai_201,shall be calibrated every 7 days by the Instrument Technician using certified 10.0% SO₂ span gas
+9.1,SOP_SA_OP_002.txt,65,differential_pressure_across_bed_1_dp_201,"shall be recorded once per shift. If ΔP exceeds 150 mbar, the Shift Supervisor shall be notified"
+9.2,SOP_SA_OP_002.txt,66,bed_1_catalyst,"shall be replaced after 30,000 cumulative operating hours or if ΔP persists above 150 mbar after screening"

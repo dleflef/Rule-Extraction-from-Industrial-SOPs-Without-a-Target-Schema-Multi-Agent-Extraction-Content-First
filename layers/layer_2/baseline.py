@@ -1,8 +1,20 @@
 #!/usr/bin/env python3
 """
-baseline_b0.py  –  Deterministic regex parser using SOP text + embedded 24-node knowledge.
-Only stations and sensors from the provided list are ever referenced.
-No roles, no external CSV.  No hardcoded naming conventions.
+baseline_b0.py  –  Deterministic regex parser over the development SOP text,
+using the seed knowledge graph's entity inventory.
+
+The parser is hand-written for these four documents: its expressions encode
+their layouts, and it references only the stations, sensors and zones the seed
+graph declares. That is per-corpus configuration by construction, and the point
+of the baseline is to measure what such configuration buys and costs, not to be
+transferable.
+
+The entity inventory is READ FROM nodes_factory.csv rather than copied into this
+file. The two must not be allowed to drift: a parser holding its own private
+copy of the ABox can silently disagree with the graph the rest of the project is
+built on, and its perfect precision would then be a property of a stale literal
+rather than of the declared knowledge. load_abox() below derives the station,
+sensor and zone inventory from that file and fails loudly if it is missing.
 """
 
 import csv, os, re, sys
@@ -11,6 +23,7 @@ SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
 LAYERS_DIR  = os.path.join(SCRIPT_DIR, "..")
 PROJECT_DIR = os.path.normpath(os.path.join(LAYERS_DIR, ".."))
 TEXTS_DIR   = os.path.join(PROJECT_DIR, "layers", "layer_1", "texts")
+ABOX_FILE   = os.path.join(PROJECT_DIR, "data", "dataset", "kg_seed", "nodes_factory.csv")
 RESULTS_DIR = os.path.join(SCRIPT_DIR, "baseline_results")
 OUTPUT_FILE = os.path.join(RESULTS_DIR, "baseline_b0.csv")
 os.makedirs(RESULTS_DIR, exist_ok=True)
@@ -23,39 +36,54 @@ RULE_FIELDS = [
     "text_truncated", "llm_turns",
 ]
 
-# ── Embedded knowledge from the 24 provided nodes ────────────────────────────
-STATION_SENSORS = {
-    "ST01_FILLING": {
-        "TMP": "ST01_FILLING_TMP",
-        "PRS": "ST01_FILLING_PRS",
-        "FLW": "ST01_FILLING_FLW",
-    },
-    "ST02_SEALING": {
-        "TMP": "ST02_SEALING_TMP",
-        "PRS": "ST02_SEALING_PRS",
-        "CUR": "ST02_SEALING_CUR",
-    },
-    "ST03_LABELLING": {
-        "TMP": "ST03_LABELLING_TMP",
-        "SPD": "ST03_LABELLING_SPD",
-        "POS": "ST03_LABELLING_POS",
-    },
-    "ST04_PACKAGING": {
-        "TMP": "ST04_PACKAGING_TMP",
-        "SPD": "ST04_PACKAGING_SPD",
-        "CNT": "ST04_PACKAGING_CNT",
-    },
-}
+# ── Entity inventory, loaded from the seed knowledge graph ───────────────────
+def load_abox(path: str = ABOX_FILE) -> tuple[dict[str, dict[str, str]], list[str]]:
+    """Read the station/sensor inventory and the zone list from nodes_factory.csv.
 
-ZONES = [
-    "Production Area",
-    "Server Room",
-    "General Warehouse",
-    "Main Entrance",
-    "Chemical Storage",
-    "R&D Lab",
-    "Cafeteria",
-]
+    A sensor's station is taken from its own name: the seed graph names sensors
+    <STATION>_<TYPE>, and the station component it belongs to is declared in the
+    same file, so the split is verified against the declared components rather
+    than assumed from the string. A sensor whose prefix matches no declared
+    component is reported rather than silently attached to an invented station.
+
+    Row order is preserved so the output is byte-stable across runs.
+    """
+    if not os.path.exists(path):
+        sys.exit(f"ERROR: seed knowledge graph not found: {path}\n"
+                 f"This baseline references only entities the graph declares; "
+                 f"without it there is no inventory to parse against.")
+
+    components: list[str] = []
+    sensors: list[str] = []
+    zones: list[str] = []
+    with open(path, encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            label = (row.get("label") or "").strip().lower()
+            name = (row.get("name") or "").strip()
+            if not name:
+                continue
+            if label == "component":
+                components.append(name)
+            elif label == "sensor":
+                sensors.append(name)
+            elif label == "zone":
+                zones.append(name)
+
+    station_sensors: dict[str, dict[str, str]] = {c: {} for c in components}
+    orphans: list[str] = []
+    for tag in sensors:
+        station = next((c for c in components if tag.startswith(c + "_")), "")
+        if not station:
+            orphans.append(tag)
+            continue
+        station_sensors[station][tag[len(station) + 1:]] = tag
+    if orphans:
+        print(f"WARNING: {len(orphans)} sensor(s) name no declared component and "
+              f"are skipped: {', '.join(orphans)}")
+    return station_sensors, zones
+
+
+STATION_SENSORS, ZONES = load_abox()
 
 # ── Multi-severity a/b splits for rules with WARNING + CRITICAL tiers ────────
 _AB_SPLITS: dict[str, list[dict]] = {

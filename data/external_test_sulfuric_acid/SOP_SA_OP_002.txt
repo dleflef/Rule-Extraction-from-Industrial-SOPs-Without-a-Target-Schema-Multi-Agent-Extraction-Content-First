@@ -1,0 +1,66 @@
+================================================================================
+Apex Chemical Company
+Sulfuric Acid Plant 2 (SAP2)
+STANDARD OPERATING PROCEDURE
+SOP-ACID-OP-002
+NORMAL OPERATION AND CONTROL
+================================================================================
+Document Number: SOP-ACID-OP-002
+Revision: 3
+Effective Date: 15-NOV-2025
+Page: 1 of 5
+================================================================================
+
+REVISION HISTORY
+Rev 0 – 01-FEB-2020: Initial issue.
+Rev 1 – 10-JUN-2022: Updated Bed 1 outlet temperature trip limit from 630°C to 620°C per HAZOP 21-03.
+Rev 2 – 05-SEP-2023: Added automatic water wash after sulfur feed trip.
+Rev 3 – 15-NOV-2025: Revised shift handover logging interval, added SO2 analyzer calibration.
+
+## 1. Purpose and Scope
+This SOP defines the normal startup, operation, and shutdown procedures for the 500 MTPD sulfuric acid plant SAP2 using the contact process. Compliance with this procedure is mandatory for all personnel involved in operation of SAP2.
+
+## 2. Responsibilities
+2.1 The Control Room Operator (CRO) is responsible for monitoring all process parameters, initiating control actions, and logging data.
+2.2 The Field Operator is responsible for physical rounds, sampling, and verification of local gauge readings.
+2.3 The Shift Supervisor has authority to approve deviations from normal operating targets and to authorise interlock bypasses.
+
+## 3. Pre-Startup Checks
+Before initiating startup, the Field Operator shall verify the following conditions. Any condition not met must be reported to the Shift Supervisor.
+3.1 All safety interlocks tested and enabled with no active trips.
+3.2 Sulfur melter S-101 temperature ≥ 135°C.
+3.3 Acid circulation pump P-107A available and seal flush water flowing.
+
+## 4. Startup Sequence
+4.1 Start acid circulation pump P-107A and establish a flow rate of at least 600 m³/h through the absorption tower.
+4.2 Initiate combustion air blower B-103 and adjust air flow to 12,000 Nm³/h.
+4.3 Light sulfur burner F-102 and increase sulfur feed at a rate not exceeding 50 kg/h per minute until reaching 2000 kg/h.
+4.4 When converter Bed 1 inlet temperature exceeds 400°C, slowly raise sulfur feed to normal range while adjusting air flow to maintain SO2 concentration at 10.0–10.5% vol.
+
+## 5. Normal Operating Parameters
+Table 1 lists key parameters and their limits.
+
+| Tag / Parameter | Normal Operating Range | Low Alarm Setpoint | High Alarm Setpoint | High-High Trip & Interlock Action |
+|-----------------|------------------------|---------------------|---------------------|-----------------------------------|
+| FIC-101 Sulfur feed flow | Maintain 3800–4200 kg/h | Low alarm at 3500 kg/h | High alarm at 4500 kg/h | Trip at 4700 kg/h: close sulfur feed valve XV-101 and initiate automatic water wash of burner. |
+| TI-202 Bed 1 outlet temperature | Maintain 580–610°C | Low alarm at 550°C | High alarm at 615°C | Trip at 620°C: open converter bypass damper DV-201 and initiate emergency cooling. |
+| CI-301 Absorption acid concentration | Maintain 98.3–98.7% H₂SO₄ | Low alarm at 98.0% | High alarm at 99.0% | Trip at 97.5% or 99.2%: close acid product valve and divert to spill tank. |
+
+5.1 Interlock bypass for any trip function requires written authorisation from the Shift Supervisor and must be recorded in the bypass log.
+
+## 6. Automatic Control and Interlocks
+6.1 The Burner Management System (BMS) logic performs a pre-purge of the combustion chamber for 60 seconds before allowing ignition.
+6.2 All safety interlocks shall be tested every 6 months.
+6.3 In the event of a loss of instrument air, the fail-safe valves shall move to their safe positions as specified in P&ID 02-01.
+
+## 7. Shift Handover and Logging
+7.1 The outgoing CRO shall complete the Shift Handover Log (form OP-LOG-001) and verbally brief the incoming CRO on current operating status, alarms, and maintenance activities.
+7.2 The process log shall be updated every 30 minutes with: SO2 feed rate, Bed 1 outlet temperature, acid concentration, and any alarm occurrences.
+
+## 8. Routine Sampling and Testing
+8.1 The Field Operator shall measure absorption acid concentration every 2 hours using the hydrometer and record the value in the log.
+8.2 The online SO2 analyzer AI-201 shall be calibrated every 7 days by the Instrument Technician using certified 10.0% SO₂ span gas.
+
+## 9. Catalyst Management
+9.1 The differential pressure across Bed 1 (ΔP-201) shall be recorded once per shift. If ΔP exceeds 150 mbar, the Shift Supervisor shall be notified.
+9.2 Bed 1 catalyst shall be replaced after 30,000 cumulative operating hours or if ΔP persists above 150 mbar after screening.

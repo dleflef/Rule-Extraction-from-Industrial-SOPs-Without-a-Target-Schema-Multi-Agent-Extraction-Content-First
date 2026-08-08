@@ -2,27 +2,27 @@
 
 28 april 2026
 
-step2_grid_search_extraction.py
-================================
+step2_grid_search_extraction_en.py
+==================================
 Grid search for LLM-based rule extraction from industrial SOP documents.
 
-Runs every combination of (model, paradigm) on the 4 SOP text files,
+Runs every combination of (model, paradigm) over the documents in --texts-dir,
 saves one CSV of extracted rules per run, and appends a metadata row
 to grid_search_metadata.csv.
 
 Usage
 -----
-    python3 step2_grid_search_extraction.py
-    python3 step2_grid_search_extraction.py --models gemma-3-4b-it
-    python3 step2_grid_search_extraction.py --paradigms naive few_shot_static
-    python3 step2_grid_search_extraction.py --force    # re-run all, ignore registry
-    python3 step2_grid_search_extraction.py --abox data/seed_rules/dataset/kg_seeds/nodes_factory.csv
+    python3 step2_grid_search_extraction_en.py
+    python3 step2_grid_search_extraction_en.py --models gemma4:31b
+    python3 step2_grid_search_extraction_en.py --paradigms naive few_shot_static
+    python3 step2_grid_search_extraction_en.py --no-force  # resume: skip completed runs
+    python3 step2_grid_search_extraction_en.py --abox data/dataset/kg_seed/nodes_factory.csv
 
 Output
 ------
-    results/ext_<model>_<paradigm>_run1.csv   -- extracted rules
-    grid_search_metadata.csv                  -- one row per completed run
-    experiment_registry.json                  -- resume checkpoint
+    step2_results/ext_<run_id>_<ts>.csv    -- extracted rules, one file per run
+    ../state/grid_search_metadata.csv      -- one row per completed run
+    ../state/experiment_registry.json      -- resume checkpoint (used with --no-force)
 
 Backend
     All models are served by Ollama Cloud through its OpenAI-compatible API,
@@ -149,7 +149,10 @@ N_RUNS = 5
 SEED   = 42  # default RNG seed passed to the API as the top-level "seed" param
 # Three seeds used in evaluation for seed-independence verification: 42, 123, 7
 # Run with: python3 step2_grid_search_extraction_en.py --seeds 42 123 7
-# With T=0.0 + fixed seed, outputs are bitwise identical within a seed across runs.
+# The seed is recorded in every run_id so passes are attributable to their seed.
+# It does NOT make runs bitwise reproducible -- the endpoint is non-deterministic
+# even at temperature=0 with a fixed seed (measured; see the N_RUNS note above).
+# --seeds therefore provides seed-independence evidence, not replay.
 
 SOP_TEXT_LIMIT = 8000  # max characters passed to the model per SOP document
 
@@ -1009,8 +1012,8 @@ def _vote_score_based(all_runs: list[list[dict]]) -> list[dict]:
                 vals = [str(r.get(num_field, "") or "").strip() for r in rules]
                 non_empty = [v for v in vals if v]
                 if non_empty:
-                    majority_val, n = Counter(non_empty).most_common(1)[0]
-                    if n >= MAJORITY_THRESH:
+                    majority_val, n_votes = Counter(non_empty).most_common(1)[0]
+                    if n_votes >= MAJORITY_THRESH:
                         best[num_field] = majority_val
 
         result.append(best)
@@ -1396,14 +1399,14 @@ def run_single_experiment(
     abox_sensors: set[str],
     run_id: str,
     texts_dir: str = TEXTS_DIR,
-) -> tuple[list[dict], int, float, LLMUsage]:
+) -> tuple[list[dict], int, float, LLMUsage, int]:
     """
     Execute one (model, paradigm) combination across all SOP documents.
 
     For each document: read and truncate the text, call the paradigm
     function, annotate extracted rules with metadata, save a checkpoint.
 
-    Returns: (rules, error_count, duration_seconds, token_usage)
+    Returns: (rules, error_count, duration_seconds, token_usage, truncated_calls)
     """
     all_rules: list[dict] = []
     errors = 0

@@ -1,0 +1,46 @@
+================================================================================
+Apex Chemical Company
+Sulfuric Acid Plant 2 (SAP2)
+STANDARD OPERATING PROCEDURE
+SOP-ACID-ESD-005
+EMERGENCY SHUTDOWN AND SPILL CONTROL
+================================================================================
+Document Number: SOP-ACID-ESD-005
+Revision: 2
+Effective Date: 10-AUG-2024
+Page: 1 of 4
+================================================================================
+
+REVISION HISTORY
+Rev 0 – 12-MAR-2020: Initial issue.
+Rev 1 – 20-JUL-2022: Added response time requirements.
+Rev 2 – 10-AUG-2024: Updated spill containment capacities and neutralization procedure.
+
+## 1. Purpose
+This procedure defines the response to automatic trips and manual emergency shutdowns of SAP2, and the control of sulfuric acid spills.
+
+## 2. Responsibilities
+2.1 The CRO shall immediately execute the actions listed for each trip scenario.
+2.2 The Field Operator shall confirm valve positions physically within 10 minutes of a trip.
+
+## 3. Automatic Trip Scenarios
+Table 2 lists trip causes, detection, automatic actions, and required operator response.
+
+| Trip Cause | Detection & Setpoint | Automatic Action | Operator Response Required | Max Response Time |
+|------------|----------------------|------------------|----------------------------|-------------------|
+| High converter bed temperature | TI-202 ≥ 620°C (2oo3 voting) | Open converter bypass damper DV-201; start emergency quench air injection | Confirm DV-201 open and quench air flowing; reduce sulfur feed to zero if not already tripped | 1 minute |
+| Low acid circulation flow | FI-401 ≤ 500 m³/h | Stop acid pump P-107; close acid valve XV-301 | Verify pump stopped and valve closed; check pump mechanical seal | 2 minutes |
+| High SO₂ concentration in stack | AI-301 ≥ 50 ppm SO₂ | Initiate stack emergency scrubber; trip sulfur feed | Evacuate downwind area; sound site alarm; notify Environmental Manager | 1 minute |
+| Loss of instrument air | Pressure switch PS-501 ≤ 4.0 bar | All control valves fail to safe position per P&ID | Verify valve positions; shut down plant manually if needed | 5 minutes |
+
+All trip events shall be logged in the Trip Log (LOG-ESD-001) within 15 minutes of occurrence.
+
+## 4. Manual Emergency Shutdown Procedure
+When the Shift Supervisor orders a manual shutdown, the CRO shall:
+4.1 Reduce sulfur feed to zero at a rate not exceeding 100 kg/h per minute.
+4.2 Stop combustion air blower after burner temperature drops below 300°C.
+4.3 Continue acid circulation for at least 30 minutes to cool the converter.
+4.4 Close all acid transfer valves to storage.
+
+## 5. Sulfuric Acid Spill Control
+5.1 If a spill is detected, the Field Operator shall immediately isolate the source and activate the containment sump pump.

@@ -1,0 +1,49 @@
+================================================================================
+Apex Chemical Company
+Sulfuric Acid Plant 2 (SAP2)
+STANDARD OPERATING PROCEDURE
+SOP-ACID-MNT-008
+MAINTENANCE AND LOCKOUT/TAGOUT
+================================================================================
+Document Number: SOP-ACID-MNT-008
+Revision: 2
+Effective Date: 01-OCT-2025
+Page: 1 of 3
+================================================================================
+
+REVISION HISTORY
+Rev 0 – 05-APR-2021: Initial issue.
+Rev 1 – 15-JAN-2023: Updated calibration intervals per instrument criticality assessment.
+Rev 2 – 01-OCT-2025: Added hot work permit requirements for converter vessel entry.
+
+## 1. Purpose
+This procedure defines the mandatory maintenance schedules, lockout/tagout (LOTO) requirements, and calibration intervals for SAP2 equipment.
+
+## 2. Lockout/Tagout Procedure
+2.1 Prior to any maintenance work, the equipment must be isolated from all hazardous energy sources and locked out in accordance with Apex LOTO Standard STD-SAF-012.
+2.2 The Maintenance Supervisor shall verify zero energy state and issue a safety work permit before work commences.
+
+## 3. Scheduled Maintenance Intervals
+Table 3 lists minimum maintenance activities.
+
+| Equipment | Maintenance Requirement |
+|-----------|--------------------------|
+| Sulfur melter agitator M-101 | Inspect and grease bearings and check seal integrity every 2,000 operating hours; performed by Maintenance Technician. |
+| Combustion air blower B-103 | Perform vibration analysis and bearing temperature check, replace oil every 4,000 operating hours; performed by Condition Monitoring Technician. |
+| Acid circulation pump P-107A | Overhaul (replace mechanical seal, impeller wear rings) every 8,000 operating hours or 12 months, whichever first; performed by Maintenance Fitter. |
+| Converter R-104 | Internal inspection and catalyst sampling every 4 years; performed by Inspection Engineer. |
+| Absorption tower T-106 | Check packing and acid distributor, clean every 2 years; performed by Process Engineer. |
+
+## 4. Instrument Calibration Schedule
+Table 4 lists mandatory calibrations.
+
+| Instrument | Calibration Requirement |
+|------------|--------------------------|
+| SO₂ analyzer AI-201 | Calibrate every 7 days using span gas at 10.0% SO₂; performed by Instrument Technician. |
+| Temperature transmitters TI-201 through TI-206 | Calibrate every 3 months by 3-point check vs certified RTD; performed by Instrument Technician. |
+| Differential pressure transmitters ΔP-201 to ΔP-204 | Calibrate every 6 months using deadweight tester; performed by Instrument Technician. |
+| Flowmeter FI-401 | Verify calibration every 6 months by clamp-on ultrasonic method; performed by Instrument Technician. |
+
+## 5. Permit Requirements
+5.1 All hot work within 15 m of the sulfur melter requires a hot work permit and continuous gas monitoring for SO₂ and H₂S.
+5.2 Confined space entry into the converter vessel or absorption tower requires a confined space permit, atmospheric testing, and a standby person.

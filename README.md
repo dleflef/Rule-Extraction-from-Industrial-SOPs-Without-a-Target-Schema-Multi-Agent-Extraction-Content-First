@@ -16,11 +16,14 @@ traces to an artifact in this repository; the map is in section *Outputs* below.
 |---|---|---|---|---|
 | Production line (iMAKS) | development | 4 | 86 | `data/dataset/kg_seed/ground_truth.csv` |
 | Biogas digestion | external test | 1 | 47 | `data/external_test_biogas/ground_truth_biogas.csv` |
-| Cleanroom access | external test | 1 | 37 | `data/external_test_cleanroom/ground_truth_cleanroom.csv` |
 | RO desalination | external test | 1 | 26 | `data/external_test_desalination/ground_truth_desalination.csv` |
+| Sulfuric acid production | external test | 3 | 70 | `data/external_test_sulfuric_acid/ground_truth_SA.csv` |
 
-The three external corpora were held out during development and are scored with
-no per-corpus configuration of any kind. Every condition is run five times and
+No external corpus contributed to any configuration choice; all selection was
+against the development corpus. They differ in how much of development they were
+visible for, which the thesis states precisely (§The External Corpora Were Not
+Equally Held Out): sulfuric acid is the only one constructed after the prompts,
+parameters and evaluator were frozen. Every condition is run five times and
 reported as mean ± standard deviation (the hosted endpoint is not
 bit-reproducible under a fixed seed; see thesis §Methodology).
 
@@ -80,8 +83,18 @@ python3 layers/layer_3/step3_binding_check.py
 python3 layers/layer_3/step3_calibration_sample.py sample
 python3 layers/layer_3/step3_calibration_sample.py score <filled_sheet.csv>
 
+# Audit-stage intervention rates, per corpus (from the per-run verdict sidecars):
+python3 layers/layer_3/step3_audit_interventions.py
+
+# Induced-schema stability across repeats (thesis §Schema Induction):
+python3 layers/layer_3/step3_schema_stability.py
+
 # Re-score the grid-search predictions with the current metric:
 zsh layers/evaluate_grid.sh
+
+# Scoring-parameter sweeps: tag-number toggle and threshold x weight grid
+# (thesis §Where the Operating Point Sits, §Limitations):
+zsh layers/run_robustness_sweeps.sh
 
 # Architecture figure (generated from the pipeline module's own constants):
 python3 layers/layer_2/visualize_pipeline.py
@@ -100,13 +113,14 @@ Every free parameter of the metric is a CLI flag.
 | Per-record match audit + worked example | `layers/step3_results/match_audit/<corpus>/` |
 | F1 arithmetic per run, written out | `layers/step3_results/match_audit/<corpus>/f1_derivation_<corpus>.csv` |
 | Metric validity (null / perturbations / threshold sweep) | `layers/step3_results/validity/` |
-| Field-level verification (420/440 bound cells) | `layers/step3_results/field_verification_dev.csv` (+ `_mismatches.csv`) |
-| Audit-trail aggregate stats (927 pairs, 73%/27%/18%) | `layers/step3_results/audit_trail_stats.csv` |
-| Earlier run batch cited in §Results (variance discussion) | `logs/final_run.log` |
+| Field-level verification (252/440 bound cells; bimodal across runs) | `layers/step3_results/field_verification_dev.csv` (+ `_mismatches.csv`) |
+| Audit-trail aggregate stats (945 pairs, 77%/23%/16%) | `layers/step3_results/audit_trail_stats.csv` |
 | Robustness: tag-number toggle, weight sweep, binding check | `layers/step3_results/robustness/` |
 | Calibration instrument (blinded sheet + key) | `layers/step3_results/calibration/` |
+| Audit-stage intervention rates (per corpus) | `layers/step3_results/audit_interventions.csv` |
+| Induced-schema stability across repeats | `layers/step3_results/schema_stability.csv` (+ `_fields.csv`) |
 | Raw pipeline predictions | `layers/layer_2/step2_results_generic/` |
-| Raw grid predictions (100 runs) | `layers/layer_2/step2_results/` |
+| Raw grid predictions (101 runs) | `layers/layer_2/step2_results/` |
 
 ## 6. Compiling the thesis
 

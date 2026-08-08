@@ -1,0 +1,27 @@
+corpus,role,values_checked,slot_bound,in_text,ambiguous,missing,modal_field,modal_field_share_of_slot_bound
+dev_production_line,critHi,230,110,30,0,90,crit_hi,1.0
+dev_production_line,critLo,230,105,10,0,115,crit_lo,0.952
+dev_production_line,warnHi,230,105,70,0,55,warn_hi,1.0
+dev_production_line,warnLo,230,105,50,0,75,warn_lo,1.0
+external_test_biogas,bound_high,90,10,80,0,0,hl,1.0
+external_test_biogas,bound_low,51,26,25,0,0,ll,1.0
+external_test_desalination,alert_high,5,0,5,0,0,,
+external_test_desalination,alert_low,5,0,5,0,0,,
+external_test_desalination,max_bound,25,20,5,0,0,max_bound,1.0
+external_test_desalination,min_bound,25,20,5,0,0,min_bound,1.0
+external_test_sulfuric_acid,numeric_value:Nm³/h,5,0,0,0,5,,
+external_test_sulfuric_acid,numeric_value:bar,5,0,5,0,0,,
+external_test_sulfuric_acid,numeric_value:days,10,0,10,0,0,,
+external_test_sulfuric_acid,numeric_value:hours,5,0,5,0,0,,
+external_test_sulfuric_acid,numeric_value:kg/h,5,0,5,0,0,,
+external_test_sulfuric_acid,numeric_value:kg/h per minute,10,0,10,0,0,,
+external_test_sulfuric_acid,numeric_value:m,5,0,5,0,0,,
+external_test_sulfuric_acid,numeric_value:mbar,2,0,2,0,0,,
+external_test_sulfuric_acid,numeric_value:minutes,20,0,20,0,0,,
+external_test_sulfuric_acid,numeric_value:months,20,0,20,0,0,,
+external_test_sulfuric_acid,numeric_value:m³/h,5,0,5,0,0,,
+external_test_sulfuric_acid,numeric_value:operating hours,10,0,0,0,10,,
+external_test_sulfuric_acid,numeric_value:ppm SO₂,5,0,5,0,0,,
+external_test_sulfuric_acid,numeric_value:seconds,5,0,5,0,0,,
+external_test_sulfuric_acid,numeric_value:years,10,0,10,0,0,,
+external_test_sulfuric_acid,numeric_value:°C,14,0,14,0,0,,

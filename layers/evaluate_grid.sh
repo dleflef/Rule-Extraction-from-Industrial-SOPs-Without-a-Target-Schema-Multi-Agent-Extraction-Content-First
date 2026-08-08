@@ -46,8 +46,12 @@ for name in sorted(os.listdir(src)):
 print(f"[stage] normalised {n} grid CSV(s) -> {stage}")
 PY
 
+# The per-condition table is written to GRID_RESCORED.csv (removed first, so a
+# re-run replaces the table rather than appending a second copy of every row).
+REPORT="$ROOT/layers/step3_results/GRID_RESCORED.csv"
+rm -f "$REPORT"
 python3 "$ROOT/layers/layer_3/step3_evaluation_generic_dynamic.py" \
-    --gt "$GT" --pred-dir "$STAGE" --aggregate
+    --gt "$GT" --pred-dir "$STAGE" --aggregate --report "$REPORT"
 
 rm -rf "$STAGE"
 echo "################ GRID EVALUATION DONE -- see layers/step3_results ################"

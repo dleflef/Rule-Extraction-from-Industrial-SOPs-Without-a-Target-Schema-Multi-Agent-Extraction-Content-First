@@ -59,7 +59,7 @@ OUT_DIR = os.path.join(E.STEP3_RESULTS_DIR, "validity")
 CORPORA = [
     ("dev_production_line",        "data/dataset/kg_seed/ground_truth.csv",                         ""),
     ("external_test_biogas",       "data/external_test_biogas/ground_truth_biogas.csv",             ""),
-    ("external_test_cleanroom",    "data/external_test_cleanroom/ground_truth_cleanroom.csv",       ""),
+    ("external_test_sulfuric_acid", "data/external_test_sulfuric_acid/ground_truth_SA.csv",         ""),
     ("external_test_desalination", "data/external_test_desalination/ground_truth_desalination.csv", "identifier"),
 ]
 
@@ -152,6 +152,44 @@ def permute_payloads(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
     return d.to_dict("records")
 
 
+def reverse_bounds_within_record(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
+    """Reverse the order of a record's OWN numeric values, in place.
+
+    This is the safety-critical binding failure stated concretely: a row whose
+    columns read (critical low, warning low, warning high, critical high) and
+    hold (0.65, 0.75, 0.95, 1.05) becomes (1.05, 0.95, 0.75, 0.65), so the
+    critical LOW bound is now reported as the critical HIGH bound and vice
+    versa. Every value the document printed is still present and still on the
+    correct rule; only the slot each occupies is wrong. A plant configured from
+    the corrupted record would alarm at the wrong end of every range.
+
+    It is a strictly harder test than permute_payloads, and tests a different
+    thing. That perturbation moves quantities BETWEEN records, so the optimal
+    assignment can recover by re-pairing; this one leaves the multiset of values
+    in each record untouched, so re-pairing cannot help and no assignment-level
+    recovery is available. Whatever this costs is what the agreement function
+    itself can see about which slot a value occupies.
+
+    Records carrying fewer than two numeric values are unchanged, since there is
+    nothing to reverse; corpora whose annotation exposes only one numeric column
+    are therefore untouched by this perturbation and are reported as such.
+    """
+    d = df.copy()
+    cols = _numeric_columns(d)
+    if len(cols) < 2:
+        return d.to_dict("records")
+    for i in d.index:
+        vals = [str(d.at[i, c]).strip() for c in cols]
+        present = [(c, v) for c, v in zip(cols, vals) if v]
+        if len(present) < 2:
+            continue
+        filled = [c for c, _ in present]
+        values = [v for _, v in present]
+        for c, v in zip(filled, reversed(values)):
+            d.at[i, c] = v
+    return d.to_dict("records")
+
+
 def permute_labels(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
     """The reverse: the category label permuted between records, payloads stay
     put. Measures how much of the score the discovered label carries."""
@@ -207,6 +245,7 @@ def tokens_in_order(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
 PERTURBATIONS = [
     ("numbers_corrupted", corrupt_numbers),
     ("payloads_permuted", permute_payloads),
+    ("bounds_reversed",   reverse_bounds_within_record),
     ("labels_permuted",   permute_labels),
     ("tokens_in_order",   tokens_in_order),
     ("word_salad",        word_salad),

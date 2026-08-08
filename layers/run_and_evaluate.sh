@@ -26,12 +26,13 @@ STAGE="$ROOT/.eval_stage"
 # corpus tag : input dir : ground truth : id-field override ("-" = auto-detect)
 #
 # desalination overrides the id field. Its ground truth leaves `identifier` blank
-# on rows with no printed code (matrix cells, un-coded prose rules), and the
-# evaluator's structural detection reads a missing value as the string "nan",
-# counts it as present, and rejects `identifier` for low uniqueness -- leaving
-# `rule_text` as the only candidate. Detecting rule_text as the id would drop the
-# verbatim rule sentences out of the ground truth's content blob. The other five
-# ground truths populate their id column on every row and detect correctly.
+# on rows with no printed code (matrix cells, un-coded prose rules): only 11 of
+# 26 rows carry one, so `identifier` fails the evaluator's coverage requirement
+# (an id column is populated on almost every row) and detection falls through to
+# `rule_text`, the only fully-populated all-distinct column. Detecting rule_text
+# as the id would drop the verbatim rule sentences out of the ground truth's
+# content blob, so the id is pinned by hand here. The other ground truths
+# populate their id column on every row and detect correctly.
 # The first entry is the DEVELOPMENT corpus: the four Production Line A SOPs the
 # pipeline was built and debugged against. Its directory is still called "texts"
 # because layer 1 and the grid both write to or read from that
@@ -40,7 +41,7 @@ STAGE="$ROOT/.eval_stage"
 CORPORA=(
   "dev_production_line:$ROOT/layers/layer_1/texts:$ROOT/data/dataset/kg_seed/ground_truth.csv:-"
   "external_test_biogas:$ROOT/data/external_test_biogas:$ROOT/data/external_test_biogas/ground_truth_biogas.csv:-"
-  "external_test_cleanroom:$ROOT/data/external_test_cleanroom:$ROOT/data/external_test_cleanroom/ground_truth_cleanroom.csv:-"
+  "external_test_sulfuric_acid:$ROOT/data/external_test_sulfuric_acid:$ROOT/data/external_test_sulfuric_acid/ground_truth_SA.csv:-"
   "external_test_desalination:$ROOT/data/external_test_desalination:$ROOT/data/external_test_desalination/ground_truth_desalination.csv:identifier"
 )
 

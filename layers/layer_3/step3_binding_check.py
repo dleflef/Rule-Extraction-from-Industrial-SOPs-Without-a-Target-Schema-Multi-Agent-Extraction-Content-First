@@ -46,6 +46,9 @@ from collections import Counter
 
 import pandas as pd
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import step3_evaluation_generic_dynamic as E
+
 _PROJECT_ROOT = os.path.normpath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 PRED_DIR = os.path.join(_PROJECT_ROOT, "layers", "layer_2", "step2_results_generic")
@@ -66,10 +69,10 @@ CORPORA = {
         "gt": "data/external_test_biogas/ground_truth_biogas.csv",
         "roles": [("bound_low", "bound_low"), ("bound_high", "bound_high")],
     },
-    "external_test_cleanroom": {
-        "gt": "data/external_test_cleanroom/ground_truth_cleanroom.csv",
-        "roles": [("numeric_limit", "numeric_limit_value")],
-        "qualifier": "numeric_limit_type",
+    "external_test_sulfuric_acid": {
+        "gt": "data/external_test_sulfuric_acid/ground_truth_SA.csv",
+        "roles": [("numeric_value", "numeric_value")],
+        "qualifier": "unit",
     },
     "external_test_desalination": {
         "gt": "data/external_test_desalination/ground_truth_desalination.csv",
@@ -179,6 +182,74 @@ def summarise(observations: list[dict]) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def slot_agreement(tag: str, spec: dict) -> list[dict]:
+    """Direct slot correctness, wherever the two sides happen to name a numeric
+    column the same way.
+
+    The modal-field statistic above measures CONSISTENCY -- whether a given
+    ground-truth role always lands in the same predicted field -- and a system
+    that put every low bound in the high slot would score a perfect 1.0 on it,
+    because it would do so consistently. That is not a check on correctness, and
+    on corpora where no field correspondence exists it is the only check
+    available. Where a correspondence does exist it costs nothing to ask the
+    stronger question directly: does the value the annotation records under a
+    name appear under THAT name in the record the metric paired it with?
+
+    The correspondence is a string comparison on normalised column names, never
+    a hand-written mapping, so this runs only on corpora where the two
+    vocabularies coincide by themselves and is silently empty elsewhere.
+    """
+    gt_df = pd.read_csv(os.path.join(_PROJECT_ROOT, spec["gt"]))
+    cfg = E.EvalConfig(gt_id_field=spec.get("id_field", ""))
+    gt_rows = gt_df.fillna("").to_dict("records")
+    gt_id = E._detect_id_field(gt_df, cfg)
+    exclude = E._ID_LIKE_NAMES | E._detect_noise_fields(gt_df, cfg)
+
+    def norm(c: str) -> str:
+        return re.sub(r"[^a-z0-9]", "", str(c).lower())
+
+    rows: list[dict] = []
+    for path in sorted(glob.glob(os.path.join(
+            PRED_DIR, f"ext_multi_agent_generic_{tag}_run*.csv"))):
+        pred = pd.read_csv(path).fillna("")
+        shared = {norm(c) for c in gt_df.columns} & {norm(c) for c in pred.columns}
+        gt_by_norm = {norm(c): c for c in gt_df.columns}
+        pred_by_norm = {norm(c): c for c in pred.columns}
+        numeric = [n for n in shared
+                   if n not in {"id", "ruleid", "source", "category",
+                                "sourcefile", "sourcespan"}
+                   and any(_as_float(v) is not None
+                           for v in gt_df[gt_by_norm[n]].fillna(""))]
+        if not numeric:
+            continue
+        pred_rows = pred.to_dict("records")
+        a = E.build_assignment(cfg, gt_rows, pred_rows, gt_id, exclude)
+        for k, (i, j) in enumerate(a.pairs):
+            if a.scores[k] < cfg.threshold:
+                continue
+            for n in numeric:
+                gv = _as_float(gt_rows[i].get(gt_by_norm[n], ""))
+                if gv is None:
+                    continue
+                # Two different failures must not be added together. A value the
+                # extraction never produced is a RECALL miss; a value it produced
+                # but filed elsewhere is a BINDING error. Conflating them would
+                # report a recall problem as a binding problem and overstate the
+                # very thing this check exists to measure, so presence anywhere
+                # in the record is recorded first and binding is conditioned on
+                # it.
+                blob = " ".join(str(v) for v in pred_rows[j].values())
+                anywhere = _value_in_text(gv, blob)
+                pv = _as_float(pred_rows[j].get(pred_by_norm[n], ""))
+                rows.append({"corpus": tag, "run": os.path.basename(path),
+                             "field": gt_by_norm[n], "gt_value": gv,
+                             "pred_value": pv,
+                             "present_anywhere": anywhere,
+                             "in_correct_slot": anywhere and pv is not None
+                                                and abs(gv - pv) < 1e-9})
+    return rows
+
+
 def main() -> None:
     all_obs, all_detail = [], []
     for tag, spec in CORPORA.items():
@@ -200,6 +271,30 @@ def main() -> None:
     print(summary.to_string(index=False))
     print(f"[binding] wrote {out_summary}")
     print(f"[binding] wrote {out_detail}")
+
+    slots = [r for tag, spec in CORPORA.items() for r in slot_agreement(tag, spec)]
+    if slots:
+        sdf = pd.DataFrame(slots)
+        agg = sdf.groupby("corpus").agg(
+            gt_cells=("in_correct_slot", "size"),
+            present_anywhere=("present_anywhere", "sum"),
+            in_correct_slot=("in_correct_slot", "sum")).reset_index()
+        # recall_frac: did the extraction produce the value at all.
+        # binding_frac: OF THOSE it produced, how many sit in the slot the
+        # annotation would put them in. Only the second is a binding figure.
+        agg["recall_frac"] = (agg["present_anywhere"] / agg["gt_cells"]).round(3)
+        agg["binding_frac"] = (agg["in_correct_slot"]
+                               / agg["present_anywhere"].replace(0, pd.NA)).round(3)
+        out_slot = os.path.join(OUT_DIR, "slot_agreement.csv")
+        agg.to_csv(out_slot, index=False)
+        print("\n[binding] direct slot correctness where the two vocabularies "
+              "coincide by themselves (binding_frac is conditioned on the value "
+              "having been extracted at all):")
+        print(agg.to_string(index=False))
+        print(f"[binding] wrote {out_slot}")
+    else:
+        print("\n[binding] no corpus shares a numeric column name with its "
+              "predictions; direct slot correctness is unavailable.")
 
 
 if __name__ == "__main__":
