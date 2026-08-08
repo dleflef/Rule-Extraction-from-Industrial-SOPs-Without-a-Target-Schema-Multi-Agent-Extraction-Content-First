@@ -2721,6 +2721,21 @@ recover the entity names from the text, and the pipeline is told neither. The
 cost is the recall of $0.628$: every rule outside the encoded layouts is
 invisible to it, silently and unrecoverably.
 
+That cost deserves to be read in the same safety terms that recommend the parser
+in the first place. The argument for it is that perfect precision eliminates the
+risk of a fabricated threshold, which is correct and is not disputed here. But a
+recall of $0.628$ means roughly a third of the annotated rules never reach the
+output at all, and they do so \emph{without producing an error}: nothing in the
+parser's behaviour distinguishes a document region it has no pattern for from
+one containing nothing to extract. An invented constraint is a hazard that
+announces itself to anyone checking the source line; an omitted constraint is a
+hazard that does not, and a facility that believes its rule base complete when a
+third of it is missing is not obviously safer than one that must verify what it
+was given. Neither failure mode is acceptable unverified, which is the actual
+conclusion: extraction of either kind is an input to a validation step rather
+than a substitute for one, and Section~\ref{sec:lim_downstream} makes no claim
+beyond that boundary for any condition in this thesis, the parser included.
+
 Two structural facts finish the comparison, and both matter more than the
 ordering. The first is that the parser is \emph{saturated}. Because every record
 it emits is correct, its $0.771$ is exactly the ceiling of
@@ -2909,17 +2924,44 @@ Stage~1, and by nothing else in the architecture. It transfers intact to a
 single call per document, complete with the property that makes it worth having
 --- that the citation can be checked and is found correct.
 
-\textbf{What survives.} One thing does. Across the development corpus the
-pipeline's inducer reconciles the corpus onto $34$--$44$ canonical field names
-where the single prompt carries $41$--$57$ for the same documents, because
-nothing in the baseline merges two scouts' names for one idea. This is the only
-property measured here that the baseline does not match, and
-$F1_{\text{content}}$ is blind to it by construction, since the metric discards
-field names before comparing anything. Whether consolidation repays a
+\textbf{What survives, and how little architecture it requires.} One thing does.
+Across the development corpus the pipeline's inducer reconciles the corpus onto
+$34$--$44$ canonical field names where the single prompt carries $41$--$57$ for
+the same documents, because nothing in the baseline merges two scouts' names for
+one idea. This is the only property measured here that the baseline does not
+match, and $F1_{\text{content}}$ is blind to it by construction, since the metric
+discards field names before comparing anything.
+
+It should be conceded immediately that this does not argue for a graph. The
+inducer reads an inventory of observed names, never a document
+(Section~\ref{sec:stage_induce}), so recovering it on top of the single-prompt
+condition requires only collecting each document's returned JSON and issuing one
+further call over the union: a map followed by a reduce, two steps of a linear
+script, with no orchestration framework, no fan-out and no shared state. The
+graph was the scaffolding within which these stages were built and separated
+well enough to be measured one at a time, and that is a claim about how the
+finding was reached rather than about what the finding recommends. Nothing in
+this evaluation requires the reduction step to be expressed as a graph node. Whether consolidation repays a
 three- to sevenfold request premium depends entirely on what consumes the
 output, and Section~\ref{sec:lim_downstream} evaluates no consumer. The claim
 this thesis is entitled to make is that the premium buys vocabulary
 consolidation, and that it buys nothing else it has been able to measure.
+
+\textbf{The cost, stated precisely.} The pipeline issues three to seven times as
+many requests for the same accuracy and the same provenance: $13$ calls against
+$4$ on the development corpus, and $7$ against $1$ on each single-document
+external corpus. The absolute figures are trivial and should not be dressed up:
+across nine documents the whole difference is a few dozen requests, seconds of
+latency and a negligible sum of money, and no operator would choose an
+architecture on that basis. What the measurement establishes is a \emph{ratio}
+that is a property of the design rather than of the corpus --- two calls per
+chunk plus one per corpus, against one per document --- and a ratio compounds
+where an absolute count does not. A facility holding thousands of procedures
+pays it on every document, against endpoint rate limits, and with a per-call
+failure probability accumulating over a longer chain that
+Section~\ref{sec:resilience} shows does fail and require retries. The honest
+form of the claim is that the request premium buys nothing measurable here and
+would matter at facility scale, not that it matters at the scale evaluated.
 
 \textbf{What this settles.} Not that multi-agent extraction is unnecessary in
 general: four small synthetic corpora, one model and one prompt family cannot
