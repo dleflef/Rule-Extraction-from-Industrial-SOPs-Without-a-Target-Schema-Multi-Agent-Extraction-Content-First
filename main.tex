@@ -49,7 +49,7 @@ Extraction is scored by $F1_{\text{content}}$, a content-first metric that colla
 
 The pipeline is evaluated on one development corpus and three previously unseen external corpora (biogas digestion, reverse-osmosis desalination, and sulfuric acid production) with five repeats each and no per-corpus configuration of any kind. It reaches $F1_{\text{content}} = 0.719 \pm 0.000$ on the development corpus and $0.715 \pm 0.023$, $0.850 \pm 0.019$, and $0.649 \pm 0.049$ on the three external corpora. Because the hosted endpoint is non-deterministic for long generations, every figure is reported as a mean and standard deviation over repeats rather than as a single run.
 
-An ablation that removes the orchestration while holding the model, the prompt's extraction discipline and the evaluation constant --- one call per whole document, no chunking, no schema induction, no assembly, no audit --- scores $0.733$, $0.762$, $0.793$ and $0.607$ on the same four corpora, winning on two and losing on two for a mean difference of $0.010$, well inside run-to-run variation, at three to seven times fewer requests. On this material the reported accuracy is therefore attributable to withholding the schema and to the extraction discipline expressed in the prompt, not to the multi-agent graph that runs it; what the graph adds is per-record provenance and a reconciled field vocabulary, neither of which this metric scores.
+An ablation that removes the orchestration while holding the model, the prompt's extraction discipline and the evaluation constant --- one call per whole document, no chunking, no schema induction, no assembly, no audit --- scores $0.733$, $0.762$, $0.793$ and $0.607$ on the same four corpora, winning on two and losing on two for a mean difference of $0.010$, well inside run-to-run variation, at three to seven times fewer requests. The reported accuracy is therefore attributable to withholding the schema and to the extraction discipline expressed in the prompt rather than to the graph that runs it. What the graph supplies instead is auditability: every record cites the numbered line it was read from, where the single-prompt records cite nothing, so the grounding check reported here cannot be performed on them at all. The architecture is thus best characterised as trading request count for traceability, both of which are quantified.
 
 Set against this, a grid search over ten prompting paradigms and two models, in which the prompt is given the development corpus's schema, taxonomy, identifier convention, and worked examples, reaches $0.949 \pm 0.020$ on that corpus, and cannot be applied to the other three as a comparable condition without being rewritten by hand. Notably, the two systems recover the ground truth equally well (recall $0.907$ and $0.909$); the gap is entirely precision, because the two disagree about what constitutes one rule and any surplus record is counted as an error whether or not it is correct. The gap is therefore best read as the measured price of requiring no per-domain configuration, and the schema-specified condition as an instance of the corpus-specific adaptation this work seeks to avoid.
 \end{abstract}
@@ -134,15 +134,17 @@ To address these limitations, this work makes four primary contributions:
           gap quantifies what requiring no per-domain configuration costs, and
           identifies the schema-specified condition as corpus-specific adaptation
           rather than a fair baseline.
-    \item \textbf{An Ablation That Isolates the Architecture, With a Negative
-          Result:} a single schema-free prompt, one call per document, holding
+    \item \textbf{An Ablation Isolating the Architecture, and the Trade-Off It
+          Reveals:} a single schema-free prompt, one call per document, holding
           the model and the prompt's extraction discipline constant and removing
           only the orchestration. It matches the pipeline to within $0.010$ mean
           F1 across the four corpora --- winning on two, losing on two --- at
-          three to seven times fewer requests. The accuracy reported here is
-          therefore attributable to withholding the schema rather than to the
-          graph, a finding reported because it was measured and not because it
-          was wanted.
+          three to seven times fewer requests, establishing that the model
+          performs schema-agnostic extraction unaided. What the orchestration
+          supplies is not accuracy but auditability: line-level provenance for
+          every record, without which the grounding check of
+          Section~\ref{sec:lim_gt} cannot be run, and a reconciled field
+          vocabulary. Both are properties the metric prices at zero.
 \end{itemize}
 
 % § 2  Theoretical Background
@@ -2802,62 +2804,83 @@ Sulfuric acid         & $\mathbf{0.649 \pm 0.049}$ &  9 & $0.607 \pm 0.014$ & 3 
 \end{tabular}
 \end{table}
 
-\textbf{The orchestration does not improve $F1_{\text{content}}$ on these
-corpora.} The single prompt wins on two corpora and loses on two, and the mean
-difference of $0.010$ is far inside the run-to-run variation of the corpora
-themselves, which reaches $0.049$. Two of the four gaps do exceed both
-conditions' spreads and are therefore real --- biogas favours the single prompt
-by $0.047$, desalination favours the pipeline by $0.057$ --- but they point in
-opposite directions, and averaged across the four the two architectures are
-indistinguishable. This is reported as the primary finding of this subsection
-because it is what the measurement shows, and because the opposite result is
-what the architecture was built expecting.
+\textbf{The model is capable of schema-agnostic extraction on its own.} That is
+the first and most useful thing the ablation establishes. Given the same
+extraction discipline and no target schema, a single call per document reaches
+$F1_{\text{content}}$ indistinguishable from the full pipeline's: the two win on
+two corpora each, and the mean difference of $0.010$ sits far inside the
+run-to-run variation of the corpora themselves, which reaches $0.049$. Two
+individual gaps do exceed both conditions' spreads and are real --- biogas
+favours the single prompt by $0.047$, desalination favours the pipeline by
+$0.057$ --- but they point in opposite directions, so no aggregate advantage
+survives. Complex orchestration is therefore not a precondition for
+schema-agnostic extraction at this scale, and the result is reported plainly
+because it is the more useful finding for anyone building such a system.
 
-\textbf{Two defences that suggest themselves are not available, having been
-tested.} The first is that the orchestration buys stability rather than
-accuracy. It does not: the single prompt has the \emph{lower} standard deviation
-on three of the four corpora, including $0.014$ against $0.049$ on sulfuric
-acid. Only on the development corpus is the pipeline the steadier of the two,
-and there its zero variance is a property of the score rather than of the
-output (Section~\ref{sec:results_main}). The second is that the pipeline should
-win where a corpus has several documents, since cross-document vocabulary
-reconciliation is the one thing a per-document call structurally cannot do.
-It does not: the pipeline wins on sulfuric acid, which has three documents, and
-loses on the development corpus, which has four. No property of the corpora
-tested here predicts the direction of the difference.
+\textbf{Two hypotheses about where orchestration should help were tested and not
+supported.} The first is that it buys stability rather than accuracy: it does
+not, since the single prompt has the \emph{lower} standard deviation on three of
+the four corpora, including $0.014$ against $0.049$ on sulfuric acid. Only on
+the development corpus is the pipeline the steadier, and there its zero variance
+is a property of the score rather than of the output
+(Section~\ref{sec:results_main}). The second is that it should win where a
+corpus spans several documents, cross-document vocabulary reconciliation being
+the one thing a per-document call cannot do: it does not, since the pipeline
+wins on sulfuric acid, which has three documents, and loses on the development
+corpus, which has four. No property of the corpora tested here predicts the
+direction of the difference.
 
-\textbf{What the pipeline does deliver is not visible to this metric.} Two
-things, and both are properties a downstream consumer would care about even
-though $F1_{\text{content}}$ prices them at zero. The first is provenance: every
-pipeline record cites the document and line it was read from, and the baseline
-records cite nothing, because line numbering is exactly what was removed. The
-grounding check of Section~\ref{sec:lim_gt} --- which establishes that all $669$
-values asserted by the surplus records appear in the documents they cite --- is
-not merely harder to perform on the baseline's output, it is impossible, since
-there is no citation to check against. The second is vocabulary: the inducer
-reconciles the corpus onto $34$--$44$ canonical fields on the development
-corpus where the baseline's unreconciled output carries $47$--$55$. A metric
-that discards field names by construction cannot charge for that sprawl, and
-this one does not.
+\textbf{What separates the two conditions is not in the score, because the
+metric does not look there.} $F1_{\text{content}}$ evaluates \emph{what} was
+extracted, never \emph{how} it was obtained, and the two conditions differ
+almost entirely in the latter. Two differences are concrete and checkable.
 
-\textbf{The cost is not marginal.} The pipeline issues three to seven times as
-many requests for the same accuracy: $13$ calls against $4$ on the development
-corpus, and $7$ against $1$ on each single-document external corpus. On the
-evidence of these four corpora, a reader whose requirement is a scored rule
-table and nothing else should use the single prompt. The architecture earns its
-cost only if per-record provenance or a reconciled vocabulary is worth
-something to what comes next --- which this thesis does not measure, and which
-Section~\ref{sec:lim_downstream} already declines to claim.
+The first is provenance. Every pipeline record cites the document and the
+numbered line it was read from; every baseline record cites nothing, because
+line numbering was among the stages removed. The consequence is not a matter of
+degree: the grounding check of Section~\ref{sec:lim_gt} --- which establishes
+that all $669$ values asserted by the surplus records appear in the documents
+they cite --- cannot be run on the baseline's output at all, since there is no
+citation to check against. An extraction that cannot be traced to a line cannot
+be audited, and in the settings this work targets that distinction has
+consequences: an operator configuring an alarm from an extracted threshold needs
+to see the line of the procedure it came from, and a reviewer disputing a rule
+needs somewhere to look. The second is vocabulary: the inducer reconciles the
+development corpus onto $34$--$44$ canonical field names where the baseline's
+unreconciled output carries $47$--$55$ for the same documents. A metric that
+discards field names by construction cannot charge for that sprawl, and this one
+does not.
 
-\textbf{What this does and does not settle.} It does not show that multi-agent
-extraction is worthless in general; four small synthetic corpora, one model and
-one prompt family cannot support that. What it settles is narrower and is the
-claim this thesis is entitled to make: on this material, the accuracy reported
-in Table~\ref{tab:main_results} is attributable to withholding the schema and
-to the extraction discipline expressed in the prompt, \emph{not} to the graph
-that runs it. The schema-agnostic result stands --- the baseline is schema-free
-too, and reaches the same place --- but it stands without the architecture as
-its explanation.
+\textbf{The trade-off, stated as measured.} The pipeline issues three to seven
+times as many requests for statistically indistinguishable accuracy: $13$ calls
+against $4$ on the development corpus, and $7$ against $1$ on each
+single-document external corpus. What those requests buy is not a higher score
+but line-level traceability and a consolidated vocabulary. A reader whose
+requirement is a scored rule table and nothing else should prefer the single
+prompt on this evidence. A reader who must be able to say where each extracted
+value came from has no such option, because the baseline does not produce that
+information at any price.
+
+\textbf{One honest narrowing of that claim.} Provenance is delivered by the
+line-numbering of Stage~1 specifically, not by the graph as a whole. A single
+prompt given a line-numbered document and asked to cite lines would plausibly
+recover much of it, and that intermediate condition is not tested here. What the
+remaining stages contribute --- the inducer's vocabulary reconciliation, the
+assembly's record-boundary discipline, the audit's grounding pass --- is
+therefore separable from the provenance argument and is not individually
+measured. The trade-off this subsection reports is real and its two halves are
+both quantified, but attributing all of it to the multi-agent design would
+credit the architecture for a property one of its stages supplies.
+
+\textbf{What this settles.} It does not show that multi-agent extraction is
+unnecessary in general; four small synthetic corpora, one model and one prompt
+family cannot support that. What it settles is that the accuracy in
+Table~\ref{tab:main_results} is attributable to withholding the schema and to
+the extraction discipline expressed in the prompt rather than to the graph, and
+that the graph's contribution lies in auditability rather than in
+$F1_{\text{content}}$. Whether that contribution is worth its cost depends on
+what consumes the output, which Section~\ref{sec:lim_downstream} does not
+evaluate and does not claim.
 
 \section{Limitations}
 \label{sec:limitations}
@@ -3286,27 +3309,36 @@ near-identical between the pipeline and the best schema-specified condition
 $0.628$; the entire gap to the grid is precision, and the precision gap is
 granularity rather than error.
 
-\subsection{What the Architecture Turned Out Not to Buy}
-The pipeline's own orchestration was then removed while everything else was
-held constant --- same model, same extraction discipline in the prompt, same
-evaluator, one call per whole document instead of a graph over chunks. It
-scores $0.733$, $0.762$, $0.793$ and $0.607$, beating the pipeline on two
-corpora and losing on two, for a mean difference of $0.010$ against run-to-run
-variation reaching $0.049$, and it does so with three to seven times fewer
-requests. Neither of the two natural defences survives measurement: the single
-prompt is the \emph{steadier} of the two on three corpora, and the pipeline's
-advantage does not appear on the multi-document corpora where cross-document
-reconciliation should have helped.
+\subsection{The Trade-Off the Architecture Actually Represents}
+The orchestration was then removed while everything else was held constant ---
+same model, same extraction discipline in the prompt, same evaluator, one call
+per whole document instead of a graph over chunks. It scores $0.733$, $0.762$,
+$0.793$ and $0.607$, winning on two corpora and losing on two, for a mean
+difference of $0.010$ against run-to-run variation reaching $0.049$, at three to
+seven times fewer requests. Two hypotheses about where orchestration should help
+were tested and not supported: the single prompt is the \emph{steadier} of the
+two on three corpora, and the pipeline's advantage does not appear on the
+multi-document corpora where cross-document reconciliation should have helped.
 
-The consequence for this thesis is stated rather than softened. The
-schema-agnostic result is unaffected --- the baseline withholds the schema too,
-and arrives in the same place --- but the multi-agent architecture is not its
-explanation. What the graph demonstrably provides is per-record provenance,
-without which the grounding check of Section~\ref{sec:lim_gt} could not have
-been performed at all, and a field vocabulary reconciled to $34$--$44$ names
-where the baseline carries $47$--$55$. Both are properties $F1_{\text{content}}$
-prices at zero by construction, and neither has been shown to be worth its cost
-to any downstream consumer, because no downstream consumer is evaluated here.
+The first thing this establishes is that the model is capable of schema-agnostic
+extraction unaided, which is useful to anyone building such a system and is not
+obscured here. The second is what the metric cannot see. $F1_{\text{content}}$
+scores \emph{what} was extracted, never \emph{how}, and the two conditions
+differ almost entirely in the latter: every pipeline record cites the document
+and line it came from, and every baseline record cites nothing. The grounding
+check of Section~\ref{sec:lim_gt} cannot be run on the baseline's output at all,
+for want of anything to check against, and the pipeline additionally reconciles
+the development corpus onto $34$--$44$ field names where the baseline carries
+$47$--$55$.
+
+The trade-off is therefore between request count and traceability, and both
+halves are measured. The claim needs one narrowing to stay exact: provenance is
+supplied by Stage~1's line numbering rather than by the graph as a whole, and a
+single prompt over a line-numbered document might recover much of it --- an
+intermediate condition this thesis does not test. What the remaining stages
+contribute beyond that is not separately measured, and whether traceability
+repays its cost depends on a downstream consumer that
+Section~\ref{sec:lim_downstream} does not evaluate.
 
 \subsection{What the Evaluation Establishes About Its Own Metric}
 A schema-agnostic system cannot be scored by a schema-aware metric, so
@@ -3350,8 +3382,8 @@ cross-corpus figures of this kind should be read, in this thesis and elsewhere.
     \item An ablation isolating the orchestration from the schema-agnostic
           prompting it runs, which finds the two indistinguishable in accuracy
           ($0.010$ mean F1 over four corpora, two won each way) at three to
-          seven times the request count --- a negative result about this
-          thesis's own architecture.
+          seven times the request count, locating the architecture's
+          contribution in traceability rather than in score.
     \item A quantification of two degrees of freedom that evaluations of this
           kind rarely report: annotation granularity, worth $0.147$ on identical
           predictions, and the prompts' illustrative vocabulary, worth up to
@@ -3364,9 +3396,10 @@ roughly $0.23$ F1 less than schema-specified extraction on the one corpus where
 both can run, that most of that difference is a disagreement about what
 constitutes one rule rather than about what the documents say, that the
 resulting system transfers to a new facility at the cost of running it, and
-that the multi-agent orchestration is not what delivers any of it --- a single
-prompt withholding the same schema reaches the same accuracy for a fraction of
-the requests. Whether
+that the multi-agent orchestration is not what delivers the accuracy --- a
+single prompt withholding the same schema reaches the same score for a fraction
+of the requests, and what the orchestration buys instead is the line-level
+traceability that makes an extracted value auditable. Whether
 that trade is worth making is a deployment question and depends on how many
 facilities there are.
 
