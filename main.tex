@@ -2128,29 +2128,37 @@ inventories should it ever exceed a context window. No such merging is
 implemented or tested here, and the scale limitation is restated in
 Section~\ref{sec:lim_scale}.
 
-One implementation detail must be declared alongside that argument, because it
-would bind before the context window does. The inventory handed to the arbiter
-is truncated to the $120$ most frequent field names. On the corpora evaluated
-here the cap never engages --- the largest inventory any single run produced is
-$44$ names --- so no reported figure is affected by it. But the truncation is
-by frequency, which means the first names discarded at scale would be the rarest
-ones, and those are precisely the names the arbiter's own instructions tell it to
-preserve: a field used by three records out of two hundred is the only place
-those three records' information lives. Past roughly $120$ distinct field names
-the implementation would therefore contradict its own specification, silently and
-without error, discarding rare vocabulary before the arbiter is ever consulted.
-This is a property of the current implementation rather than of the design ---
-the cap exists to bound one prompt's size and could be replaced by the
-hierarchical merge described above --- but it is the concrete point at which
-this stage stops scaling, and it is nearer than the context window.
+How the prompt budget is enforced matters more than its size, and the rule is
+that \emph{rarity is never the discard criterion}. An earlier form of this stage
+kept the $120$ most frequent field names and dropped the remainder, which is
+precisely backwards: a field used by three records out of two hundred is the
+only place those three records' information lives, and in a safety setting the
+rare fields are typically the edge-case triggers. Every observed name is
+therefore passed to the arbiter regardless of frequency. When the inventory
+outgrows the budget it is the \emph{sample values} that thin --- from six per
+name towards one --- because a sample only illustrates a name whereas the name
+itself is the thing being reconciled. Thinning samples degrades how well the
+arbiter can judge a name; dropping names decides that it will not judge them at
+all, and only the first is an acceptable response to a prompt budget. Beyond the
+point where even one sample per name will not fit, the stage stops with an error
+rather than inducing over a partial vocabulary, because that is the scale at
+which per-document inventories must be merged hierarchically and a larger
+constant would only move the failure.
+
+None of this affects any figure reported here: the largest inventory any single
+run produced is $44$ names, so the budget never engages on these corpora, and
+below it the current implementation and the earlier one return identical
+inventories including identical sample lists.
 
 No claim of scalability is made anywhere in this thesis, and this is the reason.
 The pipeline is demonstrated on nine documents across four corpora; what happens
-at a facility holding thousands of procedures is untested, and the paragraph
-above identifies the specific mechanism that would fail first and the specific
-class of information it would discard --- the rarest fields, which in a safety
-setting are frequently the ones carrying edge-case triggers. Naming that
-mechanism is not the same as having solved it.
+at a facility holding thousands of procedures is untested. What the paragraph
+above secures is narrower than scalability and worth separating from it: the
+stage no longer has a failure mode that silently deletes rare vocabulary, since
+it either carries every observed name or stops. That removes a specific hazard;
+it does not establish that one induction call reconciles a facility-scale
+vocabulary well, which remains unmeasured and is the reason the merge sketched
+next is described rather than claimed.
 
 \paragraph{The shape a scalable version would take.} The route out is described
 here because a limitation is more useful when the reader can see what would

@@ -133,7 +133,21 @@ DEFAULT_MAX_CONCURRENCY = 4   # concurrent requests during the scout and audit f
 # How much of the observed inventory the schema arbiter sees. It reads names and
 # a few sample values per name, never documents, so this is small by design.
 INDUCTION_SAMPLES_PER_FIELD = 6
-INDUCTION_MAX_FIELDS = 120
+# Prompt-size budget for the arbiter, expressed so that RARITY IS NEVER THE
+# DISCARD CRITERION. An earlier form of this cap kept the 120 most frequent
+# names and dropped the rest, which is precisely backwards: a field used by
+# three records out of two hundred is the only place those three records'
+# information lives, and in a safety setting the rare fields are typically the
+# edge-case triggers. Names are therefore never dropped. When the inventory
+# grows past the budget it is the SAMPLE VALUES that thin, because samples only
+# illustrate a name whereas the name itself is the information the arbiter must
+# reconcile.
+INDUCTION_BUDGET_FIELDS = 120
+# A name-only inventory larger than this cannot be made to fit by thinning
+# samples. Reaching it is a signal to merge per-document inventories
+# hierarchically rather than to raise a constant, so it stops the run loudly
+# instead of silently returning a partial vocabulary.
+INDUCTION_HARD_MAX_FIELDS = 2000
 
 RESULTS_DIR = os.path.join(_SCRIPT_DIR, "step2_results_generic")
 os.makedirs(RESULTS_DIR, exist_ok=True)
@@ -911,24 +925,32 @@ def build_inventory(records: list[dict]) -> tuple[dict, dict]:
             entry["count"] += 1
             if len(entry["samples"]) < INDUCTION_SAMPLES_PER_FIELD and value not in entry["samples"]:
                 entry["samples"].append(value[:80])
-    # The cap bounds one prompt's size, but it truncates BY FREQUENCY, so the
-    # names it would discard first are the rarest -- exactly the ones the
-    # arbiter's own instructions say must be preserved, since a field used by
-    # three records out of two hundred is the only place those three records'
-    # information lives. Silently dropping them would make the implementation
-    # contradict its specification with no error and no trace, so the event is
-    # announced. It does not fire on any corpus evaluated here (the largest
-    # observed inventory is well under the cap); at a scale where it does, the
-    # fix is the hierarchical merge of per-document inventories, not a larger
-    # constant.
+    # EVERY observed name reaches the arbiter. When the inventory outgrows the
+    # prompt budget it is the sample values that thin, never the vocabulary:
+    # a name the arbiter never sees cannot be reconciled, and its records' values
+    # are lost with it, so discarding names by frequency would delete exactly the
+    # rare fields that carry edge-case triggers. Thinning samples degrades how
+    # well the arbiter can judge a name; dropping names decides that it will not
+    # judge them at all. Only the first is an acceptable response to a budget.
     by_count = sorted(field_stats.items(), key=lambda kv: -kv[1]["count"])
-    if len(by_count) > INDUCTION_MAX_FIELDS:
-        dropped = [name for name, _ in by_count[INDUCTION_MAX_FIELDS:]]
-        print(f"  [WARN] observed inventory has {len(by_count)} field name(s); the arbiter "
-              f"sees only the {INDUCTION_MAX_FIELDS} most frequent. {len(dropped)} rare "
-              f"name(s) are DISCARDED before induction and their values will be lost: "
-              f"{', '.join(dropped[:10])}{' ...' if len(dropped) > 10 else ''}", flush=True)
-    ordered = dict(by_count[:INDUCTION_MAX_FIELDS])
+    n = len(by_count)
+    if n > INDUCTION_HARD_MAX_FIELDS:
+        raise RuntimeError(
+            f"observed inventory has {n} distinct field names, beyond the "
+            f"{INDUCTION_HARD_MAX_FIELDS} that one induction prompt can carry even "
+            f"with a single sample each. This is the point at which per-document "
+            f"inventories must be merged hierarchically rather than induced in one "
+            f"call; raising the constant would only move the failure. Stopping "
+            f"rather than inducing over a partial vocabulary.")
+    if n > INDUCTION_BUDGET_FIELDS:
+        allowed = max(1, (INDUCTION_SAMPLES_PER_FIELD * INDUCTION_BUDGET_FIELDS) // n)
+        print(f"  [note] observed inventory has {n} field name(s), above the budget of "
+              f"{INDUCTION_BUDGET_FIELDS}. ALL {n} names are passed to the arbiter; "
+              f"sample values per name are thinned {INDUCTION_SAMPLES_PER_FIELD} -> "
+              f"{allowed} to fit. No vocabulary is discarded.", flush=True)
+        for _, entry in by_count:
+            entry["samples"] = entry["samples"][:allowed]
+    ordered = dict(by_count)
     return ordered, dict(sorted(category_stats.items(), key=lambda kv: -kv[1]))
 
 
