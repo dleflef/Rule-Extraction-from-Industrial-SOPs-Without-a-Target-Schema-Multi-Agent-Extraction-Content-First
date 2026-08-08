@@ -68,7 +68,16 @@ RESULTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            "baseline_single_prompt_results")
 
 
-def baseline_prompt() -> str:
+_CITE_CLAUSE = """
+
+Every content line of the document below is numbered (L7, L8, ...). Also give
+each record:
+  "lines" — the numbers of the lines this record was read from, as integers.
+  Cite only line numbers printed in the document below. A record read from one
+  table row cites that row's line; a rule stated across two lines cites both."""
+
+
+def baseline_prompt(cite_lines: bool = False) -> str:
     """The scout prompt with the orchestration-dependent passages removed.
 
     Kept verbatim wherever the wording does not depend on chunking: the
@@ -184,15 +193,27 @@ document itself.
 
 Reply EXCLUSIVELY with JSON:
 {"records": [{"id": "<printed identifier or empty>", "category": "<what it is>",
-"fields": {"<field_name>": "<value>", ...}}, ...]}
-You may prefix it with a brief "reasoning" key.""" + P._COT_INSTRUCTION
+%s"fields": {"<field_name>": "<value>", ...}}, ...]}
+You may prefix it with a brief "reasoning" key.""" % ('"lines": [<numbers>], ' if cite_lines else "") \
+        + (_CITE_CLAUSE if cite_lines else "") + P._COT_INSTRUCTION
 
 
-def extract_document(fname: str, text: str, model: str) -> list[dict]:
+def _numbered(text: str) -> str:
+    """The document with every non-blank line numbered, using the pipeline's own
+    convention (L<n>, n = 1-indexed raw file line) so a citation from this
+    condition and a citation from the pipeline mean exactly the same thing and
+    can be checked by the same code."""
+    return "\n".join(f"L{i}: {ln.rstrip()}"
+                     for i, ln in enumerate(text.split("\n"), start=1) if ln.strip())
+
+
+def extract_document(fname: str, text: str, model: str,
+                      cite_lines: bool = False) -> list[dict]:
     """One LLM call for one whole document."""
+    body = _numbered(text) if cite_lines else text
     messages = [
-        {"role": "system", "content": baseline_prompt()},
-        {"role": "user", "content": f"DOCUMENT: {fname}\n\n{text}"},
+        {"role": "system", "content": baseline_prompt(cite_lines)},
+        {"role": "user", "content": f"DOCUMENT: {fname}\n\n{body}"},
     ]
     raw = P.llm_call(model, messages)
     items = P.parse_items(raw, "records")
@@ -203,11 +224,15 @@ def extract_document(fname: str, text: str, model: str) -> list[dict]:
         fields = it.get("fields")
         if not isinstance(fields, dict):
             fields = {}
+        cited = it.get("lines") if cite_lines else None
+        cited = [int(n) for n in cited if str(n).strip().lstrip("-").isdigit()] \
+            if isinstance(cited, list) else []
         out.append({
             "id": str(it.get("id", "") or "").strip(),
             "category": str(it.get("category", "") or "").strip(),
             "fields": {str(k): v for k, v in fields.items() if v not in (None, "")},
             "source_file": fname,
+            "lines": cited,
         })
     return out
 
@@ -241,9 +266,12 @@ def to_rows(records: list[dict]) -> list[dict]:
             row[col] = value if not prev else (
                 f"{prev} | {value}" if str(value) not in prev else prev)
         row["source_file"] = fname
+        if r.get("lines"):
+            row["source_span"] = " | ".join(
+                f"{fname}::L{n}#0" for n in r["lines"])[:200]
         rows.append(row)
 
-    head, tail = ["id", "category"], ["source_file"]
+    head, tail = ["id", "category"], ["source_file", "source_span"]
     counts: dict[str, int] = {}
     for r in rows:
         for k in r:
@@ -253,7 +281,8 @@ def to_rows(records: list[dict]) -> list[dict]:
     return [{c: r.get(c, "") for c in cols} for r in rows]
 
 
-def run_once(input_dir: str, corpus: str, model: str, run_index: int) -> str:
+def run_once(input_dir: str, corpus: str, model: str, run_index: int,
+             cite_lines: bool = False) -> str:
     import csv
     files = sorted(f for f in os.listdir(input_dir) if f.endswith(".txt"))
     if not files:
@@ -263,7 +292,7 @@ def run_once(input_dir: str, corpus: str, model: str, run_index: int) -> str:
         with open(os.path.join(input_dir, fname), encoding="utf-8") as fh:
             text = fh.read()
         print(f"    [{fname}] {len(text)} chars -> 1 call", flush=True)
-        got = extract_document(fname, text, model)
+        got = extract_document(fname, text, model, cite_lines)
         print(f"      {len(got)} record(s)", flush=True)
         records.extend(got)
 
@@ -271,7 +300,8 @@ def run_once(input_dir: str, corpus: str, model: str, run_index: int) -> str:
     os.makedirs(RESULTS_DIR, exist_ok=True)
     ts = time.strftime("%Y%m%d_%H%M%S")
     path = os.path.join(RESULTS_DIR,
-                        f"ext_single_prompt_{corpus}_run{run_index}_{ts}.csv")
+                        f"ext_single_prompt{'_cited' if cite_lines else ''}_"
+                        f"{corpus}_run{run_index}_{ts}.csv")
     with open(path, "w", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()) if rows else ["id"])
         w.writeheader()
@@ -287,6 +317,11 @@ if __name__ == "__main__":
     ap.add_argument("--corpus-name", required=True)
     ap.add_argument("--runs", type=int, default=5)
     ap.add_argument("--model", default="gemma4:31b")
+    ap.add_argument("--cite-lines", action="store_true",
+                    help="number the content lines with the pipeline's own L<n> "
+                         "convention and require each record to cite the lines it was "
+                         "read from. Tests whether provenance needs the graph or only "
+                         "the numbering.")
     args = ap.parse_args()
 
     # Repeats must issue real calls, for the same reason the pipeline disables
@@ -299,4 +334,4 @@ if __name__ == "__main__":
 
     for i in range(1, args.runs + 1):
         print(f"\n  ===== {args.corpus_name} run {i}/{args.runs} =====", flush=True)
-        run_once(args.input_dir, args.corpus_name, args.model, i)
+        run_once(args.input_dir, args.corpus_name, args.model, i, args.cite_lines)

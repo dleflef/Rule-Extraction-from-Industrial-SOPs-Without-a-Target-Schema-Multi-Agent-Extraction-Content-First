@@ -1,0 +1,31 @@
+id,category,authorization,operational_phase,role,membrane_feed_pressure,max_bound,measurement,min_bound,parameter_tag,required_correction,ro_feed_stream,time_allowance,anti_scalant_dosing_pump,brine_reject_flow,dosing_skid_containment_bund,empty_chemical_carboys,high_pressure_intake_pump,main_feed_breaker,operators,permeate_bypass_valve,permeate_conductivity,water_quality_data,source_file,source_span
+OP-ST-001,startup ramp limit,,,,,,,,,,,,,,,,must ramp up at a maximum rate of 0.5 bar per minute to prevent membrane telescoping,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L50#0
+OP-ST-002,startup sequence requirement,,,,,,,,,,,,must be energized and verified active prior to raw water valve actuation,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L51#0
+OP-ST-003,startup operational requirement,,,,,,,,,,,,,must be logged every 10 minutes,,,,,,must remain fully open,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L52#0
+OP-SD-001,emergency shutdown trigger,,,,,,,,,,,,,,,,,must be tripped immediately if catastrophic seal failure occurs,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L53#0
+OP-ST-004,startup performance limit,,,,,,,,,,,,,,,,,,,,"If permeate conductivity fails to drop below baseline within 20 minutes, immediately execute the shutdown sequence mandated by [OP-SD-001]",,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L54#0
+SOPROV4HIGHP-001,ppe requirement,,,,,,,,,,,,,,,,,,must wear nitrile gloves and splash goggles when handling sodium bisulfite,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L63#0
+SOPROV4HIGHP-002,spill cleanup limit,,,,,,,,,,,,,,must be pumped empty within 4 hours of any detected spill,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L64#0
+SOPROV4HIGHP-003,disposal procedure,,,,,,,,,,,,,,,require a triple rinse with permeate water before disposal,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L65#0
+OP-AL-001,pressure target,,,,target of 55.0 bar,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L78#0
+SOPROV4HIGHP-004,pressure alert limit,,,,low-tier alert triggers at 52.0 bar,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L78#0
+SOPROV4HIGHP-005,pressure trip limit,,,,critical low trip occurs at 50.0 bar,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L78#0
+SOPROV4HIGHP-006,pressure alert limit,,,,high-tier alert sounds at 58.0 bar,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L78#0
+SOPROV4HIGHP-007,pressure trip limit,,,,critical high trip forces shutdown at 60.0 bar,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L78#0
+FQ-01,feedwater quality limit,,,,,0.5,NTU,0.0,Turbidity,Backwash multimedia filters,FQ-01,30 mins,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L91#0
+FQ-02,feedwater quality limit,,,,,300,mV,-200,ORP,Increase SMBS dosing,FQ-02,15 mins,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L92#0
+FQ-03,feedwater quality limit,,,,,35.0,degC,15.0,Temperature,Adjust VFD speed,FQ-03,60 mins,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L93#0
+FQ-04,feedwater quality limit,,,,,7.5,pH_unit,6.5,pH,Inject Sulfuric Acid,FQ-04,10 mins,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L94#0
+SOPROV4HIGHP-008,access authorization,Full access,Standby,Plant_Operator,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L104#0
+SOPROV4HIGHP-009,access authorization,Full access,Startup,Plant_Operator,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L104#0
+SOPROV4HIGHP-010,access authorization,Full access,Normal_Production,Plant_Operator,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L104#0
+SOPROV4HIGHP-011,access authorization,Visual inspection only,CIP_Cleaning,Plant_Operator,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L104#0
+SOPROV4HIGHP-012,access authorization,Maintenance access,Standby,Maintenance_Tech,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L105#0
+SOPROV4HIGHP-013,access authorization,No access,Startup,Maintenance_Tech,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L105#0
+SOPROV4HIGHP-014,access authorization,Visual inspection only,Normal_Production,Maintenance_Tech,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L105#0
+SOPROV4HIGHP-015,access authorization,Full access,CIP_Cleaning,Maintenance_Tech,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L105#0
+SOPROV4HIGHP-016,access authorization,Visual inspection only,Standby,Safety_Auditor,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L106#0
+SOPROV4HIGHP-017,access authorization,Visual inspection only,Startup,Safety_Auditor,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L106#0
+SOPROV4HIGHP-018,access authorization,Visual inspection only,Normal_Production,Safety_Auditor,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L106#0
+SOPROV4HIGHP-019,access authorization,Visual inspection only,CIP_Cleaning,Safety_Auditor,,,,,,,,,,,,,,,,,,,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L106#0
+SOPROV4HIGHP-020,data retention requirement,,,,,,,,,,,,,,,,,,,,,retention of all water quality data for a period spanning ten years,SOP_RO_V4_HighPressureROSkids.txt,SOP_RO_V4_HighPressureROSkids.txt::L136#0 | SOP_RO_V4_HighPressureROSkids.txt::L137#0

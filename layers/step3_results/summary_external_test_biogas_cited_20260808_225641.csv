@@ -1,0 +1,2 @@
+condition,runs,f1_mean,f1_std,f1_min,f1_max,pr_mean,re_mean,items_mean,items_std,max_pr
+ext_single_prompt_cited_external_test_biogas,5,0.777,0.007,0.765,0.78,0.914,0.677,34.8,0.4,1.0

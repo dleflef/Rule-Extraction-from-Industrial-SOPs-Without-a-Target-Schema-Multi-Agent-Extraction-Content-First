@@ -1,0 +1,6 @@
+file_name,total_extracted,gt_rows_total,max_possible_precision,forced_fp_from_row_count,content_f1,content_pr,content_re,content_tp,content_fp,content_fn,gt_ids_found_verbatim,gt_ids_distinct,id_reuse_frac
+ext_single_prompt_cited_external_test_desalination_run1_20260808_225229.csv,26,26,1.0,0,0.885,0.885,0.885,23,3,3,6,10,0.6
+ext_single_prompt_cited_external_test_desalination_run5_20260808_225307.csv,30,26,0.867,4,0.821,0.767,0.885,23,7,3,10,10,1.0
+ext_single_prompt_cited_external_test_desalination_run2_20260808_225242.csv,30,26,0.867,4,0.786,0.733,0.846,22,8,4,10,10,1.0
+ext_single_prompt_cited_external_test_desalination_run4_20260808_225258.csv,28,26,0.929,2,0.778,0.75,0.808,21,7,5,10,10,1.0
+ext_single_prompt_cited_external_test_desalination_run3_20260808_225249.csv,30,26,0.867,4,0.75,0.7,0.808,21,9,5,6,10,0.6

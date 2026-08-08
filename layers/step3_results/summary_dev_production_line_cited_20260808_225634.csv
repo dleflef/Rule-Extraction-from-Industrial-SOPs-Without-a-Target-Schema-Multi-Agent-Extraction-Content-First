@@ -1,0 +1,2 @@
+condition,runs,f1_mean,f1_std,f1_min,f1_max,pr_mean,re_mean,items_mean,items_std,max_pr
+ext_single_prompt_cited_dev_production_line,5,0.713,0.005,0.71,0.719,0.59,0.902,131.6,1.3,0.653

@@ -1156,20 +1156,26 @@ def audit_chunk(chunk: dict, group: list[dict], file_lines: dict[str, list[str]]
             continue
         corrected_names = ""
         if decision == "correct" and isinstance(verdict.get("corrections"), dict):
-            # KNOWN DEFECT, left in place deliberately and disclosed in the
-            # thesis rather than patched after the fact. _INTERNAL_KEYS is
-            # filtered on the scout path but not here, so an auditor that
-            # returns a correction keyed "lines" writes the record's own
-            # provenance into its content fields, where it becomes a CSV column
-            # and enters the scored blob. It happened on 8 records of one corpus
-            # across the reported batch; rescoring those runs with the field
-            # excluded moves that corpus's F1 by 0.0000, so no reported figure
-            # depends on it. Filtering it here would change extraction output
-            # and invalidate the batch every number in the thesis is computed
-            # from, which is not a trade worth making for a measured effect of
-            # zero -- fix it together with the next full re-run.
+            # REPAIRED DEFECT -- note retained because the thesis's reported
+            # batch PREDATES this line and must stay interpretable.
+            #
+            # _INTERNAL_KEYS is filtered on the scout path but was not filtered
+            # here, so an auditor returning a correction keyed "lines" wrote the
+            # record's own provenance into its content fields, where it became a
+            # CSV column and entered the scored blob. It reached 8 records of one
+            # corpus across the reported batch and cost that corpus 0.011 F1 --
+            # in the conservative direction, since the injected line numbers are
+            # unjustified values that the symmetric numeric term charges for.
+            #
+            # The filter below is the repair. It is NOT reflected in the
+            # reported figures: applying it changes extraction output, and
+            # re-running to adopt it would move every figure by the endpoint's
+            # run-to-run variation (up to 0.049), roughly four times the defect
+            # it removes. The reported batch is therefore retained as produced,
+            # with the defect measured and disclosed, and this line takes effect
+            # from the next full re-run onwards.
             applied = [name for name, value in verdict["corrections"].items()
-                       if value not in (None, "")]
+                       if value not in (None, "") and _snake(name) not in _INTERNAL_KEYS]
             for name in applied:
                 g["fields"][_snake(name)] = str(verdict["corrections"][name]).strip()
             corrected_names = "|".join(_snake(n) for n in applied)
