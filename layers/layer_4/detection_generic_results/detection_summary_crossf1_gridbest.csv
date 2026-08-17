@@ -1,0 +1,6 @@
+file,records,rules_detector_ready,unmapped_records,unresolved_sensor,quarantined,events_detected,gt_total,gt_covered,recall,precision,f1,recall_excl_correlated,op_recall_any,op_recall_cov25,op_recall_cov50,op_recall_lat30,op_mean_coverage_pct,nodelay_recall_any,nodelay_recall_cov25,nodelay_recall_cov50,nodelay_recall_lat30,nodelay_mean_coverage_pct,missed
+ext_gemma4-31b_reflexion_guided_ctexts_s42_run1_20260804_120958.csv,81,56,0,22,1,15,14,13,0.929,0.867,0.897,1.0,0.929,0.786,0.5,0.571,51.2,0.929,0.857,0.714,0.714,67.6,GT-0009
+ext_gemma4-31b_reflexion_guided_ctexts_s42_run2_20260804_121620.csv,75,56,0,17,2,15,14,13,0.929,0.867,0.897,1.0,0.929,0.714,0.429,0.571,45.4,0.929,0.857,0.714,0.714,67.6,GT-0009
+ext_gemma4-31b_reflexion_guided_ctexts_s42_run3_20260804_122233.csv,76,56,0,19,2,15,14,13,0.929,0.867,0.897,1.0,0.929,0.714,0.429,0.571,48.2,0.929,0.857,0.714,0.714,67.6,GT-0009
+ext_gemma4-31b_reflexion_guided_ctexts_s42_run4_20260804_122741.csv,81,56,0,23,1,15,14,13,0.929,0.867,0.897,1.0,0.929,0.786,0.5,0.571,53.1,0.929,0.857,0.714,0.714,67.6,GT-0009
+ext_gemma4-31b_reflexion_guided_ctexts_s42_run5_20260804_123634.csv,81,56,0,23,1,15,14,13,0.929,0.867,0.897,1.0,0.929,0.786,0.5,0.571,51.2,0.929,0.857,0.714,0.714,67.6,GT-0009

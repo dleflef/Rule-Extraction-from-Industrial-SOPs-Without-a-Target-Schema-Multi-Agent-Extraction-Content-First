@@ -31,7 +31,7 @@ CORPORA=(
   "dev_production_line:$ROOT/data/dataset/kg_seed/ground_truth.csv:-"
   "external_test_biogas:$ROOT/data/external_test_biogas/ground_truth_biogas.csv:-"
   "external_test_sulfuric_acid:$ROOT/data/external_test_sulfuric_acid/ground_truth_SA.csv:-"
-  "external_test_desalination:$ROOT/data/external_test_desalination/ground_truth_desalination.csv:identifier"
+  "external_test_desalination:$ROOT/data/external_test_desalination/ground_truth_desalination.csv:-"
 )
 
 mkdir -p "$DEST"

@@ -1,0 +1,2 @@
+file,records,rules_detector_ready,unmapped_records,unresolved_sensor,quarantined,events_detected,gt_total,gt_covered,recall,precision,f1,recall_excl_correlated,op_recall_any,op_recall_cov25,op_recall_cov50,op_recall_lat30,op_mean_coverage_pct,nodelay_recall_any,nodelay_recall_cov25,nodelay_recall_cov50,nodelay_recall_lat30,nodelay_mean_coverage_pct,missed
+ext_multi_agent_generic_dev_production_line_run3_20260807_181147.csv,131,27,0,54,0,15,14,13,0.929,0.867,0.897,1.0,0.929,0.643,0.429,0.571,44.7,0.929,0.857,0.714,0.714,67.6,GT-0009

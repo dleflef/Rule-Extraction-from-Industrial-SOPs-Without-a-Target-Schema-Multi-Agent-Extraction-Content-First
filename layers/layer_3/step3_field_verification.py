@@ -12,9 +12,17 @@ separator removal) maps the ground truth's critLo/warnLo/warnHi/critHi onto
 the pipeline's crit_lo/warn_lo/warn_hi/crit_hi. No vocabulary is consulted;
 the match is a string operation.
 
-Records are keyed by station and sensor. The station is resolved PER ROW as
-the first non-empty value among candidate columns (station, then asset),
-because the induced schema does not name that column identically across runs.
+Records are keyed by station and sensor. The station is resolved PER ROW BY
+VALUE, not by column name: the row is scanned for any cell holding one of the
+station identifiers the seed knowledge graph declares (the nine Component
+nodes of kg_seed/nodes.csv, a facility inventory that any consumer of these
+records legitimately has). A column-name whitelist was tried first and is the
+wrong instrument -- the induced schema does not name that column identically
+across runs, so a whitelist silently reports "no station" for a record that
+carries one under a name the list happens not to hold. Resolving by value is
+schema-agnostic: it finds the station wherever the inducer filed it, and finds
+nothing when the record genuinely carries none.
+
 The ground truth's sensor identifiers embed the station prefix
 (ST01_FILLING_TMP), while the pipeline copies the document's own short code
 (TMP); the prefix is stripped for the comparison.
@@ -44,7 +52,16 @@ OUT_DIR = os.path.join(_PROJECT_ROOT, "layers", "step3_results")
 GT_PATH = os.path.join(_PROJECT_ROOT, "data", "dataset", "kg_seed", "ground_truth.csv")
 
 BOUND_FIELDS = ("critlo", "warnlo", "warnhi", "crithi")
-STATION_CANDIDATES = ("station", "asset")
+ABOX_NODES = os.path.join(_PROJECT_ROOT, "data", "dataset", "kg_seed", "nodes.csv")
+
+
+def load_declared_stations() -> set:
+    """The station identifiers the seed knowledge graph declares (Component
+    nodes). Used to locate the station in a predicted record by value rather
+    than by column name -- see the module docstring."""
+    nodes = pd.read_csv(ABOX_NODES, dtype=str).fillna("")
+    return {s.strip() for s in nodes.loc[nodes["label"] == "Component", "name"]
+            if s.strip()}
 
 
 def norm_col(name: str) -> str:
@@ -71,19 +88,22 @@ def load_gt_threshold_rows() -> pd.DataFrame:
     return rows
 
 
-def pred_key(row: pd.Series, colmap: dict) -> tuple:
+def pred_key(row: pd.Series, colmap: dict, stations: set) -> tuple:
+    """Station by value (any column holding a declared station id), sensor by
+    the record's own `sensor` field. Returns ("", sensor) when no cell of the
+    row names a station the facility declares."""
     station = ""
-    for cand in STATION_CANDIDATES:
-        col = colmap.get(cand)
-        if col and str(row[col]).strip():
-            station = str(row[col]).strip()
+    for val in row:
+        v = str(val).strip()
+        if v in stations:
+            station = v
             break
     sensor_col = colmap.get("sensor")
     sensor = str(row[sensor_col]).strip() if sensor_col else ""
     return station, sensor
 
 
-def verify_run(run_no: int, path: str, gt_rows: pd.DataFrame):
+def verify_run(run_no: int, path: str, gt_rows: pd.DataFrame, stations: set):
     pred = pd.read_csv(path, dtype=str).fillna("")
     colmap = {norm_col(c): c for c in pred.columns}
     bound_cols = [colmap[f] for f in BOUND_FIELDS if f in colmap]
@@ -92,7 +112,7 @@ def verify_run(run_no: int, path: str, gt_rows: pd.DataFrame):
     for _, row in pred.iterrows():
         if not any(str(row[c]).strip() for c in bound_cols):
             continue
-        keyed.setdefault(pred_key(row, colmap), row)
+        keyed.setdefault(pred_key(row, colmap, stations), row)
 
     cells = matches = 0
     sensors_found = 0
@@ -137,29 +157,83 @@ def main() -> None:
         sys.exit(f"no dev prediction files under {PRED_DIR}")
 
     gt_rows = load_gt_threshold_rows()
+    stations = load_declared_stations()
     summaries, all_mismatches = [], []
     for i, path in enumerate(paths, start=1):
-        summary, mism = verify_run(i, path, gt_rows)
+        summary, mism = verify_run(i, path, gt_rows, stations)
         summaries.append(summary)
         all_mismatches.extend(mism)
 
     total_cells = sum(s["bound_cells"] for s in summaries)
     total_match = sum(s["cells_matching_gt"] for s in summaries)
+    # Every field of the TOTAL row is a sum over runs, so the row can be read
+    # with the same arithmetic as any single run. An earlier version reported
+    # the MINIMUM sensors_recovered here, which printed 0 whenever one run
+    # failed to key and made the pooled figure unreadable.
     summaries.append({
         "run": "TOTAL",
         "prediction_file": f"{len(paths)} runs",
-        "gt_threshold_sensors": len(gt_rows),
-        "sensors_recovered": min(s["sensors_recovered"] for s in summaries),
+        "gt_threshold_sensors": len(gt_rows) * len(paths),
+        "sensors_recovered": sum(s["sensors_recovered"] for s in summaries),
         "bound_cells": total_cells,
         "cells_matching_gt": total_match,
         "cells_mismatching_gt": total_cells - total_match,
     })
 
+    # Bound ordering, checked WITHOUT any reference. Agreement with the
+    # annotation is one question; whether a record files a low bound in a high
+    # slot is a narrower one, and it can be asked of the pipeline's own output
+    # alone. A record carrying all four bounds must satisfy
+    # crit_lo <= warn_lo <= warn_hi <= crit_hi; one with its bounds reversed
+    # cannot. This is the perturbation F1_content prices at zero, so it is
+    # established here instead.
+    _BOUNDS = ["crit_lo", "warn_lo", "warn_hi", "crit_hi"]
+    ordering = []
+    for path in paths:
+        pred = pd.read_csv(path, dtype=str).fillna("")
+        if not all(c in pred.columns for c in _BOUNDS):
+            continue
+        with_any = with_all = violations = 0
+        for _, row in pred.iterrows():
+            vals = []
+            for col in _BOUNDS:
+                try:
+                    vals.append(float(str(row[col]).strip()))
+                except ValueError:
+                    vals.append(None)
+            if not any(v is not None for v in vals):
+                continue
+            with_any += 1
+            if all(v is not None for v in vals):
+                with_all += 1
+                if not (vals[0] <= vals[1] <= vals[2] <= vals[3]):
+                    violations += 1
+        ordering.append({
+            "run": len(ordering) + 1,
+            "records_with_any_bound": with_any,
+            "records_with_all_four": with_all,
+            "ordering_violations": violations,
+        })
+    ordering.append({
+        "run": "TOTAL",
+        "records_with_any_bound": sum(o["records_with_any_bound"] for o in ordering),
+        "records_with_all_four": sum(o["records_with_all_four"] for o in ordering),
+        "ordering_violations": sum(o["ordering_violations"] for o in ordering),
+    })
+
     os.makedirs(OUT_DIR, exist_ok=True)
     out_summary = os.path.join(OUT_DIR, "field_verification_dev.csv")
     out_mism = os.path.join(OUT_DIR, "field_verification_dev_mismatches.csv")
+    out_order = os.path.join(OUT_DIR, "field_verification_bound_ordering.csv")
     pd.DataFrame(summaries).to_csv(out_summary, index=False)
     pd.DataFrame(all_mismatches).to_csv(out_mism, index=False)
+    pd.DataFrame(ordering).to_csv(out_order, index=False)
+    tot = ordering[-1]
+    print(f"[field-verify] bound ordering: {tot['records_with_any_bound']} records "
+          f"carry bounds, {tot['records_with_all_four']} carry all four, "
+          f"{tot['ordering_violations']} violate "
+          f"crit_lo <= warn_lo <= warn_hi <= crit_hi")
+    print(f"[field-verify] wrote {out_order}")
 
     pct = 100.0 * total_match / total_cells if total_cells else 0.0
     print(f"[field-verify] {total_match}/{total_cells} bound cells "

@@ -1,3 +1,0 @@
-corpus,gt_cells,present_anywhere,in_correct_slot,recall_frac,binding_frac
-dev_production_line,920,600,420,0.652,0.7
-external_test_desalination,50,50,40,1.0,0.8

@@ -1,6 +1,0 @@
-file_name,total_extracted,gt_rows_total,max_possible_precision,forced_fp_from_row_count,content_f1,content_pr,content_re,content_tp,content_fp,content_fn,gt_ids_found_verbatim,gt_ids_distinct,id_reuse_frac
-ext_single_prompt_cited_dev_production_line_run4_20260808_224811.csv,131,86,0.656,45,0.719,0.595,0.907,78,53,8,31,86,0.36
-ext_single_prompt_cited_dev_production_line_run1_20260808_224327.csv,134,86,0.642,48,0.718,0.59,0.919,79,55,7,31,86,0.36
-ext_single_prompt_cited_dev_production_line_run3_20260808_224632.csv,131,86,0.656,45,0.71,0.588,0.895,77,54,9,31,86,0.36
-ext_single_prompt_cited_dev_production_line_run2_20260808_224455.csv,131,86,0.656,45,0.71,0.588,0.895,77,54,9,31,86,0.36
-ext_single_prompt_cited_dev_production_line_run5_20260808_224947.csv,131,86,0.656,45,0.71,0.588,0.895,77,54,9,31,86,0.36

@@ -5,7 +5,7 @@ external_test_desalination,external_test_biogas,5,0.075,0.081
 external_test_sulfuric_acid,dev_production_line,5,0.027,0.059
 dev_production_line,external_test_sulfuric_acid,5,0.036,0.05
 external_test_biogas,dev_production_line,5,0.025,0.035
-external_test_sulfuric_acid,external_test_desalination,5,0.027,0.027
+external_test_sulfuric_acid,external_test_desalination,5,0.016,0.027
 external_test_desalination,external_test_sulfuric_acid,5,0.021,0.021
 external_test_biogas,external_test_sulfuric_acid,5,0.016,0.02
 external_test_desalination,dev_production_line,5,0.007,0.018

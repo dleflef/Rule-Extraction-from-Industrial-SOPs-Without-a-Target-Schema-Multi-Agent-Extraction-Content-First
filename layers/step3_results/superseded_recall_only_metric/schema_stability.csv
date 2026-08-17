@@ -1,5 +1,0 @@
-corpus,runs,fields_per_run_min,fields_per_run_max,field_union,field_core,field_core_frac,field_jaccard_mean,category_union,category_core,category_core_frac,category_jaccard_mean,condition_field_distinct,action_field_distinct,severity_field_distinct
-dev_production_line,5,34,44,50,31,0.62,0.813,27,17,0.63,0.809,1,1,1
-external_test_biogas,5,27,44,71,15,0.211,0.476,22,5,0.227,0.448,2,1,2
-external_test_desalination,5,19,30,47,9,0.191,0.462,25,5,0.2,0.452,2,2,2
-external_test_sulfuric_acid,5,36,43,86,19,0.221,0.447,51,4,0.078,0.311,1,2,1

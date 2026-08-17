@@ -25,14 +25,19 @@ STAGE="$ROOT/.eval_stage"
 
 # corpus tag : input dir : ground truth : id-field override ("-" = auto-detect)
 #
-# desalination overrides the id field. Its ground truth leaves `identifier` blank
-# on rows with no printed code (matrix cells, un-coded prose rules): only 11 of
-# 26 rows carry one, so `identifier` fails the evaluator's coverage requirement
-# (an id column is populated on almost every row) and detection falls through to
-# `rule_text`, the only fully-populated all-distinct column. Detecting rule_text
-# as the id would drop the verbatim rule sentences out of the ground truth's
-# content blob, so the id is pinned by hand here. The other ground truths
-# populate their id column on every row and detect correctly.
+# NO corpus overrides the id field. Every ground truth is scored by the same
+# generic evaluator with structural id detection, so the reported figures need
+# no per-corpus hand-holding to reproduce.
+#
+# Desalination is the case where this costs something, and it is left to cost it.
+# Its ground truth leaves `identifier` blank on rows with no printed code (only
+# 11 of 26 carry one), so `identifier` fails the coverage requirement and
+# detection falls through to `rule_text`, the only fully-populated all-distinct
+# column. That drops the verbatim rule sentences out of the ground truth's blob
+# and costs 0.045 F1 (0.850 -> 0.804, 0.0451 before the means are rounded).
+# Pinning the id by hand recovers it, but a
+# generic evaluator that needs per-corpus configuration is not generic, so the
+# lower figure is the one reported.
 # The first entry is the DEVELOPMENT corpus: the four Production Line A SOPs the
 # pipeline was built and debugged against. Its directory is still called "texts"
 # because layer 1 and the grid both write to or read from that
@@ -42,7 +47,7 @@ CORPORA=(
   "dev_production_line:$ROOT/layers/layer_1/texts:$ROOT/data/dataset/kg_seed/ground_truth.csv:-"
   "external_test_biogas:$ROOT/data/external_test_biogas:$ROOT/data/external_test_biogas/ground_truth_biogas.csv:-"
   "external_test_sulfuric_acid:$ROOT/data/external_test_sulfuric_acid:$ROOT/data/external_test_sulfuric_acid/ground_truth_SA.csv:-"
-  "external_test_desalination:$ROOT/data/external_test_desalination:$ROOT/data/external_test_desalination/ground_truth_desalination.csv:identifier"
+  "external_test_desalination:$ROOT/data/external_test_desalination:$ROOT/data/external_test_desalination/ground_truth_desalination.csv:-"
 )
 
 if [[ "$EVAL_ONLY" != "--eval-only" ]]; then

@@ -5,13 +5,13 @@
 #   Phase 2  grid search, gemma4:31b x all paradigms x 5 runs
 #   Phase 3  score both against ground_truth_desalination.csv
 #
-# --gt-id-field identifier is passed explicitly. This ground truth leaves
-# `identifier` blank on the rows that have no printed code (matrix cells, un-coded
-# prose rules), and the evaluator's structural id detection reads a missing value
-# as the string "nan", counts it as present, and therefore rejects `identifier`
-# for low uniqueness -- leaving `rule_text` as the only candidate. Detecting
-# rule_text as the id would drop the verbatim rule sentences out of the ground
-# truth's content blob, which is the richest signal it has.
+# No id-field override is passed: this corpus is scored by the same generic
+# evaluator as every other. Its ground truth leaves `identifier` blank on the
+# rows with no printed code (only 11 of 26 carry one), so `identifier` fails the
+# coverage requirement and detection falls through to `rule_text`, which drops
+# the verbatim rule sentences out of the ground truth's blob. That costs 0.046
+# F1 and is accepted: a generic evaluator that needs per-corpus configuration is
+# not generic.
 #
 # Usage: zsh layers/run_desalination.sh [runs]     (default 5)
 
@@ -66,7 +66,7 @@ for sys_name in multi_agent grid; do
   if [ -n "$(ls -A $STAGE/$sys_name 2>/dev/null)" ]; then
     echo "############ $sys_name ############"
     python3 "$ROOT/layers/layer_3/step3_evaluation_generic_dynamic.py" \
-        --gt "$GT" --pred-dir "$STAGE/$sys_name" --gt-id-field identifier --aggregate
+        --gt "$GT" --pred-dir "$STAGE/$sys_name" --aggregate
   fi
 done
 rm -rf "$STAGE"

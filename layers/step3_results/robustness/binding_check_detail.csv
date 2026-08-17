@@ -1196,63 +1196,63 @@ external_test_sulfuric_acid,5,R066,numeric_value:months,3.0,in-text,calibration_
 external_test_sulfuric_acid,5,R067,numeric_value:months,6.0,in-text,calibration_requirement
 external_test_sulfuric_acid,5,R068,numeric_value:months,6.0,in-text,calibration_requirement
 external_test_sulfuric_acid,5,R069,numeric_value:m,15.0,in-text,condition
-external_test_desalination,1,OP-AL-001,min_bound,50.0,in-text,threshold
-external_test_desalination,1,OP-AL-001,max_bound,60.0,in-text,threshold
-external_test_desalination,1,OP-AL-001,alert_low,52.0,in-text,threshold
-external_test_desalination,1,OP-AL-001,alert_high,58.0,in-text,threshold
-external_test_desalination,1,FQ-01,min_bound,0.0,slot-bound,min_bound
-external_test_desalination,1,FQ-01,max_bound,0.5,slot-bound,max_bound
-external_test_desalination,1,FQ-02,min_bound,-200.0,slot-bound,min_bound
-external_test_desalination,1,FQ-02,max_bound,300.0,slot-bound,max_bound
-external_test_desalination,1,FQ-03,min_bound,15.0,slot-bound,min_bound
-external_test_desalination,1,FQ-03,max_bound,35.0,slot-bound,max_bound
-external_test_desalination,1,FQ-04,min_bound,6.5,slot-bound,min_bound
-external_test_desalination,1,FQ-04,max_bound,7.5,slot-bound,max_bound
-external_test_desalination,2,OP-AL-001,min_bound,50.0,in-text,critical_low_trip
-external_test_desalination,2,OP-AL-001,max_bound,60.0,in-text,critical_high_trip
-external_test_desalination,2,OP-AL-001,alert_low,52.0,in-text,low_tier_alert
-external_test_desalination,2,OP-AL-001,alert_high,58.0,in-text,high_tier_alert
-external_test_desalination,2,FQ-01,min_bound,0.0,slot-bound,min_bound
-external_test_desalination,2,FQ-01,max_bound,0.5,slot-bound,max_bound
-external_test_desalination,2,FQ-02,min_bound,-200.0,slot-bound,min_bound
-external_test_desalination,2,FQ-02,max_bound,300.0,slot-bound,max_bound
-external_test_desalination,2,FQ-03,min_bound,15.0,slot-bound,min_bound
-external_test_desalination,2,FQ-03,max_bound,35.0,slot-bound,max_bound
-external_test_desalination,2,FQ-04,min_bound,6.5,slot-bound,min_bound
-external_test_desalination,2,FQ-04,max_bound,7.5,slot-bound,max_bound
-external_test_desalination,3,OP-AL-001,min_bound,50.0,in-text,threshold
-external_test_desalination,3,OP-AL-001,max_bound,60.0,in-text,threshold
-external_test_desalination,3,OP-AL-001,alert_low,52.0,in-text,threshold
-external_test_desalination,3,OP-AL-001,alert_high,58.0,in-text,threshold
-external_test_desalination,3,FQ-01,min_bound,0.0,slot-bound,min_bound
-external_test_desalination,3,FQ-01,max_bound,0.5,slot-bound,max_bound
-external_test_desalination,3,FQ-02,min_bound,-200.0,slot-bound,min_bound
-external_test_desalination,3,FQ-02,max_bound,300.0,slot-bound,max_bound
-external_test_desalination,3,FQ-03,min_bound,15.0,slot-bound,min_bound
-external_test_desalination,3,FQ-03,max_bound,35.0,slot-bound,max_bound
-external_test_desalination,3,FQ-04,min_bound,6.5,slot-bound,min_bound
-external_test_desalination,3,FQ-04,max_bound,7.5,slot-bound,max_bound
-external_test_desalination,4,OP-AL-001,min_bound,50.0,in-text,threshold
-external_test_desalination,4,OP-AL-001,max_bound,60.0,in-text,threshold
-external_test_desalination,4,OP-AL-001,alert_low,52.0,in-text,threshold
-external_test_desalination,4,OP-AL-001,alert_high,58.0,in-text,threshold
-external_test_desalination,4,FQ-01,min_bound,0.0,slot-bound,min_bound
-external_test_desalination,4,FQ-01,max_bound,0.5,slot-bound,max_bound
-external_test_desalination,4,FQ-02,min_bound,-200.0,slot-bound,min_bound
-external_test_desalination,4,FQ-02,max_bound,300.0,slot-bound,max_bound
-external_test_desalination,4,FQ-03,min_bound,15.0,slot-bound,min_bound
-external_test_desalination,4,FQ-03,max_bound,35.0,slot-bound,max_bound
-external_test_desalination,4,FQ-04,min_bound,6.5,slot-bound,min_bound
-external_test_desalination,4,FQ-04,max_bound,7.5,slot-bound,max_bound
-external_test_desalination,5,OP-AL-001,min_bound,50.0,in-text,value
-external_test_desalination,5,OP-AL-001,max_bound,60.0,in-text,value
-external_test_desalination,5,OP-AL-001,alert_low,52.0,in-text,value
-external_test_desalination,5,OP-AL-001,alert_high,58.0,in-text,value
-external_test_desalination,5,FQ-01,min_bound,0.0,slot-bound,min_bound
-external_test_desalination,5,FQ-01,max_bound,0.5,slot-bound,max_bound
-external_test_desalination,5,FQ-02,min_bound,-200.0,slot-bound,min_bound
-external_test_desalination,5,FQ-02,max_bound,300.0,slot-bound,max_bound
-external_test_desalination,5,FQ-03,min_bound,15.0,slot-bound,min_bound
-external_test_desalination,5,FQ-03,max_bound,35.0,slot-bound,max_bound
-external_test_desalination,5,FQ-04,min_bound,6.5,slot-bound,min_bound
-external_test_desalination,5,FQ-04,max_bound,7.5,slot-bound,max_bound
+external_test_desalination,1,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",min_bound,50.0,in-text,threshold
+external_test_desalination,1,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",max_bound,60.0,in-text,threshold
+external_test_desalination,1,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",alert_low,52.0,in-text,threshold
+external_test_desalination,1,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",alert_high,58.0,in-text,threshold
+external_test_desalination,1,FQ-01 | Turbidity | NTU | 0.0 | 0.5 | Backwash multimedia filters | 30 mins,min_bound,0.0,slot-bound,min_bound
+external_test_desalination,1,FQ-01 | Turbidity | NTU | 0.0 | 0.5 | Backwash multimedia filters | 30 mins,max_bound,0.5,slot-bound,max_bound
+external_test_desalination,1,FQ-02 | ORP | mV | -200 | 300 | Increase SMBS dosing | 15 mins,min_bound,-200.0,slot-bound,min_bound
+external_test_desalination,1,FQ-02 | ORP | mV | -200 | 300 | Increase SMBS dosing | 15 mins,max_bound,300.0,slot-bound,max_bound
+external_test_desalination,1,FQ-03 | Temperature | degC | 15.0 | 35.0 | Adjust VFD speed | 60 mins,min_bound,15.0,slot-bound,min_bound
+external_test_desalination,1,FQ-03 | Temperature | degC | 15.0 | 35.0 | Adjust VFD speed | 60 mins,max_bound,35.0,slot-bound,max_bound
+external_test_desalination,1,FQ-04 | pH | pH_unit | 6.5 | 7.5 | Inject Sulfuric Acid | 10 mins,min_bound,6.5,slot-bound,min_bound
+external_test_desalination,1,FQ-04 | pH | pH_unit | 6.5 | 7.5 | Inject Sulfuric Acid | 10 mins,max_bound,7.5,slot-bound,max_bound
+external_test_desalination,2,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",min_bound,50.0,in-text,critical_low_trip
+external_test_desalination,2,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",max_bound,60.0,in-text,critical_high_trip
+external_test_desalination,2,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",alert_low,52.0,in-text,low_tier_alert
+external_test_desalination,2,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",alert_high,58.0,in-text,high_tier_alert
+external_test_desalination,2,FQ-01 | Turbidity | NTU | 0.0 | 0.5 | Backwash multimedia filters | 30 mins,min_bound,0.0,slot-bound,min_bound
+external_test_desalination,2,FQ-01 | Turbidity | NTU | 0.0 | 0.5 | Backwash multimedia filters | 30 mins,max_bound,0.5,slot-bound,max_bound
+external_test_desalination,2,FQ-02 | ORP | mV | -200 | 300 | Increase SMBS dosing | 15 mins,min_bound,-200.0,slot-bound,min_bound
+external_test_desalination,2,FQ-02 | ORP | mV | -200 | 300 | Increase SMBS dosing | 15 mins,max_bound,300.0,slot-bound,max_bound
+external_test_desalination,2,FQ-03 | Temperature | degC | 15.0 | 35.0 | Adjust VFD speed | 60 mins,min_bound,15.0,slot-bound,min_bound
+external_test_desalination,2,FQ-03 | Temperature | degC | 15.0 | 35.0 | Adjust VFD speed | 60 mins,max_bound,35.0,slot-bound,max_bound
+external_test_desalination,2,FQ-04 | pH | pH_unit | 6.5 | 7.5 | Inject Sulfuric Acid | 10 mins,min_bound,6.5,slot-bound,min_bound
+external_test_desalination,2,FQ-04 | pH | pH_unit | 6.5 | 7.5 | Inject Sulfuric Acid | 10 mins,max_bound,7.5,slot-bound,max_bound
+external_test_desalination,3,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",min_bound,50.0,in-text,threshold
+external_test_desalination,3,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",max_bound,60.0,in-text,threshold
+external_test_desalination,3,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",alert_low,52.0,in-text,threshold
+external_test_desalination,3,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",alert_high,58.0,in-text,threshold
+external_test_desalination,3,FQ-01 | Turbidity | NTU | 0.0 | 0.5 | Backwash multimedia filters | 30 mins,min_bound,0.0,slot-bound,min_bound
+external_test_desalination,3,FQ-01 | Turbidity | NTU | 0.0 | 0.5 | Backwash multimedia filters | 30 mins,max_bound,0.5,slot-bound,max_bound
+external_test_desalination,3,FQ-02 | ORP | mV | -200 | 300 | Increase SMBS dosing | 15 mins,min_bound,-200.0,slot-bound,min_bound
+external_test_desalination,3,FQ-02 | ORP | mV | -200 | 300 | Increase SMBS dosing | 15 mins,max_bound,300.0,slot-bound,max_bound
+external_test_desalination,3,FQ-03 | Temperature | degC | 15.0 | 35.0 | Adjust VFD speed | 60 mins,min_bound,15.0,slot-bound,min_bound
+external_test_desalination,3,FQ-03 | Temperature | degC | 15.0 | 35.0 | Adjust VFD speed | 60 mins,max_bound,35.0,slot-bound,max_bound
+external_test_desalination,3,FQ-04 | pH | pH_unit | 6.5 | 7.5 | Inject Sulfuric Acid | 10 mins,min_bound,6.5,slot-bound,min_bound
+external_test_desalination,3,FQ-04 | pH | pH_unit | 6.5 | 7.5 | Inject Sulfuric Acid | 10 mins,max_bound,7.5,slot-bound,max_bound
+external_test_desalination,4,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",min_bound,50.0,in-text,threshold
+external_test_desalination,4,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",max_bound,60.0,in-text,threshold
+external_test_desalination,4,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",alert_low,52.0,in-text,threshold
+external_test_desalination,4,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",alert_high,58.0,in-text,threshold
+external_test_desalination,4,FQ-01 | Turbidity | NTU | 0.0 | 0.5 | Backwash multimedia filters | 30 mins,min_bound,0.0,slot-bound,min_bound
+external_test_desalination,4,FQ-01 | Turbidity | NTU | 0.0 | 0.5 | Backwash multimedia filters | 30 mins,max_bound,0.5,slot-bound,max_bound
+external_test_desalination,4,FQ-02 | ORP | mV | -200 | 300 | Increase SMBS dosing | 15 mins,min_bound,-200.0,slot-bound,min_bound
+external_test_desalination,4,FQ-02 | ORP | mV | -200 | 300 | Increase SMBS dosing | 15 mins,max_bound,300.0,slot-bound,max_bound
+external_test_desalination,4,FQ-03 | Temperature | degC | 15.0 | 35.0 | Adjust VFD speed | 60 mins,min_bound,15.0,slot-bound,min_bound
+external_test_desalination,4,FQ-03 | Temperature | degC | 15.0 | 35.0 | Adjust VFD speed | 60 mins,max_bound,35.0,slot-bound,max_bound
+external_test_desalination,4,FQ-04 | pH | pH_unit | 6.5 | 7.5 | Inject Sulfuric Acid | 10 mins,min_bound,6.5,slot-bound,min_bound
+external_test_desalination,4,FQ-04 | pH | pH_unit | 6.5 | 7.5 | Inject Sulfuric Acid | 10 mins,max_bound,7.5,slot-bound,max_bound
+external_test_desalination,5,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",min_bound,50.0,in-text,value
+external_test_desalination,5,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",max_bound,60.0,in-text,value
+external_test_desalination,5,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",alert_low,52.0,in-text,value
+external_test_desalination,5,"[OP-AL-001] Membrane Feed Pressure requires strict monitoring against a target of 55.0 bar. A low-tier alert triggers at 52.0 bar, while a critical low trip occurs at 50.0 bar. A high-tier alert sounds at 58.0 bar, and a critical high trip forces shutdown at 60.0 bar.",alert_high,58.0,in-text,value
+external_test_desalination,5,FQ-01 | Turbidity | NTU | 0.0 | 0.5 | Backwash multimedia filters | 30 mins,min_bound,0.0,slot-bound,min_bound
+external_test_desalination,5,FQ-01 | Turbidity | NTU | 0.0 | 0.5 | Backwash multimedia filters | 30 mins,max_bound,0.5,slot-bound,max_bound
+external_test_desalination,5,FQ-02 | ORP | mV | -200 | 300 | Increase SMBS dosing | 15 mins,min_bound,-200.0,slot-bound,min_bound
+external_test_desalination,5,FQ-02 | ORP | mV | -200 | 300 | Increase SMBS dosing | 15 mins,max_bound,300.0,slot-bound,max_bound
+external_test_desalination,5,FQ-03 | Temperature | degC | 15.0 | 35.0 | Adjust VFD speed | 60 mins,min_bound,15.0,slot-bound,min_bound
+external_test_desalination,5,FQ-03 | Temperature | degC | 15.0 | 35.0 | Adjust VFD speed | 60 mins,max_bound,35.0,slot-bound,max_bound
+external_test_desalination,5,FQ-04 | pH | pH_unit | 6.5 | 7.5 | Inject Sulfuric Acid | 10 mins,min_bound,6.5,slot-bound,min_bound
+external_test_desalination,5,FQ-04 | pH | pH_unit | 6.5 | 7.5 | Inject Sulfuric Acid | 10 mins,max_bound,7.5,slot-bound,max_bound

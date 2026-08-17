@@ -3,7 +3,3 @@ dev_production_line,655,655,1.0,655,1.0,0,2648,1833,0.692,0.141,multi_agent
 external_test_biogas,140,140,1.0,140,1.0,0,731,704,0.963,0.182,multi_agent
 external_test_desalination,136,136,1.0,136,1.0,0,410,331,0.807,0.073,multi_agent
 external_test_sulfuric_acid,245,245,1.0,245,1.0,0,532,503,0.945,0.009,multi_agent
-dev_production_line,658,658,1.0,658,1.0,0,2780,1920,0.691,0.135,single_prompt_cited
-external_test_biogas,174,174,1.0,174,1.0,0,640,601,0.939,0.198,single_prompt_cited
-external_test_desalination,144,144,1.0,144,1.0,0,419,348,0.831,0.072,single_prompt_cited
-external_test_sulfuric_acid,240,240,1.0,240,1.0,0,467,467,1.0,0.011,single_prompt_cited

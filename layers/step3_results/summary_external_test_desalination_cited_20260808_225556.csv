@@ -1,2 +1,0 @@
-condition,runs,f1_mean,f1_std,f1_min,f1_max,pr_mean,re_mean,items_mean,items_std,max_pr
-ext_single_prompt_cited_external_test_desalination,5,0.804,0.052,0.75,0.885,0.767,0.846,28.8,1.8,0.906

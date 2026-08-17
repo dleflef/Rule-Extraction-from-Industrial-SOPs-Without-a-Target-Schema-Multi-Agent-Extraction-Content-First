@@ -60,7 +60,7 @@ CORPORA = [
     ("dev_production_line",        "data/dataset/kg_seed/ground_truth.csv",                         ""),
     ("external_test_biogas",       "data/external_test_biogas/ground_truth_biogas.csv",             ""),
     ("external_test_sulfuric_acid", "data/external_test_sulfuric_acid/ground_truth_SA.csv",         ""),
-    ("external_test_desalination", "data/external_test_desalination/ground_truth_desalination.csv", "identifier"),
+    ("external_test_desalination", "data/external_test_desalination/ground_truth_desalination.csv", ""),
 ]
 
 THRESHOLDS = [0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
@@ -242,9 +242,45 @@ def tokens_in_order(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
     return _rebuild_from_tokens(df, shuffle=False, rng=rng)
 
 
+def pad_with_corpus_numbers(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
+    """Every record gains the numbers carried by OTHER records of the same file.
+
+    No extracted content is changed, no value is made wrong, and no knowledge of
+    the ground truth is used: the padding is drawn from the prediction file
+    itself. Numbers are pooled the way the EVALUATOR reads them -- from the whole
+    record, not from columns that happen to be numeric -- because a metric reads
+    the flattened blob and padding must therefore be measured against the same
+    view.
+
+    This is the test the symmetric numeric term exists to pass. A metric scoring
+    only "does the record contain the ground truth's numbers" prices surplus
+    values at zero, so padding can only help it. A metric that also asks whether
+    the record's own numbers are justified must charge for them. A score that
+    RISES under this perturbation is not measuring numeric correctness, whatever
+    it charges for corrupting a value.
+    """
+    rows = df.to_dict("records")
+    per_record = []
+    for r in rows:
+        text = " ".join(str(v) for k, v in r.items() if k not in _PASSTHROUGH)
+        per_record.append(set(re.findall(r"-?\d+\.?\d*", text)))
+    for i, r in enumerate(rows):
+        borrowed = set()
+        for j, nums in enumerate(per_record):
+            if j != i:
+                borrowed |= nums
+        borrowed -= per_record[i]
+        if borrowed:
+            extra = sorted(borrowed)
+            rng.shuffle(extra)
+            r["_padding"] = " ".join(extra)
+    return rows
+
+
 PERTURBATIONS = [
     ("numbers_corrupted", corrupt_numbers),
     ("payloads_permuted", permute_payloads),
+    ("padded_with_corpus_numbers", pad_with_corpus_numbers),
     ("bounds_reversed",   reverse_bounds_within_record),
     ("labels_permuted",   permute_labels),
     ("tokens_in_order",   tokens_in_order),
@@ -354,6 +390,13 @@ def perturbation_table(corpora: List[Corpus], null_pairs: List[Dict]) -> pd.Data
             "f1_null_max": round(max(null), 3) if null else 0.0,
         }
         for name, fn in PERTURBATIONS:
+            # Each perturbation draws from its OWN seeded stream, keyed on its
+            # name. Sharing one generator across the list makes every figure
+            # depend on the order and number of perturbations that ran before
+            # it, so adding a new check silently moves the results of the
+            # existing ones. Keying on the name makes each figure a property of
+            # that perturbation alone, and reproducible in isolation.
+            rng = random.Random(f"{SEED}:{name}")
             vals = [c.f1(fn(df, rng)) for df in c.preds]
             row[f"f1_{name}"] = round(_mean(vals), 3)
             row[f"drop_{name}"] = round(_mean(reported) - _mean(vals), 3)

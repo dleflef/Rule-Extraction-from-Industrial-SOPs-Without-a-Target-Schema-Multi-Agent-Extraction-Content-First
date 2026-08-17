@@ -1,2 +1,0 @@
-condition,runs,f1_mean,f1_std,f1_min,f1_max,pr_mean,re_mean,items_mean,items_std,max_pr
-ext_multi_agent_generic_dev_production_line,5,0.719,0.0,0.719,0.719,0.595,0.907,131.0,0.0,0.656

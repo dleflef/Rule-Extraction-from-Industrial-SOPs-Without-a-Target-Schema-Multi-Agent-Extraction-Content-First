@@ -1,5 +1,0 @@
-rule_class,total,active,unresolved,no_sensor,resolution_rate_pct
-ThresholdRule,29,28,1,0,96.6
-OperationalRule,15,15,0,0,100.0
-MaintenanceRule,10,8,2,0,80.0
-AccessRule,21,0,3,18,0.0

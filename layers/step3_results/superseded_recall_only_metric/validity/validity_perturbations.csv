@@ -1,5 +1,0 @@
-corpus,runs,f1_reported,f1_reported_sd,f1_null_wrong_gt,f1_null_max,f1_numbers_corrupted,drop_numbers_corrupted,f1_payloads_permuted,drop_payloads_permuted,f1_bounds_reversed,drop_bounds_reversed,f1_labels_permuted,drop_labels_permuted,f1_tokens_in_order,drop_tokens_in_order,f1_word_salad,drop_word_salad
-dev_production_line,5,0.719,0.0,0.057,0.129,0.354,0.365,0.75,-0.031,0.719,0.0,0.728,-0.009,0.7,0.018,0.708,0.011
-external_test_biogas,5,0.725,0.012,0.139,0.211,0.635,0.091,0.725,0.0,0.725,0.0,0.725,0.0,0.725,0.0,0.725,0.0
-external_test_sulfuric_acid,5,0.642,0.043,0.058,0.126,0.413,0.229,0.642,0.0,0.642,0.0,0.642,0.0,0.638,0.003,0.639,0.003
-external_test_desalination,5,0.827,0.034,0.028,0.081,0.639,0.188,0.827,0.0,0.827,0.0,0.819,0.008,0.827,0.0,0.827,0.0

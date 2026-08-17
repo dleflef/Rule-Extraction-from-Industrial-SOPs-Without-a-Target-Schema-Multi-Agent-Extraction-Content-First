@@ -1,0 +1,6 @@
+file,records,rules_detector_ready,unmapped_records,unresolved_sensor,quarantined,events_detected,gt_total,gt_covered,recall,precision,f1,recall_excl_correlated,op_recall_cov25,op_recall_cov50,op_recall_lat30,op_mean_coverage_pct,nodelay_recall_cov25,nodelay_recall_cov50,nodelay_recall_lat30,nodelay_mean_coverage_pct,missed
+ext_multi_agent_generic_dev_production_line_run1_20260807_180313.csv,131,27,0,54,0,15,14,13,0.929,0.867,0.897,1.0,0.643,0.429,0.571,44.7,0.857,0.714,0.714,67.6,GT-0009
+ext_multi_agent_generic_dev_production_line_run2_20260807_180735.csv,131,27,0,54,0,15,14,13,0.929,0.867,0.897,1.0,0.643,0.429,0.571,44.7,0.857,0.714,0.714,67.6,GT-0009
+ext_multi_agent_generic_dev_production_line_run3_20260807_181147.csv,131,5,0,54,0,5,14,3,0.214,0.6,0.316,0.231,0.143,0.071,0.071,35.5,0.143,0.071,0.071,35.5,GT-0001|GT-0002|GT-0005|GT-0006|GT-0007|GT-0008|GT-0009|GT-0010|GT-0011|GT-0012|GT-0014
+ext_multi_agent_generic_dev_production_line_run4_20260807_181530.csv,131,27,0,54,0,15,14,13,0.929,0.867,0.897,1.0,0.643,0.429,0.571,44.7,0.857,0.714,0.714,67.6,GT-0009
+ext_multi_agent_generic_dev_production_line_run5_20260807_184120.csv,131,5,0,54,0,5,14,3,0.214,0.6,0.316,0.231,0.143,0.071,0.071,35.5,0.143,0.071,0.071,35.5,GT-0001|GT-0002|GT-0005|GT-0006|GT-0007|GT-0008|GT-0009|GT-0010|GT-0011|GT-0012|GT-0014

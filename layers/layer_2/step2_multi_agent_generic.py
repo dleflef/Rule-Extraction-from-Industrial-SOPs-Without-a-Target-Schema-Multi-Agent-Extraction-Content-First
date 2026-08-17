@@ -29,12 +29,18 @@ never preset in code.
      reproduces that shape on documents that do not have it. The prompt ends
      with a chain-of-thought instruction -- reason through the chunk, then emit
      JSON -- which is the cot_basic paradigm the layer-2 grid selected over
-     nine alternatives across 100 runs, chosen on stability rather than mean
-     (the top four paradigms are statistically tied at 0.888-0.900, and
-     cot_basic varies by +-0.008 where the runner-up varies by +-0.055, at one
-     turn instead of three).
+     nine alternatives across 100 runs. The selection is by CONSTRAINT first
+     and score second: of the three paradigms that outscore it, reflexion_guided
+     ends on a corpus-specific checklist and reflexion inherits mandatory
+     sensor-naming constraints from its graph_informed base, so both buy their
+     margin with exactly the corpus knowledge this pipeline is defined not to
+     have. The third, pre_act, does transfer but is statistically tied
+     (0.894 +- 0.009 against cot_basic's 0.892 +- 0.005, rescored under the
+     current metric); cot_basic wins on the lower variance and on running one
+     turn instead of pre_act's opening structural survey, which has almost
+     nothing to survey on the single chunk a scout ever sees.
 
-  3. induce (1 LLM call per CORPUS) is the schema arbiter. It never sees a
+  3. induce (1 LLM call per CORPUS) is the schema inducer. It never sees a
      document -- only the inventory of field names and category labels the
      scouts actually produced, with occurrence counts and sample values -- and
      merges the synonyms into one corpus-level schema. Deriving the schema
@@ -130,17 +136,17 @@ MAX_OUTPUT_TOKENS = 32768     # generous: reasoning models bill their thinking a
 DEFAULT_CHUNK_CHARS = 3500    # target size of a scout chunk
 DEFAULT_MAX_CONCURRENCY = 4   # concurrent requests during the scout and audit fan-outs
 
-# How much of the observed inventory the schema arbiter sees. It reads names and
+# How much of the observed inventory the schema inducer sees. It reads names and
 # a few sample values per name, never documents, so this is small by design.
 INDUCTION_SAMPLES_PER_FIELD = 6
-# Prompt-size budget for the arbiter, expressed so that RARITY IS NEVER THE
+# Prompt-size budget for the inducer, expressed so that RARITY IS NEVER THE
 # DISCARD CRITERION. An earlier form of this cap kept the 120 most frequent
 # names and dropped the rest, which is precisely backwards: a field used by
 # three records out of two hundred is the only place those three records'
 # information lives, and in a safety setting the rare fields are typically the
 # edge-case triggers. Names are therefore never dropped. When the inventory
 # grows past the budget it is the SAMPLE VALUES that thin, because samples only
-# illustrate a name whereas the name itself is the information the arbiter must
+# illustrate a name whereas the name itself is the information the inducer must
 # reconcile.
 INDUCTION_BUDGET_FIELDS = 120
 # A name-only inventory larger than this cannot be made to fit by thinning
@@ -170,8 +176,8 @@ NO_SYSTEM_ROLE: set[str] = set()
 #
 # Over 100 grid runs gemma4:31b beat nemotron-3-nano:30b on ALL TEN paradigms,
 # and by more than the paradigms differ from each other: the spread across
-# paradigms within gemma4 is 0.095, while the same paradigm across models
-# differs by up to 0.093. The model choice matters as much as the prompting
+# paradigms within gemma4 is 0.135 (0.814-0.949), while the same paradigm across
+# models differs by up to 0.145. The model choice matters as much as the prompting
 # strategy, so gemma4:31b takes every role. Independence between the extracting
 # and auditing role is available cheaply via --auditor-model for anyone who
 # wants it; it is not the default because the alternative model scored lower on
@@ -201,7 +207,7 @@ _INTERNAL_KEYS = {"id", "category", "lines", "source_file", "chunk_id", "_key"}
 @dataclass
 class CorpusSchema:
     """Produced by the induce stage for ONE corpus. Nothing about field names or
-    categories is fixed in code -- this carries whatever the arbiter decided the
+    categories is fixed in code -- this carries whatever the inducer decided the
     corpus needs. The three role pointers (condition_field / action_field /
     severity_field) are induced and serialised for downstream consumers of the
     saved schema; nothing in this pipeline reads them (numeric_fields is the
@@ -217,7 +223,7 @@ class CorpusSchema:
 
     def canon_field(self, observed: str) -> str:
         """Canonical name for an observed field. An unmapped name maps to
-        ITSELF rather than being dropped: the arbiter forgetting to mention a
+        ITSELF rather than being dropped: the inducer forgetting to mention a
         field must never silently delete the values recorded under it."""
         return self.field_map.get(observed, observed)
 
@@ -708,10 +714,10 @@ You may prefix it with a brief "reasoning" key.""" + _COT_INSTRUCTION
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-#  Prompt 2 — Schema arbiter (one call per corpus)
+#  Prompt 2 — Schema inducer (one call per corpus)
 # ══════════════════════════════════════════════════════════════════════════════
 def inducer_prompt() -> str:
-    return """You are a schema arbiter. Below is the COMPLETE inventory of field names and
+    return """You are a schema inducer. Below is the COMPLETE inventory of field names and
 category labels that an extraction pass produced across one corpus of
 industrial operating documents, each with how many records used it and a few
 example values. You are not shown the documents: your job is not to re-read
@@ -773,9 +779,9 @@ OBSERVED INVENTORY:
 
 def _coerce_schema(data: dict, observed_fields: list[str],
                    observed_categories: list[str]) -> CorpusSchema:
-    """Turn the arbiter's reply into a CorpusSchema, defensively.
+    """Turn the inducer's reply into a CorpusSchema, defensively.
 
-    Any observed name the arbiter failed to mention maps to itself. This is the
+    Any observed name the inducer failed to mention maps to itself. This is the
     difference between a schema pass that reconciles vocabulary and one that
     deletes data: a forgotten name must cost a redundant column, never the
     values recorded under it."""
@@ -911,9 +917,9 @@ def scout_node(payload: dict) -> dict:
 #  Stage 3 — Schema induction
 # ══════════════════════════════════════════════════════════════════════════════
 def build_inventory(records: list[dict]) -> tuple[dict, dict]:
-    """The arbiter's whole input: which names were used, how often, and what
+    """The inducer's whole input: which names were used, how often, and what
     they held. Assembled deterministically from the scouted records, so the
-    arbiter reconciles observed vocabulary and never invents from a document."""
+    inducer reconciles observed vocabulary and never invents from a document."""
     field_stats: dict[str, dict] = {}
     category_stats: dict[str, int] = {}
     for rec in records:
@@ -925,12 +931,12 @@ def build_inventory(records: list[dict]) -> tuple[dict, dict]:
             entry["count"] += 1
             if len(entry["samples"]) < INDUCTION_SAMPLES_PER_FIELD and value not in entry["samples"]:
                 entry["samples"].append(value[:80])
-    # EVERY observed name reaches the arbiter. When the inventory outgrows the
+    # EVERY observed name reaches the inducer. When the inventory outgrows the
     # prompt budget it is the sample values that thin, never the vocabulary:
-    # a name the arbiter never sees cannot be reconciled, and its records' values
+    # a name the inducer never sees cannot be reconciled, and its records' values
     # are lost with it, so discarding names by frequency would delete exactly the
     # rare fields that carry edge-case triggers. Thinning samples degrades how
-    # well the arbiter can judge a name; dropping names decides that it will not
+    # well the inducer can judge a name; dropping names decides that it will not
     # judge them at all. Only the first is an acceptable response to a budget.
     by_count = sorted(field_stats.items(), key=lambda kv: -kv[1]["count"])
     n = len(by_count)
@@ -945,7 +951,7 @@ def build_inventory(records: list[dict]) -> tuple[dict, dict]:
     if n > INDUCTION_BUDGET_FIELDS:
         allowed = max(1, (INDUCTION_SAMPLES_PER_FIELD * INDUCTION_BUDGET_FIELDS) // n)
         print(f"  [note] observed inventory has {n} field name(s), above the budget of "
-              f"{INDUCTION_BUDGET_FIELDS}. ALL {n} names are passed to the arbiter; "
+              f"{INDUCTION_BUDGET_FIELDS}. ALL {n} names are passed to the inducer; "
               f"sample values per name are thinned {INDUCTION_SAMPLES_PER_FIELD} -> "
               f"{allowed} to fit. No vocabulary is discarded.", flush=True)
         for _, entry in by_count:
@@ -1163,7 +1169,9 @@ def audit_chunk(chunk: dict, group: list[dict], file_lines: dict[str, list[str]]
             # here, so an auditor returning a correction keyed "lines" wrote the
             # record's own provenance into its content fields, where it became a
             # CSV column and entered the scored blob. It reached 8 records of one
-            # corpus across the reported batch and cost that corpus 0.011 F1 --
+            # corpus across the reported batch and cost that corpus 0.010 F1
+            # (biogas, 0.725 +- 0.012 with the field excluded against the
+            # reported 0.715 +- 0.023) --
             # in the conservative direction, since the injected line numbers are
             # unjustified values that the symmetric numeric term charges for.
             #
@@ -1223,7 +1231,7 @@ def normalise_field_name(name: str) -> str:
     Case-folds, unifies separators, and collapses repeats, so that "Crit LO",
     "crit-lo" and "crit__lo" become one column instead of three. It is purely
     syntactic: no synonym list, no semantic mapping, nothing that encodes what a
-    field means in any domain. Two names the arbiter chose for genuinely
+    field means in any domain. Two names the inducer chose for genuinely
     different reasons ("station" and "asset") remain different columns, because
     deciding they are the same would require domain knowledge this pipeline does
     not have and must not invent.
@@ -1242,7 +1250,7 @@ def to_rows(assembled: list[dict], schema: CorpusSchema,
     slots yields fourteen columns -- and a record simply leaves blank the columns
     it has no value for, exactly as a hand-written rule table does.
 
-    Nothing here consults a target schema. The names come from the arbiter's
+    Nothing here consults a target schema. The names come from the inducer's
     canonical vocabulary for THIS corpus, so the output shape adapts to the
     documents rather than to any particular ground truth, and two unrelated
     corpora are never forced to share invented field names.
@@ -1403,7 +1411,7 @@ def induce_node(state: PipelineState) -> dict:
     if not scouted:
         print("[Warn] no records scouted; writing an empty result")
 
-    # Cleaned here, before the arbiter sees the inventory, so a field naming the
+    # Cleaned here, before the inducer sees the inventory, so a field naming the
     # document never becomes part of the corpus schema in the first place. The
     # records are mutated in place because `scouted` accumulates through an
     # operator.add reducer -- returning a replacement list would append to it
@@ -1460,7 +1468,7 @@ def build_graph() -> StateGraph:
     builder.add_edge(START, "load_segment")
     builder.add_conditional_edges("load_segment", dispatch_scouts, ["scout"])
     # "scout" -> "induce" is a fan-in: induce runs once, after every scout
-    # branch has returned, because the arbiter's whole point is to see the
+    # branch has returned, because the inducer's whole point is to see the
     # corpus's complete observed vocabulary rather than one chunk's.
     builder.add_edge("scout", "induce")
     builder.add_edge("induce", "assemble")

@@ -138,6 +138,38 @@ def cmd_score(filled_path: str) -> None:
         print(f"    tau={tau:.2f}: {acc:.3f}{marker}")
 
 
+def _labels(path: str) -> pd.Series:
+    d = pd.read_csv(path)
+    return (d.set_index("item")["human_same_rule"].astype(str)
+             .str.strip().str.lower()
+             .map({"y": True, "yes": True, "n": False, "no": False}))
+
+
+def _kappa(a: pd.Series, b: pd.Series) -> tuple[float, float]:
+    """Raw agreement and Cohen's kappa between two binary label series."""
+    agree = (a == b).mean()
+    pe = a.mean() * b.mean() + (1 - a.mean()) * (1 - b.mean())
+    return agree, ((agree - pe) / (1 - pe) if pe < 1 else float("nan"))
+
+
+def cmd_agree(first: str, second: str) -> None:
+    """Inter-annotator agreement, which is what establishes that the question
+    put to the annotators is answerable at all. A metric cannot be asked to
+    agree with human judgment more closely than two humans agree with each
+    other, so this figure bounds the one cmd_score reports."""
+    a, b = _labels(first), _labels(second)
+    both = pd.concat([a, b], axis=1, keys=["a", "b"]).dropna()
+    if both.empty:
+        sys.exit("no items labelled by both annotators")
+    agree, kappa = _kappa(both["a"].astype(bool), both["b"].astype(bool))
+    print(f"[calibration] {len(both)} items labelled by both annotators")
+    print(f"  raw inter-annotator agreement : {agree:.3f}")
+    print(f"  inter-annotator Cohen's kappa : {kappa:.3f}")
+    disagreed = both[both["a"] != both["b"]]
+    print(f"  items they disagreed on       : {len(disagreed)}"
+          f"{' -> ' + ', '.join(disagreed.index[:10]) if len(disagreed) else ''}")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -146,8 +178,13 @@ if __name__ == "__main__":
     p_sample.add_argument("--seed", type=int, default=42)
     p_score = sub.add_parser("score")
     p_score.add_argument("filled_sheet")
+    p_agree = sub.add_parser("agree")
+    p_agree.add_argument("first_sheet")
+    p_agree.add_argument("second_sheet")
     args = parser.parse_args()
     if args.cmd == "sample":
         cmd_sample(args.n, args.seed)
+    elif args.cmd == "agree":
+        cmd_agree(args.first_sheet, args.second_sheet)
     else:
         cmd_score(args.filled_sheet)

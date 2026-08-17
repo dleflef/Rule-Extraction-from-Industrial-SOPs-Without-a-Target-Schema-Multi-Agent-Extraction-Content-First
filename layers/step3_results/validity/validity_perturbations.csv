@@ -1,5 +1,5 @@
-corpus,runs,f1_reported,f1_reported_sd,f1_null_wrong_gt,f1_null_max,f1_numbers_corrupted,drop_numbers_corrupted,f1_payloads_permuted,drop_payloads_permuted,f1_bounds_reversed,drop_bounds_reversed,f1_labels_permuted,drop_labels_permuted,f1_tokens_in_order,drop_tokens_in_order,f1_word_salad,drop_word_salad
-dev_production_line,5,0.719,0.0,0.034,0.101,0.394,0.324,0.735,-0.017,0.719,0.0,0.71,0.009,0.71,0.009,0.713,0.006
-external_test_biogas,5,0.715,0.022,0.014,0.035,0.629,0.085,0.715,0.0,0.715,0.0,0.72,-0.005,0.704,0.011,0.704,0.011
-external_test_sulfuric_acid,5,0.649,0.049,0.037,0.084,0.457,0.192,0.649,0.0,0.649,0.0,0.649,0.0,0.645,0.003,0.642,0.007
-external_test_desalination,5,0.85,0.019,0.034,0.081,0.647,0.203,0.835,0.015,0.85,0.0,0.827,0.023,0.85,0.0,0.85,0.0
+corpus,runs,f1_reported,f1_reported_sd,f1_null_wrong_gt,f1_null_max,f1_numbers_corrupted,drop_numbers_corrupted,f1_payloads_permuted,drop_payloads_permuted,f1_padded_with_corpus_numbers,drop_padded_with_corpus_numbers,f1_bounds_reversed,drop_bounds_reversed,f1_labels_permuted,drop_labels_permuted,f1_tokens_in_order,drop_tokens_in_order,f1_word_salad,drop_word_salad
+dev_production_line,5,0.719,0.0,0.034,0.101,0.394,0.324,0.732,-0.013,0.503,0.216,0.719,0.0,0.719,0.0,0.71,0.009,0.71,0.009
+external_test_biogas,5,0.715,0.022,0.014,0.035,0.629,0.085,0.715,0.0,0.635,0.08,0.715,0.0,0.725,-0.011,0.704,0.011,0.709,0.005
+external_test_sulfuric_acid,5,0.649,0.049,0.034,0.084,0.457,0.192,0.649,0.0,0.548,0.101,0.649,0.0,0.652,-0.003,0.645,0.003,0.645,0.003
+external_test_desalination,5,0.804,0.017,0.034,0.081,0.624,0.18,0.804,0.0,0.79,0.015,0.804,0.0,0.804,0.0,0.804,0.0,0.804,0.0

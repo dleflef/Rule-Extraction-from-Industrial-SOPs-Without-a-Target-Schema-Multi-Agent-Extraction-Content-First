@@ -1,15 +1,14 @@
 """step3_citation_validity.py
 ==================================================
-Does provenance need the graph, or only the line numbering?
+Are the pipeline's citations checkable, and are they correct?
 
-The multi-agent pipeline's records cite the numbered line they were read from,
-and the single-prompt baseline's cite nothing, so the ablation of
-Section~7.4 concluded that traceability is what the orchestration buys. The
-obvious objection is that the numbering, not the graph, is what delivers it: a
-single prompt given a line-numbered document and asked to cite lines might
-recover the same property at a fraction of the cost.
+Every record the multi-agent pipeline emits cites the numbered line it was read
+from. A citation that cannot be resolved, or that points at a line not containing
+what the record asserts, is worse than no citation at all, because it looks
+auditable and is not. This script tests both properties against the source
+documents.
 
-This script measures that. A citation is only worth something if it is
+A citation is only worth something if it is
 CHECKABLE and CORRECT, so three things are counted per condition:
 
   1. COVERAGE  -- does the record cite anything at all?
@@ -51,12 +50,10 @@ import step3_surplus_grounding as G                   # noqa: E402
 
 _PROJECT_ROOT = G._PROJECT_ROOT
 PIPE_DIR = os.path.join(_PROJECT_ROOT, "layers", "layer_2", "step2_results_generic")
-BASE_DIR = os.path.join(_PROJECT_ROOT, "layers", "layer_2", "baseline_single_prompt_results")
 OUT = os.path.join(E.STEP3_RESULTS_DIR, "robustness", "citation_validity.csv")
 
 CONDITIONS = [
     ("multi_agent",    PIPE_DIR, "ext_multi_agent_generic_{tag}_run*.csv"),
-    ("single_prompt_cited", BASE_DIR, "ext_single_prompt_cited_{tag}_run*.csv"),
 ]
 
 

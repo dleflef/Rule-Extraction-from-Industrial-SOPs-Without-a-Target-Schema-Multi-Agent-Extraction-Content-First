@@ -1,0 +1,9 @@
+on_delay_min,criterion,tp,total,recall,dropped
+5,any overlap (as reported),12,14,0.857,
+5,>=25% of episode covered,9,14,0.643,GT-0001|GT-0002|GT-0013
+5,>=50% of episode covered,5,14,0.357,GT-0001|GT-0002|GT-0003|GT-0006|GT-0008|GT-0012|GT-0013
+5,within 30 min of onset,7,14,0.5,GT-0002|GT-0003|GT-0008|GT-0012|GT-0013
+0,any overlap (as reported),12,14,0.857,
+0,>=25% of episode covered,11,14,0.786,GT-0013
+0,>=50% of episode covered,9,14,0.643,GT-0002|GT-0012|GT-0013
+0,within 30 min of onset,9,14,0.643,GT-0003|GT-0012|GT-0013

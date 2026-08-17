@@ -1,6 +1,0 @@
-file_name,total_extracted,gt_rows_total,max_possible_precision,forced_fp_from_row_count,content_f1,content_pr,content_re,content_tp,content_fp,content_fn,gt_ids_found_verbatim,gt_ids_distinct,id_reuse_frac
-ext_multi_agent_generic_dev_production_line_run4_20260807_181530.csv,131,86,0.656,45,0.719,0.595,0.907,78,53,8,31,86,0.36
-ext_multi_agent_generic_dev_production_line_run3_20260807_181147.csv,131,86,0.656,45,0.719,0.595,0.907,78,53,8,31,86,0.36
-ext_multi_agent_generic_dev_production_line_run1_20260807_180313.csv,131,86,0.656,45,0.719,0.595,0.907,78,53,8,31,86,0.36
-ext_multi_agent_generic_dev_production_line_run2_20260807_180735.csv,131,86,0.656,45,0.719,0.595,0.907,78,53,8,31,86,0.36
-ext_multi_agent_generic_dev_production_line_run5_20260807_184120.csv,131,86,0.656,45,0.719,0.595,0.907,78,53,8,31,86,0.36

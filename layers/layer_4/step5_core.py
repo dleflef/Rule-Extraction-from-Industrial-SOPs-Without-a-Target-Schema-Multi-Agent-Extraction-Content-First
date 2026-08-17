@@ -2,7 +2,7 @@
 step5_core.py
 
 The shared engine for Phase 2 anomaly detection (iMAKS, guide §3.1/§3.3).
-Everything that step5_detect.py and step5_sensitivity.py have in common is
+The detection primitives shared by the downstream harnesses are
 kept here, so the detectors, the scoring rule, and the metric definitions
 exist exactly once and no two experiments can disagree because of
 duplicated logic.
@@ -14,19 +14,20 @@ never by ground truth:
   drift      : a rolling delta over a time window        ("drift >X over Y min/h")
   sustained  : a bound is violated for N minutes         (">X for >Y min/h")
 
-Out of scope — CORRELATED events (GT-0009): the CORRELATED type is defined
-by the guide (§2.3.2) as requiring three-way multi-source fusion
-(timeseries co-occurrence + SOP-001 causal rule + SOP-003 corroboration).
-No fusion detector is implemented; CORRELATED events are scored by the
-same uniform rule as everything else and are expected to appear as GAP.
-The guide's separate GT-0009 binary is therefore reported as NOT ATTEMPTED.
+Out of scope for THIS module — CORRELATED events (GT-0009). A correlated
+fault is a relation between two sensors, which none of the four detectors
+below can express: they each see one signal at a time. CORRELATED events
+are therefore scored by the same uniform rule as everything else here and
+appear as GAP. The cross-sensor case is handled one level up, in
+step4_graph_generic.py, where the coupling is read back out of the graph
+as a CORRELATES_WITH edge; nothing in this file participates in it.
 
 Anti-leakage invariants, held by every entry point in this module:
   - Only timestamp / sensor_id / value are read from the timeseries during
     detection.
   - Ground truth (nodes.csv / edges.csv) is read only by the scoring
     helpers, which are invoked strictly AFTER detection has finished.
-  - The rules are taken from LLM extraction (Neo4j or the step4_results
+  - The rules are taken from LLM extraction
     CSV dump); GT bounds are never used as detection rules.
 """
 
@@ -53,16 +54,13 @@ TIMESERIES_CSV = os.path.join(_PROJECT_ROOT, "data", "dataset", "sensors", "time
 NODES_CSV      = os.path.join(_PROJECT_ROOT, "data", "dataset", "kg_seed", "nodes.csv")
 EDGES_CSV      = os.path.join(_PROJECT_ROOT, "data", "dataset", "kg_seed", "edges.csv")
 RESULTS_DIR    = os.path.join(_SCRIPT_DIR, "detection_results")
-STEP4_RESULTS  = os.path.join(_SCRIPT_DIR, "step4_results")
 
-NEO4J_URI      = os.environ.get("NEO4J_URI",      "bolt://localhost:7687")
-NEO4J_USER     = os.environ.get("NEO4J_USERNAME", "neo4j")
-NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD", "neo4j")
-NEO4J_DATABASE = os.environ.get("NEO4J_DATABASE", "neo4j")
+# Connection settings live with the harness that opens a connection
+# (step4_graph_generic.py); this module reads CSVs and never opens one.
 
 # ── Tunable constants ─────────────────────────────────────────────────────────
 # Every constant below is exposed as a parameter of stream_and_detect() /
-# merge_alarms() and is exercised by step5_sensitivity.py. The shipped
+# merge_alarms(). The shipped
 # defaults were fixed before the sensitivity analysis was run and were
 # never retuned against ground truth.
 
@@ -72,9 +70,9 @@ NEO4J_DATABASE = os.environ.get("NEO4J_DATABASE", "neo4j")
 ON_DELAY_WARNING_MIN = 5
 
 # Alarms on the same sensor separated by less than 15 minutes are merged
-# into one event. The sensitivity table shows that 30 minutes would remove
-# both residual false positives; 15 is kept so the value is not tuned
-# post hoc against ground truth (see EVALUATION_LIMITATIONS.md).
+# into one event. A longer window would absorb the residual false positives
+# into the events beside them; 15 is kept precisely so the value is not
+# tuned post hoc against ground truth.
 GAP_MERGE_MIN = 15
 
 # The drift detector's recent window is sized PER SENSOR from that
@@ -95,8 +93,8 @@ SAMPLE_INTERVAL_SEC = 30
 
 # Threshold rules that flag more than half of their sensor's readings are
 # quarantined as almost certainly mis-extracted. The check is unsupervised
-# (no labels are consulted); its effect is quantified in
-# sensitivity_analysis.csv.
+# (no labels are consulted); the `quarantined` column of every summary this
+# module feeds reports how many rules it removed on a given run.
 PLAUSIBILITY_MAX_VIOLATION_RATE = 0.5
 
 # The deployable (non-transductive) variant of the plausibility filter
@@ -105,7 +103,7 @@ PLAUSIBILITY_MAX_VIOLATION_RATE = 0.5
 # a real deployment. The value was pre-registered at 8 h (10% of the 80 h
 # stream, an a-priori round fraction) and was not tuned against results.
 # Whether this window quarantines the same rules as the full-stream
-# filter is verified by step5_sensitivity.py Part 3.
+# filter is exercised by the downstream harnesses.
 CALIBRATION_HOURS = 8
 
 # Two readings are treated as identical by the stuck detector when they
@@ -181,66 +179,6 @@ def _to_float(s):
         return None
 
 
-def load_rules_from_neo4j() -> list[Rule]:
-    """ACTIVE rules only — those linked by step4b to a real ABox sensor
-    via GOVERNS_ABOX. Only the Rule nodes themselves are returned
-    (RETURN DISTINCT r); the GT thresholds stored on ABoxNode:Sensor
-    nodes are never read here."""
-    from neo4j import GraphDatabase
-    driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
-    with driver.session(database=NEO4J_DATABASE) as session:
-        records = list(session.run(
-            "MATCH (r:Rule)-[:GOVERNS_ABOX]->() "
-            "RETURN DISTINCT r ORDER BY r.ruleId"))
-    driver.close()
-
-    rules = []
-    for rec in records:
-        n = rec["r"]
-        cls = (n.get("class") or "").strip()
-        if cls == "AccessRule":
-            continue
-        rules.append(Rule(
-            rule_id=n.get("ruleId") or "",
-            cls=cls,
-            sensor=(n.get("sensor") or "").strip(),
-            crit_hi=_node_float(n, "critHi"), warn_hi=_node_float(n, "warnHi"),
-            warn_lo=_node_float(n, "warnLo"), crit_lo=_node_float(n, "critLo"),
-            condition=n.get("condition") or "", action=n.get("action") or "",
-            source=n.get("sourceFile") or "",
-            severity=(n.get("severity") or "").strip(),
-            station=(n.get("station") or "").strip(),
-        ))
-    return rules
-
-
-def load_rules_from_csv() -> list[Rule]:
-    """The same ACTIVE population, rebuilt from the step4_results CSV
-    dumps so that diagnostic scripts such as the leakage audit can be run
-    without a live Neo4j instance."""
-    with open(os.path.join(STEP4_RESULTS, "rule_validation.csv"),
-              newline="", encoding="utf-8") as f:
-        active_ids = {r["ruleId"] for r in csv.DictReader(f)
-                      if r["status"] == "ACTIVE"}
-    rules = []
-    with open(os.path.join(STEP4_RESULTS, "rules_all.csv"),
-              newline="", encoding="utf-8") as f:
-        for r in csv.DictReader(f):
-            if r["ruleId"] not in active_ids:
-                continue
-            if (r.get("class") or "").strip() == "AccessRule":
-                continue
-            rules.append(Rule(
-                rule_id=r["ruleId"], cls=(r.get("class") or "").strip(),
-                sensor=(r.get("sensor") or "").strip(),
-                crit_hi=_to_float(r.get("critHi")), warn_hi=_to_float(r.get("warnHi")),
-                warn_lo=_to_float(r.get("warnLo")), crit_lo=_to_float(r.get("critLo")),
-                condition=r.get("condition") or "", action=r.get("action") or "",
-                source=r.get("source_file") or "",
-                severity=(r.get("severity") or "").strip(),
-                station=(r.get("station") or "").strip(),
-            ))
-    return rules
 
 
 # ── Condition parsers ─────────────────────────────────────────────────────────
@@ -320,7 +258,7 @@ def compute_violation_rates(rules: list[Rule],
     over the full stream, which is transductive. When CALIBRATION_HOURS is
     passed instead, only the first N hours are used — the deployable
     commissioning-period variant, whose equivalence to the shipped filter
-    is verified by step5_sensitivity.py Part 3.
+    is exercised by the downstream harnesses.
     """
     candidates = {r.rule_id: r for r in rules
                   if r.cls in ("ThresholdRule", "OperationalRule")}
@@ -425,7 +363,7 @@ def stream_and_detect(rules: list[Rule],
     ONLY timestamp/sensor_id/value are read from it.
 
     All engine constants are accepted as parameters so that
-    step5_sensitivity.py can vary them one at a time; the defaults are the
+    The harnesses sweep them one at a time; the defaults are the
     shipped values.
     """
     by_sensor: dict[str, list[Rule]] = {}
@@ -742,9 +680,3 @@ def apply_strictness(coverage: list[dict],
 
 # ── CSV writer ────────────────────────────────────────────────────────────────
 
-def write_csv(path: str, fieldnames: list[str], rows: list[dict]) -> None:
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
-        w.writeheader()
-        w.writerows(rows)

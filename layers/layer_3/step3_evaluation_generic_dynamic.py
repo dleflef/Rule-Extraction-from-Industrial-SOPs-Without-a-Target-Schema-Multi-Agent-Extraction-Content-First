@@ -55,15 +55,15 @@ WHAT F1_content DOES NOT MEASURE, established empirically by
 step3_validity_checks.py rather than asserted here:
   - word order within a record (scrambling tokens costs 0.000 against an
     order-preserving control; the comparison behaves as a bag of tokens)
-  - which record an attribute is bound to (permuting payloads costs -0.001)
+  - which record an attribute is bound to (permuting payloads costs -0.003)
   - which SLOT a value occupies within a record: reversing every bound inside
     every record costs exactly 0.000 on all four corpora, because the blob
     retains the values and discards the names
   - category-label correctness, which is unwinnable across vocabularies by the
-    argument above and is priced accordingly (permuting labels costs +0.007)
-It does measure numeric correctness (corrupting values costs 0.201 on average,
+    argument above and is priced accordingly (permuting labels costs -0.003)
+It does measure numeric correctness (corrupting values costs 0.195 on average,
 0.085-0.324 per corpus) and it does discriminate the right document from a wrong
-one (predictions scored against a foreign ground truth fall to 0.014-0.037, worst
+one (predictions scored against a foreign ground truth pool at 0.000-0.075, worst
 single pairing 0.101).
 
 Usage -- identical for every domain, no per-GT configuration required:
@@ -142,9 +142,10 @@ class EvalConfig:
     # values are 15% of all numbers extracted from these ground truths. Counting
     # them is the default because they are genuine asset-identity evidence, and
     # it is the CONSERVATIVE setting where the choice is not neutral: dropping
-    # them raises desalination +0.090 (its GT repeats printed rule codes the
-    # records do not carry) but COSTS sulfuric acid -0.037 (its instrument tags
-    # are shared evidence), with dev and biogas unchanged. Declared here so the
+    # them raises desalination +0.098 (its GT repeats printed rule codes the
+    # records do not carry) and biogas +0.010, but COSTS sulfuric acid -0.048
+    # (its instrument tags are shared evidence), with dev unchanged. Figures
+    # from robustness/RESULTS_drop_tag_numbers.csv. Declared here so the
     # choice is visible and reversible rather than buried in a regex.
     drop_tag_derived_numbers: bool = False
     # Numeric term: symmetric (default) or GT-recall only (legacy).
@@ -155,23 +156,23 @@ class EvalConfig:
     # exploitable rather than merely theoretical: appending to every predicted
     # record the numbers already present in OTHER records of the same file --
     # changing no extracted content and using no knowledge of the ground truth
-    # -- RAISES the recall-only figure on all four corpora, by +0.064 (biogas)
-    # to +0.178 (sulfuric acid). A metric that pays for padding is not measuring
-    # numeric correctness, whatever it costs to corrupt a value.
+    # -- is priced at ZERO by the recall-only form, by construction. A metric
+    # that pays for padding is not measuring numeric correctness, whatever it
+    # costs to corrupt a value.
     #
     # The symmetric form scores the numbers as an F1: the harmonic mean of that
     # same GT-recall and the matching precision over the record's own numbers.
     # It leaves the reported figures essentially where they were (the largest
-    # move across the four corpora is +0.023) and turns the padding gain into a
-    # penalty of -0.031 to -0.177, which is the direction a metric should move
-    # under unjustified values.
+    # move across the four corpora is +0.015) and charges padding +0.103 F1 on
+    # average (+0.015..+0.216 per corpus, validity/validity_perturbations.csv),
+    # which is the direction a metric should move under unjustified values.
     #
     # One consequence must be read alongside it: the precision half charges a
     # record for carrying values the annotation omits, and some such values are
     # correct extractions of facts the ground truth simply does not record (see
     # the GT-incompleteness limitation). Tolerance scoring keeps that mild --
     # a surplus value near an annotated one still scores highly -- and the
-    # measured effect on the headline figures is the +0.023 above, but the
+    # measured effect on the headline figures is the +0.015 above, but the
     # charge is real and is the price of pricing padding at all.
     numeric_symmetric: bool = True
     # Blob normalisation (see _fold_unicode). On by default because two

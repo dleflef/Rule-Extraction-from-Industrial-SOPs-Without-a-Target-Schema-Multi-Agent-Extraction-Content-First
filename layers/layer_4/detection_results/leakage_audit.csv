@@ -1,6 +1,0 @@
-check,result,detail
-violation_rates_identical_on_stripped_file,PASS,43 rules compared
-quarantine_set_identical_on_stripped_file,PASS,RULE-ST01-03|RULE-ST03-02|RULE-THR-CHM01_CHEMICALSTORAGE-HUM-CRIT|RULE-WRH01-03
-all_alarms_identical_on_stripped_file,PASS,"1153 vs 1153 alarms; rows 211,200 vs 211,200"
-no_rule_node_carries_gt_anomaly_fields,PASS,0 offending Rule nodes
-detection_completed_without_loading_gt_windows,PASS,load_gt_windows never invoked during checks 1-2

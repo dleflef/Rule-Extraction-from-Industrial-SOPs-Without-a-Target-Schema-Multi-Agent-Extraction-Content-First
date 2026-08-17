@@ -306,17 +306,33 @@ if __name__ == "__main__":
                       f"{int(ln['fully_grounded'].sum())}/{len(ln)}]")
 
     # Null control: the same values scored against a document they did not come
-    # from. Reported next to the figure it qualifies, never separately.
+    # from. Reported next to the figure it qualifies, never separately, and
+    # WRITTEN OUT as well as printed -- the thesis cites the foreign fraction as
+    # the floor its grounded fraction should be read against, so leaving it in
+    # stdout made the one figure in this study that could not be audited from an
+    # artifact.
     print("\n  " + "-" * 74)
     print("  NULL CONTROL (values scored against a document they did not come from)")
+    null_rows = []
     for tag, doc_dir in targets:
         foreign = next(d for t, d in CORPORA if t != tag)
         own, fgn, tot = null_control(tag, doc_dir, foreign)
         if tot:
             print(f"    {tag:<30} own {own}/{tot} ({own/tot:.1%})"
                   f"   foreign {fgn}/{tot} ({fgn/tot:.1%})")
+            null_rows.append({
+                "corpus": tag, "foreign_doc_dir": os.path.basename(foreign),
+                "values_checked": tot,
+                "matched_in_own_document": own, "own_frac": round(own / tot, 4),
+                "matched_in_foreign_document": fgn, "foreign_frac": round(fgn / tot, 4),
+            })
     print("    A grounded fraction should be read against the foreign figure, which is")
     print("    what short or generic values match by coincidence, not against zero.")
+    if null_rows:
+        os.makedirs(args.out_dir, exist_ok=True)
+        null_path = os.path.join(args.out_dir, "surplus_grounding_null_control.csv")
+        pd.DataFrame(null_rows).to_csv(null_path, index=False)
+        print(f"    Written to: {null_path}")
 
     out = pd.concat(all_rows, ignore_index=True) if all_rows else pd.DataFrame()
     if not out.empty:

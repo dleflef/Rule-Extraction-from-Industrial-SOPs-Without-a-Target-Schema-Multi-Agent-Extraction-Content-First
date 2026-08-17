@@ -1,0 +1,3 @@
+corpus,foreign_doc_dir,values_checked,matched_in_own_document,own_frac,matched_in_foreign_document,foreign_frac
+dev_production_line,external_test_biogas,669,669,1.0,140,0.2093
+external_test_desalination,texts,6,5,0.8333,0,0.0

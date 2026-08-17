@@ -1,0 +1,2 @@
+file,records,rules_detector_ready,unmapped_records,unresolved_sensor,quarantined,events_detected,gt_total,gt_covered,recall,precision,f1,recall_excl_correlated,op_recall_any,op_recall_cov25,op_recall_cov50,op_recall_lat30,op_mean_coverage_pct,nodelay_recall_any,nodelay_recall_cov25,nodelay_recall_cov50,nodelay_recall_lat30,nodelay_mean_coverage_pct,missed
+baseline_b0.csv,54,21,0,23,0,8,14,6,0.429,0.75,0.545,0.462,0.429,0.286,0.143,0.214,35.3,0.429,0.429,0.286,0.357,59.4,GT-0005|GT-0006|GT-0009|GT-0010|GT-0011|GT-0012|GT-0013|GT-0014
