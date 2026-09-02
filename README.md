@@ -1,4 +1,6 @@
-# Agentic Knowledge Graph & Digital Twins
+# Rule Extraction from Industrial SOPs Without a Target Schema
+
+**Multi-Agent Extraction, Content-First**
 
 Extracting machine-actionable operating rules from industrial documents, loading
 them into a knowledge graph, and using them — and only them — to detect anomalies
