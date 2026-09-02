@@ -180,8 +180,13 @@ Two harnesses consume it:
   Neo4j: load the facility ABox, load the extracted rules as `(:Rule)` nodes with
   `GOVERNS` / `APPLIES_TO` edges, validate by creating `GOVERNS_ABOX` only where
   the rule's sensor matches a sensor the plant declares, then read the ACTIVE
-  rules back out with Cypher and detect. Rules naming equipment that does not
-  exist are reported UNRESOLVED, not silently dropped. The leakage guard is
+  rules back out with Cypher and detect. The records that *cannot* bind are
+  loaded into the graph too, deliberately: load only the ones that already
+  resolve and `GOVERNS_ABOX` succeeds by construction, so validation reports
+  100% whatever the extraction did. Loading them alongside lets the binding
+  genuinely fail, which is what makes the ACTIVE count a measurement rather
+  than a formality — here 3 of 30 rule nodes name a sensor the plant does not
+  declare and are reported UNRESOLVED, not silently dropped. The leakage guard is
   asserted at run time: the graph holds `AnomalyEvent` nodes, so before detection
   the loaded rule set is checked for any ground-truth field and the run aborts if
   one appears.
@@ -337,6 +342,14 @@ records are fabrications or unannotated facts.
 - Graph round trip — the same rules loaded into Neo4j, validated, and read back
   out: 30 rule nodes → 27 ACTIVE, 100% ABox sensor coverage, **F1 0.897**; adding
   the `CORRELATES_WITH` edge recovers `GT-0009` for recall 1.000 / **F1 0.933**.
+- **Those recalls are scored leniently**, and deliberately so rather than
+  quietly: a GT window counts as detected on *any* nonzero temporal overlap on
+  the same sensor. An operator cares whether the episode was caught early and
+  substantially, so both harnesses rescore the identical detections under
+  stricter acceptance and report it alongside. On the graph round trip:
+  recall 0.714 at ≥25% window coverage, 0.500 at ≥50%, 0.643 within 30 min
+  latency, 0.571 for both at once (`recall_cov25` / `cov50` / `lat30` /
+  `cov25_lat30` in `graph_detection_summary.csv`).
 - Human-domain checks — access authorisation F1 1.000, occupancy limits F1 0.856,
   each against a null control.
 
