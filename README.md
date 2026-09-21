@@ -2,26 +2,30 @@
 
 **Multi-Agent Extraction, Content-First Evaluation, and Knowledge-Graph Validation**
 
-The full repository, including every script, corpus and scored artifact
-referred to below, is public at
+The full repository, including every script, corpus and scored artifact referred
+to below, is available at
 <https://github.com/dleflef/Rule-Extraction-from-Industrial-SOPs-Without-a-Target-Schema-Multi-Agent-Extraction-Content-First>.
 
-This repository pulls operating rules out of industrial documents, loads them
-into a knowledge graph, and then uses those rules, and nothing else, to flag
-anomalies in plant telemetry.
+This repository contains a prototype pipeline that attempts to extract operating
+rules from industrial documents, load those rules into a knowledge graph, and
+use the rules alone to flag anomalies in plant telemetry.
 
-You hand it an operating or control document. An SOP, a table of alarm
-thresholds, a maintenance schedule, an access matrix. It gives back the rules
-that document states, as structured records, binds those records to whatever
-equipment the facility declares, and runs the surviving rules over sensor data.
-None of it is preset in code. Which equipment ontology the document uses, which
-fields its rules carry, which categories they fall into, and whether it is
-written as prose or as a table or as a matrix all get worked out from the corpus.
+The intended input is an operating or control document: a standard operating
+procedure, a table of alarm thresholds, a maintenance schedule, or an access
+matrix. The pipeline returns the rules that the document appears to state, as
+structured records, attempts to bind those records to the equipment the facility
+declares, and applies the surviving rules to sensor data. No target schema is
+fixed in the code. The equipment ontology a document uses, the fields its rules
+carry, the categories those rules fall into, and whether the material is written
+as prose, as a table or as a matrix are all inferred from the corpus itself.
 
-That constraint is the whole point. Configure a pipeline for one corpus and you
-can always make it score well on that corpus. The question I wanted answered was
-how a pipeline that has been told nothing does on documents it has never seen,
-from domains it was not built for.
+This constraint is deliberate, though it is also a limitation. A pipeline
+configured for a single corpus can usually be made to score well on that corpus,
+which makes such results difficult to interpret. The question examined here is a
+narrower one: how a pipeline given no prior information behaves on documents it
+has not seen, drawn from domains it was not developed against. The evidence
+below speaks only to the four corpora studied, and should be read with that
+scope in mind.
 
 ---
 
@@ -53,162 +57,166 @@ from domains it was not built for.
 
 ### Layer 1: document ingestion
 
-`layers/layer_1/agent_1b_tools.py` converts PDFs to layout-aware Markdown with
-IBM Docling, reads `.txt` files as they are, and then cleans up what comes back:
-HTML decoding, escaped characters, broken ligatures, and the duplication that
-vision bounding boxes leave in table cells. A cell can arrive as `"Inspect and
-lubricate HIGH Inspect and lubricate HIGH"`. The de-duplication matches whole
-tokens. A character-level rule looks fine on that example and then quietly eats
-letters out of ordinary text.
+`layers/layer_1/agent_1b_tools.py` converts PDFs to layout-aware Markdown using
+IBM Docling, reads `.txt` files unchanged, and then applies a modest amount of
+cleaning: HTML decoding, escaped characters, broken ligatures, and the
+duplication that vision bounding boxes tend to leave in table cells. A cell may
+arrive as `"Inspect and lubricate HIGH Inspect and lubricate HIGH"`. The
+de-duplication operates on whole tokens. A character-level rule appears adequate
+on that example but was found to remove letters from ordinary text elsewhere.
 
 `test_agent_1b.py` is the entry point. It converts everything in
 `data/dataset/rules/` into `layers/layer_1/texts/`.
 
 ### Layer 2: multi-agent extraction
 
-`layers/layer_2/step2_multi_agent_generic.py` is where most of the work happens.
-It is a LangGraph graph with six stages.
+`layers/layer_2/step2_multi_agent_generic.py` implements the greater part of the
+processing. It is written as a LangGraph graph with six stages.
 
 1. **segment** (no LLM). Splits the document into blank-line-delimited blocks,
-   packs the blocks into chunks, and numbers every content line. Provenance then
-   belongs to the pipeline. No model has to remember to write it down, because
-   an agent only ever gets asked to cite a line that is sitting in front of it. Headings are found by shape alone: short,
-   isolated, no closing punctuation. Each one is carried into every chunk it
-   covers.
+   packs the blocks into chunks, and numbers every content line. Provenance is
+   therefore assigned by the pipeline rather than by a model, since an agent is
+   only ever asked to cite a line already placed in front of it. Headings are
+   identified by shape alone: short, isolated, and without closing punctuation.
+   Each heading is carried into every chunk it covers.
 2. **scout** (one LLM call per chunk, run in parallel). Emits one record per rule
-   boundary that the document draws itself. That means a printed rule id where
-   there is one, and otherwise a table row, a matrix cell, or a sentence that
-   states a rule. Field names are copied from the document's own labels. There is
-   no schema in the prompt and no worked example, since an example only ever
-   demonstrates one document shape, and a model that has been shown one will
-   reproduce it on documents that do not have it.
-3. **induce** (one LLM call per corpus). The schema inducer. It never sees a
-   document. What it sees is the inventory of field names and category labels the
-   scouts actually produced, with occurrence counts and sample values.
+   boundary that the document itself draws. In practice this means a printed rule
+   identifier where one exists, and otherwise a table row, a matrix cell, or a
+   sentence stating a rule. Field names are copied from the document's own
+   labels. The prompt contains neither a schema nor a worked example, on the
+   reasoning that an example can only demonstrate one document shape and may
+   encourage a model to reproduce that shape where it does not apply.
+3. **induce** (one LLM call per corpus). The schema inducer, which never sees a
+   document. Its input is the inventory of field names and category labels the
+   scouts produced, together with occurrence counts and sample values.
 4. **assemble** (no LLM). Groups records on the document's own record boundary,
    renames each field to its canonical name, and writes one row per rule. That
    boundary is either the printed identifier or the physical line the record came
-   off, so granularity follows evidence printed in the document instead of a
-   ground truth's column conventions.
+   from, so granularity follows evidence printed in the document rather than the
+   column conventions of a particular ground truth.
 5. **audit** (one LLM call per chunk, in parallel). Re-reads each assembled record
-   against the numbered lines it cites, then drops or corrects whatever is not
-   stated there. If a whole chunk comes back rejected, that counts as an audit
-   failure and not as a finding. An auditor claiming every record is ungrounded
-   is more likely to be broken than to be right.
-6. **save** (no LLM). Writes the surviving records out as a rectangular CSV whose
-   columns are whatever fields that run ended up with, alongside the long-format
-   facts file and the induced schema as JSON.
+   against the numbered lines it cites, then drops or corrects material that is
+   not stated there. Where an entire chunk is rejected, this is recorded as an
+   audit failure rather than as a finding. The assumption behind this is that an
+   auditor rejecting an entire chunk is more plausibly in error than correct,
+   although that assumption is not itself tested here.
+6. **save** (no LLM). Writes the surviving records as a rectangular CSV whose
+   columns are whatever fields that run produced, alongside the long-format facts
+   file and the induced schema as JSON.
 
-Outputs land in `layers/layer_2/step2_results_generic/`:
+Outputs are written to `layers/layer_2/step2_results_generic/`:
 `ext_multi_agent_generic_<corpus>_run<N>_<ts>.csv` for the records,
 `facts_*.csv` for long-format provenance (one row per record, field and value),
-and `audit_log_*.csv` when the audit sidecar is on.
+and `audit_log_*.csv` when the audit sidecar is enabled.
 
-Two comparison systems sit alongside it.
+Two comparison systems are provided alongside it.
 
-`baseline.py` is a deterministic regex parser. I wrote it by hand for the four
-development documents, and it reads its entity inventory out of the seed graph.
-It is per-corpus configuration by construction. It is there to measure what such
-configuration buys and what it costs, not to transfer anywhere.
+`baseline.py` is a deterministic regex parser, written by hand for the four
+development documents, which reads its entity inventory from the seed graph. It
+is per-corpus configuration by construction. Its purpose is to indicate what such
+configuration gains and what it costs, not to transfer to other material.
 
-`step2_grid_search_extraction_en.py` is the earlier single-agent grid search over
-models and prompting paradigms. It is kept around so the multi-agent pipeline can
-be scored against it under one identical metric.
+`step2_grid_search_extraction_en.py` is an earlier single-agent grid search over
+models and prompting paradigms. It is retained so that the multi-agent pipeline
+can be scored against it under a single identical metric.
 
 `llm_cache.py` keys responses on `SHA-256(model, messages)`. A warm cache replays
-a run exactly, and any change to a prompt, a model or a document forces a real
+a run exactly, and any change to a prompt, a model or a document forces a fresh
 call.
 
 ### Layer 3: evaluation
 
-`layers/layer_3/step3_evaluation_generic_dynamic.py` reports one headline number,
-`F1_content`. Putting three or four F1 variants side by side just invites quoting
-whichever one is highest.
+`layers/layer_3/step3_evaluation_generic_dynamic.py` reports a single headline
+number, `F1_content`. A single measure is reported in preference to several
+variants, since reporting a family of related scores invites selective quotation
+of the most favourable among them.
 
 The evaluator assumes nothing about field names on either side. Exact category
-matching cannot work here. Layer 2 discovers categories per document
-(`EnvironmentalLimit`, `TriggeredResponse`) while each ground truth uses a fixed
-taxonomy of its own (`OperationalRule`, `ThresholdRule`), and nothing ties the two
-vocabularies together. So every row on both sides gets collapsed into one text
-blob and compared as a whole, on two terms:
+matching is not available in this setting. Layer 2 discovers categories per
+document (`EnvironmentalLimit`, `TriggeredResponse`), while each ground truth
+uses a fixed taxonomy of its own (`OperationalRule`, `ThresholdRule`), and
+nothing connects the two vocabularies. Every row on both sides is therefore
+collapsed into a single text blob and compared as a whole, on two terms:
 
-- semantic similarity of the two blobs, SBERT cosine;
-- numeric agreement, scored in both directions. Every number in the GT row should
-  turn up somewhere in the matched prediction, and every number the prediction
-  carries should be justified by one in the GT row. A recall-only term charges
-  nothing for surplus values, which makes it easy to game by padding a record
-  with numbers that were never extracted.
+- semantic similarity of the two blobs, measured as SBERT cosine;
+- numeric agreement, scored in both directions. Every number in the ground truth
+  row should appear somewhere in the matched prediction, and every number the
+  prediction carries should be justified by one in the ground truth row. A
+  recall-only term would charge nothing for surplus values, which would make the
+  metric easy to inflate by padding a record with numbers that were never
+  extracted.
 
 Rows are paired by Hungarian assignment over the blended score. Two kinds of
-column are dropped before any of that, and both get located structurally instead
-of by a name whitelist: an id column, meaning whichever one holds a short
+column are dropped beforehand, both located structurally rather than through a
+name whitelist: an identifier column, meaning whichever column holds a short
 distinct value on almost every row, and a provenance column, meaning whichever
-one holds the same value on all of them.
+column holds the same value on all of them.
 
-`step3_results/HOW_MATCHING_WORKS.md` writes out every comparison decision.
-`step3_results/match_audit/<corpus>/` prints the exact strings that were compared
-for every pair.
+`step3_results/HOW_MATCHING_WORKS.md` documents every comparison decision.
+`step3_results/match_audit/<corpus>/` prints the exact strings compared for each
+pair.
 
-The remaining Layer 3 scripts test what `F1_content` cannot see:
+The remaining Layer 3 scripts examine what `F1_content` cannot show:
 
-| Script | Question it answers |
+| Script | Question it addresses |
 | --- | --- |
-| `step3_validity_checks.py` | Does the metric measure extraction quality, or just a similarity floor? (null pairs, padding attacks, threshold curve, perturbations) |
+| `step3_validity_checks.py` | Does the metric measure extraction quality, or only a similarity floor? (null pairs, padding attacks, threshold curve, perturbations) |
 | `step3_citation_validity.py` | Are the line citations resolvable, and do the cited lines contain what the record asserts? |
-| `step3_field_verification.py` | Do numeric bounds sit in the right slot, and not merely somewhere in the record? |
-| `step3_binding_check.py` | Slot binding across all four corpora, without inventing a field mapping |
+| `step3_field_verification.py` | Do numeric bounds sit in the correct slot, rather than merely somewhere in the record? |
+| `step3_binding_check.py` | Slot binding across all four corpora, without introducing a field mapping |
 | `step3_schema_stability.py` | Does the inducer produce a consistent corpus schema across repeated runs? |
-| `step3_surplus_grounding.py` | Are unpaired surplus records fabrications, or facts the annotation has no row for? |
-| `step3_audit_interventions.py` | What did the audit stage actually keep, drop, and correct? |
+| `step3_surplus_grounding.py` | Are unpaired surplus records fabrications, or facts for which the annotation has no row? |
+| `step3_audit_interventions.py` | What did the audit stage keep, drop, and correct? |
 | `step3_audit_stats.py` | How decisive are the assignment's pairings (runner-up margins)? |
-| `step3_calibration_sample.py` | Does the τ = 0.6 accept/reject boundary agree with a human? |
-| `make_figures.py` | Renders every results figure from the committed CSVs, asserting each headline value before it draws |
+| `step3_calibration_sample.py` | Does the τ = 0.6 accept/reject boundary agree with a human annotator? |
+| `make_figures.py` | Renders every results figure from the committed CSVs, asserting each headline value before drawing |
 
-`layers/oracle_baseline/oracle_gt_detect.py` gives the ceiling. Detection there is
-driven by the human-written annotation itself, so the extraction's detection score
-can be read against what perfect rules manage on the same telemetry.
+`layers/oracle_baseline/oracle_gt_detect.py` provides a ceiling. Detection there
+is driven by the human-written annotation itself, so the extraction's detection
+score can be read against what perfect rules achieve on the same telemetry.
 
 ### Layer 4: downstream use
 
 `step5_core.py` holds the detection engine: four detectors (`threshold`, `stuck`,
 `drift`, `sustained`), the plausibility guard, the alarm merge and the metrics.
-Each is defined exactly once, so two experiments cannot drift apart through
-duplicated logic. Its anti-leakage invariants hold at every entry point. Detection
-reads `timestamp / sensor_id / value` and nothing else, and ground truth is opened
-only by the scoring helpers, strictly afterwards.
+Each is defined once only, so that two experiments cannot diverge through
+duplicated logic. Its anti-leakage invariants are enforced at every entry point.
+Detection reads `timestamp / sensor_id / value` and nothing further, and ground
+truth is opened only by the scoring helpers, strictly afterwards.
 
 Two harnesses consume it.
 
 **`step4_detect_generic.py`** is an in-memory adapter from Layer 2's discovered
-schema onto the detector stack. It is the only new code on purpose. Every detector
-and every metric is imported unchanged, so any result here can be read as a
-statement about the extraction itself. Sensors resolve by value against the
-declared inventory, field names by mechanical normalisation, and the rule class by
-what a record contains rather than what it is called. Keying on the discovered
-label instead cost every threshold on the runs that chose `AlarmThreshold` over
-`SensorThreshold`. Detector-ready rules dropped from 27 to 5 and detection F1 from
-0.897 to 0.316, while `F1_content` sat at 0.719 ± 0.000 the entire time.
+schema onto the detector stack. It is, by design, the only new code introduced at
+this stage. Every detector and every metric is imported unchanged, so results here
+may reasonably be read as statements about the extraction itself. Sensors resolve by
+value against the declared inventory, field names by mechanical normalisation,
+and the rule class by what a record contains rather than by what it is called.
+Keying on the discovered label instead was found to lose every threshold on runs
+that chose `AlarmThreshold` over `SensorThreshold`. Detector-ready rules fell
+from 27 to 5 and detection F1 from 0.897 to 0.316, while `F1_content` remained at
+0.719 ± 0.000 throughout.
 
-**`step4_graph_generic.py`** is the graph-mediated version, which is the question
-the project actually poses. Every rule makes a round trip through Neo4j: load the
-facility ABox, load the extracted rules as `(:Rule)` nodes with `GOVERNS` and
-`APPLIES_TO` edges, validate by creating `GOVERNS_ABOX` only where the rule's
-sensor matches a sensor the plant declares, then read the ACTIVE rules back out
-with Cypher and detect on those. Records that cannot bind get loaded into the
-graph as well, and that is deliberate. Load only the ones that already resolve and
-`GOVERNS_ABOX` succeeds by construction, so validation reports 100% no matter what
-the extraction did. Loading the others alongside lets the binding genuinely fail,
-which is what turns the ACTIVE count into a real measurement.
-Here 3 of 30 rule nodes name a sensor the plant does not declare, and they are
-reported UNRESOLVED instead of being silently dropped. The leakage guard is
-asserted while the run is going: the graph contains `AnomalyEvent` nodes, so
-before detection starts the loaded rule set is checked for any ground-truth field
-and the run aborts if one shows up.
+**`step4_graph_generic.py`** is the graph-mediated variant, which corresponds more
+closely to the question the project poses. Every rule makes a round trip through
+Neo4j: the facility ABox is loaded, the extracted rules are loaded as `(:Rule)`
+nodes with `GOVERNS` and `APPLIES_TO` edges, validation creates `GOVERNS_ABOX`
+only where the rule's sensor matches a sensor the plant declares, and the ACTIVE
+rules are then read back out with Cypher and used for detection. Records that
+cannot bind are loaded into the graph as well, which is deliberate. Were only the
+records that already resolve to be loaded, `GOVERNS_ABOX` would succeed by
+construction and validation would report 100% regardless of extraction quality.
+Loading the remainder alongside allows the binding to fail where it should, which
+is what makes the ACTIVE count informative. In these runs 3 of 30 rule nodes name
+a sensor the plant does not declare, and they are reported UNRESOLVED rather than
+silently dropped. The leakage guard is asserted during the run: the graph contains
+`AnomalyEvent` nodes, so before detection begins the loaded rule set is checked
+for any ground-truth field and the run aborts if one is present.
 
-`step4_detect_human.py` covers the records a telemetry detector cannot consume at
-all, things like access authorisation, occupancy limits and acknowledgement
-deadlines, against the human-domain logs. Each one has a null control that has to
-collapse.
+`step4_detect_human.py` covers records that a telemetry detector cannot consume at
+all, such as access authorisation, occupancy limits and acknowledgement deadlines,
+evaluated against the human-domain logs. Each is accompanied by a null control
+that is expected to collapse.
 
 ---
 
@@ -235,9 +243,9 @@ layers/
 Preliminary/                     early exploratory notebooks and demos
 ```
 
-The three external corpora are held out. Each one was generated in a single pass,
-document and ground truth together, by an external model. Generated once, then
-left unread until it was scored. Their per-corpus `README.md` files record how.
+The three external corpora are held out. Each was generated in a single pass,
+document and ground truth together, by an external model, generated once and left
+unread until scoring. Their per-corpus `README.md` files record the procedure.
 
 ---
 
@@ -251,7 +259,8 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env` at the repo root and fill the values you need:
+Copy `.env.example` to `.env` at the repository root and fill in the values
+required:
 
 ```bash
 cp .env.example .env
@@ -275,17 +284,18 @@ OLLAMA_JUDGE_MODEL=...
 ```
 
 All three Layer 2 agent roles (`--scout-model`, `--inducer-model`,
-`--auditor-model`) default to `gemma4:31b`. I picked it because it replies
-directly with no reasoning preamble, which keeps token budgets mapping cleanly
-onto the structured prompts. One thing to watch: passing a `reasoning_effort` to
-that model switches a thinking pass on, so the code sends none.
+`--auditor-model`) default to `gemma4:31b`. It was selected because it replies
+directly without a reasoning preamble, which keeps token budgets mapping cleanly
+onto the structured prompts. A practical consideration is that passing a
+`reasoning_effort` to this model enables a thinking pass, so the code sends
+none.
 
-Neo4j is needed only for the graph round trip. Everything else runs without a
+Neo4j is required only for the graph round trip. Everything else runs without a
 database, including all of Layer 3 and `step4_detect_generic.py`.
 
 ---
 
-## Running it
+## Running the pipeline
 
 ### End to end
 
@@ -310,9 +320,9 @@ python3 ../layer_3/step3_evaluation_generic_dynamic.py \
     --aggregate --report ../step3_results/biogas.csv
 ```
 
-Layer 2 flags worth knowing: `--runs N` (anything above 1 disables the cache
+The principal Layer 2 flags are `--runs N` (any value above 1 disables the cache
 automatically), `--chunk-chars` (default 3500), `--max-concurrency` (default 4),
-`--no-cache`, `--corpus-name`.
+`--no-cache` and `--corpus-name`.
 
 ### Downstream detection
 
@@ -331,12 +341,12 @@ python3 layers/oracle_baseline/oracle_gt_detect.py                        # perf
 | `run_desalination.sh` | Held-out desalination corpus, multi-agent + grid, both scored |
 | `run_robustness_sweeps.sh` | Scoring-parameter sweeps (no LLM endpoint needed) |
 | `run_audit_replication.sh` | Instrumented replication that logs every audit verdict |
-| `evaluate_grid.sh` | Re-scores the old grid runs under the same evaluator |
+| `evaluate_grid.sh` | Re-scores the earlier grid runs under the same evaluator |
 
 `evaluate_grid.sh` strips the grid's per-run bookkeeping columns (`model_name`,
-`paradigm`, `level` and so on) before scoring. Left in, the evaluator would glue
-`"gemma4:31b | cot_basic | 1 | False"` onto every prediction's content blob and
-make the grid look worse than it is.
+`paradigm`, `level` and so on) before scoring. If they were left in, the evaluator
+would append `"gemma4:31b | cot_basic | 1 | False"` to every prediction's content
+blob and understate the grid's performance.
 
 ---
 
@@ -351,61 +361,64 @@ From `layers/step3_results/RESULTS.csv`, 5 runs per corpus:
 | Biogas (held out) | 47 | 28.0 ± 0.0 | **0.715 ± 0.023** | 0.957 | 0.570 |
 | Sulfuric acid (held out) | 70 | 49.0 ± 1.0 | **0.649 ± 0.049** | 0.788 | 0.552 |
 
-The precision and recall split has more to do with annotation granularity than
-with extraction quality on its own. The development corpus extracts 131 records
-against 86 annotated rows, so recall is high and precision low; biogas extracts 28
-against 47 and goes the other way. `step3_surplus_grounding.py` is the check on
-whether those surplus records are fabrications or unannotated facts.
+The split between precision and recall appears to reflect annotation granularity
+more than extraction quality on its own. The development corpus extracts 131
+records against 86 annotated rows, giving high recall and low precision; biogas
+extracts 28 against 47 and shows the opposite pattern. `step3_surplus_grounding.py`
+is the check on whether those surplus records are fabrications or unannotated
+facts.
 
-Two configured systems sit beside it on the development corpus, scored by the
-same evaluator. The grid search, handed that corpus's own thirteen field names,
-reaches 0.949. The regex parser reaches 0.771. Both are above the pipeline's
-0.719, and neither one moves: the grid's prompt names fields that only this
-corpus has, and the parser needs a new function for every document you point it
-at.
+Two configured systems sit beside the pipeline on the development corpus, scored
+by the same evaluator. The grid search, supplied with that corpus's own thirteen
+field names, reaches 0.949. The regex parser reaches 0.771. Both exceed the
+pipeline's 0.719, and neither transfers: the grid's prompt names fields specific
+to this corpus, and the parser requires a new function for each document it is
+pointed at.
 
-The parser is the one worth following downstream, because the two measures
-disagree about it. Through the same detection stack it recovers 6 of the 14
-anomalies against the pipeline's 13. A higher content score did not mean better
-detection, and that gap is most of why Layer 4 exists.
+The parser merits closer attention downstream, since the two measures disagree
+about it. Through the same detection stack it recovers 6 of the 14 anomalies,
+against the pipeline's 13. A higher content score did not correspond to better
+detection in this case, and that divergence is much of the reason Layer 4 was
+added.
 
 Downstream, on the development corpus (`layers/layer_4/`), the extracted rules
-find **all 14 of the plant's labelled anomalies** across 80 hours of telemetry,
-211,200 readings from 22 sensors. Thirteen come from the rules on their own: ten
-where a value crosses a threshold the rules carry, two from a drift condition,
-one from a stuck condition.
+identify **all 14 of the plant's labelled anomalies** across 80 hours of
+telemetry, comprising 211,200 readings from 22 sensors. Thirteen follow from the
+rules alone: ten where a value crosses a threshold the rules carry, two from a
+drift condition, and one from a stuck condition.
 
-The fourteenth is the one I care about. `GT-0009` is a packaging speed that
+The fourteenth case is of particular interest. `GT-0009` is a packaging speed that
 never leaves its extracted bounds, clearing the nearest by 0.0061 m/s at its
-worst, so no single-sensor rule can fire on it. It comes back only through the
-graph. Two records, read out of two different documents, name the same sensor
-pair; that pair is stored as a `CORRELATES_WITH` edge; and when the sealing
-current breaks its own extracted bound the detector follows the edge and asks
-whether the coupled sensor is behaving oddly for itself. It is, and the window
-it returns matches the recorded one to the second.
+worst, so no single-sensor rule can fire on it. It is recovered only through the
+graph. Two records, read from two different documents, name the same sensor pair;
+that pair is stored as a `CORRELATES_WITH` edge; and when the sealing current
+breaks its own extracted bound, the detector follows the edge and asks whether the
+coupled sensor is behaving unusually for itself. It is, and the window returned
+matches the recorded one to the second.
 
-Give every rule the wrong sensor and those thirteen drop to four, so the
-detections come from the rules and not from telemetry that would look odd
-whatever you ran over it.
+Assigning every rule the wrong sensor reduces those thirteen to four, which
+suggests the detections derive from the rules rather than from telemetry that
+would appear anomalous under any procedure.
 
 - In-memory. 27 of the 131 records are detector-ready: recall 0.929, precision
   0.867, **F1 0.897**.
-- Graph round trip. Same rules through Neo4j, validated and read back out: 30
-  rule nodes, 27 ACTIVE, **F1 0.897**. The `CORRELATES_WITH` edge takes recall to
-  1.000 and **F1 0.933**.
-- Scored leniently, which is worth saying out loud: a window counts as detected
-  on any overlap. Rescoring the identical detections under stricter acceptance
-  gives recall 0.714 at ≥25% window coverage and 0.500 at ≥50%. Both harnesses
-  report those alongside.
+- Graph round trip. The same rules through Neo4j, validated and read back out: 30
+  rule nodes, 27 ACTIVE, **F1 0.897**. The `CORRELATES_WITH` edge raises recall to
+  1.000 and gives **F1 0.933**.
+- The scoring is lenient, and this should be taken into account when reading the
+  figures above: a window counts as detected on any overlap. Rescoring the
+  identical detections under stricter acceptance gives recall 0.714 at ≥25% window
+  coverage and 0.500 at ≥50%. Both harnesses report these figures alongside the
+  headline values.
 - Human-domain checks. Access authorisation F1 1.000, occupancy limits F1 0.856,
   each against a null control.
 
-Numbers move when the pipeline or the scoring parameters change. The CSVs under
-`layers/step3_results/` are the source of truth, not this table.
+These numbers change when the pipeline or the scoring parameters change. The CSVs
+under `layers/step3_results/` are the authoritative record, not this table.
 
 ---
 
-## Where the artifacts live
+## Location of the artifacts
 
 ```
 layers/layer_3/
@@ -435,34 +448,39 @@ layers/oracle_baseline/       oracle_coverage.csv, oracle_strictness.csv
 ## Design commitments
 
 These are the constraints the code is written to hold. Most of the Layer 3 scripts
-exist to test that it does.
+exist to test whether it does.
 
-- **No per-corpus configuration.** No corpus overrides the id field, and no
-  evaluation flag is tuned per domain. A generic evaluator that needs per-corpus
-  hand-holding is not generic. This costs score in places and stays anyway: the
-  desalination ground truth leaves `identifier` blank on 15 of its 26 rows, so
-  detection falls through to `rule_text` and gives up 0.046 F1.
+- **No per-corpus configuration.** No corpus overrides the identifier field, and
+  no evaluation flag is tuned per domain. An evaluator that required per-corpus
+  adjustment could not reasonably be described as generic. The constraint costs
+  score in places and is retained regardless: the desalination ground truth leaves
+  `identifier` blank on 15 of its 26 rows, so detection falls through to
+  `rule_text` and gives up 0.046 F1.
 - **Nothing is keyed on a discovered column name.** Entities resolve by value
-  against a declared inventory, and rule classes are decided by structure. A label
-  whitelist over a discovered schema has already failed twice in this codebase,
-  the same way both times.
+  against a declared inventory, and rule classes are determined by structure. A
+  label whitelist over a discovered schema proved unreliable on two separate
+  occasions during development, in the same manner each time.
 - **Provenance is assigned by code, not remembered by a model.** Line numbering
-  happens in `segment`, before any LLM sees anything.
-- **Ground truth is read only to score.** Never to detect, never to extract, and
-  the graph harness asserts it at run time.
-- **Every claim traces to an artifact.** A number that cannot be reproduced from
-  committed code and committed outputs does not get reported.
+  occurs in `segment`, before any LLM sees the material.
+- **Ground truth is read only for scoring.** Never for detection, never for
+  extraction, and the graph harness asserts this at run time.
+- **Every reported number traces to an artifact.** A figure that cannot be
+  reproduced from committed code and committed outputs is not reported.
 
 ---
 
-## What it comes down to
+## Summary
 
-Point this at a facility's documents with no schema, no taxonomy and no worked
-example, and the rules it writes down are good enough to run that plant's
-alarms. On the development corpus they catch all 14 labelled anomalies: 13 from
-the bounds and conditions the rules carry, and the last from a link between two
-sensors that only the graph holds.
+Given a facility's documents with no schema, no taxonomy and no worked example,
+the pipeline produced rules that were sufficient to reproduce the labelled alarms
+of the plant in the experiments reported here. On the development corpus the
+extracted rules account for all 14 labelled anomalies: 13 from the bounds and
+conditions the rules carry, and the remaining one from a link between two sensors
+held only in the graph.
 
-The regex parser scores higher than the pipeline on `F1_content` and finds six
-of the fourteen. Agreeing with an annotation and producing rules that work are
-not the same thing, and that is the reason Layer 4 is in this repository at all.
+The regex parser scores higher than the pipeline on `F1_content` while recovering
+six of the fourteen anomalies. Agreement with an annotation and the production of
+rules that function downstream are therefore not equivalent, which is the reason
+Layer 4 forms part of this repository. These observations rest on four corpora and
+a single facility, and further evaluation would be needed before generalising
+from them.
