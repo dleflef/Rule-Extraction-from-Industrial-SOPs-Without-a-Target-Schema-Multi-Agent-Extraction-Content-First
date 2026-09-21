@@ -1,3 +1,13 @@
+# Source and attribution.
+# This file is taken from the support code of the DeepLearning.AI short course
+# "Agentic Knowledge Graph Construction", taught by Andreas Kollegger (Neo4j).
+# Course: https://www.deeplearning.ai/courses/agentic-knowledge-graph-construction
+# Code:   https://github.com/neo4j-contrib/agentic-kg (MIT licence)
+#
+# It is retained here as preliminary exploratory material and forms no part of the
+# pipeline reported in this repository. Rights in the original material remain with
+# its authors.
+
 
 import logging
 from pathlib import Path

@@ -1,3 +1,15 @@
+# Source and attribution.
+# This file is taken from the support code of the DeepLearning.AI short course
+# "Document AI: From OCR to Agentic Doc Extraction", produced in collaboration with
+# LandingAI.
+# Course: https://www.deeplearning.ai/courses/document-ai-from-ocr-to-agentic-doc-extraction
+# Parts of it follow the LandingAI documentation sample at
+# https://docs.landing.ai/ade/ade-python
+#
+# It is retained here as preliminary exploratory material and forms no part of the
+# pipeline reported in this repository. Rights in the original material remain with
+# its authors.
+
 # Add your utilities or helper functions to this file.
 from pathlib import Path
 from IPython.display import display, Image as DisplayImage, IFrame
