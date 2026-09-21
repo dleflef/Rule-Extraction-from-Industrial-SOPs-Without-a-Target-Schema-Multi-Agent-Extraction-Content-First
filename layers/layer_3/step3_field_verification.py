@@ -64,6 +64,28 @@ def load_declared_stations() -> set:
             if s.strip()}
 
 
+def load_declared_bounds() -> dict:
+    """The bounds the FACILITY declares on each sensor, read from the Sensor
+    nodes of the seed knowledge graph.
+
+    This is a second reference for the same cells the annotation covers. The
+    two can disagree, and where they do it matters which one the extraction
+    followed: a value that matches the plant and not the annotation is an
+    annotation error, while the reverse would be an extraction error. Reporting
+    only agreement with the annotation cannot tell those apart, so both counts
+    are produced here and neither is corrected against the other."""
+    nodes = pd.read_csv(ABOX_NODES, dtype=str).fillna("")
+    sensors = nodes[nodes["label"] == "Sensor"]
+    declared = {}
+    for _, n in sensors.iterrows():
+        name = str(n["name"]).strip()
+        if not name:
+            continue
+        declared[name] = {f: str(n[f]).strip() for f in
+                          ("critLo", "warnLo", "warnHi", "critHi") if f in sensors.columns}
+    return declared
+
+
 def norm_col(name: str) -> str:
     """Case folding plus separator removal: critLo, crit_lo, CRIT-LO -> critlo."""
     return re.sub(r"[^a-z0-9]", "", str(name).casefold())
@@ -103,7 +125,8 @@ def pred_key(row: pd.Series, colmap: dict, stations: set) -> tuple:
     return station, sensor
 
 
-def verify_run(run_no: int, path: str, gt_rows: pd.DataFrame, stations: set):
+def verify_run(run_no: int, path: str, gt_rows: pd.DataFrame, stations: set,
+               plant: dict):
     pred = pd.read_csv(path, dtype=str).fillna("")
     colmap = {norm_col(c): c for c in pred.columns}
     bound_cols = [colmap[f] for f in BOUND_FIELDS if f in colmap]
@@ -115,6 +138,7 @@ def verify_run(run_no: int, path: str, gt_rows: pd.DataFrame, stations: set):
         keyed.setdefault(pred_key(row, colmap, stations), row)
 
     cells = matches = 0
+    plant_cells = plant_matches = 0
     sensors_found = 0
     mismatches = []
     for _, g in gt_rows.iterrows():
@@ -128,6 +152,14 @@ def verify_run(run_no: int, path: str, gt_rows: pd.DataFrame, stations: set):
             cells += 1
             pred_col = colmap.get(norm_col(gt_field))
             pred_val = str(rec[pred_col]).strip() if rec is not None and pred_col else ""
+            # The same cell, scored against the plant's own declared value.
+            # Counted only where the facility declares one, so the denominator
+            # says how many cells the comparison was actually able to make.
+            plant_val = plant.get(str(g["sensor"]).strip(), {}).get(gt_field, "")
+            if plant_val:
+                plant_cells += 1
+                if rec is not None and values_equal(plant_val, pred_val):
+                    plant_matches += 1
             if rec is not None and values_equal(gt_val, pred_val):
                 matches += 1
             else:
@@ -138,6 +170,7 @@ def verify_run(run_no: int, path: str, gt_rows: pd.DataFrame, stations: set):
                     "field": gt_field,
                     "gt_value": gt_val,
                     "pred_value": pred_val if rec is not None else "(sensor not found)",
+                    "plant_value": plant_val or "(not declared)",
                 })
     return {
         "run": run_no,
@@ -147,6 +180,9 @@ def verify_run(run_no: int, path: str, gt_rows: pd.DataFrame, stations: set):
         "bound_cells": cells,
         "cells_matching_gt": matches,
         "cells_mismatching_gt": cells - matches,
+        "cells_compared_to_plant": plant_cells,
+        "cells_matching_plant": plant_matches,
+        "cells_mismatching_plant": plant_cells - plant_matches,
     }, mismatches
 
 
@@ -158,18 +194,21 @@ def main() -> None:
 
     gt_rows = load_gt_threshold_rows()
     stations = load_declared_stations()
+    plant = load_declared_bounds()
     summaries, all_mismatches = [], []
     for i, path in enumerate(paths, start=1):
-        summary, mism = verify_run(i, path, gt_rows, stations)
+        summary, mism = verify_run(i, path, gt_rows, stations, plant)
         summaries.append(summary)
         all_mismatches.extend(mism)
 
     total_cells = sum(s["bound_cells"] for s in summaries)
     total_match = sum(s["cells_matching_gt"] for s in summaries)
+    total_plant_cells = sum(s["cells_compared_to_plant"] for s in summaries)
+    total_plant_match = sum(s["cells_matching_plant"] for s in summaries)
     # Every field of the TOTAL row is a sum over runs, so the row can be read
-    # with the same arithmetic as any single run. An earlier version reported
-    # the MINIMUM sensors_recovered here, which printed 0 whenever one run
-    # failed to key and made the pooled figure unreadable.
+    # with the same arithmetic as any single run. A minimum over runs would
+    # print 0 for sensors_recovered whenever a single run failed to key, which
+    # makes the pooled figure unreadable.
     summaries.append({
         "run": "TOTAL",
         "prediction_file": f"{len(paths)} runs",
@@ -178,6 +217,9 @@ def main() -> None:
         "bound_cells": total_cells,
         "cells_matching_gt": total_match,
         "cells_mismatching_gt": total_cells - total_match,
+        "cells_compared_to_plant": total_plant_cells,
+        "cells_matching_plant": total_plant_match,
+        "cells_mismatching_plant": total_plant_cells - total_plant_match,
     })
 
     # Bound ordering, checked WITHOUT any reference. Agreement with the
@@ -241,6 +283,9 @@ def main() -> None:
     for s in summaries[:-1]:
         print(f"  run {s['run']}: {s['cells_matching_gt']}/{s['bound_cells']} cells, "
               f"{s['sensors_recovered']}/{s['gt_threshold_sensors']} sensors recovered")
+    ppct = 100.0 * total_plant_match / total_plant_cells if total_plant_cells else 0.0
+    print(f"[field-verify] {total_plant_match}/{total_plant_cells} of the same cells "
+          f"({ppct:.1f}%) match the value the FACILITY declares for that sensor")
     distinct = {(m["sensor"], m["field"]) for m in all_mismatches}
     print(f"  distinct mismatching cells: {len(distinct)}")
     for sensor, field in sorted(distinct):

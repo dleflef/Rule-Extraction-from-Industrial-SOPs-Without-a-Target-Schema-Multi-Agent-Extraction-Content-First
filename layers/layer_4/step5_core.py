@@ -1,9 +1,11 @@
 """
 step5_core.py
 
-The shared engine for Phase 2 anomaly detection (iMAKS, guide §3.1/§3.3).
-The detection primitives shared by the downstream harnesses are
-kept here, so the detectors, the scoring rule, and the metric definitions
+The shared engine for Phase 2 anomaly detection, following the two-phase
+evaluation protocol published with the iMAKS dataset
+(https://doi.org/10.5281/zenodo.20075430).
+
+The detection primitives shared by the downstream harnesses are kept here, so the detectors, the scoring rule, and the metric definitions
 exist exactly once and no two experiments can disagree because of
 duplicated logic.
 
@@ -27,8 +29,8 @@ Anti-leakage invariants, held by every entry point in this module:
     detection.
   - Ground truth (nodes.csv / edges.csv) is read only by the scoring
     helpers, which are invoked strictly AFTER detection has finished.
-  - The rules are taken from LLM extraction
-    CSV dump); GT bounds are never used as detection rules.
+  - The rules are taken from an extraction CSV; GT bounds are never used
+    as detection rules.
 """
 
 from __future__ import annotations
@@ -88,7 +90,8 @@ BASELINE_WINDOW_RATIO = 2
 # samples, so that startup noise is never compared against an empty or
 # meaningless reference.
 DRIFT_MIN_REF_SAMPLES = 10
-# The dataset's sampling cadence (guide §1.2: one reading every 30 s).
+# The dataset's sampling cadence: one reading every 30 s, as stated by the
+# iMAKS deposit and confirmed against timeseries_raw.csv.
 SAMPLE_INTERVAL_SEC = 30
 
 # Threshold rules that flag more than half of their sensor's readings are
@@ -113,8 +116,9 @@ STUCK_TOL = 1e-6
 # a buffer sized from the rule's own sample count instead.
 DEFAULT_STUCK_BUFFER = 64
 
-# The Phase 2 pass bar (guide Table 2: coverage fraction ≥ 70%).
-PHASE2_COVERAGE_THRESHOLD = 0.70
+# No pass-bar constant is defined for Phase 2 coverage: the coverage fraction a
+# run achieves is reported directly by compute_anomaly_metrics / score_coverage,
+# so no threshold has to be agreed on here for a figure to be readable.
 
 
 # ── Data classes ──────────────────────────────────────────────────────────────
@@ -512,7 +516,7 @@ def merge_alarms(alarms: list[Alarm],
 
 def load_gt_windows() -> list[GtAnomaly]:
     """The GT anomaly windows are read from nodes.csv + edges.csv (the
-    Phase 2 reference, guide §2.3). This must never be called before
+    Phase 2 reference). This must never be called before
     detection has finished — GT is a scoring input only."""
     with open(NODES_CSV, newline="", encoding="utf-8") as f:
         nodes = {r["nodeId"]: r for r in csv.DictReader(f)}
@@ -538,7 +542,7 @@ def load_gt_windows() -> list[GtAnomaly]:
 
 def score_coverage(events: list[Event],
                    gt_windows: list[GtAnomaly]) -> list[dict]:
-    """Each GT window is scored COVERED or GAP (guide Table 2). Under the
+    """Each GT window is scored COVERED or GAP. Under the
     shipped rule, any nonzero temporal overlap on the same sensor counts;
     how much recall that leniency buys is quantified separately by
     apply_strictness / scoring_strictness.csv. Every GT type is scored by

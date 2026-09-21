@@ -2,6 +2,7 @@ import os
 import json
 import zipfile
 import pandas as pd
+from dotenv import load_dotenv
 from neo4j import GraphDatabase 
 from langchain_openai import ChatOpenAI 
 from langchain_core.prompts import PromptTemplate
@@ -9,9 +10,10 @@ from utils.metrics_tracker import track_performance
 from utils.ocr_utils import extract_text_from_pdf
 
 # --- NEO4J CONFIGURATION ---
-NEO4J_URI = "bolt://54.86.186.129:7687"
-NEO4J_USER = "neo4j"
-NEO4J_PASSWORD = "REDACTED-NEO4J-PASSWORD"
+load_dotenv()
+NEO4J_URI = os.getenv("NEO4J_URI")
+NEO4J_USER = os.getenv("NEO4J_USERNAME", "neo4j")
+NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
 
 # Returns file paths for CSV, JSON, LOG, and PDF files extracted from a zip archive.
 @track_performance("Data Ingestion Agent")
@@ -162,6 +164,15 @@ def ocr_agent(state: dict, **kwargs) -> dict:
 def neo4j_agent(state: dict, **kwargs) -> dict:
     anomalies = state.get("sensor_summary", {}).get("anomalies", {})
     iot_summary = state.get("iot_payloads", [])
+
+    missing = [name for name, value in {
+        "NEO4J_URI": NEO4J_URI,
+        "NEO4J_PASSWORD": NEO4J_PASSWORD,
+    }.items() if not value]
+    if missing:
+        return {"neo4j_status":
+                "Configuration Error: set " + ", ".join(missing) +
+                " in the environment or repository .env file."}
     
     try:
         driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))

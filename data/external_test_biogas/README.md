@@ -41,7 +41,7 @@ The annotation shows it. Set against the development schema:
 | `ruleId` | `id` |
 | `class` | `category` |
 | `station` | `asset` |
-| `sensor` | `tag` (present but **empty on every row**) |
+| `sensor` | `tag` (populated on 15 of 47 rows for an associated device or instrument) |
 | `sensorType` | `parameter` |
 | `condition` | `condition` |
 | `action` | `action` |
@@ -51,10 +51,12 @@ The annotation shows it. Set against the development schema:
 | `source` | `source` |
 
 Five column names (`condition`, `action`, `severity`, `unit`, `source`) carry
-over verbatim, and the mapping is otherwise one-to-one. The empty `tag` column
-is the clearest tell: the development corpus distinguishes a station from the
-sensor on it, this facility does not, and the generator kept a slot it had no
-use for.
+over verbatim. The remaining columns retain a recognisably similar division of
+information, but the mapping is not strictly one-to-one. In particular,
+`asset` is normally the governed equipment, while the sparsely populated `tag`
+names an associated valve, analyser, probe, alarm, or other device on 15 rows.
+That structure is still evidence of development-schema priming; describing the
+column as empty was factually incorrect.
 
 **Consequence.** Biogas is *less* independent of the development corpus than the
 other two externals, in precisely the dimension — schema independence — that the

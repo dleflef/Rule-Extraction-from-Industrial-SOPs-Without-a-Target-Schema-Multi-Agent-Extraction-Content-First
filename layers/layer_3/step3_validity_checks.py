@@ -15,9 +15,10 @@ number is worth reporting, and both are empirical:
      go to ~0. One that stays high is measuring genre, not content.
 
   2. Does the metric LOSE points when the content is degraded in a specific,
-     known way? Corrupting every numeric value, or destroying word order while
-     keeping the vocabulary, must cost score. What each perturbation costs also
-     says WHICH part of a record the metric is actually reading -- a
+     known way? Corrupting numeric quantities tests value sensitivity, while
+     destroying word order with the vocabulary fixed tests order sensitivity.
+     What each perturbation costs says WHICH part of a record the metric is
+     actually reading -- a
      perturbation that costs nothing marks something the metric does not check,
      which is a limitation to declare rather than a result to hide.
 
@@ -73,8 +74,13 @@ SEED = 42
 # score it costs is attributable to that aspect rather than to general noise.
 # ATTRIBUTES holds a JSON object, so it is parsed and re-serialised rather than
 # string-edited -- a perturbation that accidentally produced invalid JSON would
-# blank the whole payload and overstate its own effect.
-_NUM_IN_TEXT = re.compile(r"(?<![A-Za-z-])(\d+\.?\d*)")
+# blank the whole payload and overstate its own effect. A candidate number must
+# also be detached from letters, digits, underscores and an immediately
+# preceding hyphen. This preserves identifiers such as ST02_SEALING and DGT-101
+# while still recognising standalone signed quantities such as -1.0 and values
+# next to units such as 20°C or 35%RH.
+_NUM_IN_TEXT = re.compile(
+    r"(?<![A-Za-z0-9_-])-?(?:\d+(?:\.\d*)?|\.\d+)(?![A-Za-z0-9_])")
 _PASSTHROUGH = ("id", "source_file", "source_span")
 
 
@@ -85,52 +91,99 @@ def _map_attributes(raw, fn):
         return raw
     if not isinstance(d, dict):
         return raw
-    return json.dumps({k: fn(v) for k, v in d.items()}, ensure_ascii=False)
+
+    def walk(value):
+        if isinstance(value, dict):
+            return {k: walk(v) for k, v in value.items()}
+        if isinstance(value, list):
+            return [walk(v) for v in value]
+        if value is None:
+            return value
+        return fn(str(value))
+
+    return json.dumps(walk(d), ensure_ascii=False)
+
+
+def _attribute_leaf_strings(raw) -> List[str]:
+    """Text leaves that the evaluator will append from an attributes object."""
+    try:
+        data = json.loads(raw) if raw else {}
+    except (json.JSONDecodeError, TypeError):
+        return []
+    if not isinstance(data, dict):
+        return []
+
+    out = []
+
+    def visit(value):
+        if isinstance(value, dict):
+            for nested in value.values():
+                visit(nested)
+        elif isinstance(value, list):
+            for nested in value:
+                visit(nested)
+        elif value is not None:
+            out.append(str(value))
+
+    visit(data)
+    return out
+
+
+def _numbers_in_row(row: Dict) -> List[str]:
+    """Standalone numeric quantities in exactly the content cells being tested."""
+    out = []
+    for column, value in row.items():
+        if column in _PASSTHROUGH or value in (None, ""):
+            continue
+        texts = (_attribute_leaf_strings(value) if column == "attributes"
+                 else [str(value)])
+        for text in texts:
+            out.extend(match.group(0) for match in _NUM_IN_TEXT.finditer(text))
+    return out
+
+
+def _replace_row_numbers(row: Dict, replacements: List[str]) -> Dict:
+    """Replace a row's standalone quantities in deterministic blob order."""
+    replacement_iter = iter(replacements)
+
+    def replace_text(value):
+        return _NUM_IN_TEXT.sub(lambda _match: next(replacement_iter), str(value))
+
+    out = dict(row)
+    for column, value in row.items():
+        if column in _PASSTHROUGH or value in (None, ""):
+            continue
+        out[column] = (_map_attributes(value, replace_text)
+                       if column == "attributes" else replace_text(value))
+    return out
+
+
+def _bumped_number(raw: str) -> str:
+    """The deterministic x -> 3x + 7 corruption, without needless .0 suffixes."""
+    return f"{float(raw) * 3.0 + 7.0:.12g}"
 
 
 def corrupt_numbers(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
-    """Every numeric value replaced by a different one; all text left intact.
+    """Every standalone numeric quantity is changed; identifiers stay intact.
 
     Isolates the question "are the extracted VALUES verified, or only the words
     around them". A metric that barely notices has not checked a single bound.
     Digits inside asset tags (DGT-101) are left alone -- corrupting those would
     damage identity, not values, and confound the two.
     """
-    def bump(s):
-        return _NUM_IN_TEXT.sub(lambda m: str(round(float(m.group(1)) * 3 + 7, 2)), str(s))
-    d = df.copy()
-    for c in d.columns:
-        if c in _PASSTHROUGH:
-            continue
-        d[c] = d[c].map((lambda v: _map_attributes(v, bump)) if c == "attributes" else bump)
-    return d.to_dict("records")
-
-
-def _content_columns(df: pd.DataFrame) -> List[str]:
-    """Columns carrying rule content: everything that is neither the pipeline's
-    bookkeeping nor the category label. Derived from the frame rather than named
-    in code, because the column set is discovered per corpus."""
-    return [c for c in df.columns if c not in _PASSTHROUGH and c != "category"]
-
-
-def _numeric_columns(df: pd.DataFrame) -> List[str]:
-    """Content columns whose non-empty values are predominantly numbers. Decided
-    from the data, since which columns hold quantities differs per corpus."""
-    out = []
-    for c in _content_columns(df):
-        vals = [str(v).strip() for v in df[c] if str(v).strip()]
-        if not vals:
-            continue
-        numeric = sum(1 for v in vals if re.fullmatch(r"-?\d+\.?\d*", v))
-        if numeric / len(vals) >= 0.8:
-            out.append(c)
-    return out
+    rows = df.to_dict("records")
+    return [_replace_row_numbers(row, [_bumped_number(v) for v in _numbers_in_row(row)])
+            for row in rows]
 
 
 def permute_payloads(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
-    """Numeric values permuted between records; every other field stays put, so
-    each record keeps its own subject and prose but acquires another record's
-    quantities.
+    """Numeric payloads permuted between compatible records.
+
+    Every numeric occurrence in every content field is considered, including
+    quantities embedded in prose. Records are grouped by payload length and
+    rotated within their group, so the recipient keeps the same number of
+    numeric positions but receives a different record's quantities. Identifier
+    digits are excluded by _NUM_IN_TEXT.
 
     This is the binding test, and it is deliberately narrow. Permuting a record's
     ENTIRE content between records would be close to permuting whole records, and
@@ -140,20 +193,26 @@ def permute_payloads(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
     the failure that actually occurs in extraction: the right rule carrying the
     wrong bound.
     """
-    d = df.copy()
-    cols = _numeric_columns(d)
-    if not cols:
-        return d.to_dict("records")
-    order = list(range(len(d)))
-    rng.shuffle(order)
-    block = d[cols].iloc[order].reset_index(drop=True)
-    for c in cols:
-        d[c] = block[c]
-    return d.to_dict("records")
+    rows = df.to_dict("records")
+    payloads = [_numbers_in_row(row) for row in rows]
+    groups = {}
+    for index, payload in enumerate(payloads):
+        if payload:
+            groups.setdefault(len(payload), []).append(index)
+
+    out = [dict(row) for row in rows]
+    for indices in groups.values():
+        if len(indices) < 2:
+            continue
+        rng.shuffle(indices)
+        for position, target in enumerate(indices):
+            donor = indices[(position + 1) % len(indices)]
+            out[target] = _replace_row_numbers(rows[target], payloads[donor])
+    return out
 
 
 def reverse_bounds_within_record(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
-    """Reverse the order of a record's OWN numeric values, in place.
+    """Reverse a record's own numeric quantities across their content positions.
 
     This is the safety-critical binding failure stated concretely: a row whose
     columns read (critical low, warning low, warning high, critical high) and
@@ -171,23 +230,17 @@ def reverse_bounds_within_record(df: pd.DataFrame, rng: random.Random) -> List[D
     itself can see about which slot a value occupies.
 
     Records carrying fewer than two numeric values are unchanged, since there is
-    nothing to reverse; corpora whose annotation exposes only one numeric column
-    are therefore untouched by this perturbation and are reported as such.
+    no within-record ordering to reverse. Unlike the former column-detection
+    implementation, quantities embedded in prose are included, so the test is
+    applied consistently to every corpus without assuming its induced schema.
     """
-    d = df.copy()
-    cols = _numeric_columns(d)
-    if len(cols) < 2:
-        return d.to_dict("records")
-    for i in d.index:
-        vals = [str(d.at[i, c]).strip() for c in cols]
-        present = [(c, v) for c, v in zip(cols, vals) if v]
-        if len(present) < 2:
-            continue
-        filled = [c for c, _ in present]
-        values = [v for _, v in present]
-        for c, v in zip(filled, reversed(values)):
-            d.at[i, c] = v
-    return d.to_dict("records")
+    rows = df.to_dict("records")
+    out = []
+    for row in rows:
+        values = _numbers_in_row(row)
+        out.append(_replace_row_numbers(row, list(reversed(values)))
+                   if len(values) >= 2 else dict(row))
+    return out
 
 
 def permute_labels(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
@@ -260,10 +313,7 @@ def pad_with_corpus_numbers(df: pd.DataFrame, rng: random.Random) -> List[Dict]:
     it charges for corrupting a value.
     """
     rows = df.to_dict("records")
-    per_record = []
-    for r in rows:
-        text = " ".join(str(v) for k, v in r.items() if k not in _PASSTHROUGH)
-        per_record.append(set(re.findall(r"-?\d+\.?\d*", text)))
+    per_record = [set(_numbers_in_row(row)) for row in rows]
     for i, r in enumerate(rows):
         borrowed = set()
         for j, nums in enumerate(per_record):
@@ -397,9 +447,16 @@ def perturbation_table(corpora: List[Corpus], null_pairs: List[Dict]) -> pd.Data
             # existing ones. Keying on the name makes each figure a property of
             # that perturbation alone, and reproducible in isolation.
             rng = random.Random(f"{SEED}:{name}")
-            vals = [c.f1(fn(df, rng)) for df in c.preds]
+            perturbed = [fn(df, rng) for df in c.preds]
+            vals = [c.f1(rows) for rows in perturbed]
+            changed = [
+                sum(E._pred_blob(original) != E._pred_blob(damaged)
+                    for original, damaged in zip(df.to_dict("records"), rows))
+                for df, rows in zip(c.preds, perturbed)
+            ]
             row[f"f1_{name}"] = round(_mean(vals), 3)
             row[f"drop_{name}"] = round(_mean(reported) - _mean(vals), 3)
+            row[f"changed_records_{name}_mean"] = round(_mean(changed), 1)
         rows.append(row)
     return pd.DataFrame(rows)
 
@@ -428,8 +485,8 @@ def print_verdict(pert: pd.DataFrame, curve: pd.DataFrame) -> None:
                     + ("order IS read" if gap > 0.05 else
                        "ORDER IS NOT READ: this behaves as a bag of tokens"))
         else:
-            note = ("checked" if d.mean() > 0.10 else
-                    "NOT CHECKED by the metric -- declare as out of scope")
+            note = ("detectable F1 sensitivity" if d.mean() > 0.01 else
+                    "no material F1 response at the operating threshold")
         print(f"    {name:<20} {d.mean():+.3f}  (per corpus {d.min():+.3f}..{d.max():+.3f})  {note}")
 
     print(f"\n  THRESHOLD (reported operating point = 0.60)")

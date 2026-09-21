@@ -280,10 +280,10 @@ _GRAPH_CONSTRAINT = (
 # Both examples describe a FICTIONAL animal-enclosure facility that shares no
 # station, sensor, identifier, or numeric value with any document this grid is
 # evaluated on. They teach the OUTPUT SHAPE only. Drawing the examples from an
-# evaluation document instead -- as an earlier version of this constant did --
-# is prompt contamination in the strict sense: the demonstration then states
-# an answer the run is scored on, so few_shot_static scores partly for
-# reproducing its own instructions rather than for reading the document.
+# evaluation document instead would be prompt contamination in the strict
+# sense: the demonstration would then state an answer the run is scored on, so
+# few_shot_static would score partly for reproducing its own instructions
+# rather than for reading the document.
 _FEW_SHOT_EXAMPLE = (
     " Follow these style examples. They come from an unrelated facility and are "
     "shown only to fix the output format -- never reuse their stations, sensors, "
@@ -311,12 +311,12 @@ _FEW_SHOT_EXAMPLE = (
 #
 # Every item is STRUCTURAL -- it asks the model to re-read the document and
 # account for whatever that document itself names. No station, identifier,
-# anomaly type, or rule-ID range is listed here. An earlier version enumerated
-# them, which meant the checklist supplied the entity inventory the run was
-# scored on recovering: the paradigm then measured how well the model could
-# copy a list out of its own instructions, not how completely it read the SOP.
-# Enumerating them would also break this paradigm on any other document, since
-# the named entities would not exist there.
+# anomaly type, or rule-ID range is listed here. Enumerating them would supply
+# the checklist with the entity inventory the run is scored on recovering, so
+# the paradigm would measure how well the model can copy a list out of its own
+# instructions rather than how completely it read the SOP. It would also break
+# this paradigm on any other document, since the named entities would not exist
+# there.
 REFLEXION_CHECKLIST = """Re-read the document, then verify the following in your output.
 Judge each point ONLY against what this document itself states -- do not assume
 any station, sensor, identifier, or category that it does not name.
@@ -454,7 +454,7 @@ def _save_and_exit(signum, frame) -> None:
         print(
             f"   Saved: {completed}/{len(_registry_ref)} completed in {REGISTRY_FILE}"
         )
-        print(f"   To resume: python3 step2_grid_search_extraction.py")
+        print(f"   To resume: python3 step2_grid_search_extraction_en.py")
     except Exception as e:
         print(f"   Save error: {e}")
     sys.exit(0)
@@ -1151,15 +1151,15 @@ def run_react_abox(
     # The protocol is stated as two MANDATORY phases, and the first user turn
     # below forbids JSON outright.
     #
-    # An earlier version appended an optional tool offer ("you MAY write
-    # VERIFY: ...") to _BASE_SYSTEM, which opens with "Reply EXCLUSIVELY with a
-    # JSON structured as follows". Faced with a mandatory instruction and an
-    # optional one, the model always did the mandatory thing: it emitted JSON on
-    # the first turn, the loop found no VERIFY line, broke immediately, and the
-    # ABox was never consulted. Measured over 5 runs that produced
-    # avg_llm_turns = 1.17 against MAX_REACT_TURNS = 5, the fastest runtime of
-    # any paradigm, and the lowest token count -- so whatever it scored was a
-    # single-call extraction, not ReAct with ABox verification.
+    # The verification turn must not be offered as optional. _BASE_SYSTEM opens
+    # with "Reply EXCLUSIVELY with a JSON structured as follows"; appending an
+    # optional tool offer ("you MAY write VERIFY: ...") to it leaves the model
+    # facing one mandatory instruction and one optional one, and it does the
+    # mandatory thing: it emits JSON on the first turn, the loop finds no VERIFY
+    # line and breaks immediately, and the ABox is never consulted. That yields
+    # avg_llm_turns near 1 against MAX_REACT_TURNS = 5, the fastest runtime and
+    # lowest token count of any paradigm -- a single-call extraction scored as
+    # though it were ReAct with ABox verification.
     sys_p = (
         _BASE_SYSTEM
         + _GRAPH_CONSTRAINT

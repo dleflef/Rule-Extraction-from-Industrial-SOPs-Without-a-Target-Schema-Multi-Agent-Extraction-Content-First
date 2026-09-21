@@ -36,21 +36,26 @@ score(g, p) = 0.6 * semantic_cosine(g, p) + 0.4 * numeric_overlap(g, p)
   embeddings of the two blobs. This is what lets `EnvironmentalLimit ... TMP ...
   175 195` line up with `ThresholdRule ... TMP ... 175.0 195.0` despite neither
   side knowing the other's vocabulary.
-- **numeric_overlap** — every number appearing anywhere in the GT blob should
-  appear somewhere in the predicted blob, whichever field holds it. For each GT
-  number, the closest predicted number is credited with
-  `max(0, 1 - |g - p| / max(|g|, |p|))`, and those per-number scores are averaged.
-  Sentence embeddings barely distinguish `175` from `195`, so without this term a
-  record with the wrong bounds would score almost as well as the right one.
+- **numeric_overlap** — numeric agreement is symmetric. In the GT-to-prediction
+  direction, every GT number receives the score of its closest predicted number;
+  in the prediction-to-GT direction, every predicted number receives the score
+  of its closest GT number. Each closest-pair score is
+  `max(0, 1 - |g - p| / max(|g|, |p|))`. The two directional means are combined
+  by their harmonic mean. The first direction rewards recovery; the second
+  charges unsupported surplus quantities. Sentence embeddings barely
+  distinguish `175` from `195`, so without this term a record with the wrong
+  bounds would score almost as well as the right one.
 - If a GT row contains **no numbers at all** the numeric term is undefined rather
   than zero, and the score is the semantic cosine alone. The audit marks these
   rows: `numeric_overlap` is blank and `score_formula` reads `semantic only`.
 
 Audit columns: `semantic_cosine`, `numeric_overlap`, `combined_score`, and
 `score_formula`, which writes the arithmetic out literally
-(`0.6*0.487 + 0.4*0.900 = 0.652`). `numeric_detail_gt_to_pred` shows which
-predicted value was credited against which GT value and how close it was
-(`50->40 (0.800)`).
+(`0.6*0.487 + 0.4*0.900 = 0.652`).
+`numeric_recall_gt_found` and `numeric_precision_pred_justified` expose the two
+directional means. `numeric_detail_gt_to_pred` and
+`numeric_detail_pred_to_gt` show every closest-value pairing used to obtain
+them (`50->40 (0.800)`).
 
 For reference only, the audit also reports a **word-level** view of the same two
 blobs — `word_overlap_jaccard_DIAGNOSTIC`, `shared_words_DIAGNOSTIC`,
@@ -79,19 +84,20 @@ threshold*; these can differ in principle, and the choice is the conventional on
 every ground-truth row, the best score it could have got from any *other* record.
 A negative margin is expected, not a defect: because the solver optimises the
 total, a row sometimes yields its personally-best record to another row that
-needs it more. Across all 20 runs, 75% of rows got their own best-scoring
-partner and 25% yielded it. A margin near zero (18% of pairs are within ±0.05)
+needs it more. Across all 20 runs, 81.8% of assigned rows got their own
+best-scoring partner and 18.2% yielded it. A margin near zero (16.6% of pairs
+are within ±0.05)
 means the pairing was close to a coin toss and the pair should be read as such,
 however comfortably it cleared the threshold.
 
 **Precision has a ceiling set by the record count.** Only `min(n_gt, n_pred)`
 pairs can exist, so when a run emits more records than the ground truth has rows,
 the surplus are false positives whether or not they are correct. On
-dev_production_line, 95–131 records against 86 ground-truth rows caps precision
-between **0.905 and 0.656** depending on the run — the observed 0.668 must be read
-against that, not against 1.0. Across five repeats the true-positive count was
-identical (76) while the record count varied, so the reported F1 moved 0.700–0.840
-on extraction that found exactly the same rules. The
+`dev_production_line`, every reported multi-agent run emits 131 records against
+86 ground-truth rows, which caps precision at **0.656**. Each run has 78 accepted
+pairs, 53 false positives and 8 false negatives, giving precision 0.595, recall
+0.907 and F1 0.719. Those figures must be read against the record-count ceiling,
+not against a hypothetical precision of 1.0. The
 cap is reported as `max_precision` in `RESULTS.csv`, as `max_possible_precision`
 per run, and as a warning on the console.
 
@@ -140,9 +146,10 @@ and `drop_tag_derived_numbers`. That last one is worth naming: the number regex
 reads the hyphen in an asset tag as a minus sign, so `GSH-401` contributes `-401`
 on both sides of the comparison, and such values are 15% of all numbers extracted
 from these ground truths. They are counted by default, because they are genuine
-asset-identity evidence and because excluding them *changes* reported figures
-(desalination moves +0.08). The flag exists so the choice is visible and
-reversible rather than buried in a regex.
+asset-identity evidence and because excluding them *changes* reported figures:
+development is unchanged, biogas moves +0.010, desalination +0.098, and sulfuric
+acid -0.048. The flag exists so the choice is visible and reversible rather than
+buried in a regex.
 
 ## 6. Does the metric actually measure extraction quality?
 
@@ -152,35 +159,29 @@ figures should be read.
 
 **Null case — predictions scored against a different corpus's ground truth.**
 Nothing can be correct, so this is the floor the metric cannot go below on genre
-similarity alone. Pooled per corpus it is 0.000–0.193, and the worst pairing
-reaches **0.193** (biogas predictions against the dev ground truth, the largest
-and most varied of the four). Read every reported figure against a floor of
-roughly 0.19 for a large ground truth, not against 0.
+similarity alone. The twelve directed wrong-corpus pairings have mean F1 values
+from 0.000 to 0.075, well below the real 0.649–0.804 results.
 
 **Perturbations — mean F1 lost when predictions are degraded:**
 
 | perturbation | F1 lost | reading |
 |---|---|---|
-| every numeric value corrupted | **−0.218** | values are genuinely verified |
-| numeric values permuted between records | +0.008 | value-to-rule binding is **not** checked |
-| category label permuted between records | +0.000 | the discovered label carries no weight |
-| token order scrambled (vs. its order-preserving control) | −0.002 | word order is *not* read |
+| standalone numeric quantities transformed by `x -> 3x + 7` | **0.080** | incorrect quantities reduce the score |
+| records padded with other records' quantities | **0.101** | unsupported surplus quantities reduce the score |
+| numeric positions reversed within applicable records | **0.000** | numeric slot binding is not captured |
 
-Only the first row registers. The metric verifies that the right **values** are
-present somewhere in the extracted set, and essentially nothing else — not which
-record holds them, not the label attached to them, not the order they are written
-in. Moving a bound onto the wrong rule is invisible, because the assignment
-simply re-pairs. Read `F1_content` as a set-membership measure over values; that
-is a limitation to state, not a defect to hide, and it is why the numeric term is
-load-bearing.
+The metric responds to wrong and unsupported quantities, but retaining the same
+numeric multiset while reversing its positions leaves F1 unchanged. Read
+`F1_content` as evidence of content presence, not as certification that every
+quantity occupies the correct field. Field placement is checked separately.
 
 **Threshold.** The reported operating point of 0.6 is a strict local maximum on
-**none** of the four corpora — declining through it on dev and desalination,
-flat through it on biogas (0.725 across 0.4–0.7) and sulfuric acid (0.642 at
-both 0.55 and 0.6). A threshold chosen to flatter the system would be a peak;
-none is. Desalination moves most near 0.6 (**0.023 per 0.05 step**), so its
-figure must be reported with the curve. The ranking of corpora is not stable across the sweep,
-so no claim that one corpus is harder than another is supported.
+**none** of the four corpora — declining through it on development, biogas and
+sulfuric acid, and on a plateau for desalination. A threshold chosen to flatter
+the system would be a peak;
+none is. The largest movement around 0.6 is **0.020 per 0.05 step**. The ranking
+of corpora is not stable across the sweep, so no claim that one corpus is harder
+than another is supported.
 
 ## 7. Reproducing the audit
 

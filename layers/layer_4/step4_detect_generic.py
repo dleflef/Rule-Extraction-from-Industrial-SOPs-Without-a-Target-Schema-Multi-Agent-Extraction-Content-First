@@ -285,11 +285,11 @@ def strictness_report(rules: list, quarantined: set, coverage: list,
             alarms, _ = stream_and_detect(rules, quarantined,
                                           on_delay_warning_min=od)
             cov = score_coverage(merge_alarms(alarms), load_gt_windows())
-        # Any-overlap recall AT THIS on-delay. Previously only the operating
-        # point's figure was written out, as the top-level `recall`, so the
-        # zero-delay any-overlap cell of the thesis table had no artifact behind
-        # it and had to be inferred. Recording it costs nothing and makes the
-        # whole table auditable from this file.
+        # Any-overlap recall AT THIS on-delay, recorded for every on-delay
+        # rather than for the operating point alone. Writing out only the
+        # operating point would leave the other cells of the reported table
+        # without an artifact behind them; recording each one costs nothing and
+        # makes the whole table auditable from this file.
         n_any = sum(1 for c in cov if c["status"] == "COVERED")
         out[f"{tag}_recall_any"] = round(n_any / len(cov), 3) if cov else 0.0
         for lbl, kw in (("cov25", {"min_cov_pct": 25}),

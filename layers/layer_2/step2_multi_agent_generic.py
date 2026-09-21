@@ -74,8 +74,9 @@ names passed to any --*-model flag must be names that endpoint serves; `curl -H
 current roster.
 
 Every free parameter is declared rather than buried: the model per role, the
-reasoning-suppression setting per model, chunk size, concurrency, and the two
-ablation switches. Runs are replayable from the response cache; a fresh run is
+reasoning-suppression setting per model, chunk size and concurrency. No ablation
+switch is implemented: the decomposition is not separable from the command line,
+so no run here isolates a single stage's contribution. Runs are replayable from the response cache; a fresh run is
 NOT bit-identical, because the hosted endpoint is non-deterministic for long
 generations (see llm_call), so report a mean and a standard deviation over
 --runs N rather than a single figure.
@@ -1111,12 +1112,11 @@ def assemble_records(records: list[dict], schema: CorpusSchema) -> list[dict]:
 # ══════════════════════════════════════════════════════════════════════════════
 def audit_chunk(chunk: dict, group: list[dict], file_lines: dict[str, list[str]],
                 model: str) -> tuple[list[dict], list[dict]]:
-    """Returns (kept records, verdict log). The log exists because the printed
-    per-chunk summary was previously the only trace of what the auditor did:
-    stdout is not an artifact, so the audit stage's intervention rate could not
-    be reported from a finished run. Every verdict is now written to a sidecar
-    CSV by save_outputs, making the stage's contribution measurable after the
-    fact without changing what it does."""
+    """Returns (kept records, verdict log). The log exists because a printed
+    per-chunk summary is not an artifact: without it the audit stage's
+    intervention rate could not be reported from a finished run. Every verdict
+    is written to a sidecar CSV by save_outputs, making the stage's
+    contribution measurable after the fact without changing what it does."""
     if not group:
         return [], []
     rendered = render_chunk(chunk, file_lines)

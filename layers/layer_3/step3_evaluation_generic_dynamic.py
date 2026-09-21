@@ -51,20 +51,14 @@ scores zero no matter how good the extraction is, while one that reused codes
 printed in the source document (OP-ST-001) scores well. Read it as "did this
 annotator reuse printed identifiers", never as an accuracy figure.
 
-WHAT F1_content DOES NOT MEASURE, established empirically by
-step3_validity_checks.py rather than asserted here:
-  - word order within a record (scrambling tokens costs 0.000 against an
-    order-preserving control; the comparison behaves as a bag of tokens)
-  - which record an attribute is bound to (permuting payloads costs -0.003)
-  - which SLOT a value occupies within a record: reversing every bound inside
-    every record costs exactly 0.000 on all four corpora, because the blob
-    retains the values and discards the names
-  - category-label correctness, which is unwinnable across vocabularies by the
-    argument above and is priced accordingly (permuting labels costs -0.003)
-It does measure numeric correctness (corrupting values costs 0.195 on average,
-0.085-0.324 per corpus) and it does discriminate the right document from a wrong
-one (predictions scored against a foreign ground truth pool at 0.000-0.075, worst
-single pairing 0.101).
+The principal limitation established empirically by
+step3_validity_checks.py is numeric placement: reversing quantities across the
+positions within each applicable record costs exactly 0.000 F1 on all four
+corpora, because the blob retains the values and discards the field names. The
+same experiment also establishes numeric sensitivity: transforming standalone
+quantities costs 0.080 F1 on average (0.032-0.124 per corpus), while adding
+unsupported quantities costs 0.101. Predictions scored against foreign ground
+truth produce directed-pair mean F1 values of 0.000-0.075.
 
 Usage -- identical for every domain, no per-GT configuration required:
     python step3_evaluation_generic_dynamic.py --pred <csv> --gt <ground_truth.csv>
@@ -163,8 +157,8 @@ class EvalConfig:
     # The symmetric form scores the numbers as an F1: the harmonic mean of that
     # same GT-recall and the matching precision over the record's own numbers.
     # It leaves the reported figures essentially where they were (the largest
-    # move across the four corpora is +0.015) and charges padding +0.103 F1 on
-    # average (+0.015..+0.216 per corpus, validity/validity_perturbations.csv),
+    # move across the four corpora is +0.015) and charges padding +0.101 F1 on
+    # average (+0.023..+0.216 per corpus, validity/validity_perturbations.csv),
     # which is the direction a metric should move under unjustified values.
     #
     # One consequence must be read alongside it: the precision half charges a

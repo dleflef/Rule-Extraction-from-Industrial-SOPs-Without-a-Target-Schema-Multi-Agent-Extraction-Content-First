@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-baseline_b0.py  –  Deterministic regex parser over the development SOP text,
+baseline.py  –  Deterministic regex parser over the development SOP text,
 using the seed knowledge graph's entity inventory.
 
 The parser is hand-written for these four documents: its expressions encode

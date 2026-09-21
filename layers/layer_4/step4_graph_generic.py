@@ -14,7 +14,7 @@ Four stages, each answering one question:
                  :ABoxNode:<Label>. This is the plant's own model: zones,
                  stations, sensors, people. It carries no extracted rule.
 
-  2 TBox      -- load the extracted records as (:Rule) nodes, with
+  2 Rules     -- load the extracted records as (:Rule) nodes, with
                  (:Rule)-[:GOVERNS]->(:Sensor) and
                  (:Rule)-[:APPLIES_TO]->(:Station) wherever the record names
                  one. Entities are resolved BY VALUE against the declared
@@ -128,7 +128,7 @@ def load_abox(session) -> dict:
 
 # ── Stage 2: the extracted rules ──────────────────────────────────────────────
 
-def load_tbox(session, rules: list) -> int:
+def load_rules(session, rules: list) -> int:
     session.run("CREATE CONSTRAINT rule_id IF NOT EXISTS "
                 "FOR (r:Rule) REQUIRE r.ruleId IS UNIQUE")
     rows = [{"ruleId": r.rule_id, "class": r.cls, "sensor": r.sensor,
@@ -235,7 +235,7 @@ def run_one(path: str, driver, db: str) -> dict:
     with driver.session(database=db) as s:
         s.run("MATCH (n) DETACH DELETE n")
         abox = load_abox(s)
-        n_rules = load_tbox(s, mem_rules)
+        n_rules = load_rules(s, mem_rules)
         val = validate(s)
         graph_rules = rules_from_graph(s)
         cors = extract_correlations(path, sensors)
@@ -268,7 +268,7 @@ def run_one(path: str, driver, db: str) -> dict:
     print(f"  [1] ABox     {sum(abox['nodes'].values())} nodes "
           f"({', '.join(f'{k}:{v}' for k, v in sorted(abox['nodes'].items()))}), "
           f"{abox['edges']} edges")
-    print(f"  [2] TBox     {n_rules} Rule nodes loaded from {stats['records']} records "
+    print(f"  [2] RULES    {n_rules} Rule nodes loaded from {stats['records']} records "
           f"({len(unbound)} of them naming equipment the plant may not have)")
     print(f"  [3] VALIDATE {val['rules_active']}/{val['rules_total']} rules bind to real "
           f"equipment (GOVERNS_ABOX); {val['rules_unresolved_sensor']} name a sensor the "

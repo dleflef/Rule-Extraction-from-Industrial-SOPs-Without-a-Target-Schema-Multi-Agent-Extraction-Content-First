@@ -1,6 +1,6 @@
 # Rule Extraction from Industrial SOPs Without a Target Schema
 
-**Multi-Agent Extraction, Content-First**
+**Multi-Agent Extraction, Content-First Evaluation, and Knowledge-Graph Validation**
 
 This repository pulls operating rules out of industrial documents, loads them
 into a knowledge graph, and then uses those rules, and nothing else, to flag
@@ -63,7 +63,7 @@ letters out of ordinary text.
 ### Layer 2: multi-agent extraction
 
 `layers/layer_2/step2_multi_agent_generic.py` is where most of the work happens.
-It is a LangGraph graph with five stages.
+It is a LangGraph graph with six stages.
 
 1. **segment** (no LLM). Splits the document into blank-line-delimited blocks,
    packs the blocks into chunks, and numbers every content line. Provenance then
@@ -91,6 +91,9 @@ It is a LangGraph graph with five stages.
    stated there. If a whole chunk comes back rejected, that counts as an audit
    failure and not as a finding. An auditor claiming every record is ungrounded
    is more likely to be broken than to be right.
+6. **save** (no LLM). Writes the surviving records out as a rectangular CSV whose
+   columns are whatever fields that run ended up with, alongside the long-format
+   facts file and the induced schema as JSON.
 
 Outputs land in `layers/layer_2/step2_results_generic/`:
 `ext_multi_agent_generic_<corpus>_run<N>_<ts>.csv` for the records,
@@ -155,7 +158,7 @@ The remaining Layer 3 scripts test what `F1_content` cannot see:
 | `step3_audit_interventions.py` | What did the audit stage actually keep, drop, and correct? |
 | `step3_audit_stats.py` | How decisive are the assignment's pairings (runner-up margins)? |
 | `step3_calibration_sample.py` | Does the τ = 0.6 accept/reject boundary agree with a human? |
-| `make_figures.py` | Renders every results figure in the thesis from the committed CSVs, asserting each headline value before it draws |
+| `make_figures.py` | Renders every results figure from the committed CSVs, asserting each headline value before it draws |
 
 `layers/oracle_baseline/oracle_gt_detect.py` gives the ceiling. Detection there is
 driven by the human-written annotation itself, so the extraction's detection score
@@ -241,7 +244,13 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Create a `.env` at the repo root:
+Copy `.env.example` to `.env` at the repo root and fill the values you need:
+
+```bash
+cp .env.example .env
+```
+
+The production pipeline uses the following subset:
 
 ```ini
 # Neo4j: only needed for layers/layer_4/step4_graph_generic.py
@@ -341,23 +350,46 @@ against 86 annotated rows, so recall is high and precision low; biogas extracts 
 against 47 and goes the other way. `step3_surplus_grounding.py` is the check on
 whether those surplus records are fabrications or unannotated facts.
 
-Downstream, on the development corpus (`layers/layer_4/`):
+Two configured systems sit beside it on the development corpus, scored by the
+same evaluator. The grid search, handed that corpus's own thirteen field names,
+reaches 0.949. The regex parser reaches 0.771. Both are above the pipeline's
+0.719, and neither one moves: the grid's prompt names fields that only this
+corpus has, and the parser needs a new function for every document you point it
+at.
 
-- In-memory detection. 27 of the 131 records are detector-ready, giving recall
-  0.929, precision 0.867, **F1 0.897**. The single miss is the CORRELATED event
-  `GT-0009`, which no single-signal detector can express. Recall without it is
-  1.000.
-- Graph round trip. The same rules loaded into Neo4j, validated, and read back
-  out: 30 rule nodes, 27 ACTIVE, 100% ABox sensor coverage, **F1 0.897**. Adding
-  the `CORRELATES_WITH` edge recovers `GT-0009` for recall 1.000 and **F1 0.933**.
-- Those recalls are scored leniently, which is worth saying out loud. A
-  GT window counts as detected on any nonzero temporal overlap on the same sensor.
-  An operator cares whether the episode was caught early and caught substantially,
-  so both harnesses rescore the identical detections under stricter acceptance and
-  report that alongside. On the graph round trip: recall 0.714 at ≥25% window
-  coverage, 0.500 at ≥50%, 0.643 within 30 min latency, 0.571 for both at once.
-  Those are `recall_cov25`, `cov50`, `lat30` and `cov25_lat30` in
-  `graph_detection_summary.csv`.
+The parser is the one worth following downstream, because the two measures
+disagree about it. Through the same detection stack it recovers 6 of the 14
+anomalies against the pipeline's 13. A higher content score did not mean better
+detection, and that gap is most of why Layer 4 exists.
+
+Downstream, on the development corpus (`layers/layer_4/`), the extracted rules
+find **all 14 of the plant's labelled anomalies** across 80 hours of telemetry,
+211,200 readings from 22 sensors. Thirteen come from the rules on their own: ten
+where a value crosses a threshold the rules carry, two from a drift condition,
+one from a stuck condition.
+
+The fourteenth is the one I care about. `GT-0009` is a packaging speed that
+never leaves its extracted bounds, clearing the nearest by 0.0061 m/s at its
+worst, so no single-sensor rule can fire on it. It comes back only through the
+graph. Two records, read out of two different documents, name the same sensor
+pair; that pair is stored as a `CORRELATES_WITH` edge; and when the sealing
+current breaks its own extracted bound the detector follows the edge and asks
+whether the coupled sensor is behaving oddly for itself. It is, and the window
+it returns matches the recorded one to the second.
+
+Give every rule the wrong sensor and those thirteen drop to four, so the
+detections come from the rules and not from telemetry that would look odd
+whatever you ran over it.
+
+- In-memory. 27 of the 131 records are detector-ready: recall 0.929, precision
+  0.867, **F1 0.897**.
+- Graph round trip. Same rules through Neo4j, validated and read back out: 30
+  rule nodes, 27 ACTIVE, **F1 0.897**. The `CORRELATES_WITH` edge takes recall to
+  1.000 and **F1 0.933**.
+- Scored leniently, which is worth saying out loud: a window counts as detected
+  on any overlap. Rescoring the identical detections under stricter acceptance
+  gives recall 0.714 at ≥25% window coverage and 0.500 at ≥50%. Both harnesses
+  report those alongside.
 - Human-domain checks. Access authorisation F1 1.000, occupancy limits F1 0.856,
   each against a null control.
 
@@ -370,7 +402,7 @@ Numbers move when the pipeline or the scoring parameters change. The CSVs under
 
 ```
 layers/layer_3/
-  figures/                    the thesis's results figures, regenerated by make_figures.py
+  figures/                    results figures, regenerated by make_figures.py
 layers/step3_results/
   RESULTS.csv                 headline table (above)
   GRID_RESCORED.csv           the grid search under the same metric
@@ -413,3 +445,17 @@ exist to test that it does.
   the graph harness asserts it at run time.
 - **Every claim traces to an artifact.** A number that cannot be reproduced from
   committed code and committed outputs does not get reported.
+
+---
+
+## What it comes down to
+
+Point this at a facility's documents with no schema, no taxonomy and no worked
+example, and the rules it writes down are good enough to run that plant's
+alarms. On the development corpus they catch all 14 labelled anomalies: 13 from
+the bounds and conditions the rules carry, and the last from a link between two
+sensors that only the graph holds.
+
+The regex parser scores higher than the pipeline on `F1_content` and finds six
+of the fourteen. Agreeing with an annotation and producing rules that work are
+not the same thing, and that is the reason Layer 4 is in this repository at all.
