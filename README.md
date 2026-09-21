@@ -2,6 +2,10 @@
 
 **Multi-Agent Extraction, Content-First Evaluation, and Knowledge-Graph Validation**
 
+The full repository, including every script, corpus and scored artifact
+referred to below, is public at
+<https://github.com/dleflef/Rule-Extraction-from-Industrial-SOPs-Without-a-Target-Schema-Multi-Agent-Extraction-Content-First>.
+
 This repository pulls operating rules out of industrial documents, loads them
 into a knowledge graph, and then uses those rules, and nothing else, to flag
 anomalies in plant telemetry.
@@ -240,6 +244,9 @@ left unread until it was scored. Their per-corpus `README.md` files record how.
 ## Setup
 
 ```bash
+git clone https://github.com/dleflef/Rule-Extraction-from-Industrial-SOPs-Without-a-Target-Schema-Multi-Agent-Extraction-Content-First.git
+cd Rule-Extraction-from-Industrial-SOPs-Without-a-Target-Schema-Multi-Agent-Extraction-Content-First
+
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
